@@ -21,11 +21,6 @@
  */
 
 /**
- * Thiết lập các hằng số liên quan đến tên gọi của framework
- */
-define('ZEND_F', 'Zend');
-
-/**
  * Thiết lập các hằng số liên quan đến lỗi
  */
 define('VHMIS_ERROR_MYSQL', '-99999999');
