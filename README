@@ -1,0 +1,16 @@
+Framework VHMIS
+===============
+
+Dùng để lập trình các phần mềm ứng dụng cho trường cao đẳng công nghệ thông tin hữu nghị Việt Hàn
+
+Nguồn tham khảo
+===============
+
+* ZEND framework
+* CakePHP framework
+
+Thư viện ngoài
+==============
+
+* Zend_Db của ZEND framework
+* PHPExcel của Microsoft
