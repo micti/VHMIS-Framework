@@ -120,7 +120,7 @@ class Vhmis_View
         $config = $this->_dataConfig;
 
         // Tồn tại view
-        if($this->_view != false)
+        if($this->_view !== false)
         {
             $view = VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . $this->_template . D_SPEC;
             if($this->_view != '') $view .=  $this->_view . '.php';
