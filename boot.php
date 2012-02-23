@@ -57,10 +57,13 @@ require VHMIS_PATH . D_SPEC . 'booter.php';
 /**
  * Cấu hình
  */
-$_config = ___loadConfig('Global', false);
-Vhmis_Configure::set('Config', $_config);
 $_config = ___loadConfig('Applications', false);
+Vhmis_Configure::set('Config', $_config);
+$_config = ___loadConfig('Global', false);
 Vhmis_Configure::add('Config', $_config);
+
+// Set timezone +7
+Vhmis_Date::setTimeZone($_config['timezone']['name']);
 
 /**
  * Lấy uri, xử lý
