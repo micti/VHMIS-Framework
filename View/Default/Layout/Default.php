@@ -43,7 +43,13 @@ if(isset($jsFiles))
         <header>
             <div class="container global_bar">
                 <ul class="nav pull-left">
-                    <li class="active"><a href="#">Giao diện</a></li>
+<?php
+foreach($config['apps']['list']['url'] as $appurl)
+{
+    echo '<li class=' . ($appurl === $appInfo['url'] ? 'active' : '') . '><a href="' . $config['site']['path'] . $appurl . '">' . $config['apps']['list']['name'][$appurl] . '</a></li>';
+}
+
+?>
                 </ul>
                 <ul class="nav pull-right">
                     <li><a href="#"><?php echo $userInfo['realname']; ?></a></li>
