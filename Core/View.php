@@ -63,7 +63,7 @@ class Vhmis_View
      */
     public function render()
     {
-        if($this->_dataController['app']['info']['output'] == 'html')
+        if($this->_dataController['app']['info']['output'] === null || $this->_dataController['app']['info']['output'] == '' || $this->_dataController['app']['info']['output'] == 'html')
         {
             $this->renderHTML();
             //return;
@@ -91,7 +91,6 @@ class Vhmis_View
     /**
      * Render Text
      */
-     * Hàm này thừa
     public function renderText()
     {
         $text = '';
