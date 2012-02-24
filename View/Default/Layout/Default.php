@@ -10,16 +10,34 @@
         <![endif]-->
 
         <!-- Style -->
-        <link href="/VHMIS_WWW/client/default/css/default.css" rel="stylesheet">
-        <?php $this->block('CssFiles', $viewJsFiles); ?>
+        <link href="<?php echo $config['site']['fullclient']; ?>css/default.css" rel="stylesheet">
+<?php
+if(isset($cssFiles))
+{
+    foreach($cssFiles as $file)
+    {
+        if(strpos('http://', $file) === true) echo '<link href="' . $file . '" rel="stylesheet">' . "\n";
+        else echo '<link href="' . $config['site']['fullclient'] . $file . '" rel="stylesheet">' . "\n";
+    }
+}
+?>
 
         <!-- Javascript -->
         <script type="text/javascript" language="javascript">
-            var sitePath = '/VHMIS_WWW/';
+            var sitePath = '<?php echo $config['site']['path']; ?>';
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="/VHMIS_WWW/client/default/js/default.js"></script>
-        <?php $this->block('JsFiles', $viewJsFiles); ?>
+        <script src="<?php echo $config['site']['fullclient']; ?>js/default.js"></script>
+<?php
+if(isset($jsFiles))
+{
+    foreach($jsFiles as $file)
+    {
+        if(strpos('http://', $file) === true) echo '<script src="' . $file . '"></script>' . "\n";
+        else echo '<script src="' . $config['site']['fullclient'] . $file . '"></script>' . "\n";
+    }
+}
+?>
     </head>
     <body>
         <header>
