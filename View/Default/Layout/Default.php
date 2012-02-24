@@ -33,7 +33,7 @@
                 </ul>
             </div>
             <div class="container app_header">
-                <h1>Default</h1>
+                <h1 class="app-title-header app-title-header-<?php echo $appInfo['url']; ?>"><?php echo $appInfo['app']; ?></h1>
                 <nav>
                     <ul class="menu">
                         <li class="sub_menu active"><a href="/giaodien/default/docs/index.html">Giới thiệu</a></li>
