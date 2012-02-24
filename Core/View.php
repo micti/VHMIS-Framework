@@ -94,7 +94,7 @@ class Vhmis_View
     public function renderText()
     {
         $text = '';
-        if(isset($this->_data['text']])) $text = $this->_data['text'];
+        if(isset($this->_data['text'])) $text = $this->_data['text'];
         echo $text;
     }
 
@@ -134,6 +134,7 @@ class Vhmis_View
 
         // Chuyển $this->_dataConfig thành $config
         $config = $this->_dataConfig;
+        $config['site']['fullclient'] = $config['site']['client'] . strtolower($this->_template) . '/';
 
         // Tồn tại view
         if($this->_view !== false)
