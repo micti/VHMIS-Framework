@@ -28,9 +28,8 @@
                     <li class="active"><a href="#">Giao diện</a></li>
                 </ul>
                 <ul class="nav pull-right">
-                    <li><a href="#">Le Nhat Anh</a></li>
-                    <li><a href="#">Ver 1.0</a></li>
-
+                    <li><a href="#"><?php echo $userInfo['realname']; ?></a></li>
+                    <li><a href="<?php echo $config['site']['path'] . $config['apps']['logout-url']; ?>">Thoát</a></li>
                 </ul>
             </div>
             <div class="container app_header">
