@@ -90,10 +90,27 @@ class Vhmis_View
 
     /**
      * Render Text
-     *
-     * Hàm này thừa
      */
+     * Hàm này thừa
     public function renderText()
+    {
+        $text = '';
+        if(isset($this->_data['text']])) $text = $this->_data['text'];
+        echo $text;
+    }
+
+    /**
+     * Render XML
+     */
+    public function renderXML()
+    {
+        return;
+    }
+
+    /**
+     * Render XML
+     */
+    public function renderJSON()
     {
         return;
     }
