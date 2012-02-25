@@ -46,14 +46,14 @@ class Vhmis_Network_Request
      *
      * @var array
      */
-    public $data = array();
+    public $post = array();
 
     /**
      * Mảng chứa dữ liệu của GET (querystring).
      *
      * @var array
      */
-    public $query = array();
+    public $get = array();
 
     /**
      * Thông tin ứng dụng của request
@@ -168,12 +168,12 @@ class Vhmis_Network_Request
      */
     protected function _getPostData()
     {
-        $this->data = $_POST;
+        $this->post = $_POST;
 
         // Loại bỏ ký tự \
         if(ini_get('magic_quotes_gpc') === '1')
         {
-            $this->data = ___stripSlashes($this->data);
+            $this->post = ___stripSlashes($this->post);
         }
     }
 
@@ -183,18 +183,18 @@ class Vhmis_Network_Request
      */
     protected function _getGetData()
     {
-        $this->query = $_GET;
+        $this->get = $_GET;
 
         // Loại bỏ ký tự \
         if(ini_get('magic_quotes_gpc') === '1')
         {
-            $this->query = ___stripSlashes($this->query);
+            $this->get = ___stripSlashes($this->get);
         }
     }
 
     /**
      * Lấy dữ liệu của $_FILE.
-     * Dữ liệu sau khi được lấy được lưu và truy xuất ở $this->data['_files'].
+     * Dữ liệu sau khi được lấy được lưu và truy xuất ở $this->post['_files'].
      */
     protected function _getFileData()
     {
@@ -202,7 +202,7 @@ class Vhmis_Network_Request
         {
             foreach($_FILES as $name => $data)
             {
-                $this->data['_files'][$name] = $data;
+                $this->post['_files'][$name] = $data;
             }
         }
     }
