@@ -105,6 +105,7 @@ class Vhmis_Network_Request
         $this->_getPostData();
         $this->_getGetData();
         $this->_getFileData();
+        $this->_delData();
     }
 
     /**
@@ -205,5 +206,15 @@ class Vhmis_Network_Request
                 $this->post['_files'][$name] = $data;
             }
         }
+    }
+
+    /**
+     * Xóa dữ liệu các biến global
+     */
+    protected function _delData()
+    {
+        unset($_POST);
+        unset($_GET);
+        unset($_REQUEST);
     }
 }
