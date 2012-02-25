@@ -80,7 +80,22 @@ if(isset($_appMenu) && is_array($_appMenu))
                 <div class="container page_header_bar">
                     <ul class="breadcrumb">
                         <li><a href="<?php echo $config['site']['path']; ?>">Trang chủ</a> <span class="divider">/</span></li>
-                        <li class="active">Giới thiệu</li>
+                        <li><a href="<?php echo $config['site']['fullpath']; ?>"><?php echo $appInfo['app']; ?></a> <span class="divider">/</span></li>
+<?php
+if(isset($_breadcrumb) && is_array($_breadcrumb))
+{
+    $total = count($_breadcrumb);
+    foreach($_breadcrumb as $link)
+    {
+        $total--;
+        echo '                        <li class="';
+        if($total == 0) echo 'active';
+        echo '"><a href="' . $config['site']['fullpath'] . $link[1] . '">' . $link[0] . '</a>';
+        if($total != 0) echo ' <span class="divider">/</span>';
+        echo '</li>' . "\n";
+    }
+}
+?>
                     </ul>
 <?php
 if(isset($pageTitle) && $pageTitle != '') {
