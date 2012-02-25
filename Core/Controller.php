@@ -162,8 +162,8 @@ class Vhmis_Controller
         $this->_config = Vhmis_Configure::get('Config');
 
         $this->appInfo = $request->app;
-        $this->_request = $request;
-        $this->_response = $response;
+        $this->request = $request;
+        $this->response = $response;
 
         $this->_action = $this->appInfo['info']['action'];
         $this->_params = $this->appInfo['info']['params'];
@@ -312,8 +312,8 @@ class Vhmis_Controller
         $content = ob_get_clean();
 
         // Trả kết quả view thông qua đối tượng response
-        $this->_response->body($content);
-        $this->_response->response();
+        $this->response->body($content);
+        $this->response->response();
 
         // ?
         exit();
@@ -344,8 +344,8 @@ class Vhmis_Controller
         $content = ob_get_clean();
 
         // Trả kết quả view thông qua đối tượng response
-        $this->_response->body($content);
-        $this->_response->response();
+        $this->response->body($content);
+        $this->response->response();
         exit();
     }
 
