@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title><? if(isset($viewPageTitle)) echo $viewPageTitle . ' | VHMIS'; else echo 'VHMIS'; ?></title>
+        <title><? if(isset($pageTitleBar)) echo $pageTitleBar . ' | VHMIS'; else echo 'VHMIS'; ?></title>
 
         <!-- Mo phong HTML5 danh cho IE6-8 -->
         <!--[if lt IE 9]>
@@ -58,24 +58,40 @@ foreach($config['apps']['list']['url'] as $appurl)
             </div>
             <div class="container app_header">
                 <h1 class="app-title-header app-title-header-<?php echo $appInfo['url']; ?>"><?php echo $appInfo['app']; ?></h1>
-                <nav>
-                    <ul class="menu">
-                        <li class="sub_menu active"><a href="/giaodien/default/docs/index.html">Giới thiệu</a></li>
-                        <li class="sub_menu"><a href="/giaodien/default/docs/scaffoding.html">Dàn trang</a></li>
-                        <li class="sub_menu"><a href="/giaodien/default/docs/base_css.html">CSS Cơ bản</a></li>
-                        <li class="sub_menu"><a href="/giaodien/default/docs/components.html">Thành phần trang</a></li>
-                        <li class="sub_menu"><a href="/giaodien/default/docs/javascript.html">Javascript</a></li>
-                        <li class="sub_menu"><a href="/giaodien/default/example.html">Ví dụ</a></li>
-                    </ul>
-                </nav>
+<?php
+if(isset($_appMenu) && is_array($_appMenu))
+{
+    echo '                <nav>
+                    <ul class="menu">';
+
+    foreach($_appMenu as $menu)
+    {
+        echo '                        <li class="sub_menu';
+        echo '"><a href="' . $config['site']['path'] . '">' . $menu[0] . '</a></li>';
+
+    }
+
+    echo '                </ul>
+                </nav>';
+}
+?>
             </div>
             <div id="page_header">
                 <div class="container page_header_bar">
                     <ul class="breadcrumb">
-                        <li><a href="/giaodien/default/">Default</a> <span class="divider">/</span></li>
+                        <li><a href="<?php echo $config['site']['path']; ?>">Trang chủ</a> <span class="divider">/</span></li>
                         <li class="active">Giới thiệu</li>
                     </ul>
-                    <h1>Giới thiệu <small>Bla Bla</small></h1>
+<?php
+if(isset($pageTitle) && $pageTitle != '') {
+    echo '<h1>' . $pageTitle;
+    if(isset($pageTitleDes) && $pageTitleDes != '')
+    {
+        echo  ' <small>' . $pageTitleDes . '</small>';
+    }
+    echo '</h1>';
+}
+?>
                 </div>
             </div>
         </header>
