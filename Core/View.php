@@ -135,6 +135,7 @@ class Vhmis_View
         // Chuyển $this->_dataConfig thành $config
         $config = $this->_dataConfig;
         $config['site']['fullclient'] = $config['site']['client'] . strtolower($this->_template) . '/';
+        $config['site']['fullpath'] = $config['site']['path'] . $appInfo['url'] . '/';
 
         // Tồn tại config của View
         $configPath = VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . $this->_template . D_SPEC . 'Config.php';
