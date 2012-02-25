@@ -67,7 +67,7 @@ if(isset($_appMenu) && is_array($_appMenu))
     foreach($_appMenu as $menu)
     {
         echo '                        <li class="sub_menu';
-        echo '"><a href="' . $config['site']['path'] . '">' . $menu[0] . '</a></li>';
+        echo '"><a href="' . $config['site']['fullpath'] . $menu[1] . '">' . $menu[0] . '</a></li>';
 
     }
 
