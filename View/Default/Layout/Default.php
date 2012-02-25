@@ -67,7 +67,19 @@ if(isset($_appMenu) && is_array($_appMenu))
     foreach($_appMenu as $menu)
     {
         echo '                        <li class="sub_menu';
-        echo '"><a href="' . $config['site']['fullpath'] . $menu[1] . '">' . $menu[0] . '</a></li>';
+        echo '"><a href="' . $config['site']['fullpath'] . $menu[1] . '">' . $menu[0] . '</a>';
+        if(is_array($menu[2]))
+        {
+            echo '<ul class="sub_menu';
+            if($menu[3] == 'right') echo ' right';
+            echo '">';
+            foreach($menu[2] as $submenu)
+            {
+                echo '<li><a href="' .  $config['site']['fullpath'] . $submenu[1] . '">' . $submenu[0] . '</a></li>';
+            }
+            echo '</ul>';
+        }
+        echo '</li>';
 
     }
 
