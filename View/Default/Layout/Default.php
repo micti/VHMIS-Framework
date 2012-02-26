@@ -27,6 +27,7 @@ if(isset($cssFiles))
             var sitePath = '<?php echo $config['site']['path']; ?>';
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="<?php echo $config['site']['fullclient']; ?>js/bootstrap.js"></script>
         <script src="<?php echo $config['site']['fullclient']; ?>js/default.js"></script>
 <?php
 if(isset($jsFiles))
