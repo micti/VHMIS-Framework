@@ -21,24 +21,25 @@
  * @license       All rights reversed
  */
 
-/**
- * Lấy thông tin URI
- */
-class Vhmis_Share
+abstract class Vhmis_Share
 {
+    protected $_model;
+
     /**
      * Khởi tạo
      **/
     public function __construct()
     {
+        $this->_loadModel();
     }
 
-    public function data()
+    protected function _loadModel()
     {
-    }
+        $name = str_replace('Vhmis_Share_', '', get_class($this));
+        $db = explode('_', $name, 2);
+        $db = Vhmis_Configure::get('Db' . ___fUpper($db[0]));
 
-    protected function _loadModel($model)
-    {
-        ___loadModel($model);
+        $model = 'Vhmis_Model_' . $name;
+        $this->_model = new $model(array('db' => $db));
     }
 }

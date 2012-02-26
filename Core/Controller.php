@@ -97,19 +97,16 @@ class Vhmis_Controller
     public $models;
 
     /**
+     * Đối tượng share collection
+     *
+     * @var Vhmis_Collection_Shares
+     */
+    public $shares;
+
+    /**
      * Mảng chứa các Share data cần gọi
      */
     protected $_shares = array();
-
-    /**
-     * Mảng chứa các đối tượng Share data
-     */
-    protected $_shareObject = array();
-
-    /**
-     * Mảng chứa các dữ liệu được lấy từ các đối tượng Share data
-     */
-    protected $_shareData = array();
 
     /**
      * Yêu cầu login để thực thi controller
@@ -178,6 +175,7 @@ class Vhmis_Controller
         $this->_db('System');
 
         $this->models = new Vhmis_Collection_Models();
+        $this->shares = new Vhmis_Collection_Shares();
 
         // Gọi các components
         if(is_array($this->_components))
@@ -417,18 +415,17 @@ class Vhmis_Controller
      */
     protected function _loadShareData($data)
     {
-        if(isset($this->_shareData[$data])) return $this->_shareData[$data];
-        if(isset($this->_shareObject[$data]))
-        {
-            $this->_shareData[$data] = $this->_shareObject[$data]->data();
-            return $this->_shareData[$data];
-        }
+        $var = ___ctv($data);
 
-        $class = 'Vhmis_Share_' . $data;
-        $this->_shareObject[$data] = new $class();
-        $this->_shareData[$data] = $this->_shareObject[$data]->data();
+        // nếu đã tồn tại
+        if($this->shares->$var != null) return $this->shares->$var;
 
-        return $this->_shareData[$data];
+        // load database nếu cần
+        $name = explode('_', $data, 2);
+        $this->_db($name[0]);
+
+        // load shares
+        return $this->shares->load($data);
     }
 
     /**
