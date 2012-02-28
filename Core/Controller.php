@@ -321,7 +321,7 @@ class Vhmis_Controller
     {
         $this->set('title', $title);
         $this->set('message', $message);
-        $this->set('time', $message);
+        $this->set('time', $time);
         $this->set('url', $url);
 
         $this->view(false, $layout, $template);

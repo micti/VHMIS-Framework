@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php if(isset($time) && isset($url)) { echo '<meta http-equiv="refresh" content="10;url=' . $config['site']['fullpath'] . $url . '">' . "\n"; } ?>
+        <?php if(isset($time) && isset($url)) { echo '<meta http-equiv="refresh" content="' . $time . ';url=' . $config['site']['fullpath'] . $url . '">' . "\n"; } ?>
         <title><? if(isset($title)) echo $title . ' | Thông báo | VHMIS'; else echo 'VHMIS'; ?></title>
 
         <!-- Style -->
