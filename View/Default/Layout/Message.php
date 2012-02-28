@@ -2,7 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title><? if(isset($title)) echo $title . ' | VHMIS'; else echo 'VHMIS'; ?></title>
+        <?php if(isset($time) && isset($url)) { echo '<meta http-equiv="refresh" content="10;url=' . $config['site']['fullpath'] . $url . '">' . "\n"; } ?>
+        <title><? if(isset($title)) echo $title . ' | Thông báo | VHMIS'; else echo 'VHMIS'; ?></title>
 
         <!-- Style -->
         <link href="/VHMIS_WWW/client/default/css/default.css" rel="stylesheet">
@@ -13,6 +14,7 @@
                 <h4><?php if(isset($title)) echo $title; ?></h4>
                 <br>
                 <?php if(isset($message)) echo $message; ?>
+
             </div>
         </div>
     </body>
