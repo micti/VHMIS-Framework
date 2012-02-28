@@ -496,4 +496,15 @@ class Vhmis_Controller
     {
         return true;
     }
+
+    /**
+     * Lấy config của một app
+     *
+     * @param string $app Tên app
+     * @return array|null Config của app nếu có
+     */
+    protected function _loadAppConfig($app)
+    {
+        return ___loadAppConfig($app, false);
+    }
 }
