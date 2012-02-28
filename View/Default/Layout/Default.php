@@ -16,8 +16,8 @@ if(isset($cssFiles))
 {
     foreach($cssFiles as $file)
     {
-        if(strpos('http://', $file) === true) echo '<link href="' . $file . '" rel="stylesheet">' . "\n";
-        else echo '<link href="' . $config['site']['fullclient'] . $file . '" rel="stylesheet">' . "\n";
+        if(strpos('http://', $file) === true) echo '        <link href="' . $file . '" rel="stylesheet">' . "\n";
+        else echo '        <link href="' . $config['site']['fullclient'] . $file . '" rel="stylesheet">' . "\n";
     }
 }
 ?>
@@ -34,8 +34,8 @@ if(isset($jsFiles))
 {
     foreach($jsFiles as $file)
     {
-        if(strpos('http://', $file) === true) echo '<script src="' . $file . '"></script>' . "\n";
-        else echo '<script src="' . $config['site']['fullclient'] . $file . '"></script>' . "\n";
+        if(strpos('http://', $file) === true) echo '        <script src="' . $file . '"></script>' . "\n";
+        else echo '        <script src="' . $config['site']['fullclient'] . $file . '"></script>' . "\n";
     }
 }
 ?>
@@ -47,7 +47,7 @@ if(isset($jsFiles))
 <?php
 foreach($config['apps']['list']['url'] as $appurl)
 {
-    echo '<li class=' . ($appurl === $appInfo['url'] ? 'active' : '') . '><a href="' . $config['site']['path'] . $appurl . '">' . $config['apps']['list']['name'][$appurl] . '</a></li>';
+    echo '                    <li class="' . ($appurl === $appInfo['url'] ? 'active' : '') . '"><a href="' . $config['site']['path'] . $appurl . '">' . $config['apps']['list']['name'][$appurl] . '</a></li>' . "\n";
 }
 
 ?>
@@ -63,7 +63,7 @@ foreach($config['apps']['list']['url'] as $appurl)
 if(isset($_appMenu) && is_array($_appMenu))
 {
     echo '                <nav>
-                    <ul class="menu">';
+                    <ul class="menu">' . "\n";
 
     foreach($_appMenu as $menu)
     {
@@ -71,21 +71,20 @@ if(isset($_appMenu) && is_array($_appMenu))
         echo '"><a href="' . $config['site']['fullpath'] . $menu[1] . '">' . $menu[0] . '</a>';
         if(is_array($menu[2]))
         {
-            echo '<ul class="sub_menu';
+            echo "\n" . '                            <ul class="sub_menu';
             if($menu[3] == 'right') echo ' right';
-            echo '">';
+            echo '">' . "\n";
             foreach($menu[2] as $submenu)
             {
-                echo '<li><a href="' .  $config['site']['fullpath'] . $submenu[1] . '">' . $submenu[0] . '</a></li>';
+                echo '                                <li><a href="' .  $config['site']['fullpath'] . $submenu[1] . '">' . $submenu[0] . '</a></li>' . "\n";
             }
-            echo '</ul>';
+            echo '                            </ul>'. "\n";
         }
-        echo '</li>';
-
+        echo '                        </li>' . "\n";
     }
 
-    echo '                </ul>
-                </nav>';
+    echo '                    </ul>
+                </nav>'. "\n";
 }
 ?>
             </div>
@@ -112,12 +111,12 @@ if(isset($_breadcrumb) && is_array($_breadcrumb))
                     </ul>
 <?php
 if(isset($pageTitle) && $pageTitle != '') {
-    echo '<h1>' . $pageTitle;
+    echo '                    <h1>' . $pageTitle;
     if(isset($pageTitleDes) && $pageTitleDes != '')
     {
         echo  ' <small>' . $pageTitleDes . '</small>';
     }
-    echo '</h1>';
+    echo '</h1>' . "\n";
 }
 ?>
                 </div>
@@ -126,6 +125,7 @@ if(isset($pageTitle) && $pageTitle != '') {
         <div id="page_container">
             <div class="container">
                 <?php echo $content; ?>
+
             </div>
         </div>
         <footer>
