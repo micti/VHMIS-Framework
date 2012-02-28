@@ -403,7 +403,7 @@ class Vhmis_Controller
         {
             foreach($this->_shares as $share)
             {
-                $this->_loadShareData($share);
+                $this->_loadShare($share);
             }
         }
     }
@@ -413,7 +413,7 @@ class Vhmis_Controller
      *
      * @param string $model
      */
-    protected function _loadShareData($data)
+    protected function _loadShare($data)
     {
         $var = ___ctv($data);
 
