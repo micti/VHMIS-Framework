@@ -505,6 +505,12 @@ class Vhmis_Controller
      */
     protected function _loadAppConfig($app)
     {
-        return ___loadAppConfig($app, false);
+        $config = ___loadAppConfig($app, false);
+        if($config != null)
+        {
+            return $config['apps']['info'][strtolower($app)];
+        }
+
+        return null;
     }
 }
