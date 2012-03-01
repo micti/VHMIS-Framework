@@ -328,9 +328,9 @@ class Vhmis_Controller
     }
 
     /**
-     * Gọi view thông báo lỗi kết nối Database;
+     * Gọi view thông báo lỗi;
      */
-    public function viewError()
+    public function viewError($layout = 'Default')
     {
         // Khởi tạo lớp Vhmis_View và thiết lập những thông tin cần thiết
         $this->View = new Vhmis_View();
@@ -338,7 +338,7 @@ class Vhmis_Controller
 
         // Lấy view
         ob_start();
-        $this->View->renderDbError();
+        $this->View->renderError($layout);
         $content = ob_get_clean();
 
         // Trả kết quả view thông qua đối tượng response
@@ -349,13 +349,32 @@ class Vhmis_Controller
 
     /**
      * Gọi view thông báo lỗi kết nối Database;
+     *
+     * @var string $title Tiêu đề lỗi
+     * @var string $message Thông báo
+     * @var string $layout Tên layout hiển thị lỗi
      */
-    public function viewDbError($title = '', $message = '')
+    public function viewDbError($title = '', $message = '', $layout = 'Db')
     {
         $this->set('title', 'Kết nối DB bị lỗi');
         $this->set('message', 'Hiện tại kết nối tới CSDL đang gặp lỗi, vui lòng chờ một lát rồi hãy thử lại.');
 
-        $this->viewError();
+        $this->viewError($layout);
+    }
+
+    /**
+     * Gọi view thông báo không có quyền
+     *
+     * @var string $title Tiêu đề
+     * @var string $message Thông báo
+     * @var string $layout Tên layout hiển thị lỗi
+     */
+    public function viewPermissionError($title = '', $message = '', $layout = 'Permission')
+    {
+        $this->set('title', 'Yêu cầu bị từ chối');
+        $this->set('message', 'Bạn không có quyền thực hiện việc này');
+
+        $this->viewError($layout);
     }
 
     /**

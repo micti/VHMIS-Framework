@@ -165,12 +165,7 @@ class Vhmis_View
         else echo 'Build layout';
     }
 
-    public function renderDbError()
-    {
-        $this->renderError();
-    }
-
-    public function renderError($layout = 'Default', $title = '', $message = '')
+    public function renderError($layout = 'Default')
     {
         // Chuyển $this->_data[$name] sang $name
         if(is_array($this->_data))
