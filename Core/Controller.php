@@ -430,7 +430,8 @@ class Vhmis_Controller
     /**
      * Gọi share
      *
-     * @param string $model
+     * @param string $data Tên Share
+     * @return Đối tượng Share
      */
     protected function _loadShare($data)
     {
