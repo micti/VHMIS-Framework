@@ -44,7 +44,12 @@ class Vhmis_Controller
     /**
      * Tên controller
      */
-    public $_controller;
+    protected $_controller;
+
+    /**
+     * Tên controller
+     */
+    public $controller;
 
     /**
      * Tên Action
@@ -52,9 +57,19 @@ class Vhmis_Controller
     protected $_action;
 
     /**
+     * Tên Action
+     */
+    public $action;
+
+    /**
      * Các thông số đi kèm
      */
     protected $_params;
+
+    /**
+     * Các thông số đi kèm
+     */
+    public $params;
 
     /**
      * Kiểu xuất ra
@@ -62,19 +77,19 @@ class Vhmis_Controller
     protected $_output;
 
     /**
+     * Kiểu xuất ra
+     */
+    public $output;
+
+    /**
      * Config
      */
     protected $_config;
 
     /**
-     * Đối tượng Db
+     * Config
      */
-    protected $_db;
-
-    /**
-     * Đối tượng Db Select
-     */
-    protected $_dbSelect;
+    public $config;
 
     /**
      * Mảng chứa các components cần gọi
@@ -158,17 +173,17 @@ class Vhmis_Controller
     {
         $this->_config = Vhmis_Configure::get('Config');
 
-        $this->appInfo = $request->app;
         $this->request = $request;
         $this->response = $response;
 
-        $this->_action = $this->appInfo['info']['action'];
-        $this->_params = $this->appInfo['info']['params'];
-        $this->_output = $this->appInfo['info']['output'];
-
+        $this->appInfo = $request->app;
         $this->app        = $this->appInfo['app'];
         $this->appUrl     = $this->appInfo['url'];
-        $this->_controller = $this->appInfo['info']['controller'];
+
+        $this->action = $this->_action = $this->appInfo['info']['action'];
+        $this->params = $this->_params = $this->appInfo['info']['params'];
+        $this->output = $this->_output = $this->appInfo['info']['output'];
+        $this->controller = $this->_controller = $this->appInfo['info']['controller'];
 
         $this->_resources = isset($this->_config['apps']['info'][$this->appUrl]['resources']) ? $this->_config['apps']['info'][$this->appUrl]['resources'] : null;
 
