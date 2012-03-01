@@ -378,6 +378,20 @@ class Vhmis_Controller
     }
 
     /**
+     * Kiểm tra quyền
+     *
+     * @var string $action Hành động
+     * @var string $resource Tài nguyên
+     */
+    public function isAllow($action, $resource)
+    {
+        // Nếu kô có 2 thành phần auth với acl thì kô có quyền
+        if($this->components->auth === null || $this->components->acl === null) return false;
+
+        return $this->components->acl->isAllow($this->user, $this->appUrl, $action, $resource);
+    }
+
+    /**
      * Gọi các models được khai báo trước
      */
     protected function _loadModels()
