@@ -23,11 +23,12 @@
 /**
  * Thiết lập các hằng số liên quan đến lỗi
  */
-define('VHMIS_ERROR_MYSQL', '-99999999');
+define('VHMIS_ERROR_DATABASE', '-99999999');
 define('VHMIS_ERROR_LOGINSESSION', '-99999998');
 define('VHMIS_ERROR_STOP', '-99999997');
 define('VHMIS_ERROR_PAGENOTFOUND', '-99999996');
-define('VHMIS_ERROR_PERMISSION', '-99999995');
+define('VHMIS_ERROR_NOTPERMISSION', '-99999995');
+define('VHMIS_ERROR_ACTIONMISSING', '-99999994');
 
 /**
  * Hàm gọi class tự động (lazy load)
