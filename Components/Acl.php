@@ -97,7 +97,7 @@ class Vhmis_Component_Acl
      * @param string $action Hành động
      * @return bool
      */
-    public function isAllow($user, $app, $resource, $action)
+    public function isAllow($user, $app, $action, $resource)
     {
         // Kiểm tra quyền cá nhân với trực tiếp hành động
         if(isset($this->_acl[$app][$resource][$action]['u_' . $user['id']]) && $this->_acl[$app][$resource][$action]['u_' . $user['id']] < 2) return $this->_acl[$app][$resource][$action]['u_' . $user['id']];
@@ -117,6 +117,12 @@ class Vhmis_Component_Acl
                 if(isset($this->_acl[$app][$resource]['_all']['g_' . $group]) && $this->_acl[$app][$resource]['_all']['g_' . $group] == 1) return 1;
             }
         }
+
+        // Kiểm tra quyền của phòng ban với trực tiếp hành động
+        if(isset($this->_acl[$app][$resource][$action]['d_' . $user['department']]) && $this->_acl[$app][$resource][$action]['d_' . $user['department']] == 1) return 1;
+
+        //Với hành động đặc biệt '_all'
+        if(isset($this->_acl[$app][$resource]['_all']['d_' . $user['department']]) && $this->_acl[$app][$resource]['_all']['d_' . $user['department']] == 1) return 1;
 
         // Không có thông tin ở group hoặc toàn bộ quyền ở group là không cho phép
         return 0;
