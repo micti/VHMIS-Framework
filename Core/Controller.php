@@ -382,6 +382,7 @@ class Vhmis_Controller
      *
      * @var string $action Hành động
      * @var string $resource Tài nguyên
+     * @return bool Quyền
      */
     public function isAllow($action, $resource)
     {
@@ -389,6 +390,17 @@ class Vhmis_Controller
         if($this->components->auth === null || $this->components->acl === null) return false;
 
         return $this->components->acl->isAllow($this->user, $this->appUrl, $action, $resource);
+    }
+
+    /**
+     * Thông báo lỗi nếu không có quyền
+     *
+     * @var string $action Hành động
+     * @var string $resource Tài nguyên
+     */
+    public function checkAllow($action, $resource)
+    {
+        if(!$this->isAllow($action, $resource)) $this->viewPermissionError();
     }
 
     /**
