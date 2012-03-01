@@ -267,9 +267,9 @@ class Vhmis_View
         // Truyền biến
         if(is_array($data))
         {
-            foreach($data as $name => $value)
+            foreach($data as $key => $value)
             {
-                $$name = $value;
+                $$key = $value;
             }
         }
 
