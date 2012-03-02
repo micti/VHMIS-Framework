@@ -53,7 +53,7 @@ class Vhmis_Xml
 
             foreach($data as $key => $data)
             {
-                if(is_string($data)) $xml .= '<' . $key . '>' . $data . '</' . $key . '>' . "\n";
+                if(!is_array($data)) $xml .= '<' . $key . '>' . $data . '</' . $key . '>' . "\n";
                 else $xml .= self::_fromArray($data, $key);
             }
 
