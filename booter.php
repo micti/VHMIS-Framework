@@ -161,8 +161,8 @@ function ___loadFile($filename, $path, $once = false)
  */
 function ___loadController($request, $response)
 {
-    $controllerName = 'Vhmis_Controller_' . ___fUpper($request->app['app']) . '_' . $request->app['info']['controller'];
-    $path           = VHMIS_APPS_PATH . D_SPEC . ___fUpper($request->app['app']) . D_SPEC . 'Controller';
+    $controllerName = 'Vhmis_Controller_' . ___fUpper($request->app['url']) . '_' . $request->app['info']['controller'];
+    $path           = VHMIS_APPS_PATH . D_SPEC . ___fUpper($request->app['url']) . D_SPEC . 'Controller';
     $file           = $request->app['info']['controller'] . '.php';
 
     ___loadFile($file, $path);
@@ -279,7 +279,6 @@ function ___connectDb($config, $type = 'Pdo_Mysql')
 {
     try
     {
-        //echo '2';
         $db = Zend_Db::factory($type, $config);
         $db->getConnection();
         return $db;

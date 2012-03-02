@@ -70,7 +70,7 @@ class Vhmis_Uri_Analyze
             return false;
         }
 
-        $config = ___loadAppConfig($app, false);
+        $config = ___loadAppConfig($appUrlName, false);
 
         // Kiểm tra link của app
         $appLinkInfo['valid'] = false;
