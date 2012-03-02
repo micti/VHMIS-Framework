@@ -103,7 +103,9 @@ class Vhmis_View
      */
     public function renderXML()
     {
-        return;
+        $array = array();
+        if(isset($this->_data['array']) && is_array($this->_data['array'])) $array = $this->_data['array'];
+        echo Vhmis_Xml::fromArray($array);
     }
 
     /**
@@ -111,7 +113,9 @@ class Vhmis_View
      */
     public function renderJSON()
     {
-        return;
+        $array = array();
+        if(isset($this->_data['array']) && is_array($this->_data['array'])) $array = $this->_data['array'];
+        echo json_encode($array);
     }
 
     /**

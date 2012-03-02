@@ -213,12 +213,12 @@ class Vhmis_Controller
         {
             if($this->user === null)
             {
-                // Nếu output là ajax thì xuất ra code lỗi chưa login hoặc session hết hiệu lực
-                // TODO
-                if($this->_output[0] == 'ajax')
+                if($this->output != 'html')
                 {
-                    echo '-99999998';
-                    exit();
+                    $this->set('text', VHMIS_ERROR_LOGINSESSION);
+                    $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_LOGINSESSION, 'message' => 'Login first or Session expired'));
+                    $this->view();
+                    return;
                 }
 
                 // Chuyển hướng đến trang login
@@ -371,6 +371,14 @@ class Vhmis_Controller
      */
     public function viewDbError($title = '', $message = '', $layout = 'Db')
     {
+        if($this->output != 'html')
+        {
+            $this->set('text', VHMIS_ERROR_DATABASE);
+            $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_DATABASE, 'message' => 'Db Connection Error'));
+            $this->view();
+            return;
+        }
+
         $this->set('title', 'Kết nối DB bị lỗi');
         $this->set('message', 'Hiện tại kết nối tới CSDL đang gặp lỗi, vui lòng chờ một lát rồi hãy thử lại.');
 
@@ -388,6 +396,14 @@ class Vhmis_Controller
     {
         $this->set('title', 'Yêu cầu bị từ chối');
         $this->set('message', 'Bạn không có quyền thực hiện việc này');
+
+        if($this->output != 'html')
+        {
+            $this->set('text', VHMIS_ERROR_NOTPERMISSION);
+            $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_NOTPERMISSION, 'message' => 'You Do Not Have Permission'));
+            $this->view();
+            return;
+        }
 
         $this->viewError($layout);
     }
