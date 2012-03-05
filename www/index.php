@@ -26,5 +26,8 @@ DEFINE('VHMIS', 'BUILD');
 // Khai báo tên hệ thống
 DEFINE('SYSTEM', 'SNAME');
 
+// Khai báo đường dẫn web
+DEFINE('PATH', __DIR__);
+
 // Gọi file boot.php của framework
 require VHMIS . 'boot.php';
