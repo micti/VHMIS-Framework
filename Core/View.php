@@ -272,6 +272,15 @@ class Vhmis_View
             }
         }
 
+        // Chuyển $this->_dataController thành $appInfo và $userInfo
+        $appInfo = $this->_dataController['app'];
+        $userInfo = $this->_dataController['user'];
+
+        // Chuyển $this->_dataConfig thành $config
+        $config = $this->_dataConfig;
+        $config['site']['fullclient'] = $config['site']['client'] . strtolower($this->_template) . '/';
+        $config['site']['fullpath'] = $config['site']['path'] . $appInfo['url'] . '/';
+
         // Gọi block
         if(file_exists(VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . ___fUpper($name) . '.php'))
         {
