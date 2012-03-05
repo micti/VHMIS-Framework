@@ -203,6 +203,19 @@ class Vhmis_Network_Request
         {
             foreach($_FILES as $name => $data)
             {
+                // sắp xếp lại dữ liệu nếu là multi upload, xem thêm http://php.net/manual/en/features.file-upload.multiple.php
+                if(is_array($data['name']))
+                {
+                    $new = array();
+                    foreach($data as $key => $all){
+                        foreach($all as $i => $val)
+                        {
+                            $new[$i][$key] = $val;
+                        }
+                    }
+                    $data = $new;
+                }
+
                 $this->post['_files'][$name] = $data;
             }
         }
