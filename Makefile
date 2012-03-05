@@ -43,6 +43,7 @@ systems:
 	@echo System is building ...
 	@mkdir ${BUILD}/System/${SNAME}
 	@cp -R ${SYS}/* ${BUILD}/System/${SNAME}
+	@cp -R ${BUILD}/Config/* ${BUILD}/System/${SNAME}/Config
 
 # Copy thu vien
 library:
@@ -59,3 +60,4 @@ clear:
 	@rm -rf ${BUILD}/www
 	@rm -rf ${BUILD}/README
 	@rm -rf ${BUILD}/Makefile
+	@rm -rf ${BUILD}/Config
