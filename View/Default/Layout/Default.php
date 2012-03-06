@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title><? if(isset($pageTitleBar)) echo $pageTitleBar . ' | VHMIS'; else echo 'VHMIS'; ?></title>
+        <title><?php if(isset($pageTitleBar)) echo $pageTitleBar . ' | VHMIS'; else echo 'VHMIS'; ?></title>
 
         <!-- Mo phong HTML5 danh cho IE6-8 -->
         <!--[if lt IE 9]>
