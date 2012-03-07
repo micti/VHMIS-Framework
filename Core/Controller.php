@@ -519,12 +519,37 @@ class Vhmis_Controller
             $config = ___loadConfig('Database', false);
             if(isset($config['databases'][$name]))
             {
+                // Sử dụng chung db với app khác
+                if(isset($config['databases'][$name]['use']))
+                {
+                    $name2 = $config['databases'][$name]['use'];
+                    if(!Vhmis_Configure::isRegistered('Db' . ___fUpper($name2)))
+                    {
+                        $db = ___connectDb($config['databases'][$name2]);
+                        if($db != false)
+                        {
+                            Vhmis_Configure::set('Db' . ___fUpper($name2), $db);
+                            Vhmis_Configure::set('Db' . ___fUpper($name), $db);
+                            return $db;
+                        }
+                        else
+                        {
+                            $this->viewDbError();
+                            return;
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+                // Sử dụng riêng
                 $db = ___connectDb($config['databases'][$name]);
                 if($db != false)
                 {
                     Vhmis_Configure::set('Db' . ___fUpper($name), $db);
                     return $db;
-
                 }
                 else
                 {
