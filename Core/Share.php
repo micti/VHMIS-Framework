@@ -23,16 +23,20 @@
 
 abstract class Vhmis_Share
 {
-    protected $_model;
+    protected $_model; // Hổ trợ tương thích, TODO: delete in ver2
+    public $model;
 
     /**
      * Khởi tạo
-     **/
+     */
     public function __construct()
     {
         $this->_loadModel();
     }
 
+    /**
+     * Load model của Share
+     */
     protected function _loadModel()
     {
         $name = str_replace('Vhmis_Share_', '', get_class($this));
@@ -40,6 +44,7 @@ abstract class Vhmis_Share
         $db = Vhmis_Configure::get('Db' . ___fUpper($db[0]));
 
         $model = 'Vhmis_Model_' . $name;
-        $this->_model = new $model(array('db' => $db));
+        $this->model = new $model(array('db' => $db));
+        $this->_model = $this->model;
     }
 }
