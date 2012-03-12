@@ -35,6 +35,11 @@ abstract class Vhmis_Share
     }
 
     /**
+     * Hàm get All
+     */
+    abstract public function getAll();
+
+    /**
      * Load model của Share
      */
     protected function _loadModel()
