@@ -195,4 +195,14 @@ class Vhmis_Date
     {
         //
     }
+
+    /**
+     * Chuyển đổi nhanh ngày tháng theo SQL sang ngày tháng bình thường
+     *
+     * @param
+     */
+    public static function fromSQLtoNormal($time, $full)
+    {
+        return $full ? date('d-m-Y H:i:s', strtotime($time)) : date('d-m-Y', strtotime($time));
+    }
 }
