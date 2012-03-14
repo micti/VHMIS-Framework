@@ -13,4 +13,24 @@ abstract class Vhmis_Model extends Zend_Db_Table_Abstract
         }
         parent::_setupTableName();
     }
+
+    /**
+     * Chuyển một đối tượng row sang dạng mảng
+     *
+     * @return mảng dữ liệu của đối tượng
+     */
+    public function toArray($object)
+    {
+        return $object->toArray();
+    }
+
+    /**
+     * Chuyển một đối tượng row sang entity dạng mảng (cùng chức năng với toArray)
+     *
+     * @return mảng dữ liệu của đối tượng
+     */
+    public function toEntity($object)
+    {
+        return $this->toArray($object);
+    }
 }
