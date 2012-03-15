@@ -23,19 +23,14 @@
 
 class Vhmis_Component_Auth
 {
-    protected $_adapterDb;
-    protected $_adapterWebmail;
     protected $_dbUser;
-    protected $_dbUserGroup;
     protected $_user;
-    protected $_group;
     protected $_session;
 
     public function __construct()
     {
         $db = Vhmis_Configure::get('DbSystem');
         $this->_dbUser = new Vhmis_Model_System_User(array('db' => $db));
-        //$this->_dbUserGroup = new Vhmis_Model_System_User_Group(array('db' => $db));
 
         // Session
         Zend_Session::start();
@@ -43,7 +38,6 @@ class Vhmis_Component_Auth
 
         // Thông tin người dùng
         $this->_user = $this->_findUserInfo();
-        //$this->_group = $this->_findGroupInfo();
     }
 
     /**
@@ -66,27 +60,12 @@ class Vhmis_Component_Auth
     {
         if($this->_user === null) return null;
 
-        if($this->_group !== null)
-        {
-            $groups = array();
-            foreach($this->_group as $group)
-            {
-                $groups[] = $group->id;
-            }
-        }
-        else
-        {
-            $groups = null;
-        }
+        // Mảng người dùng
+        $user = $this->_dbUser->toArray($this->_user);
 
-        return array(
-            'username' => $this->_user->username,
-            'realname' => $this->_user->realname,
-            'id' => $this->_user->id,
-            'department' => $this->_user->hrm_department_id,
-            'hrm_id' => $this->_user->hrm_id,
-            'groups' => $groups
-        );
+        // TODO : có nên xóa dữ liệu nhạy cảm như password ...
+
+        return $user;
     }
 
     /**
@@ -169,13 +148,6 @@ class Vhmis_Component_Auth
         if(!$this->_session->password || $this->_session->password === null) return null;
 
         return $this->_dbUser->getUserByLogin($this->_session->username, $this->_session->password);
-    }
-
-    public function _findGroupInfo()
-    {
-        if($this->_user === null) return null;
-
-        $this->_dbUserGroup->getGroupOfUser($this->_user->id);
     }
 
     /**
