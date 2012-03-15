@@ -173,16 +173,16 @@ class Vhmis_Controller
     {
         $this->_config = Vhmis_Configure::get('Config');
 
-        $this->request = $request;
+        $this->request  = $request;
         $this->response = $response;
 
         $this->appInfo = $request->app;
-        $this->app        = $this->appInfo['app'];
-        $this->appUrl     = $this->appInfo['url'];
+        $this->app     = $this->appInfo['app'];
+        $this->appUrl  = $this->appInfo['url'];
 
-        $this->action = $this->_action = $this->appInfo['info']['action'];
-        $this->params = $this->_params = $this->appInfo['info']['params'];
-        $this->output = $this->_output = $this->appInfo['info']['output'];
+        $this->action     = $this->_action = $this->appInfo['info']['action'];
+        $this->params     = $this->_params = $this->appInfo['info']['params'];
+        $this->output     = $this->_output = $this->appInfo['info']['output'];
         $this->controller = $this->_controller = $this->appInfo['info']['controller'];
 
         $this->_resources = isset($this->_config['apps']['info'][$this->appUrl]['resources']) ? $this->_config['apps']['info'][$this->appUrl]['resources'] : null;
@@ -249,9 +249,10 @@ class Vhmis_Controller
                     }
                 }
 
-                if($this->user['department'] != 0)
+                // Theo phòng ban
+                if(isset($this->user['hrm_id_department']) && $this->user['hrm_id_department'] != 0)
                 {
-                   $this->components->acl->addDepartment($this->user['department']);
+                   $this->components->acl->addDepartment($this->user['hrm_id_department']);
                 }
             }
         }
