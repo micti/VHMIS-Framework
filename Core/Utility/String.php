@@ -101,12 +101,22 @@ class Vhmis_Utility_String
 				$rand[mt_rand(0, $length - 1)] = chr(mt_rand(48, 57));
 			}
 			// Nếu là chuỗi số thì thêm ký tự chữ
-			elseif(ctype_digit($str))
+			elseif(ctype_digit($rand))
 			{
 				$rand[mt_rand(0, $length - 1)] = chr(mt_rand(65, 90));
 			}
 		}
 
 		return $rand;
+    }
+
+    /**
+     * Chuyển đổi tiếng việt có dấu sang không dấu
+     *
+     * @var string Chuỗi cần đổi
+     * @return Chuỗi Tiếng Việt không còn dấu
+     */
+    public static function vietnameseToLatin($string)
+    {
     }
 }
