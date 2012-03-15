@@ -119,10 +119,10 @@ class Vhmis_Component_Acl
         }
 
         // Kiểm tra quyền của phòng ban với trực tiếp hành động
-        if(isset($this->_acl[$app][$resource][$action]['d_' . $user['department']]) && $this->_acl[$app][$resource][$action]['d_' . $user['department']] == 1) return 1;
+        if(isset($this->_acl[$app][$resource][$action]['d_' . $user['hrm_id_department']]) && $this->_acl[$app][$resource][$action]['d_' . $user['hrm_id_department']] == 1) return 1;
 
         //Với hành động đặc biệt '_all'
-        if(isset($this->_acl[$app][$resource]['_all']['d_' . $user['department']]) && $this->_acl[$app][$resource]['_all']['d_' . $user['department']] == 1) return 1;
+        if(isset($this->_acl[$app][$resource]['_all']['d_' . $user['hrm_id_department']]) && $this->_acl[$app][$resource]['_all']['d_' . $user['hrm_id_department']] == 1) return 1;
 
         // Không có thông tin ở group hoặc toàn bộ quyền ở group là không cho phép
         return 0;

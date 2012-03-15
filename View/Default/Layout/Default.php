@@ -53,7 +53,7 @@ foreach($config['apps']['list']['url'] as $appurl)
 ?>
                 </ul>
                 <ul class="nav pull-right">
-                    <li><a href="#"><?php echo $userInfo['realname']; ?></a></li>
+                    <li><a href="#"><?php echo $userInfo['name_real']; ?></a></li>
                     <li><a href="<?php echo $config['site']['path'] . $config['apps']['logout-url']; ?>">Thoát</a></li>
                 </ul>
             </div>
