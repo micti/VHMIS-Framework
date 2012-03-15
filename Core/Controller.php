@@ -171,7 +171,7 @@ class Vhmis_Controller
      */
     public function __construct(Vhmis_Network_Request $request, Vhmis_Network_Response $response)
     {
-        $this->_config = Vhmis_Configure::get('Config');
+        $this->config = $this->_config = Vhmis_Configure::get('Config');
 
         $this->request  = $request;
         $this->response = $response;
