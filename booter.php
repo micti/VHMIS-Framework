@@ -74,7 +74,7 @@ function ___loadCoreClass($name)
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
 
-    ___loadFile(___fUpper($name[$count-1]) . '.php', VHMIS_CORE_PATH . D_SPEC . $path);
+    ___loadFile(___fUpper($name[$count-1]) . '.php', VHMIS_CORE_PATH . $path);
 }
 
 /**
@@ -95,7 +95,7 @@ function ___loadZendClass($name)
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
 
-    ___loadFile(___fUpper($name[$count-1]) . '.php', VHMIS_ZEND_F_PATH . D_SPEC . $path);
+    ___loadFile(___fUpper($name[$count-1]) . '.php', VHMIS_ZEND_F_PATH . $path);
 }
 
 /**
