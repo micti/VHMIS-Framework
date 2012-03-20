@@ -86,6 +86,8 @@ class Vhmis_Date
         {
             $this->_offset = $this->_offsetServer;
         }
+
+        return true;
     }
 
     /**
