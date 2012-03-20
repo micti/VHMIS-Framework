@@ -35,7 +35,7 @@ class Vhmis_File_Upload
     {
         $this->options['maxsize'] = 0;
         $this->options['check_type'] = true;
-        $this->options['allow_types'] = array('torrent');
+        $this->options['allow_types'] = array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', 'pdf', 'jpg', 'gif', 'jpeg', 'png');
         $this->options['file_types'] = ___loadConfig('Mine', false);
         $this->options['file_types'] = isset($this->options['file_types']['minetypes']) ? $this->options['file_types']['minetypes'] : false;
     }
