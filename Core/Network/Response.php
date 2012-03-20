@@ -46,6 +46,36 @@ class Vhmis_Network_Response
     }
 
     /**
+     * Thiết lập download
+     */
+    public function download($filepath, $filename, $filetype = null)
+    {
+        header('Content-disposition: attachment; filename="' . $filename . '"');
+
+        // Xác định file type
+        if(!is_string($filetype))
+        {
+            $mines = ___loadConfig('Mine', false);
+            $mines = $mines['minetypes'];
+
+            $ext = explode('.', $filename);
+            $ext = end($ext);
+
+            if(isset($mines[$ext]))
+            {
+                header('Content-type: ' . $mines[$ext]);
+            }
+        }
+        else
+        {
+            header('Content-type: ' . $filetype);
+        }
+
+        flush();
+        readfile($filepath);
+    }
+
+    /**
      * Gửi nội dung trả về
      *
      * @param string nội dung trả về

@@ -410,6 +410,18 @@ class Vhmis_Controller
     }
 
     /**
+     * Thực hiện download file
+     *
+     * @var string $path Đường dẫn của file
+     * @var string $filename Tên file
+     * @var string $filetype Loại file
+     */
+    public function download($path, $filename, $filetype = null)
+    {
+        $this->response->download($path, $filename, $filetype);
+    }
+
+    /**
      * Kiểm tra quyền
      *
      * @var string $action Hành động
