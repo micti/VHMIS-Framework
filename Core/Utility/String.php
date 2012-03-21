@@ -50,9 +50,9 @@ class Vhmis_Utility_String
      * @param string $salt Chuỗi chống phá mã hóa
      * @param string $method Phương thức mã hóa, mặc định là sha1
      */
-    public static function hash($string, $salt, $method = null)
+    public static function hash($string, $salt1, $salt2, $method = null)
     {
-        $string = $salt . $string;
+        $string = $salt1 . $string . $salt2;
 
         $method = strtolower($method);
 
@@ -89,7 +89,7 @@ class Vhmis_Utility_String
 		for($i = 0; $i < $length; $i++)
 		{
 			// Lấy ngẫu nhiên một ký tự trong chuỗi pattern rồi đưa vào string ngẫu nhiên
-			$rand .= $pattern[mt_rand(0, $max)];
+			$rand .= $pattern[mt_rand(0, $max - 1)];
 		}
 
 		// Với type là số và chữ (alnum), yêu cầu có ít nhất 1 số và 1 chữ
