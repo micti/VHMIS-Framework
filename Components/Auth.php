@@ -26,9 +26,12 @@ class Vhmis_Component_Auth
     protected $_dbUser;
     protected $_user;
     protected $_session;
+    protected $_appSecretKey;
 
     public function __construct()
     {
+        $config = Vhmis_Configure::get('Config');
+        $this->_appSecretKey = $config['security']['secret'];
         $db = Vhmis_Configure::get('DbSystem');
         $this->_dbUser = new Vhmis_Model_System_User(array('db' => $db));
 
@@ -83,13 +86,17 @@ class Vhmis_Component_Auth
         $ok = false;
         if($user != null)
         {
-            $passwordHash = Vhmis_Utility_String::hash($password, $user->password_salt);
+            $passwordHash = Vhmis_Utility_String::hash($password, $user->password_salt, $this->_appSecretKey);
             if($passwordHash == $user->password)
             {
                 $this->_session->username = $username;
                 $this->_session->password = $passwordHash;
                 return 2;
             }
+        }
+        else
+        {
+            return 0;
         }
 
         // Kiểm tra qua webmail
@@ -98,7 +105,7 @@ class Vhmis_Component_Auth
             if($this->_webmailLogin($username, $password) != false)
             {
                 $passwordSalt = Vhmis_Utility_String::random('alnum', 20);
-                $password = Vhmis_Utility_String::hash($password, $passwordSalt);
+                $password = Vhmis_Utility_String::hash($password, $passwordSalt, $this->_appSecretKey);
 
                 $this->_session->username = $username;
                 $this->_session->password = $password;
@@ -108,17 +115,6 @@ class Vhmis_Component_Auth
                     // Update trong hệ thống
                     $user->password_salt = $passwordSalt;
                     $user->password = $password;
-                    $user->save();
-                    return 2;
-                }
-                else
-                {
-                    // Tạo mới người dùng trong hệ thống
-                    $user = $this->_dbUser->fetchNew();
-                    $user->username = $username;
-                    $user->password_salt = $passwordSalt;
-                    $user->password = $password;
-                    $user->active = 1;
                     $user->save();
                     return 1;
                 }
@@ -161,9 +157,9 @@ class Vhmis_Component_Auth
     {
         $request = new Vhmis_Network_Http_Curl();
         $request->setRequestInfo(
-            'http://mail.viethanit.edu.vn:4040/zmail/jsp/Login.jsp',
+            'http://mail.viethanit.edu.vn/zmail/jsp/Login.jsp',
             'POST',
-            'http://mail.viethanit.edu.vn:4040/zmail/jsp/LoginF.jsp?language=en',
+            'http://mail.viethanit.edu.vn/zmail/jsp/LoginF.jsp?language=en',
             'language_code=en&domain_idx=0&member_id=' . $user . '&password=' . $pass
         );
         $requestResult = $request->sendSimpleRequest();
