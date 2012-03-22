@@ -54,6 +54,11 @@ set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
  */
 require VHMIS_PATH . D_SPEC . 'booter.php';
 
+// Benchmark
+$benmark = new Vhmis_Benchmark();
+$benmark->timer('start');
+Vhmis_Configure::set('Benchmark', $benmark);
+
 /**
  * Cấu hình
  */

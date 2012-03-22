@@ -133,8 +133,10 @@ if(isset($pageTitle) && $pageTitle != '') {
         <footer>
             <div class="container<?php if(isset($layoutSize)) echo ' container-' . $layoutSize;?> footer">
                 <p>
-                    Giao diện "Default" là giao diện mặc định được sử dụng trong quá trình phát triển hệ thống VHMIS &copy; Trung Tâm CNTT - Trường CĐ CNTT Hữu Nghị Việt Hàn 2011<br />
-                    Sử dụng HTML5, CSS3 và Javascript, tương thích với các trình duyệt hiện đại như <a href="#">Chrome, Firefox, Safari</a>
+                    Hệ thống thông tin quản lý Trường CĐ CNTT Hữu Nghị Việt Hàn<br>
+                    Phát triển trên nền web bởi Trung tâm CNTT. Sử dụng HTML5, CSS3 và Javascript, tương thích với các trình duyệt hiện đại như <a href="#">Chrome, Firefox, Safari</a>
+                    <br>
+                    <br>Beta || GMT+7 || Uses <b>::::xxxxx-memory-xxxx::::</b> bytes memory to process in <b>::::xxxxx-time-xxxx::::</b> seconds || Powered by VHMIS with Zend Db, Apache, PHP, MySQL || Layout Default based on Bootraps
                 </p>
             </div>
         </footer>
