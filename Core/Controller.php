@@ -416,8 +416,15 @@ class Vhmis_Controller
      * @var string $filename Tên file
      * @var string $filetype Loại file
      */
-    public function download($path, $filename, $filetype = null)
+    public function download($path, $filename = '', $filetype = null)
     {
+        // Nếu filename rỗng, thử lầy filename và path trong path
+        if($filename == '')
+        {
+            $filename = basename($path);
+            $path = dirname($path);
+        }
+
         $this->response->download($path, $filename, $filetype);
     }
 
