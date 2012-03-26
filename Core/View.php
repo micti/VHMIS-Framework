@@ -179,6 +179,9 @@ class Vhmis_View
                 $$name = $data;
             }
         }
+        
+        $config = $this->_dataConfig;
+        $config['site']['fullclient'] = $config['site']['client'] . strtolower($this->_template) . '/';
 
         $layoutPath1 = VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . $this->_template . D_SPEC . '_Error' . D_SPEC . $layout . '.php';
         $layoutPath2 = VHMIS_SYS_PATH . D_SPEC . 'View' . D_SPEC . $this->_template . D_SPEC . '_Error' . D_SPEC . $layout . '.php';

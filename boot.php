@@ -79,6 +79,7 @@ $_vhmisResponse = new Vhmis_Network_Response();
 if($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404')
 {
     $_vhmisView = new Vhmis_View();
+    $_vhmisView->transferConfigData(Vhmis_Configure::get('Config'));
     ob_start();
     $_vhmisView->renderError('4xx');
     $content = ob_get_clean();

@@ -5,7 +5,7 @@
         <title>Lỗi | VHMIS</title>
 
         <!-- Style -->
-        <link href="/VHMIS_WWW/client/default/css/default.css" rel="stylesheet">
+        <link href="<?php echo $config['site']['fullclient']; ?>css/default.css" rel="stylesheet">
     </head>
     <body>
         <div class="container container-message">

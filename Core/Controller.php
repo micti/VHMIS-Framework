@@ -351,6 +351,7 @@ class Vhmis_Controller
         // Khởi tạo lớp Vhmis_View và thiết lập những thông tin cần thiết
         $this->View = new Vhmis_View();
         $this->View->transferViewData($this->_data);
+        $this->View->transferConfigData($this->_config);
 
         // Lấy view
         ob_start();
