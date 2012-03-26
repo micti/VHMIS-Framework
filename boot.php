@@ -44,7 +44,7 @@ define('VHMIS_COMP_PATH', VHMIS_PATH . D_SPEC . 'Components');
 define('VHMIS_SYS_PATH', VHMIS_PATH . D_SPEC . 'System' . D_SPEC . SYSTEM);
 define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . 'Apps');
 define('VHMIS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Config');
-define('VHMIS_ZEND_F_PATH', VHMIS_LIBS_PATH . '/Zend');
+define('VHMIS_ZEND_F_PATH', VHMIS_LIBS_PATH . D_SPEC . 'Zend');
 
 // Một số thư viện
 set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
