@@ -15,6 +15,26 @@ abstract class Vhmis_Model extends Zend_Db_Table_Abstract
     }
 
     /**
+     * Tự động điền thông tin cho giá trị trường của một row nếu trường đó đang nhận giá trị rỗng
+     * Tham số đưa vào là mảng có index là tên trường
+     *
+     * @var object $row Đối tượng row
+     * @var array $data Mảng chứa dữ liệu, tên trường
+     */
+    public function fillAll($row, $data)
+    {
+        foreach($data as $index => $value)
+        {
+            if(isset($row->$index) && $row->$index == '')
+            {
+                $row->$index = $value;
+            }
+        }
+
+        return $row;
+    }
+
+    /**
      * Chuyển một đối tượng row sang dạng mảng
      *
      * @return mảng dữ liệu của đối tượng
