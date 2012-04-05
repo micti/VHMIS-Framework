@@ -179,7 +179,7 @@ class Vhmis_View
                 $$name = $data;
             }
         }
-        
+
         $config = $this->_dataConfig;
         $config['site']['fullclient'] = $config['site']['client'] . strtolower($this->_template) . '/';
 
@@ -264,7 +264,7 @@ class Vhmis_View
     /**
      * Load block from file
      */
-    protected function _loadBlockFile($name, $data)
+    protected function _loadBlockFile($blockname, $data)
     {
         // Truyền biến
         if(is_array($data))
@@ -285,15 +285,15 @@ class Vhmis_View
         $config['site']['fullpath'] = $config['site']['path'] . $appInfo['url'] . '/';
 
         // Gọi block
-        if(file_exists(VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . ___fUpper($name) . '.php'))
+        if(file_exists(VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php'))
         {
-            include VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . ___fUpper($name) . '.php';
+            include VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php';
             return;
         }
 
-        if(file_exists(VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . ___fUpper($name) . '.php'))
+        if(file_exists(VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php'))
         {
-            include VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . ___fUpper($name) . '.php';
+            include VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php';
             return;
         }
     }
