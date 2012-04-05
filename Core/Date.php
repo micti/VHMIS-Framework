@@ -91,6 +91,14 @@ class Vhmis_Date
     }
 
     /**
+     *
+     */
+    public function getUnixTime()
+    {
+        return $this->_time;
+    }
+
+    /**
      * Xuất ra thời gian đã qua của thời gian ở đối tượng so với thời gian hiện tại
      * 3 phút trước, 2 giờ 3 phút trước ....
      * Kết quả trả về mạng tính tương đối (vì một năm = 365 ngày, 1 = 30 ngày)
