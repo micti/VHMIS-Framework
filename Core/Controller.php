@@ -456,6 +456,25 @@ class Vhmis_Controller
     }
 
     /**
+     * Kiểm tra tồn tại của các biến post (kiểm tra form submit với method post có đúng và đủ các trường không)
+     *
+     * @var array $index Tên các biến post cần kiểm tra
+     * @return boolean True nếu tất cả tồn tài, false nếu có 1 biến không tồn tại
+     */
+    protected function _checkPostData($index)
+    {
+        foreach($index as $name)
+        {
+            if(!isset($this->request->post[$name]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Gọi các models được khai báo trước
      */
     protected function _loadModels()
