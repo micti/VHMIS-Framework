@@ -74,3 +74,60 @@ echo $date->toAgo();
 
 $mark->timer('e');
 echo '<br />' . '<br />' . $mark->time('a', 'e') . '<br />';
+
+echo '<br />';
+
+$c = mktime(0, 0, 0, 5, 32, 2012);
+$d = strtotime('2012-06-01');
+
+echo $c . '.' . $d . '.';
+var_dump($c == $d);
+
+echo '<br />';
+
+$now = time();
+echo date('Y-m-d', $now);
+echo '|';
+echo date('Y-m-d', strtotime('+2 month', $now));
+
+echo '<br />';
+
+$now = strtotime('2012-02-29');
+echo date('Y-m-d', $now);
+echo '|';
+echo date('Y-m-d', strtotime('+12 month', $now));
+echo '|';
+echo date('Y-m-d', strtotime('+24 month', $now));
+echo '|';
+echo date('Y-m-d', strtotime('+36 month', $now));
+echo '|';
+echo date('Y-m-d', strtotime('+48 month', $now));
+
+echo '<br />';
+
+$now = strtotime('2012-05-31');
+echo date('Y-m-d', $now);
+echo '|';
+$now = strtotime('+1 month', $now);
+echo date('Y-m-d', $now);
+
+echo '<br />';
+
+echo date('Y-m-01 H:i:s', time());
+
+echo '<br />';
+
+$a = new Vhmis_Date();
+$a->time('2012-04-11 14:35:00');
+$b = $a->daysOfWeekdayInMonth(7, 0);
+var_dump($b);
+$b = $a->daysOfWeekdayInMonth(7, 5);
+var_dump($b);
+$b = $a->daysOfWeekdayInMonth(7, 4);
+var_dump($b);
+$b = $a->daysOfWeekdayInMonth(7, 3);
+var_dump($b);
+$b = $a->daysOfWeekdayInMonth(7, 2);
+var_dump($b);
+$b = $a->daysOfWeekdayInMonth(7, 1);
+var_dump($b);
