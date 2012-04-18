@@ -55,6 +55,14 @@ class Vhmis_Component_Auth
     }
 
     /**
+     * Lấy đối tượng Db Row của người dùng, dùng để cập nhật, chỉnh sửa
+     */
+    public function user()
+    {
+        return $this->_user;
+    }
+
+    /**
      * Lấy thông tin của người dùng
      *
      * @return array Mảng chứa thông tin người dùng
