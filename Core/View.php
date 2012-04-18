@@ -59,6 +59,28 @@ class Vhmis_View
     protected $_view = '';
 
     /**
+     * Tập hợp helpers gọi cho view
+     *
+     * @var Vhmis_Collection
+     */
+    public $helpers;
+
+    public function __construct()
+    {
+        $this->helpers = new Vhmis_Collection_Helpers();
+    }
+
+    /**
+     * Gọi và tạo đối tượng helper cho View
+     *
+     * @var string $helper Tên helpers cần gọi
+     */
+    public function loadHelper($helper)
+    {
+        return $this->helpers->load($helper);
+    }
+
+    /**
      * Hàm render
      */
     public function render()
