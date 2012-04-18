@@ -49,13 +49,16 @@ if(isset($jsFiles))
 <?php
 foreach($config['apps']['list']['url'] as $appurl)
 {
-    echo '                    <li class="' . ($appurl === $appInfo['url'] ? 'active' : '') . '"><a href="' . $config['site']['path'] . $appurl . '">' . $config['apps']['list']['name'][$appurl] . '</a></li>' . "\n";
+    if(isset($config['apps']['list']['hide'][$appurl]) && $config['apps']['list']['hide'][$appurl] == false)
+    {
+        echo '                    <li class="' . ($appurl === $appInfo['url'] ? 'active' : '') . '"><a href="' . $config['site']['path'] . $appurl . '">' . $config['apps']['list']['name'][$appurl] . '</a></li>' . "\n";
+    }
 }
 
 ?>
                 </ul>
                 <ul class="nav pull-right">
-                    <li><a href="#"><?php echo $userInfo['name_real']; ?></a></li>
+                    <li><a href="<?php echo $config['site']['path'] . 'user/setting'; ?>"><?php echo $userInfo['name_real']; ?></a></li>
                     <li><a href="<?php echo $config['site']['path'] . $config['apps']['logout-url']; ?>">Thoát</a></li>
                 </ul>
             </div>
