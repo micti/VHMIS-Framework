@@ -35,7 +35,7 @@ class Vhmis_File_Upload
     {
         $this->options['maxsize'] = 0;
         $this->options['check_type'] = true;
-        $this->options['allow_types'] = array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', 'pdf', 'jpg', 'gif', 'jpeg', 'png');
+        $this->options['allow_types'] = array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', 'pdf', 'jpg', 'gif', 'jpeg', 'png', 'rar', 'zip');
         $this->options['file_types'] = ___loadConfig('Mine', false);
         $this->options['file_types'] = isset($this->options['file_types']['minetypes']) ? $this->options['file_types']['minetypes'] : false;
     }
@@ -144,6 +144,18 @@ class Vhmis_File_Upload
             $this->_result['code'] = 20;
             $this->_result['message'] = 'Upload không thành công';
             return $this->_result;
+        }
+
+        // Kiểm tra file ảnh
+        if(in_array($filetype, array('image/gif', 'image/jpeg', 'image/png', /*additional type*/ 'image/jpg', 'image/jpe', 'image/pjpeg', 'img/x-png')))
+        {
+            if($size = getimagesize($this->_result['file_full_path']))
+            {
+                $this->_result['file_image'] = array(
+                    'w' => $size[0],
+                    'h' => $size[1]
+                );
+            }
         }
 
         $this->_result['uploaded'] = true;
