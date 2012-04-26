@@ -313,6 +313,9 @@ class Vhmis_Controller
      */
     public function view($view = '', $layout = '', $template = '')
     {
+        if($layout == '') $layout = $this->_viewLayout;
+        if($template == '') $template = $this->_viewTemplate;
+
         // Khởi tạo lớp Vhmis_View và thiết lập những thông tin cần thiết
         $this->View = new Vhmis_View();
         $this->View->setViewInfo($view, $layout, $template);
