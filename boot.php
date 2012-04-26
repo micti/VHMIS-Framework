@@ -84,6 +84,7 @@ if($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404')
     $_vhmisView->renderError('4xx');
     $content = ob_get_clean();
 
+    header('HTTP/1.1 404 Not Found'); // need rewrite;
     $_vhmisResponse->body($content);
     $_vhmisResponse->response();
     exit();
