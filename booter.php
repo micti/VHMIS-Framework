@@ -206,6 +206,18 @@ function ___loadConfig($name, $store = true)
 
     require VHMIS_CONF_PATH . D_SPEC . ___fUpper($name . '.php');
 
+    // Tạo hằng số đối với các config 'site' trong global
+    if(___fUpper($name) == 'Global')
+    {
+        foreach($_vhmisConfig['site'] as $key => $value)
+        {
+            if(is_string($value))
+            {
+                define(strtoupper('SITE_' . $key), $value);
+            }
+        }
+    }
+
     if($store === true) $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
     else return $_vhmisConfig;
 }
