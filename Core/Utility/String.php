@@ -118,5 +118,38 @@ class Vhmis_Utility_String
      */
     public static function vietnameseToLatin($string)
     {
+        $a = array('à', 'á', 'ả', 'ã', 'ạ', 'ă', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'â', 'ầ', 'ấ', 'ẩ', 'ẫ', 'ậ');
+        $e = array('è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ề', 'ế', 'ể', 'ễ', 'ệ');
+        $d = array('đ');
+        $i = array('ì', 'í', 'ỉ', 'ĩ', 'ị');
+        $o = array('ò', 'ó', 'ỏ', 'õ', 'ọ', 'ô', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ơ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ');
+        $u = array('ù', 'ú', 'ủ', 'ũ', 'ụ', 'ư', 'ừ', 'ứ', 'ử', 'ữ', 'ự');
+        $y = array('ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ');
+
+        $aC = array('à', 'á', 'ả', 'ã', 'ạ', 'ă', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'â', 'ầ', 'ấ', 'ẩ', 'ẫ', 'ậ');
+        $eC = array('È', 'É', 'Ẻ', 'Ẽ', 'Ẹ', 'Ê', 'Ề', 'Ế', 'Ể', 'Ễ', 'Ệ');
+        $dC = array('Đ');
+        $iC = array('Ì', 'Í', 'Ỉ', 'Ĩ', 'Ị');
+        $oC = array('ò', 'ó', 'ỏ', 'õ', 'ọ', 'ô', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ơ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ');
+        $uC = array('ù', 'ú', 'ủ', 'ũ', 'ụ', 'ư', 'ừ', 'ứ', 'ử', 'ữ', 'ự');
+        $yC = array('Ỳ', 'Ý', 'Ỷ', 'Ỹ', 'Ỵ');
+
+        $string = str_replace($a, 'a', $string);
+        $string = str_replace($e, 'e', $string);
+        $string = str_replace($d, 'd', $string);
+        $string = str_replace($i, 'i', $string);
+        $string = str_replace($o, 'o', $string);
+        $string = str_replace($u, 'u', $string);
+        $string = str_replace($y, 'y', $string);
+
+        $string = str_replace($aC, 'a', $string);
+        $string = str_replace($eC, 'E', $string);
+        $string = str_replace($dC, 'D', $string);
+        $string = str_replace($iC, 'I', $string);
+        $string = str_replace($oC, 'o', $string);
+        $string = str_replace($uC, 'u', $string);
+        $string = str_replace($yC, 'Y', $string);
+
+        return $string;
     }
 }
