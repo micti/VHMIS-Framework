@@ -64,10 +64,12 @@ class Vhmis_View
      * @var Vhmis_Collection
      */
     public $helpers;
+    public $templateHelpers;
 
     public function __construct()
     {
         $this->helpers = new Vhmis_Collection_Helpers();
+        $this->templateHelpers = new Vhmis_Collection_Helpers();
     }
 
     /**
@@ -78,6 +80,27 @@ class Vhmis_View
     public function loadHelper($helper)
     {
         return $this->helpers->load($helper);
+    }
+
+    /**
+     * Gọi vào tạo đối tượng layout Helper cho View
+     */
+    public function loadTemplateHelper($helper)
+    {
+        // Tên class
+        $class = 'Vhmis_Template_' . $this->_template . '_Helper_' . $helper;
+
+        // Tên biến lưu trong collection
+        $name = ___ctv($helper);
+
+        // Kiểm tra
+        if($this->templateHelpers->$name != null) return $this->templateHelpers->$name;
+        else // Tạo mới nếu chưa có
+        {
+            $this->_loadHelperFile($helper);
+            $this->templateHelpers->$name = new $class();
+            return $this->templateHelpers->$name;
+        }
     }
 
     /**
@@ -317,6 +340,25 @@ class Vhmis_View
         {
             include VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php';
             return;
+        }
+    }
+
+    /**
+     * Load file helper của người dùng
+     */
+    protected function _loadHelperFile($helper)
+    {
+        $helperPath1 = VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . $this->_template . D_SPEC . '_Helper' . D_SPEC . $helper . '.php';
+        $helperPath2 = VHMIS_SYS_PATH . D_SPEC . 'View' . D_SPEC . $this->_template . D_SPEC . '_Helper' . D_SPEC . $helper . '.php';
+        $helperPath3 = VHMIS_VIEW_PATH . D_SPEC . $this->_template . D_SPEC . 'Helper' . D_SPEC . $helper . '.php';
+
+        if(file_exists($helperPath1)) include $helperPath1;
+        else if(file_exists($helperPath2)) include $helperPath2;
+        else if(file_exists($helperPath3)) include $helperPath3;
+        else
+        {
+            echo 'Not found helper file';
+            exit();
         }
     }
 }

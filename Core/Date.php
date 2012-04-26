@@ -508,6 +508,16 @@ class Vhmis_Date
         return $full ? date('d-m-Y H:i:s', strtotime($time)) : date('d-m-Y', strtotime($time));
     }
 
+    /**
+     * Chuyển đổi nhanh ngày tháng theo SQL sang ngày tháng bình thường
+     *
+     * @param
+     */
+    public static function sqlToNormal($time, $format = 'd/m/Y')
+    {
+        return date($format, strtotime($time));
+    }
+
     public static function fromTimeToSQL($time, $full)
     {
         return $full ? date('Y-m-d H:i:s', $time) : date('Y-m-d', $time);
