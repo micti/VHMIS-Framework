@@ -515,6 +515,8 @@ class Vhmis_Date
      */
     public static function sqlToNormal($time, $format = 'd/m/Y')
     {
+        if($time == '' || $time == '0000-00-00') return '';
+
         return date($format, strtotime($time));
     }
 
