@@ -73,6 +73,19 @@ class Vhmis_View
     }
 
     /**
+     * Gọi và tạo các đối tượng helper cho View
+     *
+     * @var string $helper Tên helpers cần gọi
+     */
+    public function loadHelpers($helpers)
+    {
+        foreach($helpers as $helper)
+        {
+            $this->loadHelper($helper);
+        }
+    }
+
+    /**
      * Gọi và tạo đối tượng helper cho View
      *
      * @var string $helper Tên helpers cần gọi
@@ -80,6 +93,17 @@ class Vhmis_View
     public function loadHelper($helper)
     {
         return $this->helpers->load($helper);
+    }
+
+    /**
+     * Gọi vào tạo đối tượng layout Helper cho View
+     */
+    public function loadTemplateHelpers($helpers)
+    {
+        foreach($helpers as $helper)
+        {
+            $this->loadTemplateHelper($helper);
+        }
     }
 
     /**
