@@ -21,4 +21,9 @@ class Vhmis_View_Helper_Text
     {
         return $this->_filter->htmlEntities($text);
     }
+
+    public function addZero($text, $lenght)
+    {
+        return Vhmis_Utility_String::addZero($text, $lenght);
+    }
 }
