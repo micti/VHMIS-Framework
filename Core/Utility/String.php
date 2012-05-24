@@ -111,6 +111,14 @@ class Vhmis_Utility_String
     }
 
     /**
+     * Thêm số 0 vào trước số
+     */
+    public static function addZero($string, $lenght)
+    {
+        return str_pad($string, $lenght, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Chuyển đổi tiếng việt có dấu sang không dấu
      *
      * @var string Chuỗi cần đổi
