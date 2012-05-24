@@ -70,6 +70,9 @@ Vhmis_Configure::add('Config', $_config);
 // Set timezone +7
 Vhmis_Date::setTimeZone($_config['timezone']['name']);
 
+// Ngôn ngữ
+Vhmis_Configure::set('Locale', $_config['locale']['lang'] . '_' .  $_config['locale']['region']);
+
 /**
  * Lấy uri, xử lý
  */
