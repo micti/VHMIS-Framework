@@ -40,6 +40,7 @@ var_dump(date('l jS \of F Y h:i:s A', strtotime('2012-02-02 08:26:06 +08:00')));
 var_dump(date('l jS \of F Y h:i:s A', strtotime('2012-03-02 08:26:06 +07:00')));
 
 require '../Core/Date.php';
+require '../Core/Calendar.php';
 require '../Core/Benchmark.php';
 
 $mark = new Vhmis_Benchmark();
@@ -131,3 +132,10 @@ $b = $a->daysOfWeekdayInMonth(7, 2);
 var_dump($b);
 $b = $a->daysOfWeekdayInMonth(7, 1);
 var_dump($b);
+
+
+
+
+$calendar = new Vhmis_Calendar();
+
+print_r($calendar->datesOfMonth('05', '2012'));

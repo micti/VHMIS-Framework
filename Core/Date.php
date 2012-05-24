@@ -135,6 +135,22 @@ class Vhmis_Date
     }
 
     /**
+     * Lấy tháng
+     */
+    public function getMonth()
+    {
+        return date('m', $this->_time);
+    }
+
+    /**
+     * Lấy năm
+     */
+    public function getYear()
+    {
+        return date('Y', $this->_time);
+    }
+
+    /**
      *
      */
     public function getUnixTime()
@@ -149,7 +165,40 @@ class Vhmis_Date
 
     public function getWeekday()
     {
-        return date('w', $this->_time) + 1; // đảm bảo chủ nhật là 1, thứ 2 -> thứ 7 ứng với 2 -> 7
+        return date('N', $this->_time);
+    }
+
+    /**
+     * Xuất thông tin ra dạng array
+     */
+    public function toArray()
+    {
+        $date = $this->toISO(true);
+        $date = explode(' ', $date);
+        $date['date'] = explode('-', $date[0]);
+        $date['time'] = explode(':', $date[1]);
+
+        return array(
+            'date' => $date[0],
+            'time' => $date[1],
+            'week' => $this->getWeekOfYear(),
+            'wday' => $this->getWeekday(),
+            'month'=> $date['date'][1],
+            'year' => $date['date'][0],
+            'wyear' => date('o', $this->_time),
+            'day'  => $date['date'][2],
+            'hour' => $date['time'][0],
+            // Dành cho locale
+            'wdayAbbr' => strtolower(date('D', $this->_time)),
+        );
+    }
+
+    /**
+     * Tính tuần thứ trong năm (Ứng với thứ 2 đầu tuần)
+     */
+    public function getWeekOfYear()
+    {
+        return date('W', $this->_time);
     }
 
     /**
@@ -363,6 +412,30 @@ class Vhmis_Date
     }
 
     /**
+     * Tìm tháng kế trước
+     */
+    public function getPrevMonth()
+    {
+        $month = (int) $this->getMonth();
+        $year = $this->getYear();
+
+        if($month == 1) return array(12, ($year - 1));
+        else return array(($month - 1), $year);
+    }
+
+    /**
+     * Tìm tháng kế tiếp
+     */
+    public function getNextMonth()
+    {
+        $month = (int) $this->getMonth();
+        $year = $this->getYear();
+
+        if($month == 12) return array(1, ($year + 1));
+        else return array(($month + 1), $year);
+    }
+
+    /**
      * Tìm các ngày thứ (hai, ba, bốn, năm, sáu, bảy, chủ nhật) trong tháng
      */
     public function daysOfWeekdayInMonth($weekday, $position)
@@ -491,6 +564,14 @@ class Vhmis_Date
     }
 
     /**
+     * Xuất ra dạng Iso
+     */
+    public function toISO($full = true)
+    {
+        return $full ? date('Y-m-d H:i:s', $this->_time) : date('Y-m-d', $this->_time);
+    }
+
+    /**
      * Xuất ra dành cho RSS
      */
     public function toRSS()
@@ -526,10 +607,12 @@ class Vhmis_Date
     }
 
     /**
-     * Tính số ngày trong tháng, năm
+     * Tính nhanh số ngày trong tháng, năm
      */
     public static function getDaysInMonth($month, $year)
     {
+        $month = (int) $month;
+
         // Xem lại công thức này
         return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
     }

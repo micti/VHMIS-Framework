@@ -153,7 +153,7 @@ class Vhmis_Date_Repeat
                 $time = $this->_runDate->getUnixTime() + $days * Vhmis_Date::DAYTOSECOND;
 
                 // Vẫn có trường hợp thời gian xảy ra trước thời gian hiện tại
-                if($time < $this->_nowDate->getUnixTime()) continue;
+                if($time < $this->_nowDate->getUnixTime() || $time > $this->_endDate->getUnixTime()) continue;
 
                 $repeatDates[] = Vhmis_Date::fromTimeToSQL($time, false);
             }
