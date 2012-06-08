@@ -87,9 +87,13 @@ abstract class Vhmis_Model extends Zend_Db_Table_Abstract
             $keys = explode(',', $keys);
         }
 
+        $count = count($keys);
+
         $rowset = parent::find($keys);
 
         $total = count($rowset);
+
+        if($count > 1) return $rowset;
 
         if($total > 1) return $rowset;
 

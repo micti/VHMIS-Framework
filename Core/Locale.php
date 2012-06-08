@@ -108,6 +108,21 @@ class Vhmis_Locale
         return $data['dates']['calendar']['gregorian']['days'][$format][$wday];
     }
 
+    public static function getField($field, $lang = '', $region = '')
+    {
+        if($lang == '' && $region == '')
+        {
+            $locale = Vhmis_Configure::get('Locale');
+            $data = Vhmis_Locale::loadLocale($locale);
+        }
+        else
+        {
+            $data = Vhmis_Locale::loadLocale($lang, $region);
+        }
+
+        return $data['dates']['calendar']['gregorian']['fields'][$field];
+    }
+
     protected function _praseDateToVhmisDateArray($date)
     {
         if(is_array($date)) return $date;
@@ -117,11 +132,11 @@ class Vhmis_Locale
             $obj = new Vhmis_Date();
             if(!$obj->time($date))
             {
-                return $obj->toArray();
+                return null;
             }
             else
             {
-                return null;
+                return $obj->toArray();
             }
         }
 

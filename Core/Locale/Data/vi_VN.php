@@ -57,9 +57,9 @@ $localeData = array(
                 'am' => 'SA',
                 'pm' => 'CH',
                 'dateFormats' => array(
-                    'long' => '{EEEE}, ngày {dd} {MMMM} năm {y}',
-                    'full' => 'Ngày {dd} {MMMM} năm {y}',
-                    'medium' => '{dd}-{MM}-{yyyy}',
+                    'long' => '{EEEE}, ngày {d} {MMMM} năm {yyyy}',
+                    'full' => 'Ngày {d} {MMMM} năm {yyyy}',
+                    'medium' => '{dd}/{MM}/{yyyy}',
                     'short' => '{dd}/{MM}/{yyyy}'
                 ),
                 'timeFormats' => array(
@@ -76,6 +76,13 @@ $localeData = array(
                 ),
                 'otherFormats' => array(
                     'Md' => '{d}-{M}'
+                ),
+                'fields' => array(
+                    'day' => 'Ngày',
+                    'today' => 'Hôm nay',
+                    'yesterday' => 'Hôm qua',
+                    'tomorrow' => 'Ngày mai',
+                    'week' => 'Tuần'
                 )
             )
         )

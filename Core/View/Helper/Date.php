@@ -36,4 +36,9 @@ class Vhmis_View_Helper_Date
     {
         return Vhmis_Locale::getWeekday($wday, $full, $lang, $region);
     }
+
+    public function getField($field, $lang = '', $region = '')
+    {
+        return Vhmis_Locale::getField($field, $lang, $region);
+    }
 }
