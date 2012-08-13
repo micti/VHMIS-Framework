@@ -57,10 +57,10 @@ $localeData = array(
                 'am' => 'SA',
                 'pm' => 'CH',
                 'dateFormats' => array(
-                    'long' => '{EEEE}, ngày {dd} {MMMM} năm {y}',
-                    'full' => 'Ngày {dd} {MMMM} năm {y}',
-                    'medium' => '{dd}-{MM}-{yyyy}',
-                    'short' => '{dd}/{MM}/{yyyy}'
+                    'long' => '{EEEE}, {MMMM} {d}, {y}',
+                    'full' => '{MMMM} {d}, {y}',
+                    'medium' => '{MMM} {d}, {y}',
+                    'short' => '{M}/{d}/{yy}'
                 ),
                 'timeFormats' => array(
                     'long' => 'hh:mm:ss zzzz',
