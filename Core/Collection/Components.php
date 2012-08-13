@@ -6,7 +6,7 @@ class Vhmis_Collection_Components extends Vhmis_Collection_Objects
     {
         $class = 'Vhmis_Component_' . $name;
         $name = ___ctv($name);
-        $this->_loaded[$name] = new $class();
+        $this->_loaded[$name] = new $class($param);
 
         return $this->_loaded[$name];
     }

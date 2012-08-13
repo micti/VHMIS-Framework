@@ -24,7 +24,7 @@
 /**
  *
  */
-class Vhmis_Component_Acl
+class Vhmis_Component_Acl extends Vhmis_Component
 {
     public $_acl = array();
     protected $_apps = array();
@@ -33,8 +33,10 @@ class Vhmis_Component_Acl
     protected $_users = array();
     protected $_dbAcl;
 
-    public function __construct()
+    public function init()
     {
+        // Kết nối CSDL
+        $this->_db('System');
         $db = Vhmis_Configure::get('DbSystem');
         $this->_dbAcl = new Vhmis_Model_System_Acl_Permission(array('db' => $db));
     }
@@ -81,7 +83,7 @@ class Vhmis_Component_Acl
      * Hàm khởi tạo, load các quyền ứng với resource, user, group đã được khai báo
      * Trong cùng một request, khi có sự thay đổi (thêm resource, user, group), hàm cần được gọi lại
      */
-    public function init()
+    public function build()
     {
         $permissions = $this->_dbAcl->getAcl($this->_apps, $this->_groups, $this->_users, $this->_departments);
 

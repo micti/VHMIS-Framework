@@ -187,8 +187,6 @@ class Vhmis_Controller
 
         $this->_resources = isset($this->_config['apps']['info'][$this->appUrl]['resources']) ? $this->_config['apps']['info'][$this->appUrl]['resources'] : null;
 
-        $this->_db('System');
-
         $this->models = new Vhmis_Collection_Models();
         $this->shares = new Vhmis_Collection_Shares();
 
@@ -199,7 +197,7 @@ class Vhmis_Controller
             foreach($this->_components as $comp)
             {
                 $class = 'Vhmis_Component_' . $comp;
-                $this->components->load($comp);
+                $this->components->load($comp, $this);
             }
         }
 
@@ -553,7 +551,7 @@ class Vhmis_Controller
      *
      * @param string $name Tên của app cần kết nối database
      */
-    function _db($name)
+    public function _db($name)
     {
         $name = strtolower($name);
 
@@ -583,7 +581,7 @@ class Vhmis_Controller
                     }
                     else
                     {
-
+                        return Vhmis_Configure::get('Db' . ___fUpper($name2));
                     }
                 }
 

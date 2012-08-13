@@ -24,12 +24,14 @@
 /**
  *
  */
-class Vhmis_Component_Log
+class Vhmis_Component_Log extends Vhmis_Component
 {
     protected $_dbLog;
 
-    public function __construct()
+    public function init()
     {
+        // Kết nối CSDL
+        $this->_db('System');
         $db = Vhmis_Configure::get('DbSystem');
         $this->_dbLog = new Vhmis_Model_System_Log(array('db' => $db));
     }

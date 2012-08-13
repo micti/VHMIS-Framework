@@ -21,18 +21,21 @@
  * @license       All rights reversed
  */
 
-class Vhmis_Component_Auth
+class Vhmis_Component_Auth extends Vhmis_Component
 {
     protected $_dbUser;
     protected $_user;
     protected $_session;
     protected $_appSecretKey;
 
-    public function __construct()
+    public function init()
     {
+        // Kết nối CSDL
+        $db = $this->_db('System');
+
         $config = Vhmis_Configure::get('Config');
         $this->_appSecretKey = $config['security']['secret'];
-        $db = Vhmis_Configure::get('DbSystem');
+
         $this->_dbUser = new Vhmis_Model_System_User(array('db' => $db));
 
         // Session
