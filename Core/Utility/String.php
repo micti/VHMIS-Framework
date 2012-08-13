@@ -77,6 +77,14 @@ class Vhmis_Utility_String
         {
             $pattern = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         }
+        else if($type = 'digit')
+        {
+            $pattern = '0123456789';
+        }
+        else if($type = 'alpha')
+        {
+            $pattern = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        }
         // Sẽ thêm nhiều type trong tương lai
         else {
             $type = 'alnum';
