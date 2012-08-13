@@ -40,6 +40,31 @@ class Vhmis_File_Upload
         $this->options['file_types'] = isset($this->options['file_types']['minetypes']) ? $this->options['file_types']['minetypes'] : false;
     }
 
+    public function setMaxSize($byte)
+    {
+        if(is_int($byte))
+        {
+            $this->options['maxsize'] = $byte;
+        }
+
+        return $this;
+    }
+
+    public function setAllowTypes($types, $deepCheck = true)
+    {
+        if(is_array($types))
+        {
+            $this->options['allow_types'] = $types;
+        }
+
+        if(is_bool($deepCheck))
+        {
+            $this->options['check_type'] = true;
+        }
+
+        return $this;
+    }
+
     /**
      * Thực hiện việc upload
      *
