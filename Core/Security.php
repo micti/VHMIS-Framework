@@ -1,6 +1,6 @@
 <?php
 
-class Vhmis_Core_Security
+class Vhmis_Security
 {
     /**
 	 * Random Hash for protecting URLs
