@@ -50,6 +50,11 @@ class Vhmis_Date
     protected $_time;
 
     /**
+     * Giờ hiện tại
+     */
+    protected $_timeNow;
+
+    /**
      * Chênh lệch thời gian của giờ đang được thiệt lập với GMT
      */
     protected $_offset;
@@ -60,6 +65,7 @@ class Vhmis_Date
     public function __construct()
     {
         $this->_offsetServer = date("Z");
+        $this->_timeNow = time();
         $this->time();
     }
 
@@ -191,6 +197,27 @@ class Vhmis_Date
             // Dành cho locale
             'wdayAbbr' => strtolower(date('D', $this->_time)),
         );
+    }
+
+    /**
+     * Lấy mối quan hệ với ngày hôm nay
+     */
+    public function relatedToday()
+    {
+        $related = array();
+
+        // Tìm quan hệ ngày
+        if($this->isToday()) $related['day'] = 'today';
+        elseif($this->isTomorrow()) $related['day'] = 'tomorrow';
+        elseif($this->isYesterday()) $related['day'] = 'yesterday';
+        else $related['day'] = '';
+
+        // Tìm quan hệ tuần
+        if($this->isThisWeek()) $related['week'] = 'thisweek';
+        elseif($this->isNextWeek()) $related['week'] = 'nextweek';
+        else $related['week'] = '';
+
+        return $related;
     }
 
     /**
@@ -401,6 +428,46 @@ class Vhmis_Date
         $year2 = date('Y', $date->getUnixTime());
 
         return $year2 - $year1;
+    }
+
+    /**
+     * Kiểm tra xem có phải là ngày hôm nay không
+     */
+    public function isToday()
+    {
+        return date('Y-m-d', $this->_time) == date('Y-m-d', $this->_timeNow);
+    }
+
+    /**
+     * Kiểm tra xem có phải là ngày mai không
+     */
+    public function isTomorrow()
+    {
+        return date('Y-m-d', $this->_time - self::DAYTOSECOND) == date('Y-m-d', $this->_timeNow);
+    }
+
+    /**
+     * Kiểm tra xem có phải là ngày hôm qua không
+     */
+    public function isYesterday()
+    {
+        return date('Y-m-d', $this->_time + self::DAYTOSECOND) == date('Y-m-d', $this->_timeNow);
+    }
+
+    /**
+     * Kiểm tra có phải là tuần này không
+     */
+    public function isThisWeek()
+    {
+        return date('W o', $this->_time) == date('W o', $this->_timeNow);
+    }
+
+    /**
+     * Kiểm tra có phải là tuần tới hay không
+     */
+    public function isNextWeek()
+    {
+        return date('W o', $this->_time - self::DAYTOSECOND * 7) == date('W o', $this->_timeNow);
     }
 
     /**
