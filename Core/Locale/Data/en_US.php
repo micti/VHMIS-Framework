@@ -73,6 +73,19 @@ $localeData = array(
                     'full' => '{0} {1}',
                     'medium' => '{0} {1}',
                     'short' => '{0} {1}'
+                ),
+                'otherFormats' => array(
+                    'Md' => '{M}/{d}',
+                    'yyyyMM' => '{M}/{yyyy}'
+                ),
+                'fields' => array(
+                    'day' => 'Day',
+                    'today' => 'Today',
+                    'yesterday' => 'Yesterday',
+                    'tomorrow' => 'Tomorrow',
+                    'week' => 'Week',
+                    'thisweek' => 'This week',
+                    'nextweek' => 'Next week'
                 )
             )
         )

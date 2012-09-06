@@ -75,14 +75,17 @@ $localeData = array(
                     'short' => '{0} {1}'
                 ),
                 'otherFormats' => array(
-                    'Md' => '{d}-{M}'
+                    'Md' => '{d}-{M}',
+                    'yyyyMM' => '{MM}-{yyyy}'
                 ),
                 'fields' => array(
                     'day' => 'Ngày',
                     'today' => 'Hôm nay',
                     'yesterday' => 'Hôm qua',
                     'tomorrow' => 'Ngày mai',
-                    'week' => 'Tuần'
+                    'week' => 'Tuần',
+                    'thisweek' => 'Tuần này',
+                    'nextweek' => 'Tuần tới'
                 )
             )
         )
