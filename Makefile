@@ -37,6 +37,7 @@ framework:
 	@sed s:WEB_PATH:${URL}: ${BUILD}/www/.htaccess > ${WBUILD}/.htaccess
 	@sed s:BUILD:${BUILD}/: ${BUILD}/www/index.php > ${BUILD}/temp/index.php
 	@sed s:SNAME:${SNAME}: ${BUILD}/temp/index.php > ${WBUILD}/index.php
+	@sed -e s:WEB_PATH:${URL}: ${BUILD}/www/old.html > ${WBUILD}/old.html
 
 # Build he thong
 systems:
