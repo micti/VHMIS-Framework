@@ -227,6 +227,7 @@ class Vhmis_Network_Request
     protected function _delData()
     {
         unset($_POST);
+        unset($_FILES);
         unset($_GET);
         unset($_REQUEST);
     }
