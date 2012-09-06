@@ -219,7 +219,7 @@ class Vhmis_View
         {
             $view = VHMIS_APPS_PATH . D_SPEC . ___fUpper($this->_dataController['app']['url']) . D_SPEC . 'View' . D_SPEC . $this->_template . D_SPEC;
             if($this->_view != '') $view .=  $this->_view . '.php';
-            else $view .= ___fUpper($this->_dataController['app']['info']['controller']) . D_SPEC . $this->_dataController['app']['info']['action'] . '.php';
+            else $view .= $this->_dataController['app']['info']['controller'] . D_SPEC . $this->_dataController['app']['info']['action'] . '.php';
 
             // Render view
             ob_start();
