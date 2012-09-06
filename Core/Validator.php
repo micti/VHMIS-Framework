@@ -13,13 +13,21 @@
 class Vhmis_Validator
 {
     protected $_fitler;
+    protected $_date;
 
-    public function __construct($filter = null)
+    public function __construct($filter = null, $date = null)
     {
         if($filter == null)
         {
-            $this->_filter = new Vhmis_Core_Filter;
+            $this->_filter = new Vhmis_Filter;
         }
+        else $this->_filter = $filter;
+
+        if($date == null)
+        {
+            $this->_date = new Vhmis_Date;
+        }
+        else $this->_date = $date;
     }
 
     /**
@@ -83,6 +91,58 @@ class Vhmis_Validator
         {
             return true;
         }
+    }
+
+    /**
+     * Hàm kiểm tra xem một ngày có hợp lệ hay không
+     */
+    public function date($value, $format = 'dd/mm/yyyy', $returnISO = true, $allowEmpty = true)
+    {
+        if($format == 'dd/mm/yyyy')
+        {
+            // Nếu giá trị cần kiểm tra rỗng và cho phép rỗng
+            if(trim($value) == '' && $allowEmpty === true)
+            {
+                return $returnISO ? '0000-00-00' : true;
+            }
+
+            $date = explode('/', $value, 3);
+
+            if(count($date) != 3)
+            {
+                echo '12';
+                return false;
+            }
+
+            if(count(trim($date[2])) <= 2)
+            {
+                $date = trim($date[2]) . '-' . trim($date[1]) . '-' . trim($date[0]);
+            }
+            else
+            {
+                $date = trim($date[2]) . '/' . trim($date[1]) . '/' . trim($date[0]);
+            }
+
+            if(!$this->_date->time($date))
+            {
+                echo '11';
+                return false;
+            }
+            else
+            {
+                if($returnISO)
+                {
+                    return $date;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        /* TODO : need other format */
+        return false;
     }
 
     protected function _check($pattern, $value)
