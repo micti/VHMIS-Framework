@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <?php if(isset($time) && isset($url)) { echo '<meta http-equiv="refresh" content="' . $time . ';url=' . $config['site']['fullpath'] . $url . '">' . "\n"; } ?>
-        <title><? if(isset($title)) echo $title . ' | Thông báo | VHMIS'; else echo 'VHMIS'; ?></title>
+        <title><?php if(isset($title)) echo $title . ' | Thông báo | VHMIS'; else echo 'VHMIS'; ?></title>
 
         <!-- Style -->
-        <link href="/VHMIS_WWW/client/default/css/default.css" rel="stylesheet">
+        <link href="<?php $config['site']['fullclient']; ?>css/default.css" rel="stylesheet">
     </head>
     <body>
         <div class="container container-message">
