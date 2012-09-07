@@ -11,7 +11,7 @@
 
         <!-- Style -->
         <link href="<?php echo $config['site']['fullclient']; ?>css/default.css" rel="stylesheet">
-        <link href="<?php echo $config['site']['fullclient']; ?>css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="stylesheet">
+        <link href="<?php echo $config['site']['fullclient']; ?>css/ui-lightness/jquery-ui-1.8.23.custom.css" rel="stylesheet">
 <?php
 if(isset($cssFiles))
 {
@@ -30,9 +30,9 @@ if(isset($cssFiles))
             var clientPath = '<?php echo $config['site']['client']; ?>';
             var clientFullPath = '<?php echo $config['site']['fullclient']; ?>';
         </script>
-        <script src="<?php echo $config['site']['fullclient']; ?>js/jquery-1.7.2.min.js"></script>
+        <script src="<?php echo $config['site']['fullclient']; ?>js/jquery-1.8.1.min.js"></script>
         <script src="<?php echo $config['site']['fullclient']; ?>js/bootstrap.js"></script>
-        <script src="<?php echo $config['site']['fullclient']; ?>js/jquery-ui-1.8.17.custom.min.js"></script>
+        <script src="<?php echo $config['site']['fullclient']; ?>js/jquery-ui-1.8.23.custom.min.js"></script>
         <script src="<?php echo $config['site']['fullclient']; ?>js/default.js"></script>
 <?php
 if(isset($jsFiles))
