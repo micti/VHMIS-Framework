@@ -140,9 +140,9 @@ if(isset($pageTitle) && $pageTitle != '') {
             <div class="container<?php if(isset($layoutSize)) echo ' container-' . $layoutSize;?> footer">
                 <p>
                     Hệ thống thông tin quản lý Trường CĐ CNTT Hữu Nghị Việt Hàn<br>
-                    Phát triển trên nền web bởi Trung tâm CNTT. Sử dụng HTML5, CSS3 và Javascript, tương thích với các trình duyệt hiện đại như <a href="#">Chrome, Firefox, Safari</a>
+                    Phát triển trên nền web bởi Trung tâm CNTT. Sử dụng HTML5, CSS3 và Javascript, tương thích với các trình duyệt hiện đại như Chrome 15+, Firefox 10+</a>
                     <br>
-                    <br>Beta || GMT+7 || Uses <b>::::xxxxx-memory-xxxx::::</b> bytes memory to process in <b>::::xxxxx-time-xxxx::::</b> seconds || Powered by VHMIS with Zend Db, Apache, PHP, MySQL || Layout Default based on Bootraps
+                    <br>Beta || GMT+7 || Uses <b>::::xxxxx-memory-xxxx::::</b> bytes memory to process in <b>::::xxxxx-time-xxxx::::</b> seconds || Powered by VHMIS with Zend Db, Apache, PHP, MySQL || Layout Default based on Bootstrap
                 </p>
             </div>
         </footer>
