@@ -6,7 +6,7 @@
         <title><?php if(isset($title)) echo $title . ' | Thông báo | VHMIS'; else echo 'VHMIS'; ?></title>
 
         <!-- Style -->
-        <link href="<?php $config['site']['fullclient']; ?>css/default.css" rel="stylesheet">
+        <link href="<?php echo $config['site']['fullclient']; ?>css/default.css" rel="stylesheet">
     </head>
     <body>
         <div class="container container-message">
