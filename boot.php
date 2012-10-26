@@ -19,7 +19,6 @@
  * @since         1.0.0
  * @license       All rights reversed
  */
-
 /**
  * DÀNH CHO BẢN ĐANG PHÁT TRIỂN, hiện thị tất cả các lỗi
  */
@@ -71,7 +70,7 @@ Vhmis_Configure::add('Config', $_config);
 Vhmis_Date::setTimeZone($_config['timezone']['name']);
 
 // Ngôn ngữ
-Vhmis_Configure::set('Locale', $_config['locale']['lang'] . '_' .  $_config['locale']['region']);
+Vhmis_Configure::set('Locale', $_config['locale']['lang'] . '_' . $_config['locale']['region']);
 
 /**
  * Lấy uri, xử lý
@@ -79,7 +78,7 @@ Vhmis_Configure::set('Locale', $_config['locale']['lang'] . '_' .  $_config['loc
 $_vhmisRequest = new Vhmis_Network_Request();
 $_vhmisResponse = new Vhmis_Network_Response();
 
-if($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404')
+if ($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404')
 {
     $_vhmisView = new Vhmis_View();
     $_vhmisView->transferConfigData(Vhmis_Configure::get('Config'));
@@ -87,7 +86,9 @@ if($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404')
     $_vhmisView->renderError('4xx');
     $content = ob_get_clean();
 
-    header('HTTP/1.1 404 Not Found'); // need rewrite;
+    // need rewrite;
+    header('HTTP/1.1 404 Not Found');
+
     $_vhmisResponse->body($content);
     $_vhmisResponse->response();
     exit();

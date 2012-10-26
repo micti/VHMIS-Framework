@@ -319,6 +319,10 @@ function ___stripSlashes($values)
 
 /**
  * Kết nối database
+ *
+ * @param array $config Mảng chứa dữ liệu kết nối
+ * @param string $type Loại database
+ * @return boolean Kết nối thành công hoặc thất bại
  */
 function ___connectDb($config, $type = 'Pdo_Mysql')
 {
