@@ -42,7 +42,7 @@ class Vhmis_Component_Employee extends Vhmis_Component
      */
     public function getById($id)
     {
-        $data = $this->_model->find($id)
+        $data = $this->_model->find($id);
 
         if($data != null)
         {
