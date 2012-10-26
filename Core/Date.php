@@ -480,6 +480,8 @@ class Vhmis_Date
 
     /**
      * Tìm tháng kế trước
+     *
+     * @return Array Mảng chứa thông tin tháng trước, phần tử 0 ứng với tháng, phần tử 1 ứng năm
      */
     public function getPrevMonth()
     {
@@ -492,6 +494,8 @@ class Vhmis_Date
 
     /**
      * Tìm tháng kế tiếp
+     *
+     * @return Array Mảng chứa thông tin tháng tiếp theo, phần tử 0 ứng với tháng, phần tử 1 ứng năm
      */
     public function getNextMonth()
     {

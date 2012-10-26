@@ -98,6 +98,8 @@ class Vhmis_Controller
 
     /**
      * Mảng chứa các đối tượng của components
+     *
+     * @var Vhmis_Collection_Components
      */
     public $components;
 
@@ -108,6 +110,8 @@ class Vhmis_Controller
 
     /**
      * Mảng chứa các đối tượng model
+     *
+     * @var Vhmis_Collection_Models
      */
     public $models;
 
