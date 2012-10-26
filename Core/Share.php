@@ -21,9 +21,24 @@
  * @license       All rights reversed
  */
 
+/**
+ * Xử lý việc share data giữa các app với nhau
+ */
 abstract class Vhmis_Share
 {
-    protected $_model; // Hổ trợ tương thích, TODO: delete in ver2
+
+    /**
+     * Đối tượng Model ứng với Share
+     *
+     * @var Vhmis_Model
+     */
+    protected $_model;
+
+    /**
+     * Đối tượng Model ứng với Share
+     *
+     * @var Vhmis_Model
+     */
     public $model;
 
     /**
@@ -52,4 +67,5 @@ abstract class Vhmis_Share
         $this->model = new $model(array('db' => $db));
         $this->_model = $this->model;
     }
+
 }

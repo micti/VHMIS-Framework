@@ -29,22 +29,25 @@ class Vhmis_Uri_Pattern
     /**
      * Các hằng số chứa biểu thức điều kiện để kiểm tra tên của các thành phần hay gặp trong mẫu link
      */
-	const YEAR   = '[12][0-9]{3}';
-	const MONTH  = '0[1-9]|1[012]';
-	const DAY    = '0[1-9]|[12][0-9]|3[01]';
-	const ID     = '[0-9]+';
-	const SLUG   = '[a-z0-9-]+';
 
-	/**
-	 * Mảng chứa tên của các kiểu dữ liệu và biểu thức điều kiện để kiểm tra
-	 */
-	protected $_dataTypes = array(
-	   'year'  => VHMIS_URI_PATTERN::YEAR,
-	   'month' => VHMIS_URI_PATTERN::MONTH,
-	   'day'   => VHMIS_URI_PATTERN::DAY,
-	   'id'    => VHMIS_URI_PATTERN::ID,
-	   'slug'  => VHMIS_URI_PATTERN::SLUG
-	);
+    const YEAR = '[12][0-9]{3}';
+    const MONTH = '0[1-9]|1[012]';
+    const DAY = '0[1-9]|[12][0-9]|3[01]';
+    const ID = '[0-9]+';
+    const SLUG = '[a-z0-9-]+';
+    const YEARMONTH = '([12][0-9]{3})-(0[1-9]|1[012])';
+
+    /**
+     * Mảng chứa tên của các kiểu dữ liệu và biểu thức điều kiện để kiểm tra
+     */
+    protected $_dataTypes = array(
+        'year' => VHMIS_URI_PATTERN::YEAR,
+        'month' => VHMIS_URI_PATTERN::MONTH,
+        'day' => VHMIS_URI_PATTERN::DAY,
+        'id' => VHMIS_URI_PATTERN::ID,
+        'slug' => VHMIS_URI_PATTERN::SLUG,
+        'monthyear' => VHMIS_URI_PATTERN::YEARMONTH
+    );
 
     /**
      * Mẫu link
@@ -95,12 +98,12 @@ class Vhmis_Uri_Pattern
      */
     public function setPatternInfo($patternInfo)
     {
-        $this->_pattern    = $patternInfo[0];
+        $this->_pattern = $patternInfo[0];
         $this->_controller = $patternInfo[1];
-        $this->_action     = $patternInfo[2];
-        $this->_params     = $patternInfo[3];
-        $this->_output     = $patternInfo[4];
-        $this->_redirect   = $patternInfo[5];
+        $this->_action = $patternInfo[2];
+        $this->_params = $patternInfo[3];
+        $this->_output = $patternInfo[4];
+        $this->_redirect = $patternInfo[5];
     }
 
     /**
@@ -111,85 +114,70 @@ class Vhmis_Uri_Pattern
      */
     public function validateURI($uri)
     {
-        $segment    = explode("/", $this->_pattern);
-        $total      = count($segment);
+        $segment = explode("/", $this->_pattern);
+        $total = count($segment);
         $uriSegment = explode("/", $uri, $total);
-        $redirect   = $this->_redirect;
+        $redirect = $this->_redirect;
 
         // Kết quả mặc định
-        $result['valid']      = false;
+        $result['valid'] = false;
         $result['controller'] = '';
-        $result['action']     = '';
-        $result['params']     = '';
-        $result['output']     = '';
-        $result['redirect']   = '';
+        $result['action'] = '';
+        $result['params'] = '';
+        $result['output'] = '';
+        $result['redirect'] = '';
 
         // Địa chỉ cần đối chiếu ko đủ số segment so với mẫu
-        if($total > count($uriSegment))
-        {
+        if ($total > count($uriSegment)) {
             return $result;
         }
 
         // Kiểm tra segment cuối cùng, chỉ hợp lệ nếu ko có ký tự / hoặc có ký tự / nằm cuối cùng
         $lastSegment = explode('/', $uriSegment[$total - 1], 2);
 
-        if(isset($lastSegment[1]) and $lastSegment[1] != '')
-        {
+        if (isset($lastSegment[1]) and $lastSegment[1] != '') {
 
             return $result;
-        }
-        else
-        {
+        } else {
             // Xóa bỏ ký tự / nằm cuối
             $uriSegment[$total - 1] = $lastSegment[0];
         }
 
         // Kiểm tra từng segment của địa chỉ với từng segment của link mẫu, nếu ko khớp với 1 chổ bất kỳ thì sai
-        for($i = 0; $i < $total; $i++)
-        {
-            if($segment[$i] != $uriSegment[$i])
-            {
+        for ($i = 0; $i < $total; $i++) {
+            if ($segment[$i] != $uriSegment[$i]) {
                 // Kiem tra xem co phai la param dang type:name
                 $paramInfo = explode(':', $segment[$i], 2);
 
                 // Neu dung, them param nay vao
-                if(isset($paramInfo[1]) && $paramInfo[1] != '' && $this->_validate($paramInfo[0], $uriSegment[$i]))
-                {
+                if (isset($paramInfo[1]) && $paramInfo[1] != '' && $this->_validate($paramInfo[0], $uriSegment[$i])) {
                     $params[$paramInfo[1]] = $uriSegment[$i];
 
                     // Neu co dia chi redirect, thu thay the param nay
-                    if($redirect != '')
-                    {
+                    if ($redirect != '') {
                         $redirect = str_replace($paramInfo[0] . ':' . $paramInfo[1], $uriSegment[$i], $redirect);
                     }
                 }
                 // Sai, tra ve ket qua sai mac dinh
-                else
-                {
+                else {
                     return $result;
                 }
             }
         }
 
         // Dia chi hop le, tra ve ket qua
-        $result['valid']      = true;
+        $result['valid'] = true;
         $result['controller'] = $this->_controller;
-        $result['action']     = $this->_action;
-        $result['output']     = $this->_output;
-        $result['redirect']   = $redirect;
-        if(isset($params) && is_array($params))
-        {
-            if(is_array($this->_params))
-            {
+        $result['action'] = $this->_action;
+        $result['output'] = $this->_output;
+        $result['redirect'] = $redirect;
+        if (isset($params) && is_array($params)) {
+            if (is_array($this->_params)) {
                 $result['params'] = array_merge($this->_params, $params);
-            }
-            else
-            {
+            } else {
                 $result['params'] = $params;
             }
-        }
-        else
-        {
+        } else {
             $result['params'] = $this->_params;
         }
 
@@ -205,11 +193,15 @@ class Vhmis_Uri_Pattern
      */
     protected function _validate($type, $data)
     {
-        if(!isset($this->_dataTypes[$type])) return false;
+        if (!isset($this->_dataTypes[$type]))
+            return false;
 
         $found = preg_match('/' . $this->_dataTypes[$type] . '/', $data, $match);
 
-        if($found == 0 || $match[0] != $data) return false;
-        else return true;
+        if ($found == 0 || $match[0] != $data)
+            return false;
+        else
+            return true;
     }
+
 }
