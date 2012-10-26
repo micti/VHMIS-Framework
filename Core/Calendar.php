@@ -42,6 +42,7 @@ class Vhmis_Calendar
     public function datesOfMonth($month, $year, $fix = true)
     {
         $m = (int) $month;
+        if($m < 10) $month = '0' . $m;
         $y = $year;
 
         $dates = array();
