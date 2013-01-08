@@ -16,6 +16,7 @@ URL = /VHMIS_WWW/
 SNAME = Vhmis
 
 # Đường dẫn của các thư viện
+DOCT = /WebServer/Doctrine
 ZEND = /WebServer/Zend
 ICNL = /WebServer/
 
@@ -53,6 +54,7 @@ library:
 	@cp -R ${ZEND}/Db* ${BUILD}/Libs/Zend
 	@cp -R ${ZEND}/Loader* ${BUILD}/Libs/Zend
 	@cp -R ${ZEND}/Session* ${BUILD}/Libs/Zend
+	@cp -R ${ZEND}/Exception.php ${BUILD}/Libs/Zend
 
 # Clear
 clear:

@@ -1,5 +1,7 @@
 <?php
 
+use Vhmis\Config\Configure;
+
 /**
  * Auth
  *
@@ -33,7 +35,7 @@ class Vhmis_Component_Auth extends Vhmis_Component
         // Kết nối CSDL
         $db = $this->_db('System');
 
-        $config = Vhmis_Configure::get('Config');
+        $config = Configure::get('Config');
         $this->_appSecretKey = $config['security']['secret'];
 
         $this->_dbUser = new Vhmis_Model_System_User(array('db' => $db));

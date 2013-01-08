@@ -1,5 +1,7 @@
 <?php
 
+use Vhmis\Config\Configure;
+
 /**
  * Response
  *
@@ -85,7 +87,7 @@ class Vhmis_Network_Response
      */
     protected function _sendContent($content = '')
     {
-        $benmark = Vhmis_Configure::get('Benchmark');
+        $benmark = Configure::get('Benchmark');
         $body = str_replace('::::xxxxx-memory-xxxx::::', memory_get_usage(), $this->_body);
         echo str_replace('::::xxxxx-time-xxxx::::', $benmark->time('start', 'stop'), $body);
         //echo $this->_body;

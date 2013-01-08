@@ -1,5 +1,7 @@
 <?php
 
+use Vhmis\Config\Configure;
+
 /**
  * Controller
  *
@@ -175,7 +177,7 @@ class Vhmis_Controller
      */
     public function __construct(Vhmis_Network_Request $request, Vhmis_Network_Response $response)
     {
-        $this->config = $this->_config = Vhmis_Configure::get('Config');
+        $this->config = $this->_config = Configure::get('Config');
 
         $this->request  = $request;
         $this->response = $response;
@@ -559,7 +561,7 @@ class Vhmis_Controller
     {
         $name = strtolower($name);
 
-        if(!Vhmis_Configure::isRegistered('Db' . ___fUpper($name)))
+        if(!Configure::isRegistered('Db' . ___fUpper($name)))
         {
             $config = ___loadConfig('Database', false);
             if(isset($config['databases'][$name]))
@@ -568,13 +570,13 @@ class Vhmis_Controller
                 if(isset($config['databases'][$name]['use']))
                 {
                     $name2 = $config['databases'][$name]['use'];
-                    if(!Vhmis_Configure::isRegistered('Db' . ___fUpper($name2)))
+                    if(!Configure::isRegistered('Db' . ___fUpper($name2)))
                     {
                         $db = ___connectDb($config['databases'][$name2]);
                         if($db != false)
                         {
-                            Vhmis_Configure::set('Db' . ___fUpper($name2), $db);
-                            Vhmis_Configure::set('Db' . ___fUpper($name), $db);
+                            Configure::set('Db' . ___fUpper($name2), $db);
+                            Configure::set('Db' . ___fUpper($name), $db);
                             return $db;
                         }
                         else
@@ -585,7 +587,7 @@ class Vhmis_Controller
                     }
                     else
                     {
-                        return Vhmis_Configure::get('Db' . ___fUpper($name2));
+                        return Configure::get('Db' . ___fUpper($name2));
                     }
                 }
 
@@ -593,7 +595,7 @@ class Vhmis_Controller
                 $db = ___connectDb($config['databases'][$name]);
                 if($db != false)
                 {
-                    Vhmis_Configure::set('Db' . ___fUpper($name), $db);
+                    Configure::set('Db' . ___fUpper($name), $db);
                     return $db;
                 }
                 else
@@ -609,7 +611,7 @@ class Vhmis_Controller
             }
         }
 
-        return Vhmis_Configure::get('Db' . ___fUpper($name));
+        return Configure::get('Db' . ___fUpper($name));
     }
 
     /**

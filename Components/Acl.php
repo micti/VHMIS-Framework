@@ -21,6 +21,8 @@
  * @license       All rights reversed
  */
 
+use Vhmis\Config\Configure;
+
 /**
  *
  */
@@ -37,7 +39,7 @@ class Vhmis_Component_Acl extends Vhmis_Component
     {
         // Kết nối CSDL
         $this->_db('System');
-        $db = Vhmis_Configure::get('DbSystem');
+        $db = Configure::get('DbSystem');
         $this->_dbAcl = new Vhmis_Model_System_Acl_Permission(array('db' => $db));
     }
 

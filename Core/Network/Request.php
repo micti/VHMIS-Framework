@@ -1,5 +1,7 @@
 <?php
 
+use Vhmis\Config\Configure;
+
 /**
  * Request
  *
@@ -77,7 +79,7 @@ class Vhmis_Network_Request
     {
         $this->responeCode = '200';
 
-        $config = Vhmis_Configure::get('Config');
+        $config = Configure::get('Config');
 
         if(empty($url))
         {

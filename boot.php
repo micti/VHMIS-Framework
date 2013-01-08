@@ -1,24 +1,16 @@
 <?php
-
 /**
- * Chức năng cơ bản của VHMIS
+ * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * Thiết lập, load các hàm, các lớp, các cấu hình cần thiết để xử lý tất cả request
- *
- * PHP 5
- *
- * VHMIS(tm) : Viethan IT Management Information System
- * Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- *
- * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
- *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Loader
- * @since         1.0.0
- * @license       All rights reversed
+ * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package    Vhmis_Boot
+ * @since      Vhmis v1.0
  */
+
+use Vhmis\Config\Configure;
+
 /**
  * DÀNH CHO BẢN ĐANG PHÁT TRIỂN, hiện thị tất cả các lỗi
  */
@@ -38,12 +30,14 @@ define('P_SPEC', PATH_SEPARATOR);
 define('VHMIS_PATH', dirname(__FILE__));
 define('VHMIS_LIBS_PATH', VHMIS_PATH . D_SPEC . 'Libs');
 define('VHMIS_CORE_PATH', VHMIS_PATH . D_SPEC . 'Core');
+define('VHMIS_CORE2_PATH', VHMIS_PATH . D_SPEC . 'CoreVer2');
 define('VHMIS_VIEW_PATH', VHMIS_PATH . D_SPEC . 'View');
 define('VHMIS_COMP_PATH', VHMIS_PATH . D_SPEC . 'Components');
 define('VHMIS_SYS_PATH', VHMIS_PATH . D_SPEC . 'System' . D_SPEC . SYSTEM);
 define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . 'Apps');
 define('VHMIS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Config');
 define('VHMIS_ZEND_F_PATH', VHMIS_LIBS_PATH . D_SPEC . 'Zend');
+define('VHMIS_DOCTRINE_PATH', '/WebServer');
 
 // Một số thư viện
 set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
@@ -53,24 +47,30 @@ set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
  */
 require VHMIS_PATH . D_SPEC . 'booter.php';
 
+/**
+ * Auto load cho Doctrine
+ */
+require VHMIS_DOCTRINE_PATH . '/Doctrine/ORM/Tools/Setup.php';
+Doctrine\ORM\Tools\Setup::registerAutoloadDirectory(VHMIS_DOCTRINE_PATH);
+
 // Benchmark
 $benmark = new Vhmis_Benchmark();
 $benmark->timer('start');
-Vhmis_Configure::set('Benchmark', $benmark);
+Configure::set('Benchmark', $benmark);
 
 /**
  * Cấu hình
  */
 $_config = ___loadConfig('Applications', false);
-Vhmis_Configure::set('Config', $_config);
+Configure::set('Config', $_config);
 $_config = ___loadConfig('Global', false);
-Vhmis_Configure::add('Config', $_config);
+Configure::add('Config', $_config);
 
 // Set timezone +7
 Vhmis_Date::setTimeZone($_config['timezone']['name']);
 
 // Ngôn ngữ
-Vhmis_Configure::set('Locale', $_config['locale']['lang'] . '_' . $_config['locale']['region']);
+Configure::set('Locale', $_config['locale']['lang'] . '_' . $_config['locale']['region']);
 
 /**
  * Lấy uri, xử lý
@@ -81,7 +81,7 @@ $_vhmisResponse = new Vhmis_Network_Response();
 if ($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404')
 {
     $_vhmisView = new Vhmis_View();
-    $_vhmisView->transferConfigData(Vhmis_Configure::get('Config'));
+    $_vhmisView->transferConfigData(Configure::get('Config'));
     ob_start();
     $_vhmisView->renderError('4xx');
     $content = ob_get_clean();
@@ -95,10 +95,21 @@ if ($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404'
 }
 
 /**
+ * Chuyển hướng
+ */
+if(is_string($_vhmisRequest->app['info']['redirect']) && $_vhmisRequest->app['info']['redirect'] !== '')
+{
+    // To do : cần viết lại đoạn này
+
+    header('Location: ' . $_config['site']['path'] . $_vhmisRequest->app['info']['redirect']);
+    exit();
+}
+
+/**
  * Gọi config của App
  */
 $_config = ___loadAppConfig($_vhmisRequest->app['url'], false);
-Vhmis_Configure::add('Config', $_config);
+Configure::add('Config', $_config);
 
 /**
  * Gọi Controller

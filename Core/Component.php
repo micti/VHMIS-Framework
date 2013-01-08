@@ -25,4 +25,3 @@ abstract class Vhmis_Component
         return $this->_controller->_db($name);
     }
 }
-?>

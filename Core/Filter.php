@@ -3,7 +3,7 @@
 class Vhmis_Filter
 {
     /**
-    * Loại bỏ những ký tự không phải là số (0..9)
+     * Loại bỏ những ký tự không phải là số (0..9)
      *
      * @param mix Giá trị cần lọc
      * @return string Giá trị sau khi lọc

@@ -1,23 +1,12 @@
 <?php
-
 /**
- * Chức năng cơ bản của VHMIS
+ * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * Chứa các hàm để gọi file, gọi class và một số hàm thực hiện các việc cơ bản khác
- *
- * PHP 5
- *
- * VHMIS(tm) : Viethan IT Management Information System
- * Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- *
- * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
- *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Loader
- * @since         1.0.0
- * @license       All rights reversed
+ * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package    Vhmis_Boot
+ * @since      Vhmis v1.0
  */
 
 /**
@@ -35,24 +24,60 @@ define('VHMIS_ERROR_ACTIONMISSING', '-99999994');
  *
  * @param string $name Tên class
  */
-function __autoLoad($class)
+function ___autoLoad($class)
 {
-    if(class_exists($class)) return;
+    /*if (class_exists($class))
+        return;*/
 
-    $name = explode('_', $class);
+    // Từ tháng 11.2012 chuyển dần sang sử dụng Namespace
+    // Áp dụng với các class Core
+    // php53 trở lên
 
-    if($name[0] == 'Zend') ___loadZendClass($class);
-    if($name[0] == 'Vhmis')
-    {
-        if(isset($name[2]) && $name[2] != '')
-        {
-            if($name[1] == 'Component') ___loadComponentClass($class);
-            elseif($name[1] == 'Model') ___loadModelClass(str_replace('Vhmis_Model_', '', $class));
-            elseif($name[1] == 'Share') ___loadShareClass(str_replace('Vhmis_Share_', '', $class));
-            else ___loadCoreClass($class);
+    if (strpos($class, "\\") !== false) {
+        ___loadCoreClassWithNamespace($class);
+    } else {
+        $name = explode('_', $class);
+
+        if ($name[0] == 'Zend')
+            ___loadZendClass($class);
+        if ($name[0] == 'Vhmis') {
+            if (isset($name[2]) && $name[2] != '') {
+                if ($name[1] == 'Component')
+                    ___loadComponentClass($class);
+                elseif ($name[1] == 'Model')
+                    ___loadModelClass(str_replace('Vhmis_Model_', '', $class));
+                elseif ($name[1] == 'Share')
+                    ___loadShareClass(str_replace('Vhmis_Share_', '', $class));
+                else
+                    ___loadCoreClass($class);
+            }
+            else
+                ___loadCoreClass($class);
         }
-        else ___loadCoreClass($class);
     }
+}
+
+spl_autoload_register('___autoLoad');
+
+/**
+ * Load file chứa class Core (sử dụng Namespace)
+ * @param string $class Tên Class
+ */
+function ___loadCoreClassWithNamespace($class)
+{
+    // Cấu trúc Vhmis\xxx1\xxx2\xxx3
+    // Filepath Core PATH \ xxx1\xxx2\xxx3.php
+
+    $class = explode('\\', $class);
+
+    $count = count($class);
+    $path = '';
+
+    for ($i = 1; $i < $count - 1; $i++) {
+        $path .= D_SPEC . $class[$i];
+    }
+
+    ___loadFile($class[$count - 1] . '.php', VHMIS_CORE2_PATH . $path);
 }
 
 /**
@@ -62,19 +87,19 @@ function __autoLoad($class)
  */
 function ___loadCoreClass($name)
 {
-    if(class_exists($name)) return;
+    if (class_exists($name))
+        return;
 
     // Tên class Vhmis_Uri_Pattern -> Thư mục Core/Uri/Pattern.php
     $name = explode('_', $name);
     $count = count($name);
     $path = '';
 
-    for($i = 1; $i < $count - 1; $i++)
-    {
+    for ($i = 1; $i < $count - 1; $i++) {
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
 
-    ___loadFile(___fUpper($name[$count-1]) . '.php', VHMIS_CORE_PATH . $path);
+    ___loadFile(___fUpper($name[$count - 1]) . '.php', VHMIS_CORE_PATH . $path);
 }
 
 /**
@@ -84,18 +109,18 @@ function ___loadCoreClass($name)
  */
 function ___loadZendClass($name)
 {
-    if(class_exists($name)) return;
+    if (class_exists($name))
+        return;
 
     $name = explode('_', $name);
     $count = count($name);
     $path = '';
 
-    for($i = 1; $i < $count - 1; $i++)
-    {
+    for ($i = 1; $i < $count - 1; $i++) {
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
 
-    ___loadFile(___fUpper($name[$count-1]) . '.php', VHMIS_ZEND_F_PATH . $path);
+    ___loadFile(___fUpper($name[$count - 1]) . '.php', VHMIS_ZEND_F_PATH . $path);
 }
 
 /**
@@ -105,7 +130,8 @@ function ___loadZendClass($name)
  */
 function ___loadComponentClass($component)
 {
-    if(class_exists($component)) return;
+    if (class_exists($component))
+        return;
 
     $component = str_replace('Vhmis_Component_', '', $component);
 
@@ -119,7 +145,8 @@ function ___loadComponentClass($component)
  */
 function ___loadModelClass($model)
 {
-    if(class_exists('Vhmis_Model_' . $model)) return;
+    if (class_exists('Vhmis_Model_' . $model))
+        return;
 
     $model = explode('_', $model, 2);
 
@@ -133,7 +160,8 @@ function ___loadModelClass($model)
  */
 function ___loadShareClass($data)
 {
-    if(class_exists('Vhmis_Share_' . $data)) return;
+    if (class_exists('Vhmis_Share_' . $data))
+        return;
 
     $data = explode('_', $data, 2);
 
@@ -149,8 +177,10 @@ function ___loadShareClass($data)
  */
 function ___loadFile($filename, $path, $once = false)
 {
-    if($once == true) include_once $path . D_SPEC . $filename;
-    else include $path . D_SPEC . $filename;
+    if ($once == true)
+        include_once $path . D_SPEC . $filename;
+    else
+        include $path . D_SPEC . $filename;
 }
 
 /**
@@ -162,8 +192,8 @@ function ___loadFile($filename, $path, $once = false)
 function ___loadController($request, $response)
 {
     $controllerName = 'Vhmis_Controller_' . ___fUpper($request->app['url']) . '_' . $request->app['info']['controller'];
-    $path           = VHMIS_APPS_PATH . D_SPEC . ___fUpper($request->app['url']) . D_SPEC . 'Controller';
-    $file           = $request->app['info']['controller'] . '.php';
+    $path = VHMIS_APPS_PATH . D_SPEC . ___fUpper($request->app['url']) . D_SPEC . 'Controller';
+    $file = $request->app['info']['controller'] . '.php';
 
     ___loadFile($file, $path);
 
@@ -181,16 +211,19 @@ function ___loadAppConfig($appInfo, $store = true)
 {
     global $_vhmisConfigAll;
 
-    if(is_array($appInfo)) $appInfo = $appInfo['url'];
+    if (is_array($appInfo))
+        $appInfo = $appInfo['url'];
 
     $appInfo = strtolower($appInfo);
 
     require VHMIS_APPS_PATH . D_SPEC . ___fUpper($appInfo) . D_SPEC . 'Config' . D_SPEC . 'Config.php';
 
-    if($store === true) {
-        if(!isset($_vhmisConfigAll['apps']['info'][$appInfo])) $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
+    if ($store === true) {
+        if (!isset($_vhmisConfigAll['apps']['info'][$appInfo]))
+            $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
     }
-    else return $_vhmisConfig;
+    else
+        return $_vhmisConfig;
 }
 
 /**
@@ -207,19 +240,18 @@ function ___loadConfig($name, $store = true)
     require VHMIS_CONF_PATH . D_SPEC . ___fUpper($name . '.php');
 
     // Tạo hằng số đối với các config 'site' trong global
-    if(___fUpper($name) == 'Global')
-    {
-        foreach($_vhmisConfig['site'] as $key => $value)
-        {
-            if(is_string($value))
-            {
+    if (___fUpper($name) == 'Global') {
+        foreach ($_vhmisConfig['site'] as $key => $value) {
+            if (is_string($value)) {
                 define(strtoupper('SITE_' . $key), $value);
             }
         }
     }
 
-    if($store === true) $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
-    else return $_vhmisConfig;
+    if ($store === true)
+        $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
+    else
+        return $_vhmisConfig;
 }
 
 /**
@@ -232,8 +264,7 @@ function ___checkApp($app)
 {
     $config = ___loadConfig('Applications', false);
 
-    if(!in_array($app, $config['apps']['list']['url']))
-    {
+    if (!in_array($app, $config['apps']['list']['url'])) {
         return false;
     }
 
@@ -275,25 +306,22 @@ function ___ctv($string)
  */
 function ___removeInvisibleCharacters($str, $url_encoded = TRUE)
 {
-	$non_displayables = array();
+    $non_displayables = array();
 
-	// every control character except newline (dec 10),
-	// carriage return (dec 13) and horizontal tab (dec 09)
-	if ($url_encoded)
-	{
-		$non_displayables[] = '/%0[0-8bcef]/';	// url encoded 00-08, 11, 12, 14, 15
-		$non_displayables[] = '/%1[0-9a-f]/';	// url encoded 16-31
-	}
+    // every control character except newline (dec 10),
+    // carriage return (dec 13) and horizontal tab (dec 09)
+    if ($url_encoded) {
+        $non_displayables[] = '/%0[0-8bcef]/'; // url encoded 00-08, 11, 12, 14, 15
+        $non_displayables[] = '/%1[0-9a-f]/'; // url encoded 16-31
+    }
 
-	$non_displayables[] = '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S';	// 00-08, 11, 12, 14-31, 127
+    $non_displayables[] = '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S'; // 00-08, 11, 12, 14-31, 127
 
-	do
-	{
-		$str = preg_replace($non_displayables, '', $str, -1, $count);
-	}
-	while ($count);
+    do {
+        $str = preg_replace($non_displayables, '', $str, -1, $count);
+    } while ($count);
 
-	return $str;
+    return $str;
 }
 
 /**
@@ -304,10 +332,8 @@ function ___removeInvisibleCharacters($str, $url_encoded = TRUE)
  */
 function ___stripSlashes($values)
 {
-    if(is_array($values))
-    {
-        foreach ($values as $key => $value)
-        {
+    if (is_array($values)) {
+        foreach ($values as $key => $value) {
             $values[$key] = ___stripSlashes($value);
         }
     } else {
@@ -326,18 +352,13 @@ function ___stripSlashes($values)
  */
 function ___connectDb($config, $type = 'Pdo_Mysql')
 {
-    try
-    {
+    try {
         $db = Zend_Db::factory($type, $config);
         $db->getConnection();
         return $db;
-    }
-    catch (Zend_Db_Adapter_Exception $e)
-    {
+    } catch (Zend_Db_Adapter_Exception $e) {
         return false;
-    }
-    catch (Zend_Db_Exception $e)
-    {
+    } catch (Zend_Db_Exception $e) {
         return false;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Vhmis\Collection\ViewHelpers;
+
 class Vhmis_View
 {
     /**
@@ -59,6 +61,13 @@ class Vhmis_View
     protected $_view = '';
 
     /**
+     * Tập hợp các view helper
+     *
+     * @var Helpers
+     */
+    public $helper;
+
+    /**
      * Tập hợp helpers gọi cho view
      *
      * @var Vhmis_Collection
@@ -70,6 +79,26 @@ class Vhmis_View
     {
         $this->helpers = new Vhmis_Collection_Helpers();
         $this->templateHelpers = new Vhmis_Collection_Helpers();
+        $this->helper = new ViewHelpers();
+
+        // Khởi tạo các helper
+        $this->helper->create('Escape');
+        $this->helper->createFromI18nOutput('Number');
+        $this->helper->createFromI18nOutput('DateTime');
+    }
+
+    /**
+     * Hàm lấy các đối tượng bổ trợ cho view thông qua phương thức __get
+     * Thứ tự ưu tiên là Helper ...
+     *
+     * @param string $name Tên đối tượng cần lấy
+     * @return
+     */
+    public function __get($name)
+    {
+        if(isset($this->helper->$name)) return $this->helper->$name;
+
+        return null;
     }
 
     /**
@@ -386,4 +415,3 @@ class Vhmis_View
         }
     }
 }
-?>

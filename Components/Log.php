@@ -1,5 +1,7 @@
 <?php
 
+use Vhmis\Config\Configure;
+
 /**
  * Log
  *
@@ -32,7 +34,7 @@ class Vhmis_Component_Log extends Vhmis_Component
     {
         // Kết nối CSDL
         $this->_db('System');
-        $db = Vhmis_Configure::get('DbSystem');
+        $db = Configure::get('DbSystem');
         $this->_dbLog = new Vhmis_Model_System_Log(array('db' => $db));
     }
 

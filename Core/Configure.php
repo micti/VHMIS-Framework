@@ -1,13 +1,13 @@
 <?php
 
-class Vhmis_Configure extends ArrayObject
+class Configure extends ArrayObject
 {
     private static $_configure = null;
 
     public static function getInstance()
     {
         if (self::$_configure === null) {
-             self::$_configure = new Vhmis_Configure();
+             self::$_configure = new Configure();
         }
 
         return self::$_configure;

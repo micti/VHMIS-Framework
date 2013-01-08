@@ -1,16 +1,18 @@
 <?php
 
+use Vhmis\Config\Configure;
+
 class Vhmis_Locale
 {
     public static function loadLocale($lang, $region = '')
     {
         $locale = $lang . ($region == '' ? '' : '_' . $region);
 
-        $data = Vhmis_Configure::get('Locale.' . $locale);
+        $data = Configure::get('Locale.' . $locale);
         if($data == null || $data == '' || $data === false)
         {
             include VHMIS_CORE_PATH . D_SPEC . 'Locale' . D_SPEC . 'Data' .  D_SPEC . $locale . '.php';
-            Vhmis_Configure::set('Locale.' . $locale, $localeData);
+            Configure::set('Locale.' . $locale, $localeData);
             return $localeData;
         }
         else
@@ -23,7 +25,7 @@ class Vhmis_Locale
     {
         if($lang == '' && $region == '')
         {
-            $locale = Vhmis_Configure::get('Locale');
+            $locale = Configure::get('Locale');
             $data = Vhmis_Locale::loadLocale($locale);
         }
         else
@@ -95,7 +97,7 @@ class Vhmis_Locale
     {
         if($lang == '' && $region == '')
         {
-            $locale = Vhmis_Configure::get('Locale');
+            $locale = Configure::get('Locale');
             $data = Vhmis_Locale::loadLocale($locale);
         }
         else
@@ -112,7 +114,7 @@ class Vhmis_Locale
     {
         if($lang == '' && $region == '')
         {
-            $locale = Vhmis_Configure::get('Locale');
+            $locale = Configure::get('Locale');
             $data = Vhmis_Locale::loadLocale($locale);
         }
         else

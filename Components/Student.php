@@ -1,5 +1,7 @@
 <?php
 
+use Vhmis\Config\Configure;
+
 /**
  * Student
  *
@@ -32,7 +34,7 @@ class Vhmis_Component_Student extends Vhmis_Component
         // Kết nối CSDL
         $this->_db('DbStudent');
 
-        $db = Vhmis_Configure::get('DbStudent');
+        $db = Configure::get('DbStudent');
         $this->_model = new Vhmis_Model_Student_Student(array('db' => $db));
     }
 

@@ -4,7 +4,7 @@
 error_reporting(E_ALL | E_NOTICE);
 
 // PHP 5.1 trở lên hổ trợ thời gian từ 1901 đến 2038 (32 bit t_time on system)
-$a = mktime(0, 0, 0, 1, 1, 1902);
+/*$a = mktime(0, 0, 0, 1, 1, 1902);
 $b = mktime(23, 59, 59, 12, 31, 2037);
 $c = mktime(0, 0, 0, 1, 1, 1970);
 $d = pow(2, 31);
@@ -37,13 +37,14 @@ echo '<br>';
 
 var_dump(date('l jS \of F Y h:i:s A', strtotime('2012-02-03 08:26:06 +07:00')));
 var_dump(date('l jS \of F Y h:i:s A', strtotime('2012-02-02 08:26:06 +08:00')));
-var_dump(date('l jS \of F Y h:i:s A', strtotime('2012-03-02 08:26:06 +07:00')));
+var_dump(date('l jS \of F Y h:i:s A', strtotime('2012-03-02 08:26:06 +07:00')));*/
 
 require '../Core/Date.php';
 require '../Core/Calendar.php';
 require '../Core/Benchmark.php';
+require '../CoreVer2/I18n/Output/DateTime.php';
 
-$mark = new Vhmis_Benchmark();
+/*$mark = new Vhmis_Benchmark();
 
 $mark->timer('a');
 $date = new Vhmis_Date();
@@ -138,4 +139,22 @@ var_dump($b);
 
 $calendar = new Vhmis_Calendar();
 
-print_r($calendar->datesOfMonth('05', '2012'));
+print_r($calendar->datesOfMonth('05', '2012'));*/
+
+$format = new Vhmis\I18n\Output\DateTime();
+$string = "2012-11-11";
+
+$format->setLocale('en_US');
+echo $format->dateByPattern($string, "{yMMM}");
+
+
+$a= \DateTime::createFromFormat('Y-m-d H:i:s', '2012-01-01 10:56:31');
+
+$formatter = new IntlDateFormatter(
+            'it',
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::FULL
+        );
+
+echo "\ndate: " . date('d-m-Y H:i:s', $a->getTimestamp()) . "\n";
+echo "formatter: " . $formatter->format($a->getTimestamp()) . "\n\n";
