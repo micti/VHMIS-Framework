@@ -13,4 +13,5 @@ Thư viện ngoài
 ==============
 
 * Zend_Db của ZEND
+* Doctrine của Symfony Project
 * PHPExcel của Microsoft
