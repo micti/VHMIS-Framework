@@ -114,4 +114,12 @@ class Router
     {
         return true;
     }
+
+    /**
+     * Lấy thông tin yêu cầu sau khi kiểm tra hợp lệ
+     */
+    public function getAppInfo()
+    {
+        return;
+    }
 }
