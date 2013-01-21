@@ -74,6 +74,11 @@ class Router
 
     }
 
+    public function setting()
+    {
+        
+    }
+
     /**
      * Khai báo route mặc định
      *
