@@ -80,7 +80,7 @@ class Router
      * @param array $defaultRoute
      * @return \Vhmis\Network\Router
      */
-    public function addDefaultRoute($defaultRoute)
+    public function defaultRoute($defaultRoute)
     {
         $this->_app = $defaultRoute['app'];
         $this->_language = $defaultRoute['lang'];
