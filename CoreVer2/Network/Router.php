@@ -9,7 +9,7 @@
  * @since      Vhmis v2.0
  */
 
-namespace Vhmis\Network\Router;
+namespace Vhmis\Network;
 
 use Vhmis\Config\Configure;
 
