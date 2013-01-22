@@ -21,7 +21,7 @@ namespace Vhmis\Network;
 class Route implements RouteInterface
 {
     /**
-     * Các thành phần hay trong 1 uri
+     * Các thành phần hay gặp trong 1 uri
      */
     const YEAR = '([12][0-9]{3})';
     const MONTH = '(0[1-9]|1[012])';
