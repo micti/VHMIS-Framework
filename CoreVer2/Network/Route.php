@@ -141,6 +141,7 @@ class Route implements RouteInterface
      * Thiết lập uri pattern
      *
      * @param string $pattern
+     * @return \Vhmis\Network\Route
      */
     public function setPattern($pattern)
     {
@@ -148,62 +149,81 @@ class Route implements RouteInterface
 
         // Tạo link regex khi có pattern
         $this->patternToRegex();
+
+        return $this;
     }
 
     /**
      * Thiết lập controller
      *
      * @param string $controller
+     * @return \Vhmis\Network\Route
      */
     public function setController($controller)
     {
         $this->_controller = $controller;
+
+        return $this;
     }
 
     /**
      * Thiết lập action
      *
      * @param string $action
+     * @return \Vhmis\Network\Route
      */
     public function setAction($action)
     {
         $this->_action = $action;
+
+        return $this;
     }
 
     /**
      * Thiết lập thông số
      *
      * @param array $params
+     * @return \Vhmis\Network\Route
      */
     public function setParams($params)
     {
         foreach ($params as $key => $value) {
             $this->_params[$key] = $value;
         }
+
+        return $this;
     }
 
     /**
      * Thiết lập chuyển hướng
      *
      * @param string $redirect
+     * @return \Vhmis\Network\Route
      */
     public function setRedirect($redirect)
     {
         $this->_redirect = $redirect;
+
+        return $this;
     }
 
     /**
      * Thiết lập dạng trả về
      *
      * @param string $output
+     * @return \Vhmis\Network\Route
      */
     public function setOutput($output)
     {
         $this->_output = $output;
+
+        return $this;
     }
 
     /**
      * Xóa hết các thuộc tính của 1 route
+     *
+     * @return \Vhmis\Network\Route
      */
     public function clear()
     {
@@ -215,6 +235,8 @@ class Route implements RouteInterface
         $this->_redirect = '';
         $this->_params = array();
         $this->_paramsInPattern = array();
+
+        return $this;
     }
 
     /**

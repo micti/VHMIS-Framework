@@ -24,7 +24,6 @@ interface RouteInterface
      * Khởi tạo một đối tượng mới
      *
      * @param array $params Thông số khởi tạo
-     *
      */
     public function __construct($params);
 
@@ -32,6 +31,7 @@ interface RouteInterface
      * Thiết lập uri pattern
      *
      * @param string $pattern
+     * @return \Vhmis\Network\RouteInterface
      */
     public function setPattern($pattern);
 
@@ -39,6 +39,7 @@ interface RouteInterface
      * Thiết lập controller
      *
      * @param string $controller
+     * @return \Vhmis\Network\RouteInterface
      */
     public function setController($controller);
 
@@ -46,6 +47,7 @@ interface RouteInterface
      * Thiết lập action
      *
      * @param string $action
+     * @return \Vhmis\Network\RouteInterface
      */
     public function setAction($action);
 
@@ -53,6 +55,7 @@ interface RouteInterface
      * Thiết lập thông số
      *
      * @param array $params
+     * @return \Vhmis\Network\RouteInterface
      */
     public function setParams($params);
 
@@ -60,6 +63,7 @@ interface RouteInterface
      * Thiết lập chuyển hướng
      *
      * @param string $redirect
+     * @return \Vhmis\Network\RouteInterface
      */
     public function setRedirect($redirect);
 
@@ -67,11 +71,14 @@ interface RouteInterface
      * Thiết lập dạng trả về
      *
      * @param string $output
+     * @return \Vhmis\Network\RouteInterface
      */
     public function setOutput($output);
 
     /**
      * Xóa hết các thuộc tính của 1 route
+     *
+     * @return \Vhmis\Network\RouteInterface
      */
     public function clear();
 
