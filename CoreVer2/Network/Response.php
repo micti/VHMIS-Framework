@@ -1,33 +1,25 @@
 <?php
+/**
+ * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ *
+ * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package    Vhmis_Network
+ * @since      Vhmis v2.0
+ */
+
+namespace Vhmis\Network;
 
 use Vhmis\Config\Configure;
 
 /**
- * Response
- *
- * PHP 5
- *
- * VHMIS(tm) : Viethan IT Management Information System
- * Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- *
- * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
- *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Core
- * @subpackage    Network
- * @since         1.0.0
- * @license       All rights reversed
- */
-
-/**
  * Class trả lại kết quả tới client
  *
- * @package       Core
- * @subpackage    Network
+ * @category   Vhmis
+ * @package    Vhmis_Network
  */
-class Vhmis_Network_Response
+class Response
 {
     /**
      * Gửi kết quả xử lý tới client
@@ -83,14 +75,12 @@ class Vhmis_Network_Response
     /**
      * Gửi nội dung trả về
      *
-     * @param string nội dung trả về
+     * @param string Nội dung trả về
      */
     protected function _sendContent($content = '')
     {
         $benmark = Configure::get('Benchmark');
         $body = str_replace('::::xxxxx-memory-xxxx::::', memory_get_usage(), $this->_body);
         echo str_replace('::::xxxxx-time-xxxx::::', $benmark->time('start', 'stop'), $body);
-        //echo $this->_body;
-        //echo 'bo nho : ' . memory_get_usage();
     }
 }

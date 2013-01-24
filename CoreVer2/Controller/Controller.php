@@ -1,32 +1,27 @@
 <?php
+/**
+ * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ *
+ * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package    Vhmis_Network
+ * @since      Vhmis v2.0
+ */
 
+namespace Vhmis\Controller;
+
+use Vhmis\Network;
 use Vhmis\Config\Configure;
+use Vhmis\Config\Config;
 
 /**
  * Controller
  *
- * Class điều khiển, dựa vào thông tin để gọi đúng theo yêu cầu request
- *
- * PHP 5
- *
- * VHMIS(tm) : Viethan IT Management Information System
- * Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- *
- * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
- *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Core
- * @subpackage    URI
- * @since         1.0.0
- * @license       All rights reversed
+ * @category   Vhmis
+ * @package    Vhmis_Controller
  */
-
-/**
- *
- */
-class Vhmis_Controller
+class Controller
 {
     /**
      * Thông tin Apps và Request (chủ yếu dùng khi chuyển qua đối tượng khác)
@@ -82,11 +77,6 @@ class Vhmis_Controller
      * Kiểu xuất ra
      */
     public $output;
-
-    /**
-     * Config
-     */
-    protected $_config;
 
     /**
      * Config
@@ -172,12 +162,13 @@ class Vhmis_Controller
     /**
      * Khởi tạo
      *
-     * @param Vhmis_Network_Request $request Đối tượng chứa các thông tin của request
-     * @param Vhmis_Network_Request $response Đối tượng thực hiện việc trả kết quả
+     * @param \Vhmis\Network\Request $request
+     * @param \Vhmis\Network\Response $response
      */
-    public function __construct(Vhmis_Network_Request $request, Vhmis_Network_Response $response)
+    public function __construct(Network\Request $request, Network\Response $response)
     {
-        $this->config = $this->_config = Configure::get('Config');
+        $this->config['global'] = Configure::get('ConfigGlobal');
+        $this->config['application'] = Configure::get('ConfigApplications');
 
         $this->request  = $request;
         $this->response = $response;
@@ -644,22 +635,5 @@ class Vhmis_Controller
     protected function _afterLoadView()
     {
         return true;
-    }
-
-    /**
-     * Lấy config của một app
-     *
-     * @param string $app Tên app
-     * @return array|null Config của app nếu có
-     */
-    protected function _loadAppConfig($app)
-    {
-        $config = ___loadAppConfig($app, false);
-        if($config != null)
-        {
-            return $config['apps']['info'][strtolower($app)];
-        }
-
-        return null;
     }
 }
