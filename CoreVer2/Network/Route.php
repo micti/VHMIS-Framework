@@ -187,8 +187,10 @@ class Route implements RouteInterface
      */
     public function setParams($params)
     {
-        foreach ($params as $key => $value) {
-            $this->_params[$key] = $value;
+        if (is_array($params)) {
+            foreach ($params as $key => $value) {
+                $this->_params[$key] = $value;
+            }
         }
 
         return $this;
