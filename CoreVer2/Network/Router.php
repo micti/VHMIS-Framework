@@ -11,6 +11,7 @@
 
 namespace Vhmis\Network;
 
+use Vhmis\Config\Config;
 use Vhmis\Config\Configure;
 
 /**
@@ -64,7 +65,7 @@ class Router
      *
      * @var boolean
      */
-    protected $_useAppName = true;
+    protected $_useApp = true;
 
     /**
      * Vị trí của yếu tố ngôn ngữ trong uri
@@ -81,6 +82,13 @@ class Router
     protected $_positionLanguage = 'beforeappname';
 
     /**
+     * Đường dẫn thư mục gốc web
+     *
+     * @var string
+     */
+    protected $_webPath = '';
+
+    /**
      * Đối tượng Route
      *
      * @var \Vhmis\Network\Route
@@ -93,17 +101,34 @@ class Router
     }
 
     /**
+     * Set đường dẫn web chứa trang index.php của hệ thống
+     *
+     * @param string $path
+     * @return \Vhmis\Network\Router
+     */
+    public function webPath($path)
+    {
+        $this->_webPath = $path;
+        return $this;
+    }
+
+    /**
      * Thiết lập các thông tin cơ bản
      *
      * @param bool $useApp Có sử dụng tên app hay không
      * @param bool $useLang Có sử dụng yếu tố ngôn ngữ hay không
      * @param string $positionLang Vị trí của yếu tố
+     * @return \Vhmis\Network\Router
      */
-    public function setting($useApp, $useLang, $positionLang)
+    public function setting($useApp, $useLang, $positionLang, $defaultApp, $defaultLanguage)
     {
-        $this->_useAppName = $useApp;
+        $this->_useApp = $useApp;
         $this->_useLanguage = $useLang;
         $this->_positionLanguage = $positionLang;
+        $this->_app = $defaultApp;
+        $this->_language = $defaultLanguage;
+
+        return $this;
     }
 
     /**
@@ -122,29 +147,6 @@ class Router
     }
 
     /**
-     * Thêm một route vào danh sách route
-     *
-     * <code>
-     *    $route = array(
-     *        'pattern' => 'blog/view/[id:postid].html',
-     *        'controller' => 'Blog',
-     *        'action' => 'View',
-     *        'params' => array(),
-     *        'output'   => 'html'
-     *    );
-     * </code>
-     *
-     * @param mixed $route
-     * @return \Vhmis\Network\Router
-     */
-    public function addRoute($route)
-    {
-        $this->_routes[] = $route;
-
-        return $this;
-    }
-
-    /**
      * Lây thông tin ứng với một địa chỉ bất kỳ
      *
      * @param string $uri
@@ -152,53 +154,86 @@ class Router
      */
     public function check($uri)
     {
-        $this->_language = '';
-        $this->_app = '';
+        $result = array('match' => false);
 
-        // Xóa ký hiệu / ở cuối nếu có
+        // Kiểm tra webpath trong $uri (thực ra là luôn có)
+        if ($uri . '/' === $this->_webPath) {
+            $uri = $this->_webPath;
+        }
+        $length = strlen($this->_webPath);
+        $found = strpos($uri, $this->_webPath);
+        if ($found !== 0) {
+            return $result;
+        }
+
+        // Xóa webpath trong uri
+        $uri = substr($uri, $length);
+
+        // Thêm ký hiệu / ở cuối nếu không có
         $length = strlen($uri);
-        if ($uri[$length - 1] == '/')
-            $uri = substr($uri, 0, $length - 1);
+        if ($uri[$length - 1] !== '/')
+            $uri .= '/';
 
         // Root
-        if ($uri == '')
+        if ($uri == '/')
             return $this->_homeRouteInfo;
 
         // Lấy thông tin app và ngôn ngữ yêu cầu
-        if ($this->_language && $this->_useAppName) {
+        if ($this->_useLanguage && $this->_useApp) {
             $uri = explode('/', $uri, 3);
+            if (count($uri) != 3)
+                return $result;
 
             $this->_language = $this->_positionLanguage === 'beforeappname' ? $uri[0] : $uri[1];
             $this->_app = $this->_positionLanguage === 'beforeappname' ? $uri[1] : $uri[0];
             $uri = $uri[2];
-        } else if ($this->_language) {
+        } else if ($this->_useLanguage) {
             $uri = explode('/', $uri, 2);
+            if (count($uri) != 2)
+                return $result;
 
             $this->_language = $uri[0];
             $uri = $uri[1];
-        } else if ($this->_useAppName) {
+        } else if ($this->_useApp) {
             $uri = explode('/', $uri, 2);
+            if (count($uri) != 2)
+                return $result;
 
             $this->_app = $uri[0];
             $uri = $uri[1];
         }
 
+        // Xóa ký tự / thừa ở cuối nếu có
+        $length = strlen($uri);
+        if ($length >= 1 && $uri[$length - 1] === '/')
+            $uri = substr($uri, 0, $length - 1);
+
+        // Kiểm tra ứng dụng
+        $appConfing = Configure::get('ConfigApplications', array());
+        if (!isset($appConfing['list']['name'][$this->_app])) {
+            return $result;
+        }
+
+        // TODO: Kiểm tra ngôn ngữ
+        // Load cấu hình route của ứng dụng
+        $routes = Config::appRoutes($this->_app);
+
         // Đối chiếu với các route, nếu khớp với route nào trước thì ứng với thông tin
         // của route đó
-        foreach($this->_routes as $route)
-        {
+        foreach ($routes as $route) {
             $this->_route->setPattern($route[0])->setController($route[1])->setAction($route[2])
                     ->setParams($route[3])->setOutput($route[4])->setRedirect($route[5]);
 
             $result = $this->_route->check($uri);
 
-            if($result['match'] === true)
-            {
+            if ($result['match'] === true) {
+                $result['app'] = $this->_app;
+                $result['language'] = $this->_language;
                 return $result;
             }
         }
 
         // Nếu không ứng với route nào thì gọi thông tin controller 404;
-        return array('match' => false);
+        return $result;
     }
 }
