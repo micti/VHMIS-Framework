@@ -26,6 +26,8 @@ class Boot
      */
     public function __construct()
     {
+        $this->ver1Legacy();
+        /*
         // Lấy config
         $configGlobal = Config\Config::system('Global');
         $configApp = Config\Config::system('Applications');
@@ -39,14 +41,79 @@ class Boot
         $this->_request = new Network\Request();
 
         $this->_router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['locale']['lang'])
-            ->homeRoute($configApp['indexAppInfo'])
-            ->webPath($configGlobal['site']['path']);
+                ->homeRoute($configApp['indexAppInfo'])
+                ->webPath($configGlobal['site']['path']);
 
         $this->_request->addRouter($this->_router);
 
         $this->_request->process();
 
-        echo $configGlobal['site']['path'] . ' -- ' .$this->_request->responeCode;
+        echo $configGlobal['site']['path'] . ' -- ' . $this->_request->responeCode;
         var_dump($this->_request->app);
+        */
+    }
+
+    public function ver1Legacy()
+    {
+        /**
+         * Cấu hình
+         */
+        $_config = ___loadConfig('Applications', false);
+        Config\Configure::set('Config', $_config);
+        $_config = ___loadConfig('Global', false);
+        Config\Configure::add('Config', $_config);
+
+        // Set timezone +7
+        \Vhmis_Date::setTimeZone($_config['timezone']['name']);
+
+        // Ngôn ngữ
+        Config\Configure::set('Locale', $_config['locale']['lang'] . '_' . $_config['locale']['region']);
+
+        /**
+         * Lấy uri, xử lý
+         */
+        $_vhmisRequest = new \Vhmis_Network_Request();
+        $_vhmisResponse = new \Vhmis_Network_Response();
+
+        if ($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404') {
+            $_vhmisView = new \Vhmis_View();
+            $_vhmisView->transferConfigData(Config\Configure::get('Config'));
+            ob_start();
+            $_vhmisView->renderError('4xx');
+            $content = ob_get_clean();
+
+            // need rewrite;
+            header('HTTP/1.1 404 Not Found');
+
+            $_vhmisResponse->body($content);
+            $_vhmisResponse->response();
+            exit();
+        }
+
+        /**
+         * Chuyển hướng
+         */
+        if (is_string($_vhmisRequest->app['info']['redirect']) && $_vhmisRequest->app['info']['redirect'] !== '') {
+            // To do : cần viết lại đoạn này
+
+            header('Location: ' . $_config['site']['path'] . $_vhmisRequest->app['info']['redirect']);
+            exit();
+        }
+
+        /**
+         * Gọi config của App
+         */
+        $_config = ___loadAppConfig($_vhmisRequest->app['url'], false);
+        Config\Configure::add('Config', $_config);
+
+        /**
+         * Gọi Controller
+         */
+        $_vhmisController = ___loadController($_vhmisRequest, $_vhmisResponse);
+
+        /**
+         * Thực thi chương trình
+         */
+        $_vhmisController->init();
     }
 }

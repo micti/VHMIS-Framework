@@ -35,7 +35,8 @@ define('VHMIS_VIEW_PATH', VHMIS_PATH . D_SPEC . 'View');
 define('VHMIS_COMP_PATH', VHMIS_PATH . D_SPEC . 'Components');
 define('VHMIS_SYS_PATH', VHMIS_PATH . D_SPEC . 'System' . D_SPEC . SYSTEM);
 define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . 'Apps');
-define('VHMIS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Config');
+define('VHMIS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Config'); // V1
+define('VHMIS_SYS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Configs'); // V2
 define('VHMIS_ZEND_F_PATH', VHMIS_LIBS_PATH . D_SPEC . 'Zend');
 define('VHMIS_DOCTRINE_PATH', '/WebServer');
 
@@ -58,65 +59,4 @@ $benmark = new Vhmis_Benchmark();
 $benmark->timer('start');
 Configure::set('Benchmark', $benmark);
 
-/**
- * Cấu hình
- */
-$_config = ___loadConfig('Applications', false);
-Configure::set('Config', $_config);
-$_config = ___loadConfig('Global', false);
-Configure::add('Config', $_config);
-
-// Set timezone +7
-Vhmis_Date::setTimeZone($_config['timezone']['name']);
-
-// Ngôn ngữ
-Configure::set('Locale', $_config['locale']['lang'] . '_' . $_config['locale']['region']);
-
-/**
- * Lấy uri, xử lý
- */
-$_vhmisRequest = new Vhmis_Network_Request();
-$_vhmisResponse = new Vhmis_Network_Response();
-
-if ($_vhmisRequest->responeCode == '403' || $_vhmisRequest->responeCode == '404')
-{
-    $_vhmisView = new Vhmis_View();
-    $_vhmisView->transferConfigData(Configure::get('Config'));
-    ob_start();
-    $_vhmisView->renderError('4xx');
-    $content = ob_get_clean();
-
-    // need rewrite;
-    header('HTTP/1.1 404 Not Found');
-
-    $_vhmisResponse->body($content);
-    $_vhmisResponse->response();
-    exit();
-}
-
-/**
- * Chuyển hướng
- */
-if(is_string($_vhmisRequest->app['info']['redirect']) && $_vhmisRequest->app['info']['redirect'] !== '')
-{
-    // To do : cần viết lại đoạn này
-
-    header('Location: ' . $_config['site']['path'] . $_vhmisRequest->app['info']['redirect']);
-    exit();
-}
-
-/**
- * Gọi config của App
- */
-$_config = ___loadAppConfig($_vhmisRequest->app['url'], false);
-Configure::add('Config', $_config);
-
-/**
- * Gọi Controller
- */
-$_vhmisController = ___loadController($_vhmisRequest, $_vhmisResponse);
-
-/**
- * Thực thi chương trình
- */
-$_vhmisController->init();
+new \Vhmis\Application\Boot();
