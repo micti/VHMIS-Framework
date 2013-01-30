@@ -35,8 +35,8 @@ prepare:
 framework:
 	@echo Framework is building ...
 	@cp -R ${FRA}/* ${BUILD}
-	@sed s:WEB_PATH:${URL}: ${BUILD}/www/.htaccess > ${WBUILD}/.htaccess
-	@sed s:BUILD:${BUILD}/: ${BUILD}/www/index.php > ${BUILD}/temp/index.php
+	@sed s:WEB_PATH:${URL}: ${BUILD}/www/htaccess.build > ${WBUILD}/.htaccess
+	@sed s:BUILD:${BUILD}/: ${BUILD}/www/index.build > ${BUILD}/temp/index.php
 	@sed s:SNAME:${SNAME}: ${BUILD}/temp/index.php > ${WBUILD}/index.php
 	@sed -e s:WEB_PATH:${URL}: ${BUILD}/www/old.html > ${WBUILD}/old.html
 
