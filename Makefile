@@ -21,12 +21,13 @@ ZEND = /WebServer/Zend
 ICNL = /WebServer/
 
 # Build chính
-build: prepare framework systems library clear
+build: prepare framework systems library clear makeconfig
 	@echo Build done
 
 # Chuẩn bị trước khi build
 prepare:
 	@echo Preparing ...
+	@mv ${WBUILD}/index.php ${WBUILD}/index.php.bak
 	@rm -rf ${BUILD}
 	@mkdir ${BUILD}
 	@mkdir ${BUILD}/temp
@@ -65,3 +66,8 @@ clear:
 	@rm -rf ${BUILD}/README
 	@rm -rf ${BUILD}/Makefile
 	@rm -rf ${BUILD}/Config
+
+makeconfig:
+	@for i in $(wildcard ${BUILD}/System/${SNAME}/Apps/*/Config/*.example); do \
+	mv $${i} `dirname $${i}`/`basename -s .example $${i}`.php; \
+	done;
