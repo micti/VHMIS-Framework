@@ -2,6 +2,7 @@
 
 abstract class Vhmis_Component
 {
+
     private $_controller;
 
     /**
@@ -18,7 +19,8 @@ abstract class Vhmis_Component
     /**
      * Function kết nối database
      *
-     * @param string $database Tên database
+     * @param string $database
+     *            Tên database
      */
     protected function _db($name)
     {

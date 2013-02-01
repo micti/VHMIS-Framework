@@ -12,38 +12,43 @@ use Vhmis\Config\Configure;
  * VHMIS(tm) : Viethan IT Management Information System
  * Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
  *
- * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
+ * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem
+ * file thông tin đi kèm
  *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Components
- * @subpackage    Auth
- * @since         1.0.0
- * @license       All rights reversed
+ * @copyright Copyright 2011, IT Center, Viethan IT College
+ *            (http://viethanit.edu.vn)
+ * @link https://github.com/VHIT/VHMIS VHMIS(tm) Project
+ * @category VHMIS
+ * @package Components
+ * @subpackage Auth
+ * @since 1.0.0
+ * @license All rights reversed
  */
-
 class Vhmis_Component_Auth extends Vhmis_Component
 {
+
     protected $_dbUser;
+
     protected $_user;
+
     protected $_session;
+
     protected $_appSecretKey;
 
     public function init()
     {
         // Kết nối CSDL
         $db = $this->_db('System');
-
+        
         $config = Configure::get('Config');
         $this->_appSecretKey = $config['security']['secret'];
-
+        
         $this->_dbUser = new Vhmis_Model_System_User(array('db' => $db));
-
+        
         // Session
         Zend_Session::start();
         $this->_session = new Zend_Session_Namespace('Auth');
-
+        
         // Thông tin người dùng
         $this->_user = $this->_findUserInfo();
     }
@@ -55,7 +60,8 @@ class Vhmis_Component_Auth extends Vhmis_Component
      */
     public function isLoggedIn()
     {
-        if($this->_user === null) return false;
+        if ($this->_user === null)
+            return false;
         return true;
     }
 
@@ -74,57 +80,54 @@ class Vhmis_Component_Auth extends Vhmis_Component
      */
     public function getUser()
     {
-        if($this->_user === null) return null;
-
-        // Mảng người dùng
+        if ($this->_user === null)
+            return null;
+            
+            // Mảng người dùng
         $user = $this->_dbUser->toArray($this->_user);
-
+        
         // TODO : có nên xóa dữ liệu nhạy cảm như password ...
-
+        
         return $user;
     }
 
     /**
      * Thực hiện đăng nhập
      *
-     * @param string $username Tên người dùng
-     * @param string $password Mật khẩu người dùng
-     * @return int 0 : Đăng nhập ko thành công, 1 : Đăng nhập thành công lần đầu qua webmail (có khởi tạo tài khoản), 2 Đăng nhập thành công
+     * @param string $username
+     *            Tên người dùng
+     * @param string $password
+     *            Mật khẩu người dùng
+     * @return int 0 : Đăng nhập ko thành công, 1 : Đăng nhập thành công lần đầu
+     *         qua webmail (có khởi tạo tài khoản), 2 Đăng nhập thành công
      */
     public function login($username, $password)
     {
         $user = $this->_dbUser->getUserByUsername($username);
-
-        //Kiểm tra nội bộ
+        
+        // Kiểm tra nội bộ
         $ok = false;
-        if($user != null)
-        {
+        if ($user != null) {
             $passwordHash = Vhmis_Utility_String::hash($password, $user->password_salt, $this->_appSecretKey);
-            if($passwordHash == $user->password)
-            {
+            if ($passwordHash == $user->password) {
                 $this->_session->username = $username;
                 $this->_session->password = $passwordHash;
                 return 2;
             }
-        }
-        else
-        {
+        } else {
             return 0;
         }
-
+        
         // Kiểm tra qua webmail
-        if($ok == false)
-        {
-            if($this->_webmailLogin($username, $password) != false)
-            {
+        if ($ok == false) {
+            if ($this->_webmailLogin($username, $password) != false) {
                 $passwordSalt = Vhmis_Utility_String::random('alnum', 20);
                 $password = Vhmis_Utility_String::hash($password, $passwordSalt, $this->_appSecretKey);
-
+                
                 $this->_session->username = $username;
                 $this->_session->password = $password;
-
-                if($user != null)
-                {
+                
+                if ($user != null) {
                     // Update trong hệ thống
                     $user->password_salt = $passwordSalt;
                     $user->password = $password;
@@ -133,7 +136,7 @@ class Vhmis_Component_Auth extends Vhmis_Component
                 }
             }
         }
-
+        
         return 0;
     }
 
@@ -149,40 +152,38 @@ class Vhmis_Component_Auth extends Vhmis_Component
     /**
      * Lấy thông tin của người dùng
      *
-     * @return mixed Nếu không có thì null, nếu có thì thông tin người dùng nằm trong đối tượng Row của Vhmis_Model_System_User
+     * @return mixed Nếu không có thì null, nếu có thì thông tin người dùng nằm
+     *         trong đối tượng Row của Vhmis_Model_System_User
      */
     public function _findUserInfo()
     {
-        if(!$this->_session->username || $this->_session->username === null) return null;
-        if(!$this->_session->password || $this->_session->password === null) return null;
-
+        if (! $this->_session->username || $this->_session->username === null)
+            return null;
+        if (! $this->_session->password || $this->_session->password === null)
+            return null;
+        
         return $this->_dbUser->getUserByLogin($this->_session->username, $this->_session->password);
     }
 
     /**
      * Login qua Webmail
      *
-     * @param string $user Username
-     * @param string $pass Password, không mã hóa
+     * @param string $user
+     *            Username
+     * @param string $pass
+     *            Password, không mã hóa
      * @return boolean Kết quả
      */
     protected function _webmailLogin($user, $pass)
     {
         $request = new Vhmis_Network_Http_Curl();
-        $request->setRequestInfo(
-            'http://mail.viethanit.edu.vn/zmail/jsp/Login.jsp',
-            'POST',
-            'http://mail.viethanit.edu.vn/zmail/jsp/LoginF.jsp?language=en',
-            'language_code=en&domain_idx=0&member_id=' . $user . '&password=' . $pass
-        );
+        $request->setRequestInfo('http://mail.viethanit.edu.vn/zmail/jsp/Login.jsp', 'POST', 'http://mail.viethanit.edu.vn/zmail/jsp/LoginF.jsp?language=en', 
+                'language_code=en&domain_idx=0&member_id=' . $user . '&password=' . $pass);
         $requestResult = $request->sendSimpleRequest();
-
-        if(strpos($requestResult, 'Login Check Error') === false)
-        {
+        
+        if (strpos($requestResult, 'Login Check Error') === false) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

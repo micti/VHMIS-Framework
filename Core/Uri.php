@@ -26,34 +26,47 @@
  */
 class Vhmis_Uri
 {
+
     protected $_protocol = 'http';
+
     protected $_domain = '';
+
     protected $_path = '';
+
     protected $_query = '';
+
     protected $_username = '';
+
     protected $_password = '';
+
     protected $_fragment = '';
+
     protected $_valid = false;
 
     /**
      * Khởi tạo
      *
-     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
-     **/
+     * @param string $uri
+     *            địa chỉ, phải bắt đầu bằng https hoặc http
+     *            
+     */
     public function __construct($uri = '')
     {
         // Nếu $uri là rỗng, thì xem như chỉ khởi tạo đối tượng
-        if($uri == '') return;
-
+        if ($uri == '')
+            return;
+        
         $this->_prase($uri);
     }
 
     /**
      * Khởi một đối tượng mới từ 1 địa chỉ
      *
-     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
+     * @param string $uri
+     *            địa chỉ, phải bắt đầu bằng https hoặc http
      * @return VHMIS_URI đối tượng được khởi tạo
-     **/
+     *        
+     */
     public function fromString($uri)
     {
         return Vhmis_Uri($uri);
@@ -62,28 +75,28 @@ class Vhmis_Uri
     /**
      * Phân tích địa chỉ thành các thành phần
      *
-     * @param string $uri địa chỉ
-     **/
+     * @param string $uri
+     *            địa chỉ
+     *            
+     */
     protected function _prase($uri)
     {
         // Phải bắt đầu bằng http hoặc https
         $scheme = explode(':', $uri, 2);
         $scheme = strtolower($scheme[0]);
-        if(in_array($scheme, array('http', 'https')) === false)
-        {
+        if (in_array($scheme, array('http', 'https')) === false) {
             $this->_valid = false;
             return;
         }
-
+        
         // Phân tích url
         $result = @parse_url($uri);
-
-        if($result === false)
-        {
+        
+        if ($result === false) {
             $this->_valid = false;
             return;
         }
-
+        
         $this->_protocol = isset($result['scheme']) ? $result['scheme'] : 'http';
         $this->_domain = isset($result['host']) ? $result['host'] : '';
         $this->_path = isset($result['path']) ? $result['path'] : '';
@@ -97,8 +110,10 @@ class Vhmis_Uri
     /**
      * Kiểm tra tính hợp lệ địa chỉ hiện thời của đối tượng
      *
-     * @return boolean TRUE nếu địa chỉ hiện thời đúng, FALSE nếu địa chỉ hiện thời sai
-     **/
+     * @return boolean TRUE nếu địa chỉ hiện thời đúng, FALSE nếu địa chỉ hiện
+     *         thời sai
+     *        
+     */
     public function valid()
     {
         return $this->_valid;
@@ -108,7 +123,8 @@ class Vhmis_Uri
      * Lấy protocol của địa chỉ hiện thời
      *
      * @return string
-     **/
+     *
+     */
     public function getProtocol()
     {
         return $this->_protocol;
@@ -118,7 +134,8 @@ class Vhmis_Uri
      * Lấy domain (ip) của địa chỉ hiện thời
      *
      * @return string
-     **/
+     *
+     */
     public function getDomain()
     {
         return $this->_domain;
@@ -128,7 +145,8 @@ class Vhmis_Uri
      * Lấy đường dẫn của địa chỉ hiện thời
      *
      * @return string
-     **/
+     *
+     */
     public function getPath()
     {
         return $this->_domain != '' ? $this->_path : false;
@@ -138,7 +156,8 @@ class Vhmis_Uri
      * Lấy query của địa chỉ hiện thời
      *
      * @return string
-     **/
+     *
+     */
     public function getQuery()
     {
         return $this->_query != '' ? $this->_query : false;
@@ -148,7 +167,8 @@ class Vhmis_Uri
      * Lấy fragment (neo) của địa chỉ hiện thời
      *
      * @return string
-     **/
+     *
+     */
     public function getFragment()
     {
         return $this->_fragment != '' ? $this->_fragment : false;
@@ -158,18 +178,16 @@ class Vhmis_Uri
      * Lấy địa chỉ hiện thời
      *
      * @return string
-     **/
+     *
+     */
     public function getURI()
     {
-        if(!$this->_valid) return '';
-
-        $uri = $this->_protocol . '://'
-             . (($this->_username != '' && $this->_password != '') ? $this->_username . ':' . $this->_password . '@' : '')
-             . $this->_domain
-             . $this->_path
-             . (($this->_query != '') ? '?' . $this->_query : '')
-             . (($this->_fragment != '') ? '#' . $this->_fragment : '');
-
+        if (! $this->_valid)
+            return '';
+        
+        $uri = $this->_protocol . '://' . (($this->_username != '' && $this->_password != '') ? $this->_username . ':' . $this->_password . '@' : '') . $this->_domain . $this->_path .
+                 (($this->_query != '') ? '?' . $this->_query : '') . (($this->_fragment != '') ? '#' . $this->_fragment : '');
+        
         return $uri;
     }
 }

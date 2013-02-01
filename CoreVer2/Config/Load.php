@@ -8,7 +8,6 @@
  * @package    Vhmis_Config
  * @since      Vhmis v2.0
  */
-
 namespace Vhmis\Config;
 
 /**
@@ -16,16 +15,18 @@ namespace Vhmis\Config;
  *
  * Hiện tại chỉ sử dụng với các các file config php dạng array
  *
- * @category   Vhmis
- * @package    Vhmis_Config
+ * @category Vhmis
+ * @package Vhmis_Config
  * @subpackage Load
  */
 class Load
 {
+
     /**
      * Load config chứa trong mảng ở file php
      *
-     * @param string $filename Đường dẫn file chứa thông tin config
+     * @param string $filename
+     *            Đường dẫn file chứa thông tin config
      * @return array
      */
     public static function filePhp($filename)
@@ -35,7 +36,7 @@ class Load
         } else {
             $config = null;
         }
-
+        
         return $config;
     }
 }

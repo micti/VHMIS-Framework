@@ -22,13 +22,15 @@
 /**
  * Lớp chứa các phương thức để thực việc upload file
  *
- * @category      VHMIS
- * @package       File
- * @subpackage    Upload
+ * @category VHMIS
+ * @package File
+ * @subpackage Upload
  */
 class Vhmis_File_Upload
 {
+
     protected $_options = array();
+
     protected $_result = array();
 
     public function __construct()
@@ -42,109 +44,100 @@ class Vhmis_File_Upload
 
     public function setMaxSize($byte)
     {
-        if(is_int($byte))
-        {
+        if (is_int($byte)) {
             $this->options['maxsize'] = $byte;
         }
-
+        
         return $this;
     }
 
     public function setAllowTypes($types, $deepCheck = true)
     {
-        if(is_array($types))
-        {
+        if (is_array($types)) {
             $this->options['allow_types'] = $types;
         }
-
-        if(is_bool($deepCheck))
-        {
+        
+        if (is_bool($deepCheck)) {
             $this->options['check_type'] = true;
         }
-
+        
         return $this;
     }
 
     /**
      * Thực hiện việc upload
      *
-     * @var array $name Đối tượng file được up lên ($_FILES[''], nếu sử dụng trong Controller của Vhmis thì $this->post->['_files'][])
+     * @var array $name Đối tượng file được up lên ($_FILES[''], nếu sử dụng
+     *      trong Controller của Vhmis thì $this->post->['_files'][])
      * @var string $filedir Thư mục up lên
-     * @var string $filename Tên file sau khi up, nếu để trống thì sẽ sử dụng tên mặc định của file được up
+     * @var string $filename Tên file sau khi up, nếu để trống thì sẽ sử dụng
+     *      tên mặc định của file được up
      * @var array $options Các thuộc tính
      */
     public function upload($name, $filedir, $filename = '')
     {
         // Reset lại thuộc tính chứa kết quả
         $this->_result = array();
-
+        
         // Kiểm tra thư mục upload
-        if(!$this->_checkFileDir($filedir))
-        {
+        if (! $this->_checkFileDir($filedir)) {
             $this->_result['uploaded'] = false;
             $this->_result['code'] = 12;
             $this->_result['message'] = 'Không thể upload vào thư mục ' . $filedir;
             return $this->_result;
         }
-
+        
         // Không thể upload
-        if(!is_uploaded_file($name['tmp_name']))
-        {
-            $error = (!isset($name['error'])) ? 4 : $name['error'];
-
+        if (! is_uploaded_file($name['tmp_name'])) {
+            $error = (! isset($name['error'])) ? 4 : $name['error'];
+            
             // To do : cần ghi cụ thể message lỗi dựa vào $error
             $this->_result['uploaded'] = false;
             $this->_result['code'] = $error;
             $this->_result['message'] = 'Không thể upload file';
-
+            
             return $this->_result;
         }
-
+        
         // Lấy tên file
         $filename_client = $this->_cleanFileName($name['name']);
-        if($filename == '')
-        {
+        if ($filename == '') {
             $filename = $filename_client;
         }
-
-        // Lấy ext của file, trong trường hợp tên file đưa vào không có ext thì lấy ext của tên file từ client
-        if(strpos($filename, '.') === false)
-        {
+        
+        // Lấy ext của file, trong trường hợp tên file đưa vào không có ext thì
+        // lấy ext của tên file từ client
+        if (strpos($filename, '.') === false) {
             $fileext = explode('.', $filename_client);
             $fileext = end($fileext);
             $filename .= '.' . $fileext;
-        }
-        else
-        {
+        } else {
             $fileext = explode('.', $filename);
             $fileext = end($fileext);
         }
-
+        
         $filesize = $name['size'];
-
+        
         // Kiểm tra kích thước file
-        if($this->options['maxsize'] != 0)
-        {
-            if($filesize > $this->options['maxsize'])
-            {
+        if ($this->options['maxsize'] != 0) {
+            if ($filesize > $this->options['maxsize']) {
                 $this->_result['uploaded'] = false;
                 $this->_result['code'] = 2;
                 $this->_result['message'] = 'Kích thước file không được vượt quá ' . $this->options['maxsize'];
-
+                
                 return $this->_result;
             }
         }
-
+        
         // Kiểm tra xem đã tồn tại file tại thư mục upload chưa
-        if(file_exists($filedir . D_SPEC . $filename))
-        {
+        if (file_exists($filedir . D_SPEC . $filename)) {
             // to do : generation thêm uuid cho chắc chắn
             $filename = time() . '_' . $filename;
         }
-
+        
         // File type
         $filetype = $this->_getFileType($name);
-
+        
         // Set thông tin
         $this->_result['file_name'] = $filename;
         $this->_result['file_path'] = $filedir;
@@ -152,37 +145,30 @@ class Vhmis_File_Upload
         $this->_result['file_ext'] = $fileext;
         $this->_result['file_type'] = $filetype;
         $this->_result['file_size'] = $filesize;
-
+        
         // Kiểm tra file type
-        if(!$this->_checkFileType($fileext, $filetype, $this->options['check_type']))
-        {
+        if (! $this->_checkFileType($fileext, $filetype, $this->options['check_type'])) {
             $this->_result['uploaded'] = false;
             $this->_result['code'] = 8;
             $this->_result['message'] = 'File type không hợp lệ';
             return $this->_result;
         }
-
+        
         // Không upload được
-        if(!@move_uploaded_file($name['tmp_name'], $this->_result['file_full_path']))
-        {
+        if (! @move_uploaded_file($name['tmp_name'], $this->_result['file_full_path'])) {
             $this->_result['uploaded'] = false;
             $this->_result['code'] = 20;
             $this->_result['message'] = 'Upload không thành công';
             return $this->_result;
         }
-
+        
         // Kiểm tra file ảnh
-        if(in_array($filetype, array('image/gif', 'image/jpeg', 'image/png', /*additional type*/ 'image/jpg', 'image/jpe', 'image/pjpeg', 'img/x-png')))
-        {
-            if($size = getimagesize($this->_result['file_full_path']))
-            {
-                $this->_result['file_image'] = array(
-                    'w' => $size[0],
-                    'h' => $size[1]
-                );
+        if (in_array($filetype, array('image/gif', 'image/jpeg', 'image/png', /*additional type*/ 'image/jpg', 'image/jpe', 'image/pjpeg', 'img/x-png'))) {
+            if ($size = getimagesize($this->_result['file_full_path'])) {
+                $this->_result['file_image'] = array('w' => $size[0], 'h' => $size[1]);
             }
         }
-
+        
         $this->_result['uploaded'] = true;
         $this->_result['code'] = 0;
         $this->_result['message'] = 'Upload thành công';
@@ -191,16 +177,14 @@ class Vhmis_File_Upload
 
     protected function _checkFileDir($filedir)
     {
-        if(!@is_dir($filedir))
-        {
+        if (! @is_dir($filedir)) {
             return false;
         }
-
-        if(!is_writable($filedir))
-        {
+        
+        if (! is_writable($filedir)) {
             return false;
         }
-
+        
         return true;
     }
 
@@ -214,44 +198,38 @@ class Vhmis_File_Upload
      */
     protected function _checkFileType($ext, $type, $checkmine = true)
     {
-        if($this->options['allow_types'] == '*') return true;
-
-        if(!is_array($this->options['allow_types']) || count($this->options['allow_types']) == 0)
-        {
+        if ($this->options['allow_types'] == '*')
+            return true;
+        
+        if (! is_array($this->options['allow_types']) || count($this->options['allow_types']) == 0) {
             return false;
         }
-
+        
         $ext = strtolower($ext);
         $type = strtolower($type);
-
-        if(!in_array(strtolower($ext), $this->options['allow_types']))
-        {
+        
+        if (! in_array(strtolower($ext), $this->options['allow_types'])) {
             return false;
         }
-
-        if($checkmine == true && is_array($this->options['file_types']))
-        {
-            if(!isset($this->options['file_types'][$ext]))
-            {
+        
+        if ($checkmine == true && is_array($this->options['file_types'])) {
+            if (! isset($this->options['file_types'][$ext])) {
                 return false;
             }
-
-            if(is_string($this->options['file_types'][$ext]) && $this->options['file_types'][$ext] == $type)
-            {
+            
+            if (is_string($this->options['file_types'][$ext]) && $this->options['file_types'][$ext] == $type) {
                 return true;
             }
-
-            if(is_array($this->options['file_types'][$ext]) && in_array($type, $this->options['file_types'][$ext]))
-            {
+            
+            if (is_array($this->options['file_types'][$ext]) && in_array($type, $this->options['file_types'][$ext])) {
                 return true;
             }
-
+            
             return false;
         }
-
+        
         return true;
     }
-
 
     /**
      * Lấy file type
@@ -261,12 +239,11 @@ class Vhmis_File_Upload
      */
     protected function _getFileType($file)
     {
-        if(function_exists('mime_content_type'))
-		{
-			return @mime_content_type($file['tmp_name']);
-		}
-
-		return $file['type'];
+        if (function_exists('mime_content_type')) {
+            return @mime_content_type($file['tmp_name']);
+        }
+        
+        return $file['type'];
     }
 
     /**
@@ -279,47 +256,31 @@ class Vhmis_File_Upload
     protected function _cleanFileName($filename, $removespace = true)
     {
         // Ký tự không nên có trong filename
-        $bad = array(
-            "<!--",
-            "-->",
-            "'",
-            "<",
-            ">",
-            '"',
-            '&',
-            '$',
-            '=',
-            ';',
-            '?',
-            '/',
-            "%22", // <
-            "%3c", // <
-            "%253c", // <
-            "%3e", // >
-            "%0e", // >
-            "%28", // (
-            "%29", // )
-            "%2528", // (
-            "%26", // &
-            "%24", // $
-            "%3f", // ?
-            "%3b", // ;
-            "%3d" // =
-        );
-
+        $bad = array("<!--", "-->", "'", "<", ">", '"', '&', '$', '=', ';', '?', '/', "%22",         // <
+        "%3c",         // <
+        "%253c",         // <
+        "%3e",         // >
+        "%0e",         // >
+        "%28",         // (
+        "%29",         // )
+        "%2528",         // (
+        "%26",         // &
+        "%24",         // $
+        "%3f",         // ?
+        "%3b",         // ;
+        "%3d")        // =
+        ;
+        
         // Mã khoảng trắng
-        $space = array(
-            "%20"
-        );
-
+        $space = array("%20");
+        
         $filename = str_replace($bad, '', $filename);
         $filename = str_replace($space, ' ', $filename);
-
-        if($removespace)
-        {
-			$filename = preg_replace('/\s+/u', '_', $filename);
+        
+        if ($removespace) {
+            $filename = preg_replace('/\s+/u', '_', $filename);
         }
-
+        
         return $filename;
     }
 }

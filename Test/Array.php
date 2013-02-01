@@ -1,12 +1,6 @@
 <?php
 
-
-$a = array(
-    'anh' => array(
-        'hai' => 1,
-        'ba' => 1,
-    )
-);
+$a = array('anh' => array('hai' => 1, 'ba' => 1));
 
 var_dump(isset($a['anh']['tu']));
 

@@ -8,24 +8,25 @@
  * @package    Vhmis_DateTime
  * @since      Vhmis v2.0
  */
-
 namespace Vhmis\DateTime;
 
 /**
  * Class để xử lý ngày giờ, được mở rộng từ class DateTime của PHP
  *
- * @category   Vhmis
- * @package    Vhmis_DateTime
+ * @category Vhmis
+ * @package Vhmis_DateTime
  * @subpackage DateTime
  */
 class DateTime extends \DateTime
 {
+
     /**
      * Các class static trả về DateTime cần viết lại để trả về đúng class mới
-     * sử dụng new static() để tránh luôn chuyện này xảy ra nếu tiếp tục extends từ class mới
+     * sử dụng new static() để tránh luôn chuyện này xảy ra nếu tiếp tục extends
+     * từ class mới
      *
-     * @param type $format
-     * @param type $time
+     * @param type $format            
+     * @param type $time            
      * @return DateTime
      */
     static public function createFromFormat($format, $time)
@@ -41,7 +42,9 @@ class DateTime extends \DateTime
     /**
      * Trả thời gian về định dạng ISO, sử dụng trong MYSQL
      *
-     * @param int $type Kiểu tra về 2 Đúng nguyên định dạng ISO8601 1 Dạng yyyy-mm-dd hh:mm:ss 0 Dạng yyyy-mm-dd
+     * @param int $type
+     *            Kiểu tra về 2 Đúng nguyên định dạng ISO8601 1 Dạng yyyy-mm-dd
+     *            hh:mm:ss 0 Dạng yyyy-mm-dd
      * @return string
      */
     public function formatISO($type = 2)
@@ -59,12 +62,16 @@ class DateTime extends \DateTime
      * Hàm thêm / giảm số tháng vào ngày hiện tại
      *
      * Ở đây có 2 trường hợp:
-     * - Thêm tháng dựa theo số ngày trong tháng, cách thêm này tương tự như hàm modify,add,sub
-     *   khi đó tham số thứ 2 nhận giá trị false
-     * - Thêm tháng chỉ dựa vào tháng hiện tại, khi đó tham số thứ 2 nhận giá trị true
+     * - Thêm tháng dựa theo số ngày trong tháng, cách thêm này tương tự như hàm
+     * modify,add,sub
+     * khi đó tham số thứ 2 nhận giá trị false
+     * - Thêm tháng chỉ dựa vào tháng hiện tại, khi đó tham số thứ 2 nhận giá
+     * trị true
      *
-     * @param int $month Số lượng tháng cần thêm vào (sử dụng số âm nếu muốn giảm đi)
-     * @param bool $fix Sử dụng giá trị true nếu chỉ muốn dựa vào tháng để tính toán
+     * @param int $month
+     *            Số lượng tháng cần thêm vào (sử dụng số âm nếu muốn giảm đi)
+     * @param bool $fix
+     *            Sử dụng giá trị true nếu chỉ muốn dựa vào tháng để tính toán
      * @return DateTime
      */
     public function addMonth($month, $fix = true)
@@ -74,20 +81,20 @@ class DateTime extends \DateTime
             $nowmonth = (int) $this->format('m');
             $nowyear = (int) $this->format('Y');
             $nowday = (int) $this->format('d');
-
+            
             // Sử dụng 0-11 để biểu diễn tháng
-            $nowmonth--;
-
+            $nowmonth --;
+            
             // Tính toán tháng mới, năm mới
             $totalmonth = $nowmonth + $nowyear * 12 + $month;
             $nowmonth = $totalmonth % 12 + 1; // + 1 để trả lại tháng 1-12
             $nowyear = $totalmonth / 12; // Số nguyên
-
+            
             $this->setDate($nowyear, $nowmonth, $nowday);
         } else {
             $this->modify($month . ' months');
         }
-
+        
         return $this;
     }
 
@@ -123,7 +130,8 @@ class DateTime extends \DateTime
 
     /**
      * Viết lại phương thức getTimestamp
-     * Trong một số trường hợp phương thức getTimestamp trả về false thay vì số âm
+     * Trong một số trường hợp phương thức getTimestamp trả về false thay vì số
+     * âm
      *
      * @return int
      */
@@ -135,15 +143,15 @@ class DateTime extends \DateTime
     /**
      * Tương tự như phương thức modify nhưng trả về đối tượng DateTime mới
      *
-     * @param string $modify
+     * @param string $modify            
      * @return DateTime
      */
     public function getModifiedDate($modify)
     {
         $new = clone $this;
-
+        
         $new->modify($modify);
-
+        
         return $new;
     }
 

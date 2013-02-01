@@ -2,6 +2,7 @@
 
 class Vhmis_View_Helper_Text
 {
+
     protected $_filter;
 
     public function __construct()
@@ -13,7 +14,7 @@ class Vhmis_View_Helper_Text
     {
         $text = str_replace('[b]', '<b>', $text);
         $text = str_replace('[/b]', '</b>', $text);
-
+        
         return $text;
     }
 

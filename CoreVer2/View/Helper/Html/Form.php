@@ -1,5 +1,4 @@
 <?php
-
 namespace Vhmis\View\Helper\Html;
 
 /**
@@ -7,14 +6,8 @@ namespace Vhmis\View\Helper\Html;
  */
 class Form extends HtmlAbstract
 {
-    protected $_normalAttributes = array(
-        'method' => 'get',
-        'id' => '',
-        'class' => '',
-        'target' => '',
-        'action' => '',
-        'name' => '',
-    );
+
+    protected $_normalAttributes = array('method' => 'get', 'id' => '', 'class' => '', 'target' => '', 'action' => '', 'name' => '');
 
     public function __invoke($attributes)
     {
@@ -23,7 +16,7 @@ class Form extends HtmlAbstract
 
     public function open($attributes)
     {
-       return '<form ' . $this->_attribute($attributes) . '>';
+        return '<form ' . $this->_attribute($attributes) . '>';
     }
 
     public function close()

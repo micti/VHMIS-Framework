@@ -1,7 +1,5 @@
 <?php
-
 namespace Vhmis\View\Helper;
-
 use Vhmis\Text\Escaper;
 
 /**
@@ -10,7 +8,8 @@ use Vhmis\Text\Escaper;
  * @package Vhmis_View
  * @subpackage Helper
  */
-class Escape {
+class Escape
+{
 
     /**
      * Đối tượng Escaper

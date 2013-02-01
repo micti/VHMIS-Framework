@@ -26,31 +26,33 @@
  */
 class Vhmis_Uri_Analyze
 {
+
     protected $_uriPattern;
+
     /**
      * Khởi tạo
      *
-     * @param string $link URI yêu cầu
-     * @param string $sitePath Đường dẫn của site
-     * @param array $indexAppInfo Thông tin ứng dụng ứng với trang chủ
+     * @param string $link
+     *            URI yêu cầu
+     * @param string $sitePath
+     *            Đường dẫn của site
+     * @param array $indexAppInfo
+     *            Thông tin ứng dụng ứng với trang chủ
      */
     public function __construct($link, $sitePath, $indexAppInfo)
     {
         $this->_link = $link;
-
+        
         // Xóa địa chỉ thực
         $link = explode($sitePath, $this->_link, 2);
-        $this->_link = (!isset($link[1])) ? '' : $link[1];
-
+        $this->_link = (! isset($link[1])) ? '' : $link[1];
+        
         $this->_uriPattern = new Vhmis_Uri_Pattern();
-
+        
         // Lấy thông tin của request
-        if($this->_link == '')
-        {
+        if ($this->_link == '') {
             $this->_appInfo = $indexAppInfo;
-        }
-        else
-        {
+        } else {
             $this->_appInfo = $this->_analyze();
         }
     }
@@ -59,37 +61,33 @@ class Vhmis_Uri_Analyze
     {
         // Tách app và link của app
         $app = explode('/', $this->_link, 2);
-        $appLink = isset($app[1]) ? $app[1] : ''; // Trường hợp trang chủ của app, http://domain/path/app
+        $appLink = isset($app[1]) ? $app[1] : ''; // Trường hợp trang chủ của
+                                                  // app, http://domain/path/app
         $appUrlName = $app[0];
-
+        
         // Kiểm tra app
         $app = ___checkApp($appUrlName);
-
-        if($app === false)
-        {
+        
+        if ($app === false) {
             return false;
         }
-
+        
         $config = ___loadAppConfig($appUrlName, false);
-
+        
         // Kiểm tra link của app
         $appLinkInfo['valid'] = false;
-
-        foreach($config['apps']['info'][$appUrlName]['patterns'] as $pattern)
-        {
+        
+        foreach ($config['apps']['info'][$appUrlName]['patterns'] as $pattern) {
             $this->_uriPattern->setPatternInfo($pattern);
             $appLinkInfo = $this->_uriPattern->validateURI($appLink);
-            if($appLinkInfo['valid'] === true) break;
+            if ($appLinkInfo['valid'] === true)
+                break;
         }
-
-        if($appLinkInfo['valid'] === false) return false;
-        else
-        {
-            return array(
-                'app'    => $app,
-                'url' => $appUrlName,
-                'info'   => $appLinkInfo
-            );
+        
+        if ($appLinkInfo['valid'] === false)
+            return false;
+        else {
+            return array('app' => $app, 'url' => $appUrlName, 'info' => $appLinkInfo);
         }
     }
 

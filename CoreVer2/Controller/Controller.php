@@ -8,9 +8,7 @@
  * @package    Vhmis_Network
  * @since      Vhmis v2.0
  */
-
 namespace Vhmis\Controller;
-
 use Vhmis\Network;
 use Vhmis\Config\Configure;
 use Vhmis\Config\Config;
@@ -18,11 +16,12 @@ use Vhmis\Config\Config;
 /**
  * Controller
  *
- * @category   Vhmis
- * @package    Vhmis_Controller
+ * @category Vhmis
+ * @package Vhmis_Controller
  */
 class Controller
 {
+
     /**
      * Thông tin Apps và Request (chủ yếu dùng khi chuyển qua đối tượng khác)
      */
@@ -34,7 +33,8 @@ class Controller
     public $app;
 
     /**
-     * Tên url cua app (dung de lam dia chi, dat ten bien ...)
+     * Tên url cua app (dung de lam dia chi, dat ten bien .
+     * ..)
      */
     public $appUrl;
 
@@ -162,92 +162,79 @@ class Controller
     /**
      * Khởi tạo
      *
-     * @param \Vhmis\Network\Request $request
-     * @param \Vhmis\Network\Response $response
+     * @param \Vhmis\Network\Request $request            
+     * @param \Vhmis\Network\Response $response            
      */
     public function __construct(Network\Request $request, Network\Response $response)
     {
         $this->config['global'] = Configure::get('ConfigGlobal');
         $this->config['application'] = Configure::get('ConfigApplications');
-
-        $this->request  = $request;
+        
+        $this->request = $request;
         $this->response = $response;
-
+        
         $this->appInfo = $request->app;
-        $this->app     = $this->appInfo['app'];
-        $this->appUrl  = $this->appInfo['url'];
-
-        $this->action     = $this->_action = $this->appInfo['info']['action'];
-        $this->params     = $this->_params = $this->appInfo['info']['params'];
-        $this->output     = $this->_output = $this->appInfo['info']['output'];
+        $this->app = $this->appInfo['app'];
+        $this->appUrl = $this->appInfo['url'];
+        
+        $this->action = $this->_action = $this->appInfo['info']['action'];
+        $this->params = $this->_params = $this->appInfo['info']['params'];
+        $this->output = $this->_output = $this->appInfo['info']['output'];
         $this->controller = $this->_controller = $this->appInfo['info']['controller'];
-
+        
         $this->_resources = isset($this->_config['apps']['info'][$this->appUrl]['resources']) ? $this->_config['apps']['info'][$this->appUrl]['resources'] : null;
-
+        
         $this->models = new Vhmis_Collection_Models();
         $this->shares = new Vhmis_Collection_Shares();
-
+        
         // Gọi các components
-        if(is_array($this->_components))
-        {
+        if (is_array($this->_components)) {
             $this->components = new Vhmis_Collection_Components();
-            foreach($this->_components as $comp)
-            {
+            foreach ($this->_components as $comp) {
                 $class = 'Vhmis_Component_' . $comp;
                 $this->components->load($comp, $this);
             }
         }
-
-        if($this->components->auth !== null)
-        {
+        
+        if ($this->components->auth !== null) {
             $this->user = $this->components->auth->getUser();
         }
-
+        
         // Kiểm tra login nếu cần thiết
-        if($this->_loginFirst === true || in_array($this->_action, $this->_actionLoginFirst))
-        {
-            if($this->user === null)
-            {
-                if($this->output != 'html')
-                {
+        if ($this->_loginFirst === true || in_array($this->_action, $this->_actionLoginFirst)) {
+            if ($this->user === null) {
+                if ($this->output != 'html') {
                     $this->set('text', VHMIS_ERROR_LOGINSESSION);
                     $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_LOGINSESSION, 'message' => 'Login first or Session expired'));
                     $this->view();
                     return;
                 }
-
+                
                 // Chuyển hướng đến trang login
                 $this->redirect($this->_config['site']['path'] . $this->_config['apps']['login-url']);
             }
         }
-
+        
         // ACL
-        if($this->components->acl !== null)
-        {
-            if($this->_resources !== null)
-            {
-                foreach($this->_resources as $resourceName => $resourceInfo)
-                {
+        if ($this->components->acl !== null) {
+            if ($this->_resources !== null) {
+                foreach ($this->_resources as $resourceName => $resourceInfo) {
                     $this->components->acl->addResource($this->appUrl, $resourceName);
                 }
             }
-
-            if($this->user !== null)
-            {
+            
+            if ($this->user !== null) {
                 $this->components->acl->addUser($this->user['id']);
-
-                if($this->user['groups'] != null)
-                {
-                    foreach($this->user['groups'] as $group)
-                    {
+                
+                if ($this->user['groups'] != null) {
+                    foreach ($this->user['groups'] as $group) {
                         $this->components->acl->addGroup($group);
                     }
                 }
-
+                
                 // Theo phòng ban
-                if(isset($this->user['hrm_id_department']) && $this->user['hrm_id_department'] != 0)
-                {
-                   $this->components->acl->addDepartment($this->user['hrm_id_department']);
+                if (isset($this->user['hrm_id_department']) && $this->user['hrm_id_department'] != 0) {
+                    $this->components->acl->addDepartment($this->user['hrm_id_department']);
                 }
             }
         }
@@ -259,22 +246,18 @@ class Controller
     public function init()
     {
         $action = 'action' . $this->_action;
-
-        if(method_exists($this, $action))
-        {
+        
+        if (method_exists($this, $action)) {
             // Load các model
             $this->_loadModels();
-
+            
             // Load các share
             $this->_loadShares();
-
-
+            
             $this->_beforeInit();
             $this->$action();
             $this->_afterInit();
-        }
-        else
-        {
+        } else {
             echo 'Không tìm thấy action ' . $this->_action . ' . Xây dựng phương thức : ' . $action;
             exit();
         }
@@ -283,7 +266,8 @@ class Controller
     /**
      * Chuyển hướng
      *
-     * @param string $url Địa chỉ cần chuyển hướng
+     * @param string $url
+     *            Địa chỉ cần chuyển hướng
      */
     public function redirect($url)
     {
@@ -294,8 +278,10 @@ class Controller
     /**
      * Thiết lập dữ liệu để truyền sang view
      *
-     * @param string Tên dữ liệu
-     * @param mixed Dữ liệu
+     * @param
+     *            string Tên dữ liệu
+     * @param
+     *            mixed Dữ liệu
      */
     public function set($name, $data)
     {
@@ -304,29 +290,30 @@ class Controller
 
     /**
      * Gọi view
-     *
      */
     public function view($view = '', $layout = '', $template = '')
     {
-        if($layout == '') $layout = $this->_viewLayout;
-        if($template == '') $template = $this->_viewTemplate;
-
-        // Khởi tạo lớp Vhmis_View và thiết lập những thông tin cần thiết
+        if ($layout == '')
+            $layout = $this->_viewLayout;
+        if ($template == '')
+            $template = $this->_viewTemplate;
+            
+            // Khởi tạo lớp Vhmis_View và thiết lập những thông tin cần thiết
         $this->View = new Vhmis_View();
         $this->View->setViewInfo($view, $layout, $template);
         $this->View->transferViewData($this->_data);
         $this->View->transferControllerData(array('app' => $this->appInfo, 'user' => $this->user));
         $this->View->transferConfigData($this->_config);
-
+        
         // Lấy view
         ob_start();
         $this->View->render();
         $content = ob_get_clean();
-
+        
         // Trả kết quả view thông qua đối tượng response
         $this->response->body($content);
         $this->response->response();
-
+        
         // ?
         exit();
     }
@@ -337,7 +324,7 @@ class Controller
         $this->set('message', $message);
         $this->set('time', $time);
         $this->set('url', $url);
-
+        
         $this->view(false, $layout, $template);
     }
 
@@ -350,12 +337,12 @@ class Controller
         $this->View = new Vhmis_View();
         $this->View->transferViewData($this->_data);
         $this->View->transferConfigData($this->_config);
-
+        
         // Lấy view
         ob_start();
         $this->View->renderError($layout);
         $content = ob_get_clean();
-
+        
         // Trả kết quả view thông qua đối tượng response
         $this->response->body($content);
         $this->response->response();
@@ -371,17 +358,16 @@ class Controller
      */
     public function viewDbError($title = '', $message = '', $layout = 'Db')
     {
-        if($this->output != 'html')
-        {
+        if ($this->output != 'html') {
             $this->set('text', VHMIS_ERROR_DATABASE);
             $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_DATABASE, 'message' => 'Db Connection Error'));
             $this->view();
             return;
         }
-
+        
         $this->set('title', 'Kết nối DB bị lỗi');
         $this->set('message', 'Hiện tại kết nối tới CSDL đang gặp lỗi, vui lòng chờ một lát rồi hãy thử lại.');
-
+        
         $this->viewError($layout);
     }
 
@@ -396,15 +382,14 @@ class Controller
     {
         $this->set('title', 'Yêu cầu bị từ chối');
         $this->set('message', 'Bạn không có quyền thực hiện việc này');
-
-        if($this->output != 'html')
-        {
+        
+        if ($this->output != 'html') {
             $this->set('text', VHMIS_ERROR_NOTPERMISSION);
             $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_NOTPERMISSION, 'message' => 'You Do Not Have Permission'));
             $this->view();
             return;
         }
-
+        
         $this->viewError($layout);
     }
 
@@ -418,12 +403,11 @@ class Controller
     public function download($path, $filename = '', $filetype = null)
     {
         // Nếu filename rỗng, thử lầy filename và path trong path
-        if($filename == '')
-        {
+        if ($filename == '') {
             $filename = basename($path);
             $path = dirname($path);
         }
-
+        
         $this->response->download($path, $filename, $filetype);
     }
 
@@ -437,8 +421,9 @@ class Controller
     public function isAllow($action, $resource)
     {
         // Nếu kô có 2 thành phần auth với acl thì kô có quyền
-        if($this->components->auth === null || $this->components->acl === null) return false;
-
+        if ($this->components->auth === null || $this->components->acl === null)
+            return false;
+        
         return $this->components->acl->isAllow($this->user, $this->appUrl, $action, $resource);
     }
 
@@ -450,25 +435,26 @@ class Controller
      */
     public function checkAllow($action, $resource)
     {
-        if(!$this->isAllow($action, $resource)) $this->viewPermissionError();
+        if (! $this->isAllow($action, $resource))
+            $this->viewPermissionError();
     }
 
     /**
-     * Kiểm tra tồn tại của các biến post (kiểm tra form submit với method post có đúng và đủ các trường không)
+     * Kiểm tra tồn tại của các biến post (kiểm tra form submit với method post
+     * có đúng và đủ các trường không)
      *
      * @var array $index Tên các biến post cần kiểm tra
-     * @return boolean True nếu tất cả tồn tài, false nếu có 1 biến không tồn tại
+     * @return boolean True nếu tất cả tồn tài, false nếu có 1 biến không tồn
+     *         tại
      */
     protected function _checkPostData($index)
     {
-        foreach($index as $name)
-        {
-            if(!isset($this->request->post[$name]))
-            {
+        foreach ($index as $name) {
+            if (! isset($this->request->post[$name])) {
                 return false;
             }
         }
-
+        
         return true;
     }
 
@@ -477,10 +463,8 @@ class Controller
      */
     protected function _loadModels()
     {
-        if(is_array($this->_models))
-        {
-            foreach($this->_models as $model)
-            {
+        if (is_array($this->_models)) {
+            foreach ($this->_models as $model) {
                 $this->_loadModel($model);
             }
         }
@@ -489,21 +473,23 @@ class Controller
     /**
      * Gọi Model
      *
-     * @param string Tên model
+     * @param
+     *            string Tên model
      * @return Đối tượng của model đó
      */
     protected function _loadModel($model)
     {
         $var = ___ctv($model);
-
+        
         // nếu đã tồn tại
-        if($this->models->$var != null) return $this->models->$var;
-
-        // get db adapter for model;
+        if ($this->models->$var != null)
+            return $this->models->$var;
+            
+            // get db adapter for model;
         $name = explode('_', $model, 2);
         $name = $name[0];
         $db = $this->_db($name);
-
+        
         // create model object
         return $this->models->load($model, array('db' => $db));
     }
@@ -513,10 +499,8 @@ class Controller
      */
     protected function _loadShares()
     {
-        if(is_array($this->_shares))
-        {
-            foreach($this->_shares as $share)
-            {
+        if (is_array($this->_shares)) {
+            foreach ($this->_shares as $share) {
                 $this->_loadShare($share);
             }
         }
@@ -525,20 +509,22 @@ class Controller
     /**
      * Gọi share
      *
-     * @param string $data Tên Share
+     * @param string $data
+     *            Tên Share
      * @return Đối tượng Share
      */
     protected function _loadShare($data)
     {
         $var = ___ctv($data);
-
+        
         // nếu đã tồn tại
-        if($this->shares->$var != null) return $this->shares->$var;
-
-        // load database nếu cần
+        if ($this->shares->$var != null)
+            return $this->shares->$var;
+            
+            // load database nếu cần
         $name = explode('_', $data, 2);
         $this->_db($name[0]);
-
+        
         // load shares
         return $this->shares->load($data);
     }
@@ -546,62 +532,49 @@ class Controller
     /**
      * Kết nối database của app
      *
-     * @param string $name Tên của app cần kết nối database
+     * @param string $name
+     *            Tên của app cần kết nối database
      */
     public function _db($name)
     {
         $name = strtolower($name);
-
-        if(!Configure::isRegistered('Db' . ___fUpper($name)))
-        {
+        
+        if (! Configure::isRegistered('Db' . ___fUpper($name))) {
             $config = ___loadConfig('Database', false);
-            if(isset($config['databases'][$name]))
-            {
+            if (isset($config['databases'][$name])) {
                 // Sử dụng chung db với app khác
-                if(isset($config['databases'][$name]['use']))
-                {
+                if (isset($config['databases'][$name]['use'])) {
                     $name2 = $config['databases'][$name]['use'];
-                    if(!Configure::isRegistered('Db' . ___fUpper($name2)))
-                    {
+                    if (! Configure::isRegistered('Db' . ___fUpper($name2))) {
                         $db = ___connectDb($config['databases'][$name2]);
-                        if($db != false)
-                        {
+                        if ($db != false) {
                             Configure::set('Db' . ___fUpper($name2), $db);
                             Configure::set('Db' . ___fUpper($name), $db);
                             return $db;
-                        }
-                        else
-                        {
+                        } else {
                             $this->viewDbError();
                             return;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         return Configure::get('Db' . ___fUpper($name2));
                     }
                 }
-
+                
                 // Sử dụng riêng
                 $db = ___connectDb($config['databases'][$name]);
-                if($db != false)
-                {
+                if ($db != false) {
                     Configure::set('Db' . ___fUpper($name), $db);
                     return $db;
-                }
-                else
-                {
+                } else {
                     $this->viewDbError();
                     return;
                 }
-            }
-            else
-            {
+            } else {
                 $this->viewDbError();
                 return;
             }
         }
-
+        
         return Configure::get('Db' . ___fUpper($name));
     }
 

@@ -2,6 +2,7 @@
 
 class Vhmis_Benchmark
 {
+
     protected $_timer = array();
 
     function timer($name)
@@ -11,19 +12,17 @@ class Vhmis_Benchmark
 
     function time($start, $stop)
     {
-        if(!isset($this->_timer[$start]))
-        {
+        if (! isset($this->_timer[$start])) {
             return '';
         }
-
-        if(!isset($this->_timer[$stop]))
-        {
+        
+        if (! isset($this->_timer[$stop])) {
             $this->_timer[$stop] = microtime();
         }
-
-        list($s1m, $s1s) = explode(' ', $this->_timer[$start]);
-		list($s2m, $s2s) = explode(' ', $this->_timer[$stop]);
-
-		return number_format(($s2m + $s2s) - ($s1m + $s1s), 4, '.', ',');
+        
+        list ($s1m, $s1s) = explode(' ', $this->_timer[$start]);
+        list ($s2m, $s2s) = explode(' ', $this->_timer[$stop]);
+        
+        return number_format(($s2m + $s2s) - ($s1m + $s1s), 4, '.', ',');
     }
 }

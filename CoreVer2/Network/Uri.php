@@ -8,18 +8,18 @@
  * @package    Vhmis_Network
  * @since      Vhmis v2.0
  */
-
 namespace Vhmis\Network;
 
 /**
  * Class dùng để xử lý địa chỉ yêu cầu
  *
- * @category   Vhmis
- * @package    Vhmis_Network
+ * @category Vhmis
+ * @package Vhmis_Network
  * @subpackage Uri
  */
 class Uri
 {
+
     /**
      * Giao thức
      *
@@ -79,21 +79,23 @@ class Uri
     /**
      * Khởi tạo
      *
-     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
+     * @param string $uri
+     *            địa chỉ, phải bắt đầu bằng https hoặc http
      */
     public function __construct($uri = '')
     {
         // Nếu $uri là rỗng, thì xem như chỉ khởi tạo đối tượng
         if ($uri == '')
             return;
-
+        
         $this->addUri($uri);
     }
 
     /**
      * Khởi một đối tượng mới từ 1 địa chỉ
      *
-     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
+     * @param string $uri
+     *            địa chỉ, phải bắt đầu bằng https hoặc http
      * @return VHMIS_URI đối tượng được khởi tạo
      */
     public function addUri($uri)
@@ -113,15 +115,15 @@ class Uri
             $this->_valid = false;
             return;
         }
-
+        
         // Phân tích url
         $result = @parse_url($uri);
-
+        
         if ($result === false) {
             $this->_valid = false;
             return;
         }
-
+        
         $this->_protocol = isset($result['scheme']) ? $result['scheme'] : 'http';
         $this->_domain = isset($result['host']) ? $result['host'] : '';
         $this->_path = isset($result['path']) ? $result['path'] : '';
@@ -199,16 +201,12 @@ class Uri
      */
     public function getURI()
     {
-        if (!$this->_valid)
+        if (! $this->_valid)
             return '';
-
-        $uri = $this->_protocol . '://'
-                . (($this->_username != '' && $this->_password != '') ? $this->_username . ':' . $this->_password . '@' : '')
-                . $this->_domain
-                . $this->_path
-                . (($this->_query != '') ? '?' . $this->_query : '')
-                . (($this->_fragment != '') ? '#' . $this->_fragment : '');
-
+        
+        $uri = $this->_protocol . '://' . (($this->_username != '' && $this->_password != '') ? $this->_username . ':' . $this->_password . '@' : '') . $this->_domain . $this->_path .
+                 (($this->_query != '') ? '?' . $this->_query : '') . (($this->_fragment != '') ? '#' . $this->_fragment : '');
+        
         return $uri;
     }
 }

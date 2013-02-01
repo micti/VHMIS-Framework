@@ -8,29 +8,30 @@
  * @package    Vhmis_Network
  * @since      Vhmis v2.0
  */
-
 namespace Vhmis\Network;
 
 /**
  * Interface cho lớp định nghĩa 1 route (định tuyến)
  *
- * @category   Vhmis
- * @package    Vhmis_Network
+ * @category Vhmis
+ * @package Vhmis_Network
  * @subpackage Router
  */
 interface RouteInterface
 {
+
     /**
      * Khởi tạo một đối tượng mới
      *
-     * @param array $params Thông số khởi tạo
+     * @param array $params
+     *            Thông số khởi tạo
      */
     public function __construct($params);
 
     /**
      * Thiết lập uri pattern
      *
-     * @param string $pattern
+     * @param string $pattern            
      * @return \Vhmis\Network\RouteInterface
      */
     public function setPattern($pattern);
@@ -38,7 +39,7 @@ interface RouteInterface
     /**
      * Thiết lập controller
      *
-     * @param string $controller
+     * @param string $controller            
      * @return \Vhmis\Network\RouteInterface
      */
     public function setController($controller);
@@ -46,7 +47,7 @@ interface RouteInterface
     /**
      * Thiết lập action
      *
-     * @param string $action
+     * @param string $action            
      * @return \Vhmis\Network\RouteInterface
      */
     public function setAction($action);
@@ -54,7 +55,7 @@ interface RouteInterface
     /**
      * Thiết lập thông số
      *
-     * @param array $params
+     * @param array $params            
      * @return \Vhmis\Network\RouteInterface
      */
     public function setParams($params);
@@ -62,7 +63,7 @@ interface RouteInterface
     /**
      * Thiết lập chuyển hướng
      *
-     * @param string $redirect
+     * @param string $redirect            
      * @return \Vhmis\Network\RouteInterface
      */
     public function setRedirect($redirect);
@@ -70,7 +71,7 @@ interface RouteInterface
     /**
      * Thiết lập dạng trả về
      *
-     * @param string $output
+     * @param string $output            
      * @return \Vhmis\Network\RouteInterface
      */
     public function setOutput($output);
@@ -91,7 +92,8 @@ interface RouteInterface
      * Chuyển link redirect sang dạng chính thức
      * Sau khi thay thế giá trị param vào nếu có
      *
-     * @param array $params Thông số
+     * @param array $params
+     *            Thông số
      * @return string
      */
     public function makeRedirect($params);
@@ -99,7 +101,7 @@ interface RouteInterface
     /**
      * Kiểm tra 1 link có hợp lệ với route không
      *
-     * @param string $value
+     * @param string $value            
      * @return array
      */
     public function check($value);

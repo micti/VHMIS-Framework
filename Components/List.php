@@ -22,17 +22,17 @@
  */
 
 /**
- *
  */
 class Vhmis_Component_List extends Vhmis_Component
 {
+
     private $_shares;
 
     public function init()
     {
         // Kết nối CSDL
         $this->_db('System');
-
+        
         // Tạo collection cho các Share
         $this->_shares = new Vhmis_Collection_Shares();
     }
@@ -44,7 +44,7 @@ class Vhmis_Component_List extends Vhmis_Component
     {
         // Share của Model System_List_Administrative_Subdivision
         $share = $this->_shares->load('System_List_Administrative_Subdivision');
-
+        
         // Trả về kết quả
         return $share->findByFullName($term);
     }

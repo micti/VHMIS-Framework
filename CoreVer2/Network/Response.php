@@ -8,34 +8,33 @@
  * @package    Vhmis_Network
  * @since      Vhmis v2.0
  */
-
 namespace Vhmis\Network;
-
 use Vhmis\Config\Configure;
 
 /**
  * Class trả lại kết quả tới client
  *
- * @category   Vhmis
- * @package    Vhmis_Network
+ * @category Vhmis
+ * @package Vhmis_Network
  */
 class Response
 {
+
     /**
      * Gửi kết quả xử lý tới client
      */
     public function response()
     {
-        //header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-        //header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-
+        // header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+        // header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
         $this->_sendContent();
     }
 
     /**
      * Thiết lập nội dung trả về
      *
-     * @param string nội dung trả về
+     * @param
+     *            string nội dung trả về
      */
     public function body($content)
     {
@@ -48,26 +47,22 @@ class Response
     public function download($filepath, $filename, $filetype = null)
     {
         header('Content-disposition: attachment; filename="' . $filename . '"');
-
+        
         // Xác định file type
-        if(!is_string($filetype))
-        {
+        if (! is_string($filetype)) {
             $mines = ___loadConfig('Mine', false);
             $mines = $mines['minetypes'];
-
+            
             $ext = explode('.', $filename);
             $ext = end($ext);
-
-            if(isset($mines[$ext]))
-            {
+            
+            if (isset($mines[$ext])) {
                 header('Content-type: ' . $mines[$ext]);
             }
-        }
-        else
-        {
+        } else {
             header('Content-type: ' . $filetype);
         }
-
+        
         flush();
         readfile($filepath);
     }
@@ -75,7 +70,8 @@ class Response
     /**
      * Gửi nội dung trả về
      *
-     * @param string Nội dung trả về
+     * @param
+     *            string Nội dung trả về
      */
     protected function _sendContent($content = '')
     {

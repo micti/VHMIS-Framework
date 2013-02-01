@@ -8,9 +8,7 @@
  * @package    Vhmis_I18n
  * @since      Vhmis v2.0
  */
-
 namespace Vhmis\I18n\FormatPattern;
-
 use IntlDateFormatter;
 
 /**
@@ -22,11 +20,12 @@ use IntlDateFormatter;
  */
 class DateTime
 {
+
     /**
      * Lấy định dạng của ngày
      *
-     * @param string $locale
-     * @param int $type
+     * @param string $locale            
+     * @param int $type            
      * @return string
      */
     static public function date($locale, $type)
@@ -38,8 +37,8 @@ class DateTime
     /**
      * Lấy định dạng của giờ
      *
-     * @param string $locale
-     * @param int $type
+     * @param string $locale            
+     * @param int $type            
      * @return string
      */
     static public function time($locale, $type)
@@ -51,8 +50,8 @@ class DateTime
     /**
      * Lấy định dạng của ngày và giờ
      *
-     * @param string $locale
-     * @param int $type
+     * @param string $locale            
+     * @param int $type            
      * @return string
      */
     static public function dateTime($locale, $type)
@@ -67,21 +66,17 @@ class DateTime
      * Do đó ta chỉ convert các dạng ngày tháng năm theo số trong định dạng ngắn
      * type nhận giá trị 2 hoặc 3
      *
-     * @param string $locale
-     * @param int $type
+     * @param string $locale            
+     * @param int $type            
      * @return string
      */
     static public function dateNativeFormat($locale, $type)
     {
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
-
-        $patterns = array(
-            'year' => array('YYYY' => 'o', 'yyyy' => 'Y', 'yy' => 'y'),
-            'day' => array('dd' => 'd', 'd' => 'j'),
-            'month' => array('MM' => 'm', 'M' => 'n')
-        );
-
+        
+        $patterns = array('year' => array('YYYY' => 'o', 'yyyy' => 'Y', 'yy' => 'y'), 'day' => array('dd' => 'd', 'd' => 'j'), 'month' => array('MM' => 'm', 'M' => 'n'));
+        
         foreach ($patterns as $typePattern) {
             foreach ($typePattern as $pattern => $nativePattern) {
                 if (strpos($format, $pattern) !== false) {
@@ -90,7 +85,7 @@ class DateTime
                 }
             }
         }
-
+        
         return $format;
     }
 }
