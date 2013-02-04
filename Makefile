@@ -71,3 +71,9 @@ makeconfig:
 	@for i in $(wildcard ${BUILD}/System/${SNAME}/Apps/*/Config/*.example); do \
 	mv $${i} `dirname $${i}`/`basename -s .example $${i}`.php; \
 	done;
+	@for i in $(wildcard ${BUILD}/System/${SNAME}/Config/*.example); do \
+	mv $${i} `dirname $${i}`/`basename -s .example $${i}`.php; \
+	done;
+	@for i in $(wildcard ${BUILD}/System/${SNAME}/Configs/*.example); do \
+	mv $${i} `dirname $${i}`/`basename -s .example $${i}`.php; \
+	done;
