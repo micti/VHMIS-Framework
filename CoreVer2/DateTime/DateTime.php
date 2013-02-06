@@ -25,8 +25,8 @@ class DateTime extends \DateTime
      * sử dụng new static() để tránh luôn chuyện này xảy ra nếu tiếp tục extends
      * từ class mới
      *
-     * @param type $format            
-     * @param type $time            
+     * @param type $format
+     * @param type $time
      * @return DateTime
      */
     static public function createFromFormat($format, $time)
@@ -72,7 +72,7 @@ class DateTime extends \DateTime
      *            Số lượng tháng cần thêm vào (sử dụng số âm nếu muốn giảm đi)
      * @param bool $fix
      *            Sử dụng giá trị true nếu chỉ muốn dựa vào tháng để tính toán
-     * @return DateTime
+     * @return \Vhmis\DateTime\DateTime
      */
     public function addMonth($month, $fix = true)
     {
@@ -81,20 +81,20 @@ class DateTime extends \DateTime
             $nowmonth = (int) $this->format('m');
             $nowyear = (int) $this->format('Y');
             $nowday = (int) $this->format('d');
-            
+
             // Sử dụng 0-11 để biểu diễn tháng
             $nowmonth --;
-            
+
             // Tính toán tháng mới, năm mới
             $totalmonth = $nowmonth + $nowyear * 12 + $month;
             $nowmonth = $totalmonth % 12 + 1; // + 1 để trả lại tháng 1-12
             $nowyear = $totalmonth / 12; // Số nguyên
-            
+
             $this->setDate($nowyear, $nowmonth, $nowday);
         } else {
             $this->modify($month . ' months');
         }
-        
+
         return $this;
     }
 
@@ -143,15 +143,15 @@ class DateTime extends \DateTime
     /**
      * Tương tự như phương thức modify nhưng trả về đối tượng DateTime mới
      *
-     * @param string $modify            
+     * @param string $modify
      * @return DateTime
      */
     public function getModifiedDate($modify)
     {
         $new = clone $this;
-        
+
         $new->modify($modify);
-        
+
         return $new;
     }
 
