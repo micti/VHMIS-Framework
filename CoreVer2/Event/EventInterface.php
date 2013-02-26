@@ -62,4 +62,18 @@ interface EventInterface
      * @return Vhmis\Event\EventInterface
      */
     public function setParams($params);
+
+    /**
+     * Thiết lập dừng lại
+     *
+     * @param bool $bool
+     */
+    public function setStopPropagation($bool = false);
+
+    /**
+     * Kiểm tra dừng lại
+     *
+     * @return bool
+     */
+    public function isPropagationStopped();
 }

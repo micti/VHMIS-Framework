@@ -40,6 +40,13 @@ class Event implements EventInterface
     protected $_params;
 
     /**
+     * Dừng lại
+     *
+     * @var bool
+     */
+    protected $_stop = false;
+
+    /**
      * Lấy tên gọi của sự kiện
      *
      * @return string
@@ -106,5 +113,25 @@ class Event implements EventInterface
         $this->_params = $params;
 
         return $this;
+    }
+
+    /**
+     * Thiết lập dừng lại
+     *
+     * @param bool $bool
+     */
+    public function setStopPropagation($bool = false)
+    {
+        $this->_stop = $bool;
+    }
+
+    /**
+     * Kiểm tra xem có phải dừng lại không
+     *
+     * @param bool $bool
+     */
+    public function isPropagationStopped()
+    {
+        return $this->_stop;
     }
 }
