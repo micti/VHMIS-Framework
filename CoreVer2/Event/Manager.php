@@ -22,7 +22,7 @@ class Manager
     /**
      * Mảng chứa thông tin các sự kiện
      *
-     * @var array
+     * @var array Mảng của các đối tượng EventQueue
      */
     protected $_events;
 
@@ -32,17 +32,24 @@ class Manager
      * @param string $name
      * @param mixed $target
      * @param array $params
-     * @return array
+     * @return \Vhmis\Event\Result
      */
     public function trigger($name, $target, $params)
     {
         $event = new Event();
         $event->setName($name)->setTarget($target)->setParams($params);
-        $result = array();
+        $result = new Result();
 
         if (isset($this->_events[$name])) {
             foreach ($this->_events[$name] as $listener) {
-                $result[] = $listener['callback']($event);
+                if($result->isStoped()) break;
+
+                $result[] = $listener($event); // Nghiên cứu truyền tham chiếu
+
+                if($event->isPropagationStopped())
+                {
+                    $result->setStopped(true);
+                }
             }
         }
 
@@ -54,12 +61,15 @@ class Manager
      *
      * @param type $name Tên của sự kiện
      * @param type $callback Callback
+     * @param int Mức độ ưu tiên, mặc định là 1
      */
-    public function attach($name, $callback)
+    public function attach($name, $callback, $priority = 1)
     {
-        $this->_events[$name][] = array(
-            'callback' => $callback
-        );
+        if (empty($this->_events[$name])) {
+            $this->_events[$name] = new EventQueue();
+        }
+
+        $this->_events[$name]->insert($callback, $priority);
     }
 
     /**

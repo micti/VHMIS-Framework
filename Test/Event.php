@@ -4,7 +4,9 @@
 error_reporting(E_ALL | E_NOTICE);
 
 require '../CoreVer2/Event/EventInterface.php';
+require '../CoreVer2/Event/EventQueue.php';
 require '../CoreVer2/Event/Event.php';
+require '../CoreVer2/Event/Result.php';
 require '../CoreVer2/Event/Manager.php';
 
 class G
@@ -60,14 +62,18 @@ $g->noticeSingle();
 
 echo '------------------<br>';
 
-$g->getEvent()->attach('single', function(Vhmis\Event\Event $e){
+$g->getEvent()->attach('single', function(Vhmis\Event\Event $e) {
     B1::makeADate();
-    B2::makeADate();
+    //$e->setStopPropagation(true);
+});
 
-    $params = $e->getParams();
-    if($params['age'] < 29) {
-        B3::makeADate();
-    }
+$g->getEvent()->attach('single', function(Vhmis\Event\Event $e) {
+    B2::makeADate();
+    $e->setStopPropagation(true);
+}, 2);
+
+$g->getEvent()->attach('single', function(Vhmis\Event\Event $e) {
+    B3::makeADate();
 });
 
 $g->noticeSingle();
