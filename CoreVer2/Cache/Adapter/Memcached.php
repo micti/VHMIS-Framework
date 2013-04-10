@@ -11,6 +11,11 @@ class Memcached implements StorageInterface
      */
     protected $_memcached;
 
+    /**
+     * Khởi tạo
+     *
+     * @param array $options
+     */
     public function __construct($options)
     {
         // Khởi tạo
@@ -28,6 +33,14 @@ class Memcached implements StorageInterface
         }
     }
 
+    /**
+     * Thêm một server Memcached vào
+     *
+     * @param string $host
+     * @param int $port
+     * @param int $weight
+     * @return \Vhmis\Cache\Adapter\Memcached
+     */
     public function addServer($host = 'localhost', $port =  11211, $weight = 0)
     {
         $this->_memcached->addServer($host, $port, $weight);
@@ -35,21 +48,37 @@ class Memcached implements StorageInterface
         return $this;
     }
 
-    public function set($id, $value, $options = array())
+    /**
+     *
+     */
+    public function set($id, $value)
     {
         $this->_memcached->add($id, $value);
     }
 
+    /**
+     *
+     * @param type $id
+     * @return type
+     */
     public function get($id)
     {
         return $this->_memcached->get($id);
     }
 
+    /**
+     *
+     * @param type $id
+     */
     public function remove($id)
     {
         $this->_memcached->delete($id);
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function removeAll()
     {
         return false;
