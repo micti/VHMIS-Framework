@@ -14,9 +14,25 @@ class Vhmis_Date
 
     const MINUTETOSECOND = 60;
 
-    protected $_weekdayToEnglish = array('1' => 'sunday', '2' => 'monday', '3' => 'tuesday', '4' => 'wednesday', '5' => 'thursday', '6' => 'friday', '7' => 'saturday', '8' => 'sunday');
+    protected $_weekdayToEnglish = array(
+        '1' => 'sunday',
+        '2' => 'monday',
+        '3' => 'tuesday',
+        '4' => 'wednesday',
+        '5' => 'thursday',
+        '6' => 'friday',
+        '7' => 'saturday',
+        '8' => 'sunday'
+    );
 
-    protected $_weekdayPositionToEnglish = array('0' => 'all', '1' => 'first', '2' => 'second', '3' => 'third', '4' => 'fourth', '5' => 'last');
+    protected $_weekdayPositionToEnglish = array(
+        '0' => 'all',
+        '1' => 'first',
+        '2' => 'second',
+        '3' => 'third',
+        '4' => 'fourth',
+        '5' => 'last'
+    );
 
     /**
      * Thiết lập timezone chuẩn cho hệ thống
@@ -168,10 +184,19 @@ class Vhmis_Date
         $date['date'] = explode('-', $date[0]);
         $date['time'] = explode(':', $date[1]);
         
-        return array('date' => $date[0], 'time' => $date[1], 'week' => $this->getWeekOfYear(), 'wday' => $this->getWeekday(), 'month' => $date['date'][1], 'year' => $date['date'][0], 
-                'wyear' => date('o', $this->_time), 'day' => $date['date'][2], 'hour' => $date['time'][0], 
-                // Dành cho locale
-                'wdayAbbr' => strtolower(date('D', $this->_time)));
+        return array(
+            'date' => $date[0],
+            'time' => $date[1],
+            'week' => $this->getWeekOfYear(),
+            'wday' => $this->getWeekday(),
+            'month' => $date['date'][1],
+            'year' => $date['date'][0],
+            'wyear' => date('o', $this->_time),
+            'day' => $date['date'][2],
+            'hour' => $date['time'][0],
+            // Dành cho locale
+            'wdayAbbr' => strtolower(date('D', $this->_time))
+        );
     }
 
     /**
@@ -385,7 +410,7 @@ class Vhmis_Date
         elseif ($year2 > $year1)
             return $month2 + 12 - $month1 + 12 * ($year2 - $year1 - 1);
         else
-            return - $month1 - 12 + $month2 - 12 * ($year1 - $year2 - 1);
+            return -$month1 - 12 + $month2 - 12 * ($year1 - $year2 - 1);
     }
 
     /**
@@ -464,9 +489,15 @@ class Vhmis_Date
         $year = $this->getYear();
         
         if ($month == 1)
-            return array(12, ($year - 1));
+            return array(
+                12,
+                ($year - 1)
+            );
         else
-            return array(($month - 1), $year);
+            return array(
+                ($month - 1),
+                $year
+            );
     }
 
     /**
@@ -481,9 +512,15 @@ class Vhmis_Date
         $year = $this->getYear();
         
         if ($month == 12)
-            return array(1, ($year + 1));
+            return array(
+                1,
+                ($year + 1)
+            );
         else
-            return array(($month + 1), $year);
+            return array(
+                ($month + 1),
+                $year
+            );
     }
 
     /**
@@ -491,10 +528,12 @@ class Vhmis_Date
      */
     public function daysOfWeekdayInMonth($weekday, $position)
     {
-        if ($position == 0)         // tìm hết
-        {
+        if ($position == 0) { // tìm hết
             $days = array();
-            $day = date('j', strtotime($this->_weekdayPositionToEnglish['1'] . ' ' . $this->_weekdayToEnglish[$weekday] . ' of this month', $this->_time));
+            $day = date('j', 
+                strtotime(
+                    $this->_weekdayPositionToEnglish['1'] . ' ' . $this->_weekdayToEnglish[$weekday] . ' of this month', 
+                    $this->_time));
             
             $days[] = $day;
             
@@ -506,9 +545,11 @@ class Vhmis_Date
             }
             
             return $days;
-        } else         // tìm 1 vị trí
-        {
-            return $day = date('j', strtotime($this->_weekdayPositionToEnglish[$position] . ' ' . $this->_weekdayToEnglish[$weekday] . ' of this month', $this->_time));
+        } else { // tìm 1 vị trí
+            return $day = date('j', 
+                strtotime(
+                    $this->_weekdayPositionToEnglish[$position] . ' ' . $this->_weekdayToEnglish[$weekday] .
+                         ' of this month', $this->_time));
         }
     }
 
@@ -516,6 +557,8 @@ class Vhmis_Date
      * Xuất ra thời gian đã qua của thời gian ở đối tượng so với thời gian hiện
      * tại
      * 3 phút trước, 2 giờ 3 phút trước .
+     *
+     *
      * ...
      * Kết quả trả về mạng tính tương đối (vì một năm = 365 ngày, 1 = 30 ngày)
      *
@@ -556,49 +599,49 @@ class Vhmis_Date
         // Lấy chuỗi
         if ($deep != 0 && $year != 0) {
             $string .= $year . ' năm ';
-            $deep --;
+            $deep--;
             if ($deep == 0)
                 return $string . 'trước';
         }
         
         if ($deep != 0 && $month != 0) {
             $string .= $month . ' tháng ';
-            $deep --;
+            $deep--;
             if ($deep == 0)
                 return $string . 'trước';
         }
         
         if ($deep != 0 && $week != 0) {
             $string .= $week . ' tuần ';
-            $deep --;
+            $deep--;
             if ($deep == 0)
                 return $string . 'trước';
         }
         
         if ($deep != 0 && $day != 0) {
             $string .= $day . ' ngày ';
-            $deep --;
+            $deep--;
             if ($deep == 0)
                 return $string . 'trước';
         }
         
         if ($deep != 0 && $hour != 0) {
             $string .= $hour . ' giờ ';
-            $deep --;
+            $deep--;
             if ($deep == 0)
                 return $string . 'trước';
         }
         
         if ($deep != 0 && $min != 0) {
             $string .= $min . ' phút ';
-            $deep --;
+            $deep--;
             if ($deep == 0)
                 return $string . 'trước';
         }
         
         if ($deep != 0 && $sec != 0) {
             $string .= $sec . ' giây ';
-            $deep --;
+            $deep--;
             if ($deep == 0)
                 return $string . 'trước';
         }
@@ -643,6 +686,8 @@ class Vhmis_Date
      *
      * @param            
      *
+     *
+     *
      */
     public static function fromSQLtoNormal($time, $full)
     {
@@ -653,6 +698,8 @@ class Vhmis_Date
      * Chuyển đổi nhanh ngày tháng theo SQL sang ngày tháng bình thường
      *
      * @param            
+     *
+     *
      *
      */
     public static function sqlToNormal($time, $format = 'd/m/Y')

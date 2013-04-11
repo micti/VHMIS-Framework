@@ -1,4 +1,5 @@
 <?php
+
 namespace Vhmis\View\Helper\Html;
 
 /**
@@ -12,15 +13,50 @@ abstract class HtmlAbstract
      *
      * @var array
      */
-    protected $_normalAttributes = array('id' => '', 'name' => '');
+    protected $_normalAttributes = array(
+        'id' => '',
+        'name' => ''
+    );
 
     /**
      * Danh sách các thuộc tính nhận giá trị tương tứng có/không
      *
      * @var array
      */
-    protected $_booleanAttributes = array('autocomplete' => array('off', 'on'), 'autofocus' => array('', 'autofocus'), 'checked' => array('', 'checked'), 'disabled' => array('', 'disabled'), 
-            'multiple' => array('', 'multiple'), 'readonly' => array('', 'readonly'), 'required' => array('', 'required'), 'selected' => array('', 'selected'));
+    protected $_booleanAttributes = array(
+        'autocomplete' => array(
+            'off',
+            'on'
+        ),
+        'autofocus' => array(
+            '',
+            'autofocus'
+        ),
+        'checked' => array(
+            '',
+            'checked'
+        ),
+        'disabled' => array(
+            '',
+            'disabled'
+        ),
+        'multiple' => array(
+            '',
+            'multiple'
+        ),
+        'readonly' => array(
+            '',
+            'readonly'
+        ),
+        'required' => array(
+            '',
+            'required'
+        ),
+        'selected' => array(
+            '',
+            'selected'
+        )
+    );
 
     /**
      * Gọi thực thi
@@ -68,7 +104,7 @@ abstract class HtmlAbstract
      */
     protected function _booleanAttribute($attr, $value)
     {
-        if (! is_bool($value) && in_array($value, $this->_booleanAttributes[$attr])) {
+        if (!is_bool($value) && in_array($value, $this->_booleanAttributes[$attr])) {
             return $value;
         }
         

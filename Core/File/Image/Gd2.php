@@ -9,27 +9,42 @@ class Vhmis_File_Image_Gd2
 
     public function __construct($path)
     {
-        $this->_error = array('code' => 0, 'message' => 'Ok');
+        $this->_error = array(
+            'code' => 0,
+            'message' => 'Ok'
+        );
         
-        if (! extension_loaded('gd')) {
-            $this->_error = array('code' => 1, 'message' => 'GD2 Lib Not Found or Not Supported');
+        if (!extension_loaded('gd')) {
+            $this->_error = array(
+                'code' => 1,
+                'message' => 'GD2 Lib Not Found or Not Supported'
+            );
             return $this;
         }
         
-        if (! is_readable($path)) {
-            $this->_error = array('code' => 2, 'message' => 'File Can Not Read');
+        if (!is_readable($path)) {
+            $this->_error = array(
+                'code' => 2,
+                'message' => 'File Can Not Read'
+            );
             return $this;
         }
         
         $this->_file = $path; // TO DO, fix filename and path ...
         
-        if (! $size = @getimagesize($this->_file)) {
-            $this->_error = array('code' => 3, 'message' => 'Not Image File');
+        if (!$size = @getimagesize($this->_file)) {
+            $this->_error = array(
+                'code' => 3,
+                'message' => 'Not Image File'
+            );
             return $this;
         }
         
         if ($size[2] < 1 && $size[2] > 3) {
-            $this->_error = array('code' => 4, 'message' => 'Only support PNG, GIF, JPG');
+            $this->_error = array(
+                'code' => 4,
+                'message' => 'Only support PNG, GIF, JPG'
+            );
             return $this;
         }
         
@@ -62,7 +77,13 @@ class Vhmis_File_Image_Gd2
         if ($this->_error['code'] > 0)
             return false;
         
-        $this->_copy($size, array(0, 0), array($this->_width, $this->_height));
+        $this->_copy($size, array(
+            0,
+            0
+        ), array(
+            $this->_width,
+            $this->_height
+        ));
     }
 
     public function cropAndResize($size, $axis, $newSize)
@@ -75,8 +96,13 @@ class Vhmis_File_Image_Gd2
         if ($this->_error['code'] > 0)
             return false;
         
-        $_type = array('width', 'height', 'square', 'scale');
-        if (! in_array($type, $_type)) {
+        $_type = array(
+            'width',
+            'height',
+            'square',
+            'scale'
+        );
+        if (!in_array($type, $_type)) {
             return false;
         }
         
@@ -89,28 +115,60 @@ class Vhmis_File_Image_Gd2
         
         $thumbWidth = $thumbHeight = $size;
         
-        if ($type == 'width')         // Kiểu theo chiều rộng
-        {
+        if ($type == 'width') { // Kiểu theo chiều rộng
             $thumbHeight = (int) ($h / $w * $thumbWidth);
             
-            $this->_copy(array($thumbWidth, $thumbHeight), array(0, 0), array($w, $h));
-        } elseif ($type == 'height')         // Kiểu theo chiều cao
-        {
+            $this->_copy(array(
+                $thumbWidth,
+                $thumbHeight
+            ), array(
+                0,
+                0
+            ), array(
+                $w,
+                $h
+            ));
+        } elseif ($type == 'height') { // Kiểu theo chiều cao
             $thumbWidth = (int) ($w / $h * $thumbHeight);
             
-            $this->_copy(array($thumbWidth, $thumbHeight), array(0, 0), array($w, $h));
-        } elseif ($type == 'scale')         // Kiểu tỷ lệ
-        {
+            $this->_copy(array(
+                $thumbWidth,
+                $thumbHeight
+            ), array(
+                0,
+                0
+            ), array(
+                $w,
+                $h
+            ));
+        } elseif ($type == 'scale') { // Kiểu tỷ lệ
             if ($this->_height > $this->_width) {
                 $thumbWidth = (int) ($w / $h * $thumbHeight);
             } else {
                 $thumbHeight = (int) ($h / $w * $thumbWidth);
             }
             
-            $this->_copy(array($thumbWidth, $thumbHeight), array(0, 0), array($w, $h));
-        } else         // Kiểu hình vuông
-        {
-            $this->_copy(array($thumbWidth, $thumbHeight), array(0, 0), array($min, $min));
+            $this->_copy(array(
+                $thumbWidth,
+                $thumbHeight
+            ), array(
+                0,
+                0
+            ), array(
+                $w,
+                $h
+            ));
+        } else { // Kiểu hình vuông
+            $this->_copy(array(
+                $thumbWidth,
+                $thumbHeight
+            ), array(
+                0,
+                0
+            ), array(
+                $min,
+                $min
+            ));
         }
         
         return true;
@@ -125,15 +183,15 @@ class Vhmis_File_Image_Gd2
             return false;
         
         if ($this->_type == 1) {
-            if (! @imagegif($this->_newImgSource, $path)) {
+            if (!@imagegif($this->_newImgSource, $path)) {
                 return false;
             }
         } elseif ($this->_type == 2) {
-            if (! @imagejpeg($this->_newImgSource, $path, 90)) {
+            if (!@imagejpeg($this->_newImgSource, $path, 90)) {
                 return false;
             }
         } else {
-            if (! @imagepng($this->_newImgSource, $path)) {
+            if (!@imagepng($this->_newImgSource, $path)) {
                 return false;
             }
         }
@@ -177,22 +235,31 @@ class Vhmis_File_Image_Gd2
         $type = $this->_type;
         
         if ($type == 1) {
-            if (! function_exists('imagecreatefromgif')) {
-                $this->_error = array('code' => 5, 'message' => 'GIF not Support');
+            if (!function_exists('imagecreatefromgif')) {
+                $this->_error = array(
+                    'code' => 5,
+                    'message' => 'GIF not Support'
+                );
                 return false;
             }
             
             return imagecreatefromgif($this->_file);
         } elseif ($type == 2) {
-            if (! function_exists('imagecreatefromjpeg')) {
-                $this->_error = array('code' => 6, 'message' => 'JPEG not Support');
+            if (!function_exists('imagecreatefromjpeg')) {
+                $this->_error = array(
+                    'code' => 6,
+                    'message' => 'JPEG not Support'
+                );
                 return false;
             }
             
             return imagecreatefromjpeg($this->_file);
         } else {
-            if (! function_exists('imagecreatefrompng')) {
-                $this->_error = array('code' => 7, 'message' => 'PNG not Support');
+            if (!function_exists('imagecreatefrompng')) {
+                $this->_error = array(
+                    'code' => 7,
+                    'message' => 'PNG not Support'
+                );
                 return false;
             }
             
@@ -205,13 +272,14 @@ class Vhmis_File_Image_Gd2
         if ($this->_error['code'] > 0)
             return false;
         
-        if (! $source = $this->_createImgSource()) {
+        if (!$source = $this->_createImgSource()) {
             return false;
         }
         
         $this->_newImgSource = imagecreatetruecolor($size[0], $size[1]);
         
-        imagecopyresampled($this->_newImgSource, $source, 0, 0, $axis[0], $axis[1], $size[0], $size[1], $sourceSize[0], $sourceSize[1]);
+        imagecopyresampled($this->_newImgSource, $source, 0, 0, $axis[0], $axis[1], $size[0], $size[1], $sourceSize[0], 
+            $sourceSize[1]);
         
         return true;
     }

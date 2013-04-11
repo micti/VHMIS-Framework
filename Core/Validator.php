@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -118,7 +117,7 @@ class Vhmis_Validator
      */
     public function float($value, $locale = '', $returnISO = true, $allowSciNa = false)
     {
-        if (! is_string($value) && ! is_int($value) && ! is_float($value)) {
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
             return false;
         }
         
@@ -150,8 +149,9 @@ class Vhmis_Validator
         $valueFiltered = str_replace($decimalSep, '.', $valueFiltered);
         
         // Loại bỏ số 0 ở cuối trong phần thập phân hoặc dấu . nếu nằm ở cuối
-        while (strpos($valueFiltered, '.') !== false && (substr($valueFiltered, - 1) == '0' || substr($valueFiltered, - 1) == '.')) {
-            $valueFiltered = substr($valueFiltered, 0, strlen($valueFiltered) - 1);
+        while (strpos($valueFiltered, '.') !== false && (substr($valueFiltered, -1) == '0' ||
+             substr($valueFiltered, -1) == '.')) {
+                $valueFiltered = substr($valueFiltered, 0, strlen($valueFiltered) - 1);
         }
         
         // Kiểm tra lại
@@ -186,7 +186,7 @@ class Vhmis_Validator
                 $date = trim($date[2]) . '/' . trim($date[1]) . '/' . trim($date[0]);
             }
             
-            if (! $this->_date->time($date)) {
+            if (!$this->_date->time($date)) {
                 echo '11';
                 return false;
             } else {

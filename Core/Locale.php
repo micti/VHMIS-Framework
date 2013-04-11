@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 class Vhmis_Locale
@@ -36,23 +35,45 @@ class Vhmis_Locale
         if ($date == null)
             return '';
         
-        $pattern = array('{EEEE}', '{eee}', '{EE}', '{e}', '{dd}', '{d}', '{MMMM}', '{MMM}', '{MM}', '{M}', '{YYYY}', '{yyyy}', '{yy}');
+        $pattern = array(
+            '{EEEE}',
+            '{eee}',
+            '{EE}',
+            '{e}',
+            '{dd}',
+            '{d}',
+            '{MMMM}',
+            '{MMM}',
+            '{MM}',
+            '{M}',
+            '{YYYY}',
+            '{yyyy}',
+            '{yy}'
+        );
         
         /*
-         * $convert = array('d' => 'dd' , 'D' => 'EE' , 'j' => 'd' , 'l' =>
-         * 'EEEE', 'N' => 'eee' , 'S' => 'SS' , 'w' => 'e' , 'z' => 'D' , 'W' =>
-         * 'ww' , 'F' => 'MMMM', 'm' => 'MM' , 'M' => 'MMM' , 'n' => 'M' , 't'
-         * => 'ddd' , 'L' => 'l' , 'o' => 'YYYY', 'Y' => 'yyyy', 'y' => 'yy' ,
-         * 'a' => 'a' , 'A' => 'a' , 'B' => 'B' , 'g' => 'h' , 'G' => 'H' , 'h'
-         * => 'hh' , 'H' => 'HH' , 'i' => 'mm' , 's' => 'ss' , 'e' => 'zzzz',
-         * 'I' => 'I' , 'O' => 'Z' , 'P' => 'ZZZZ', 'T' => 'z' , 'Z' => 'X' ,
-         * 'c' => 'yyyy-MM-ddTHH:mm:ssZZZZ', 'r' => 'r' , 'U' => 'U');
+         * $convert = array('d' => 'dd' , 'D' => 'EE' , 'j' => 'd' , 'l' => 'EEEE', 'N' => 'eee' , 'S' => 'SS' , 'w' =>
+         * 'e' , 'z' => 'D' , 'W' => 'ww' , 'F' => 'MMMM', 'm' => 'MM' , 'M' => 'MMM' , 'n' => 'M' , 't' => 'ddd' , 'L'
+         * => 'l' , 'o' => 'YYYY', 'Y' => 'yyyy', 'y' => 'yy' , 'a' => 'a' , 'A' => 'a' , 'B' => 'B' , 'g' => 'h' , 'G'
+         * => 'H' , 'h' => 'hh' , 'H' => 'HH' , 'i' => 'mm' , 's' => 'ss' , 'e' => 'zzzz', 'I' => 'I' , 'O' => 'Z' , 'P'
+         * => 'ZZZZ', 'T' => 'z' , 'Z' => 'X' , 'c' => 'yyyy-MM-ddTHH:mm:ssZZZZ', 'r' => 'r' , 'U' => 'U');
          */
         
-        $replace = array($data['dates']['calendar']['gregorian']['days']['formatFull'][$date['wdayAbbr']], $date['wday'], 
-                $data['dates']['calendar']['gregorian']['days']['formatAbbr'][$date['wdayAbbr']], ($date['wday'] - 1), $date['day'], (int) $date['day'], 
-                $data['dates']['calendar']['gregorian']['months']['formatFull'][(int) $date['month']], $data['dates']['calendar']['gregorian']['months']['formatAbbr'][(int) $date['month']], 
-                $date['month'], (int) $date['month'], $date['wyear'], $date['year'], $date['year'][2] . $date['year'][3]);
+        $replace = array(
+            $data['dates']['calendar']['gregorian']['days']['formatFull'][$date['wdayAbbr']],
+            $date['wday'],
+            $data['dates']['calendar']['gregorian']['days']['formatAbbr'][$date['wdayAbbr']],
+            ($date['wday'] - 1),
+            $date['day'],
+            (int) $date['day'],
+            $data['dates']['calendar']['gregorian']['months']['formatFull'][(int) $date['month']],
+            $data['dates']['calendar']['gregorian']['months']['formatAbbr'][(int) $date['month']],
+            $date['month'],
+            (int) $date['month'],
+            $date['wyear'],
+            $date['year'],
+            $date['year'][2] . $date['year'][3]
+        );
         
         if (isset($data['dates']['calendar']['gregorian']['dateFormats'][$format])) {
             return str_replace($pattern, $replace, $data['dates']['calendar']['gregorian']['dateFormats'][$format]);
@@ -97,7 +118,7 @@ class Vhmis_Locale
         
         if (is_string($date) || is_numeric($date)) {
             $obj = new Vhmis_Date();
-            if (! $obj->time($date)) {
+            if (!$obj->time($date)) {
                 return null;
             } else {
                 return $obj->toArray();

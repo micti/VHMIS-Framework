@@ -1,5 +1,7 @@
 <?php
+
 namespace Vhmis\Validator;
+
 use Vhmis\Config\Configure;
 use Vhmis\DateTime\DateTime;
 use Vhmis\I18n\FormatPattern\DateTime as FormatDateTime;
@@ -43,11 +45,11 @@ class Date extends ValidatorAbstract
         if (null !== $format)
             $this->_format = $format;
         
-        if (! is_string($this->_locale)) {
+        if (!is_string($this->_locale)) {
             $this->_locale = Configure::get('Locale');
         }
         
-        if (! is_string($this->_format)) {
+        if (!is_string($this->_format)) {
             $this->_format = '';
         }
         
@@ -56,7 +58,7 @@ class Date extends ValidatorAbstract
 
     public function isValid($value, $params = null)
     {
-        if (! is_string($value) && ! is_int($value) && ! ($value instanceof DateTime)) {
+        if (!is_string($value) && !is_int($value) && !($value instanceof DateTime)) {
             $this->_setMessage('Ngày tháng không đúng kiểu', static::DATENOTTYPE, 'datenottype');
             return false;
         }

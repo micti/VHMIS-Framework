@@ -1,10 +1,11 @@
 <?php
+
 namespace Vhmis\Validator;
 
 /**
  * Bộ kiểm tra dữ liệu
  */
-class Validator extends Vhmis\Validator\ValidatorAbstract
+class Validator extends ValidatorAbstract
 {
 
     /**
@@ -14,39 +15,40 @@ class Validator extends Vhmis\Validator\ValidatorAbstract
      *
      * @param type $value
      *            Giá trị cần kiểm tra
-     * @param type $option            
+     * @param type $option
      * @return boolean
      */
     public function isValid($value, $option = null)
     {
-        if (! is_array($option)) {
+        if (!is_array($option)) {
             $this->_setMessage('Không có thuộc tính kèm', 1, 'notoption');
             return false;
         }
-        
-        if (! isset($option['type']) || $option['type'] !== 'NotEmpty' || $option['type'] !== 'InRange' || $option['type'] !== 'Regex') {
+
+        if (!isset($option['type']) || $option['type'] !== 'NotEmpty' || $option['type'] !== 'InRange' ||
+             $option['type'] !== 'Regex') {
             $this->_setMessage('Không có kiểu kiểm tra', 2, 'nottype');
             return false;
         }
-        
+
         if ($option['type'] == 'NotEmpty') {
             return $this->isNotEmpty($value);
         } elseif ($option['type'] == 'InRange') {
-            if (! isset($option['max']) || ! isset($option['min'])) {
+            if (!isset($option['max']) || !isset($option['min'])) {
                 $this->_setMessage('Không đủ tham số', 3, 'notparam');
                 return false;
             }
-            
+
             return $this->isInRange($value, $option['min'], $option['max']);
         } elseif ($option['type'] == 'Regex') {
-            if (! isset($option['regex'])) {
+            if (!isset($option['regex'])) {
                 $this->_setMessage('Không đủ tham số', 3, 'notparam');
                 return false;
             }
-            
+
             return $this->isRegex($value, $option['pattern']);
         }
-        
+
         $this->_setMessage('', '', '');
         return false;
     }
@@ -61,14 +63,14 @@ class Validator extends Vhmis\Validator\ValidatorAbstract
     public function isNotEmpty($value)
     {
         $value = (string) $value;
-        
+
         $result = $this->_isValidRegex($value, '/[^\s]+/m');
-        
+
         if (false === $result) {
             $this->_setMessage('Giá trị nhập vào rỗng', 4, 'notvalid');
             return false;
         }
-        
+
         return true;
     }
 
@@ -86,12 +88,12 @@ class Validator extends Vhmis\Validator\ValidatorAbstract
     public function isInRange($value, $min, $max)
     {
         $result = $value >= $min && $value <= $max;
-        
+
         if (false === $result) {
             $this->_setMessage('Giá trị nhập vào không nằm trong khoảng %min% - %max%', 4, 'notvalid');
             return false;
         }
-        
+
         return true;
     }
 
@@ -107,7 +109,7 @@ class Validator extends Vhmis\Validator\ValidatorAbstract
     public function isRegex($value, $pattern)
     {
         $result = $this->_isValidRegex($value, $pattern);
-        
+
         if (false === $result) {
             $this->_setMessage('Giá trị nhập vào không hợp lệ với %pattern%', 4, 'notvalid');
             return false;

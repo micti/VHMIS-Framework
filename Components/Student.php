@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -36,7 +35,9 @@ class Vhmis_Component_Student extends Vhmis_Component
         $this->_db('DbStudent');
         
         $db = Configure::get('DbStudent');
-        $this->_model = new Vhmis_Model_Student_Student(array('db' => $db));
+        $this->_model = new Vhmis_Model_Student_Student(array(
+            'db' => $db
+        ));
     }
 
     /**

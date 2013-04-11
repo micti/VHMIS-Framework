@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Event
- * @since      Vhmis v2.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Event
+ * @since Vhmis v2.0
  */
 namespace Vhmis\Event;
 
@@ -18,6 +19,7 @@ namespace Vhmis\Event;
  */
 class Event implements EventInterface
 {
+
     /**
      * Tên của sự kiện
      *
@@ -79,46 +81,46 @@ class Event implements EventInterface
     /**
      * Thiết lập tên gọi của sự kiện
      *
-     * @param string $name
+     * @param string $name            
      * @return \Vhmis\Event\Event
      */
     public function setName($name)
     {
         $this->_name = $name;
-
+        
         return $this;
     }
 
     /**
      * Thiết lập đối tượng xảy ra sự kiện
      *
-     * @param mixed $target
+     * @param mixed $target            
      * @return Vhmis\Event\Event
      */
     public function setTarget($target)
     {
         $this->_target = $target;
-
+        
         return $this;
     }
 
     /**
      * Thiết lập các tham số truyền theo
      *
-     * @param array $params
+     * @param array $params            
      * @return Vhmis\Event\EventInterface
      */
     public function setParams($params)
     {
         $this->_params = $params;
-
+        
         return $this;
     }
 
     /**
      * Thiết lập dừng lại
      *
-     * @param bool $bool
+     * @param bool $bool            
      */
     public function setStopPropagation($bool = false)
     {
@@ -128,7 +130,7 @@ class Event implements EventInterface
     /**
      * Kiểm tra xem có phải dừng lại không
      *
-     * @param bool $bool
+     * @param bool $bool            
      */
     public function isPropagationStopped()
     {

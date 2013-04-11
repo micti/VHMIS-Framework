@@ -12,13 +12,13 @@
  *
  * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
  *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Component
- * @subpackage    Entity
- * @since         1.0.0
- * @license       All rights reversed
+ * @copyright Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
+ * @link https://github.com/VHIT/VHMIS VHMIS(tm) Project
+ * @category VHMIS
+ * @package Component
+ * @subpackage Entity
+ * @since 1.0.0
+ * @license All rights reversed
  */
 
 /**
@@ -30,7 +30,9 @@ class Vhmis_Component_Calendar extends Vhmis_Component
     {
         // Kết nối CSDL
         $db = $this->_db('Office');
-        $this->_model = new Vhmis_Model_Office_Calendar(array('db' => $db));
+        $this->_model = new Vhmis_Model_Office_Calendar(array(
+            'db' => $db
+        ));
     }
 
     public function findEvents($start, $end, $user, $returnType)
@@ -91,9 +93,23 @@ class Vhmis_Component_Calendar extends Vhmis_Component
                 }
             }
             
-            $eventDetail = array('id' => $event['id'], 'name_user' => $event['name_user'], 'id_user' => $event['id_user'], 'date' => $date, 'time' => $time, 'title' => $event['title'], 
-                    'invite' => $invite, 'not_invite' => $notInvite, 'prepare' => $prepare, 'note' => $event['note'], 'address' => $event['address'], 'type' => $event['type'], 
-                    'type_name' => $event['type_name'], 'related' => $related, 'relatedToday' => $relatedToday);
+            $eventDetail = array(
+                'id' => $event['id'],
+                'name_user' => $event['name_user'],
+                'id_user' => $event['id_user'],
+                'date' => $date,
+                'time' => $time,
+                'title' => $event['title'],
+                'invite' => $invite,
+                'not_invite' => $notInvite,
+                'prepare' => $prepare,
+                'note' => $event['note'],
+                'address' => $event['address'],
+                'type' => $event['type'],
+                'type_name' => $event['type_name'],
+                'related' => $related,
+                'relatedToday' => $relatedToday
+            );
             
             // Sự kiện repeat
             if ($event['repeat'] == 1) {
@@ -168,18 +184,35 @@ class Vhmis_Component_Calendar extends Vhmis_Component
         $repeatedDates = array();
         
         if ($event['repeat_unit'] == 4) {
-            $repeatedDates = $dateRepeat->calculateDailyRepeat(array('freq' => $event['repeat_freq']));
+            $repeatedDates = $dateRepeat->calculateDailyRepeat(
+                array(
+                    'freq' => $event['repeat_freq']
+                ));
         } elseif ($event['repeat_unit'] == 5) {
             $repeatedDates = $dateRepeat->calculateWeeklyRepeat(
-                    array('freq' => $event['repeat_freq'], 'weekday' => explode(',', $event['repeat_weekday'])));
+                array(
+                    'freq' => $event['repeat_freq'],
+                    'weekday' => explode(',', $event['repeat_weekday'])
+                ));
         } elseif ($event['repeat_unit'] == 6) {
             $repeatedDates = $dateRepeat->calculateMonthlyRepeat(
-                    array('freq' => $event['repeat_freq'], 'type' => $event['repeat_type'], 'monthday' => explode(',', $event['repeat_monthday']), 'weekday' => $event['repeat_weekday'], 
-                            'weekday_position' => $event['repeat_weekday_position']));
+                array(
+                    'freq' => $event['repeat_freq'],
+                    'type' => $event['repeat_type'],
+                    'monthday' => explode(',', $event['repeat_monthday']),
+                    'weekday' => $event['repeat_weekday'],
+                    'weekday_position' => $event['repeat_weekday_position']
+                ));
         } elseif ($event['repeat_unit'] == 7) {
             $repeatedDates = $dateRepeat->calculateYearlyRepeat(
-                    array('freq' => $event['repeat_freq'], 'type' => $event['repeat_type'], 'month' => explode(',', $event['repeat_month']), 'monthday' => explode(',', $event['repeat_monthday']), 
-                            'weekday' => $event['repeat_weekday'], 'weekday_position' => $event['repeat_weekday_position']));
+                array(
+                    'freq' => $event['repeat_freq'],
+                    'type' => $event['repeat_type'],
+                    'month' => explode(',', $event['repeat_month']),
+                    'monthday' => explode(',', $event['repeat_monthday']),
+                    'weekday' => $event['repeat_weekday'],
+                    'weekday_position' => $event['repeat_weekday_position']
+                ));
         }
         
         return $repeatedDates;

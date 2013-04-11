@@ -1,4 +1,5 @@
 <?php
+
 namespace Vhmis\Validator;
 
 abstract class ValidatorAbstract
@@ -110,7 +111,11 @@ abstract class ValidatorAbstract
      */
     public function getMessages()
     {
-        return array('message' => $this->_message, 'code' => $this->_messageCode, 'translator' => $this->_messageTranslatorCode);
+        return array(
+            'message' => $this->_message,
+            'code' => $this->_messageCode,
+            'translator' => $this->_messageTranslatorCode
+        );
     }
 
     /**

@@ -68,20 +68,19 @@ class Vhmis_Date_Repeat
         $repeatDates = array();
         
         // Kiểm tra
-        if (! isset($rule['freq']) || ! is_numeric($rule['freq']))
+        if (!isset($rule['freq']) || !is_numeric($rule['freq']))
             return $repeatDates;
             
             // Tính ngày lặp tiếp theo
-        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime())         // Nếu
-                                                                             // ngày
-                                                                             // hiện
-                                                                             // tại
-                                                                             // muộn
-                                                                             // hơn
-                                                                             // ngày
-                                                                             // gốc
-        {
-            // Khoảng cách
+        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime()) { // Nếu
+                                                                                // ngày
+                                                                                // hiện
+                                                                                // tại
+                                                                                // muộn
+                                                                                // hơn
+                                                                                // ngày
+                                                                                // gốc
+                                                                                // Khoảng cách
             $days = abs($this->_nowDate->differentDay($this->_baseDate));
             
             // Tính khoảng cách giữa ngày hiện tại với ngày xảy ra sự kiện kế
@@ -93,8 +92,7 @@ class Vhmis_Date_Repeat
                 // Thiết lập
             $this->_runDate->time($this->_nowDate->toSQL(false));
             $this->_runDate->addDay($offset);
-        } else         // Nếu ngày hiện tại sớm hơn ngày gốc
-        {
+        } else { // Nếu ngày hiện tại sớm hơn ngày gốc
             $this->_runDate->time($this->_baseDate->toSQL(false));
         }
         
@@ -124,20 +122,19 @@ class Vhmis_Date_Repeat
         $repeatDates = array();
         
         // Kiểm tra
-        if (! isset($rule['freq']) || ! is_numeric($rule['freq']))
+        if (!isset($rule['freq']) || !is_numeric($rule['freq']))
             return $repeatDates;
             
             // Tính tuần lặp tiếp theo
-        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime())         // Nếu
-                                                                             // ngày
-                                                                             // hiện
-                                                                             // tại
-                                                                             // muộn
-                                                                             // hơn
-                                                                             // ngày
-                                                                             // gốc
-        {
-            // Khoảng cách
+        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime()) { // Nếu
+                                                                                // ngày
+                                                                                // hiện
+                                                                                // tại
+                                                                                // muộn
+                                                                                // hơn
+                                                                                // ngày
+                                                                                // gốc
+                                                                                // Khoảng cách
             $week = abs($this->_nowDate->differentWeek($this->_baseDate));
             
             // Tính khoảng cách giữa ngày hiện tại với ngày xảy ra sự kiện kế
@@ -149,22 +146,21 @@ class Vhmis_Date_Repeat
                 // Thiết lập
             $this->_runDate->time($this->_nowDate->toSQL(false));
             $this->_runDate->addWeek($offset);
-        } else         // Nếu ngày hiện tại sớm hơn ngày gốc
-        {
+        } else { // Nếu ngày hiện tại sớm hơn ngày gốc
             $this->_runDate->time($this->_baseDate->toSQL(false));
         }
         
         // Trả về ngày đầu tuần
         $this->_runDate = $this->_runDate->startDateOfWeek('Vhmis_Date'); // Thứ
                                                                           // 2
-                                                                          
-        // Thực hiện tìm các ngày lặp cho đến khi chạm mốc thời gian dừng
+                                                                          // Thực hiện tìm các ngày lặp cho đến khi chạm
+                                                                          // mốc thời gian dừng
         while ($this->_runDate->differentDay($this->_endDate) >= 0) {
             // Duyệt các ngày xảy ra sự kiện trong trong tuần
             foreach ($rule['weekday'] as $weekday) {
                 // Tính ngày lệch của ngày xảy ra sự kiện với ngày đầu tuần
                 $days = $weekday - 2;
-                if ($days == - 1)
+                if ($days == -1)
                     $days = 6;
                     
                     // Bỏ qua nếu có sai sót
@@ -208,20 +204,19 @@ class Vhmis_Date_Repeat
         $repeatDates = array();
         
         // Kiểm tra
-        if (! isset($rule['freq']) || ! is_numeric($rule['freq']))
+        if (!isset($rule['freq']) || !is_numeric($rule['freq']))
             return $repeatDates;
             
             // Tính tháng lặp tiếp theo
-        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime())         // Nếu
-                                                                             // ngày
-                                                                             // hiện
-                                                                             // tại
-                                                                             // muộn
-                                                                             // hơn
-                                                                             // ngày
-                                                                             // gốc
-        {
-            // Khoảng cách
+        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime()) { // Nếu
+                                                                                // ngày
+                                                                                // hiện
+                                                                                // tại
+                                                                                // muộn
+                                                                                // hơn
+                                                                                // ngày
+                                                                                // gốc
+                                                                                // Khoảng cách
             $month = abs($this->_nowDate->differentMonth($this->_baseDate));
             
             // Tính khoảng cách giữa ngày hiện tại với ngày xảy ra sự kiện kế
@@ -233,16 +228,15 @@ class Vhmis_Date_Repeat
                 // Thiết lập
             $this->_runDate->time($this->_nowDate->toSQL(false));
             $this->_runDate->addMonth($offset);
-        } else         // Nếu ngày hiện tại sớm hơn ngày gốc
-        {
+        } else { // Nếu ngày hiện tại sớm hơn ngày gốc
             $this->_runDate->time($this->_baseDate->toSQL(false));
         }
         
         // Trả về ngày tiên của tháng
         $this->_runDate = $this->_runDate->startDateOfMonth('Vhmis_Date'); // Thứ
                                                                            // 2
-                                                                           
-        // Thực hiện tìm các ngày lặp cho đến khi chạm mốc thời gian dừng
+                                                                           // Thực hiện tìm các ngày lặp cho đến khi
+                                                                           // chạm mốc thời gian dừng
         while ($this->_runDate->differentDay($this->_endDate) >= 0) {
             // Nếu lặp theo ngày trong tuần, trước hết ta tìm các ngày trong
             // tháng tương ứng của nó
@@ -252,7 +246,9 @@ class Vhmis_Date_Repeat
                 if (is_array($days))
                     $rule['monthday'] = $days;
                 else
-                    $rule['monthday'] = array($days);
+                    $rule['monthday'] = array(
+                        $days
+                    );
             }
             
             // Duyệt các ngày xảy ra sự kiện trong trang
@@ -299,20 +295,19 @@ class Vhmis_Date_Repeat
         $repeatDates = array();
         
         // Kiểm tra
-        if (! isset($rule['freq']) || ! is_numeric($rule['freq']))
+        if (!isset($rule['freq']) || !is_numeric($rule['freq']))
             return $repeatDates;
             
             // Tính năm lặp tiếp theo
-        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime())         // Nếu
-                                                                             // ngày
-                                                                             // hiện
-                                                                             // tại
-                                                                             // muộn
-                                                                             // hơn
-                                                                             // ngày
-                                                                             // gốc
-        {
-            // Khoảng cách
+        if ($this->_baseDate->getUnixTime() < $this->_nowDate->getUnixTime()) { // Nếu
+                                                                                // ngày
+                                                                                // hiện
+                                                                                // tại
+                                                                                // muộn
+                                                                                // hơn
+                                                                                // ngày
+                                                                                // gốc
+                                                                                // Khoảng cách
             $year = abs($this->_nowDate->differentYear($this->_baseDate));
             
             // Tính khoảng cách giữa năm hiện tại với năm xảy ra sự kiện kế tiếp
@@ -323,15 +318,14 @@ class Vhmis_Date_Repeat
                 // Thiết lập
             $this->_runDate->time($this->_nowDate->toSQL(false));
             $this->_runDate->addYear($offset);
-        } else         // Nếu ngày hiện tại sớm hơn ngày gốc
-        {
+        } else { // Nếu ngày hiện tại sớm hơn ngày gốc
             $this->_runDate->time($this->_baseDate->toSQL(false));
         }
         
         // Trả về ngày tiên của năm
         $this->_runDate = $this->_runDate->startDateOfYear('Vhmis_Date'); // 01.01.01
-                                                                          
-        // Thực hiện tìm các ngày lặp cho đến khi chạm mốc thời gian dừng
+                                                                          // Thực hiện tìm các ngày lặp cho đến khi chạm
+                                                                          // mốc thời gian dừng
         while ($this->_runDate->differentDay($this->_endDate) >= 0) {
             foreach ($rule['month'] as $month) {
                 // Đi đến tháng
@@ -346,7 +340,9 @@ class Vhmis_Date_Repeat
                     if (is_array($days))
                         $rule['monthday'] = $days;
                     else
-                        $rule['monthday'] = array($days);
+                        $rule['monthday'] = array(
+                            $days
+                        );
                 }
                 
                 // Duyệt các ngày xảy ra sự kiện trong trang

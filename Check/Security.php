@@ -1,5 +1,4 @@
 <?php
-
 // Cảnh báo toàn bộ
 error_reporting(E_ALL | E_NOTICE);
 

@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Network
- * @since      Vhmis v2.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Network
+ * @since Vhmis v2.0
  */
 namespace Vhmis\Network;
+
 use Vhmis\Config\Configure;
 
 /**
@@ -49,7 +51,7 @@ class Response
         header('Content-disposition: attachment; filename="' . $filename . '"');
         
         // Xác định file type
-        if (! is_string($filetype)) {
+        if (!is_string($filetype)) {
             $mines = ___loadConfig('Mine', false);
             $mines = $mines['minetypes'];
             

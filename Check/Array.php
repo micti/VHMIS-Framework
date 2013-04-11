@@ -1,6 +1,10 @@
 <?php
-
-$a = array('anh' => array('hai' => 1, 'ba' => 1));
+$a = array(
+    'anh' => array(
+        'hai' => 1,
+        'ba' => 1
+    )
+);
 
 var_dump(isset($a['anh']['tu']));
 
@@ -15,5 +19,4 @@ $c['anh']['tu'] = 0;
 
 var_dump($c['anh']['tu']);
 var_dump(isset($c['anh']['tu']));
-
 ?>

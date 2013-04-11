@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Config
- * @since      Vhmis v2.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Config
+ * @since Vhmis v2.0
  */
 namespace Vhmis\Config;
+
 use \ArrayObject;
 
 /**
@@ -57,7 +59,7 @@ class Configure extends ArrayObject
     {
         $instance = self::getInstance();
         
-        if (! $instance->offsetExists($index)) {
+        if (!$instance->offsetExists($index)) {
             return $default;
         }
         
@@ -90,7 +92,7 @@ class Configure extends ArrayObject
     {
         $instance = self::getInstance();
         
-        if (! $instance->offsetExists($index)) {
+        if (!$instance->offsetExists($index)) {
             $instance->offsetSet($index, $value);
         } else {
             $instance->offsetSet($index, array_merge_recursive($instance->offsetGet($index), $value));

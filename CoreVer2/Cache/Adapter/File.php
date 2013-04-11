@@ -4,6 +4,7 @@ namespace Vhmis\Cache\Adapter;
 
 class File implements StorageInterface
 {
+
     /**
      * Thư mục lưu cache
      *
@@ -13,19 +14,19 @@ class File implements StorageInterface
 
     /**
      *
-     * @param type $options
+     * @param type $options            
      * @throws \LogicException
      */
     public function __construct($options)
     {
-        if(!isset($options['path'])) {
+        if (!isset($options['path'])) {
             throw new \LogicException("Chưa set đường dẫn thư mục chứa file cache.");
         }
-
-        if(!is_writable($options['path'])) {
+        
+        if (!is_writable($options['path'])) {
             throw new \LogicException("Không có quyền ghi vào thư mục.");
         }
-
+        
         $this->_path = $options['path'];
     }
 
@@ -39,14 +40,14 @@ class File implements StorageInterface
     public function get($id)
     {
         $file = $this->_path . D_SPEC . $id;
-
-        if(is_readable($file)) {
+        
+        if (is_readable($file)) {
             $value = file_get_contents($file);
             $value = unserialize($value);
-
+            
             return $value;
         }
-
+        
         return null;
     }
 

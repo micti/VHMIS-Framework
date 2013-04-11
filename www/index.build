@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Chức năng cơ bản của VHMIS
  *
@@ -19,7 +18,6 @@
  * @since         1.0.0
  * @license       All rights reversed
  */
-
 // Khai báo đường dẫn Framework
 DEFINE('VHMIS', 'BUILD');
 

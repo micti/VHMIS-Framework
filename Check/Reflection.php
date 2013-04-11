@@ -1,10 +1,16 @@
 <?php
+
 namespace A\B;
+
 class Reflection
 {
-    protected  $_a;
-    protected  $_c;
-    protected  $_b;
+
+    protected $_a;
+
+    protected $_c;
+
+    protected $_b;
+
     public function __construct($a, $b, $c)
     {
         $this->_a = $a;
@@ -13,9 +19,7 @@ class Reflection
     }
 }
 
-
 use A\B\Reflection as Re;
-
 $re = new \ReflectionClass('A\B\Reflection');
 
 $params = array(

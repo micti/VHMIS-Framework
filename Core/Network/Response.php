@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -61,7 +60,7 @@ class Vhmis_Network_Response
         header('Content-disposition: attachment; filename="' . $filename . '"');
         
         // Xác định file type
-        if (! is_string($filetype)) {
+        if (!is_string($filetype)) {
             $mines = ___loadConfig('Mine', false);
             $mines = $mines['minetypes'];
             

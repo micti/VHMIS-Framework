@@ -1,5 +1,7 @@
 <?php
+
 namespace Vhmis\View\Helper;
+
 use Vhmis\Text\Escaper;
 
 /**

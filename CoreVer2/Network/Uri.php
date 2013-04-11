@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Network
- * @since      Vhmis v2.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Network
+ * @since Vhmis v2.0
  */
 namespace Vhmis\Network;
 
@@ -111,7 +112,10 @@ class Uri
         // Phải bắt đầu bằng http hoặc https
         $scheme = explode(':', $uri, 2);
         $scheme = strtolower($scheme[0]);
-        if (in_array($scheme, array('http', 'https')) === false) {
+        if (in_array($scheme, array(
+            'http',
+            'https'
+        )) === false) {
             $this->_valid = false;
             return;
         }
@@ -201,11 +205,13 @@ class Uri
      */
     public function getURI()
     {
-        if (! $this->_valid)
+        if (!$this->_valid)
             return '';
         
-        $uri = $this->_protocol . '://' . (($this->_username != '' && $this->_password != '') ? $this->_username . ':' . $this->_password . '@' : '') . $this->_domain . $this->_path .
-                 (($this->_query != '') ? '?' . $this->_query : '') . (($this->_fragment != '') ? '#' . $this->_fragment : '');
+        $uri = $this->_protocol . '://' . (($this->_username != '' && $this->_password != '') ? $this->_username . ':' .
+             $this->_password . '@' : '') . $this->_domain . $this->_path .
+             (($this->_query != '') ? '?' . $this->_query : '') .
+             (($this->_fragment != '') ? '#' . $this->_fragment : '');
         
         return $uri;
     }

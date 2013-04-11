@@ -3,13 +3,15 @@
 class Vhmis_File_Image
 {
 
-    protected $_lib = array('gd2');
+    protected $_lib = array(
+        'gd2'
+    );
 
     protected $_engine;
 
     public function __construct($path, $lib = 'gd2')
     {
-        if (! in_array($lib, $this->_lib)) {
+        if (!in_array($lib, $this->_lib)) {
             return false;
         }
         

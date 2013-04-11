@@ -55,13 +55,13 @@ class Vhmis_Filter
     public function htmlEntities($value, $quoteStyle = ENT_QUOTES, $encoding = 'utf-8', $doubleQuote = true)
     {
         $filtered = htmlentities((string) $value, $quoteStyle, $encoding, $doubleQuote);
-        if (strlen((string) $value) && ! strlen($filtered)) {
-            if (! function_exists('iconv')) {
+        if (strlen((string) $value) && !strlen($filtered)) {
+            if (!function_exists('iconv')) {
                 return '';
             }
             $value = iconv('', $encoding . '//IGNORE', (string) $value);
             $filtered = htmlentities($value, $quoteStyle, $enc, $doubleQuote);
-            if (! strlen($filtered)) {
+            if (!strlen($filtered)) {
                 return '';
             }
         }
@@ -80,7 +80,7 @@ class Vhmis_Filter
     {
         $value = (string) $value;
         
-        if (! is_array($allowTags))
+        if (!is_array($allowTags))
             $allowTags = array();
         $_allowTags = array();
         foreach ($allowTags as $key => $val) {
@@ -97,7 +97,7 @@ class Vhmis_Filter
                 }
         }
         
-        if (! is_array($allowAttributes))
+        if (!is_array($allowAttributes))
             $allowAttributes = array();
         $_allowAttributes = array();
         foreach ($allowAttributes as $key => $val) {
@@ -113,7 +113,7 @@ class Vhmis_Filter
             $value = substr($value, $pos);
             
             // If there is no comment closing tag, strip whole text
-            if (! preg_match('/--\s*>/s', $value)) {
+            if (!preg_match('/--\s*>/s', $value)) {
                 $value = '';
             } else {
                 $value = preg_replace('/<(?:!(?:--[\s\S]*?--\s*)?(>))/s', '', $value);
@@ -167,7 +167,7 @@ class Vhmis_Filter
         $isMatch = preg_match('~(</?)(\w*)((/(?!>)|[^/>])*)(/?>)~', $tag, $matches);
         
         // If the tag does not match, then strip the tag entirely
-        if (! $isMatch) {
+        if (!$isMatch) {
             return '';
         }
         
@@ -178,7 +178,7 @@ class Vhmis_Filter
         $tagEnd = $matches[5];
         
         // If the tag is not an allowed tag, then remove the tag entirely
-        if (! isset($allowTags[$tagName])) {
+        if (!isset($allowTags[$tagName])) {
             return '';
         }
         
@@ -200,7 +200,8 @@ class Vhmis_Filter
                 $attributeValue = empty($matches[3][$index]) ? $matches[5][$index] : $matches[3][$index];
                 
                 // If the attribute is not allowed, then remove it entirely
-                if (! array_key_exists($attributeName, $allowTags[$tagName]) && ! array_key_exists($attributeName, $allowAttributes)) {
+                if (!array_key_exists($attributeName, $allowTags[$tagName]) &&
+                     !array_key_exists($attributeName, $allowAttributes)) {
                     continue;
                 }
                 // Add the attribute to the accumulator

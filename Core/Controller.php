@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -42,6 +41,8 @@ class Vhmis_Controller
 
     /**
      * Tên url cua app (dung de lam dia chi, dat ten bien .
+     *
+     *
      * ..)
      */
     public $appUrl;
@@ -99,7 +100,11 @@ class Vhmis_Controller
     /**
      * Mảng chứa các components cần gọi
      */
-    protected $_components = array('Auth', 'Acl', 'Log');
+    protected $_components = array(
+        'Auth',
+        'Acl',
+        'Log'
+    );
 
     /**
      * Mảng chứa các đối tượng của components
@@ -219,13 +224,19 @@ class Vhmis_Controller
             if ($this->user === null) {
                 if ($this->output != 'html') {
                     $this->set('text', VHMIS_ERROR_LOGINSESSION);
-                    $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_LOGINSESSION, 'message' => 'Login first or Session expired'));
+                    $this->set('array', 
+                        array(
+                            'error' => 1,
+                            'code' => VHMIS_ERROR_LOGINSESSION,
+                            'message' => 'Login first or Session expired'
+                        ));
                     $this->view();
                     return;
                 }
                 
                 // Chuyển hướng đến trang login
-                $this->redirect($this->_config['site']['path'] . $this->_config['apps']['login-url']);
+                $this->redirect(
+                    $this->_config['site']['path'] . $this->_config['apps']['login-url']);
             }
         }
         
@@ -316,7 +327,11 @@ class Vhmis_Controller
         $this->View = new Vhmis_View();
         $this->View->setViewInfo($view, $layout, $template);
         $this->View->transferViewData($this->_data);
-        $this->View->transferControllerData(array('app' => $this->appInfo, 'user' => $this->user));
+        $this->View->transferControllerData(
+            array(
+                'app' => $this->appInfo,
+                'user' => $this->user
+            ));
         $this->View->transferConfigData($this->_config);
         
         // Lấy view
@@ -374,7 +389,12 @@ class Vhmis_Controller
     {
         if ($this->output != 'html') {
             $this->set('text', VHMIS_ERROR_DATABASE);
-            $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_DATABASE, 'message' => 'Db Connection Error'));
+            $this->set('array', 
+                array(
+                    'error' => 1,
+                    'code' => VHMIS_ERROR_DATABASE,
+                    'message' => 'Db Connection Error'
+                ));
             $this->view();
             return;
         }
@@ -399,7 +419,12 @@ class Vhmis_Controller
         
         if ($this->output != 'html') {
             $this->set('text', VHMIS_ERROR_NOTPERMISSION);
-            $this->set('array', array('error' => 1, 'code' => VHMIS_ERROR_NOTPERMISSION, 'message' => 'You Do Not Have Permission'));
+            $this->set('array', 
+                array(
+                    'error' => 1,
+                    'code' => VHMIS_ERROR_NOTPERMISSION,
+                    'message' => 'You Do Not Have Permission'
+                ));
             $this->view();
             return;
         }
@@ -449,7 +474,7 @@ class Vhmis_Controller
      */
     public function checkAllow($action, $resource)
     {
-        if (! $this->isAllow($action, $resource))
+        if (!$this->isAllow($action, $resource))
             $this->viewPermissionError();
     }
 
@@ -464,7 +489,7 @@ class Vhmis_Controller
     protected function _checkPostData($index)
     {
         foreach ($index as $name) {
-            if (! isset($this->request->post[$name])) {
+            if (!isset($this->request->post[$name])) {
                 return false;
             }
         }
@@ -505,7 +530,9 @@ class Vhmis_Controller
         $db = $this->_db($name);
         
         // create model object
-        return $this->models->load($model, array('db' => $db));
+        return $this->models->load($model, array(
+            'db' => $db
+        ));
     }
 
     /**
@@ -553,13 +580,13 @@ class Vhmis_Controller
     {
         $name = strtolower($name);
         
-        if (! Configure::isRegistered('Db' . ___fUpper($name))) {
+        if (!Configure::isRegistered('Db' . ___fUpper($name))) {
             $config = ___loadConfig('Database', false);
             if (isset($config['databases'][$name])) {
                 // Sử dụng chung db với app khác
                 if (isset($config['databases'][$name]['use'])) {
                     $name2 = $config['databases'][$name]['use'];
-                    if (! Configure::isRegistered('Db' . ___fUpper($name2))) {
+                    if (!Configure::isRegistered('Db' . ___fUpper($name2))) {
                         $db = ___connectDb($config['databases'][$name2]);
                         if ($db != false) {
                             Configure::set('Db' . ___fUpper($name2), $db);

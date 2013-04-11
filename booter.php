@@ -2,13 +2,12 @@
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Boot
- * @since      Vhmis v1.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Boot
+ * @since Vhmis v1.0
  */
-
 /**
  * Thiết lập các hằng số liên quan đến lỗi
  */
@@ -56,12 +55,11 @@ function ___autoLoad($class)
         }
     }
 }
-
 spl_autoload_register('___autoLoad');
 
 /**
  * Load file chứa class Core (sử dụng Namespace)
- * 
+ *
  * @param string $class
  *            Tên Class
  */
@@ -74,7 +72,7 @@ function ___loadCoreClassWithNamespace($class)
     $count = count($class);
     $path = '';
     
-    for ($i = 1; $i < $count - 1; $i ++) {
+    for ($i = 1; $i < $count - 1; $i++) {
         $path .= D_SPEC . $class[$i];
     }
     
@@ -97,7 +95,7 @@ function ___loadCoreClass($name)
     $count = count($name);
     $path = '';
     
-    for ($i = 1; $i < $count - 1; $i ++) {
+    for ($i = 1; $i < $count - 1; $i++) {
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
     
@@ -119,7 +117,7 @@ function ___loadZendClass($name)
     $count = count($name);
     $path = '';
     
-    for ($i = 1; $i < $count - 1; $i ++) {
+    for ($i = 1; $i < $count - 1; $i++) {
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
     
@@ -234,7 +232,7 @@ function ___loadAppConfig($appInfo, $store = true)
     require VHMIS_APPS_PATH . D_SPEC . ___fUpper($appInfo) . D_SPEC . 'Config' . D_SPEC . 'Config.php';
     
     if ($store === true) {
-        if (! isset($_vhmisConfigAll['apps']['info'][$appInfo]))
+        if (!isset($_vhmisConfigAll['apps']['info'][$appInfo]))
             $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
     } else
         return $_vhmisConfig;
@@ -284,7 +282,7 @@ function ___checkApp($app)
 {
     $config = ___loadConfig('Applications', false);
     
-    if (! in_array($app, $config['apps']['list']['url'])) {
+    if (!in_array($app, $config['apps']['list']['url'])) {
         return false;
     }
     
@@ -345,7 +343,7 @@ function ___removeInvisibleCharacters($str, $url_encoded = TRUE)
                                                                   // 127
     
     do {
-        $str = preg_replace($non_displayables, '', $str, - 1, $count);
+        $str = preg_replace($non_displayables, '', $str, -1, $count);
     } while ($count);
     
     return $str;

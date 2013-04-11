@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Network
- * @since      Vhmis v2.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Network
+ * @since Vhmis v2.0
  */
 namespace Vhmis\Network;
 
@@ -96,7 +97,14 @@ class Route implements RouteInterface
      *
      * @var array
      */
-    protected $_dataTypes = array('year' => self::YEAR, 'month' => self::MONTH, 'day' => self::DAY, 'id' => self::ID, 'slug' => self::SLUG, 'monthyear' => self::YEARMONTH);
+    protected $_dataTypes = array(
+        'year' => self::YEAR,
+        'month' => self::MONTH,
+        'day' => self::DAY,
+        'id' => self::ID,
+        'slug' => self::SLUG,
+        'monthyear' => self::YEARMONTH
+    );
 
     /**
      * Khởi tạo một đối tượng mới
@@ -107,7 +115,7 @@ class Route implements RouteInterface
      */
     public function __construct($params = null)
     {
-        if (! is_array($params)) {
+        if (!is_array($params)) {
             return;
         }
         
@@ -304,9 +312,11 @@ class Route implements RouteInterface
      */
     public function check($value)
     {
-        $result = array('match' => false);
+        $result = array(
+            'match' => false
+        );
         
-        if (! is_string($value))
+        if (!is_string($value))
             return $result;
         
         $match = preg_match_all($this->_regex, $value, $params, PREG_SET_ORDER);

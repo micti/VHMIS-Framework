@@ -5,7 +5,7 @@ class Vhmis_Utility_Vn
 
     public static function phoneNumber($number, $type = 'cell')
     {
-        if (! is_numeric($number)) {
+        if (!is_numeric($number)) {
             return $number;
         }
         
@@ -46,7 +46,7 @@ class Vhmis_Utility_Vn
                     if ($len < 9 || $len > 10)
                         return $number;
                     
-                    $last = substr($number, - 7);
+                    $last = substr($number, -7);
                     $first = substr($number, 0, ($len - 7));
                     return '(0) ' . $first . ' ' . $last;
                 }

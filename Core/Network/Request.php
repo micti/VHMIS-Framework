@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -95,7 +94,8 @@ class Vhmis_Network_Request
             return;
         }
         
-        $this->_uriAnalyze = new Vhmis_Uri_Analyze($this->_uri->getPath(), $config['site']['path'], $config['apps']['indexAppInfo']);
+        $this->_uriAnalyze = new Vhmis_Uri_Analyze($this->_uri->getPath(), $config['site']['path'], 
+            $config['apps']['indexAppInfo']);
         
         $this->app = $this->_uriAnalyze->getAppInfo();
         
@@ -141,7 +141,8 @@ class Vhmis_Network_Request
      */
     public function url()
     {
-        return (! empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        return (!empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : "http://" .
+             $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
     }
 
     /**

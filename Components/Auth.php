@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -43,7 +42,9 @@ class Vhmis_Component_Auth extends Vhmis_Component
         $config = Configure::get('Config');
         $this->_appSecretKey = $config['security']['secret'];
         
-        $this->_dbUser = new Vhmis_Model_System_User(array('db' => $db));
+        $this->_dbUser = new Vhmis_Model_System_User(array(
+            'db' => $db
+        ));
         
         // Session
         Zend_Session::start();
@@ -157,9 +158,9 @@ class Vhmis_Component_Auth extends Vhmis_Component
      */
     public function _findUserInfo()
     {
-        if (! $this->_session->username || $this->_session->username === null)
+        if (!$this->_session->username || $this->_session->username === null)
             return null;
-        if (! $this->_session->password || $this->_session->password === null)
+        if (!$this->_session->password || $this->_session->password === null)
             return null;
         
         return $this->_dbUser->getUserByLogin($this->_session->username, $this->_session->password);
@@ -177,8 +178,9 @@ class Vhmis_Component_Auth extends Vhmis_Component
     protected function _webmailLogin($user, $pass)
     {
         $request = new Vhmis_Network_Http_Curl();
-        $request->setRequestInfo('http://mail.viethanit.edu.vn/zmail/jsp/Login.jsp', 'POST', 'http://mail.viethanit.edu.vn/zmail/jsp/LoginF.jsp?language=en', 
-                'language_code=en&domain_idx=0&member_id=' . $user . '&password=' . $pass);
+        $request->setRequestInfo('http://mail.viethanit.edu.vn/zmail/jsp/Login.jsp', 'POST', 
+            'http://mail.viethanit.edu.vn/zmail/jsp/LoginF.jsp?language=en', 
+            'language_code=en&domain_idx=0&member_id=' . $user . '&password=' . $pass);
         $requestResult = $request->sendSimpleRequest();
         
         if (strpos($requestResult, 'Login Check Error') === false) {

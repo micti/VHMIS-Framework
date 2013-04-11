@@ -18,7 +18,7 @@ class Configure extends ArrayObject
     {
         $instance = self::getInstance();
         
-        if (! $instance->offsetExists($index)) {
+        if (!$instance->offsetExists($index)) {
             return null;
         }
         
@@ -49,7 +49,7 @@ class Configure extends ArrayObject
     {
         $instance = self::getInstance();
         
-        if (! $instance->offsetExists($index)) {
+        if (!$instance->offsetExists($index)) {
             $instance->offsetSet($index, $value);
         } else {
             $instance->offsetSet($index, array_merge_recursive($instance->offsetGet($index), $value));

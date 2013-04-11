@@ -51,13 +51,12 @@ class Vhmis_Xml
     {
         $xml = '';
         
-        if (! isset($data[0]))         // Phần tử đơn
-        {
+        if (!isset($data[0])) { // Phần tử đơn
             if ($parentkey != '')
                 $xml .= '<' . $parentkey . '>' . "\n";
             
             foreach ($data as $key => $data) {
-                if (! is_array($data))
+                if (!is_array($data))
                     $xml .= '<' . $key . '>' . $data . '</' . $key . '>' . "\n";
                 else
                     $xml .= self::_fromArray($data, $key);
@@ -65,8 +64,7 @@ class Vhmis_Xml
             
             if ($parentkey != '')
                 $xml .= '</' . $parentkey . '>' . "\n";
-        } else         // nhiều phần tử cùng cấp
-        {
+        } else { // nhiều phần tử cùng cấp
             foreach ($data as $data) {
                 if ($parentkey != '')
                     $xml .= '<' . $parentkey . '>' . "\n";

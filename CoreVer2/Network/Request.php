@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Network
- * @since      Vhmis v2.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Network
+ * @since Vhmis v2.0
  */
 namespace Vhmis\Network;
+
 use Vhmis\Config\Configure;
 
 /**
@@ -126,7 +128,7 @@ class Request
      *
      * @return string
      */
-    public function realIp()
+    public function getIp()
     {
         $ip = '0.0.0.0';
         
@@ -150,9 +152,10 @@ class Request
      *
      * @return string
      */
-    public function url()
+    public function getUrl()
     {
-        return (! empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        return (!empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : "http://" .
+             $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
     }
 
     /**
@@ -160,13 +163,14 @@ class Request
      *
      * @return string
      */
-    public function referrer()
+    public function getReferrer()
     {
         $referrer = $_SERVER['HTTP_REFERER'];
         $forward = $_SERVER['HTTP_X_FORWARDED_HOST'];
         
-        if ($forward)
+        if ($forward) {
             return $forward;
+        }
         return $referrer;
     }
 
@@ -225,6 +229,8 @@ class Request
 
     /**
      * Xóa dữ liệu các biến GLOBAL (post, get, files, request .
+     *
+     *
      * ..)
      */
     protected function _delData()

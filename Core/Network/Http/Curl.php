@@ -14,7 +14,8 @@ class Vhmis_Network_Http_Curl
         
         curl_setopt($this->_resource, CURLOPT_URL, $uri);
         curl_setopt($this->_resource, CURLOPT_REFERER, $ref);
-        curl_setopt($this->_resource, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.15) Gecko/20110303 Firefox/3.6.15');
+        curl_setopt($this->_resource, CURLOPT_USERAGENT, 
+            'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.15) Gecko/20110303 Firefox/3.6.15');
         curl_setopt($this->_resource, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->_resource, CURLOPT_MAXREDIRS, 1);
         

@@ -4,6 +4,7 @@ namespace Vhmis\Cache\Adapter;
 
 class Memcached implements StorageInterface
 {
+
     /**
      * Đối tượng Memcached
      *
@@ -19,15 +20,15 @@ class Memcached implements StorageInterface
     public function __construct($options)
     {
         // Khởi tạo
-        if(isset($options['persistent'])) {
+        if (isset($options['persistent'])) {
             $this->_memcached = $this->_getMemecached($options['persistent']);
         } else {
             $this->_memcached = $this->_getMemecached();
         }
 
         // Thêm servers
-        if(isset($options['servers'])) {
-            foreach($options['servers'] as $server) {
+        if (isset($options['servers'])) {
+            foreach ($options['servers'] as $server) {
                 $this->addServer($server['host'], $server['port'], $server['weight']);
             }
         }
@@ -41,7 +42,7 @@ class Memcached implements StorageInterface
      * @param int $weight
      * @return \Vhmis\Cache\Adapter\Memcached
      */
-    public function addServer($host = 'localhost', $port =  11211, $weight = 0)
+    public function addServer($host = 'localhost', $port = 11211, $weight = 0)
     {
         $this->_memcached->addServer($host, $port, $weight);
 
@@ -49,7 +50,6 @@ class Memcached implements StorageInterface
     }
 
     /**
-     *
      */
     public function set($id, $value)
     {
@@ -91,6 +91,6 @@ class Memcached implements StorageInterface
      */
     protected function _getMemecached()
     {
-        return new \Memcached;
+        return new \Memcached();
     }
 }

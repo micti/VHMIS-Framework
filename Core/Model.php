@@ -8,7 +8,7 @@ abstract class Vhmis_Model extends Zend_Db_Table_Abstract
      */
     protected function _setupTableName()
     {
-        if (! $this->_name) {
+        if (!$this->_name) {
             $this->_name = strtolower(str_replace('Vhmis_Model_', '', get_class($this)));
         }
         parent::_setupTableName();

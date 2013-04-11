@@ -12,11 +12,11 @@ class Vhmis_Benchmark
 
     function time($start, $stop)
     {
-        if (! isset($this->_timer[$start])) {
+        if (!isset($this->_timer[$start])) {
             return '';
         }
         
-        if (! isset($this->_timer[$stop])) {
+        if (!isset($this->_timer[$stop])) {
             $this->_timer[$stop] = microtime();
         }
         

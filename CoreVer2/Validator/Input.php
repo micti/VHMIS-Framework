@@ -1,5 +1,7 @@
 <?php
+
 namespace Vhmis\Validator;
+
 use Vhmis_Network_Request;
 
 /**
@@ -27,7 +29,7 @@ class Input extends ValidatorAbstract
 
     /**
      * Danh sách các đối tượng Validator được tạo ra để kiểm tra
-     * 
+     *
      * @var array
      */
     protected $_validators;
@@ -80,7 +82,11 @@ class Input extends ValidatorAbstract
      */
     public function addField($name, $type = null, $params = null, $allowEmpty = true)
     {
-        $this->_fields[$name]['validations'][] = array('name' => $name, 'type' => $type, 'params' => $params);
+        $this->_fields[$name]['validations'][] = array(
+            'name' => $name,
+            'type' => $type,
+            'params' => $params
+        );
         if (isset($this->_fields[$name]['allowEmpty']))
             $this->_fields[$name]['allowEmpty'] = $this->_fields[$name]['allowEmpty'] && $allowEmpty;
         else
@@ -98,7 +104,7 @@ class Input extends ValidatorAbstract
         $input = $this->_request->$method;
         
         foreach ($this->_fields as $name => $field) {
-            if (! isset($input[$name])) {
+            if (!isset($input[$name])) {
                 $this->_setMessage("Không tồn tại", ValidatorAbstract::NOTEXIST, 'notexist');
                 return false;
             }
@@ -126,12 +132,12 @@ class Input extends ValidatorAbstract
                 
                 // Kiểm tra hợp lệ
                 $validator = md5($validation['type']);
-                if (! isset($this->_validators[$validator])) {
+                if (!isset($this->_validators[$validator])) {
                     $classname = "Vhmis\\Validator\\" . $validation['type'];
                     $this->_validators[$validator] = new $classname();
                 }
                 
-                if (! $this->_validators[$validator]->isValid($input[$name], $validation['params'])) {
+                if (!$this->_validators[$validator]->isValid($input[$name], $validation['params'])) {
                     $message = $this->_validators[$validator]->getMessages();
                     $this->_setMessage($message['message'], $message['code'], $message['translator']);
                     return false;

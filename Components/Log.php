@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -37,7 +36,9 @@ class Vhmis_Component_Log extends Vhmis_Component
         // Kết nối CSDL
         $this->_db('System');
         $db = Configure::get('DbSystem');
-        $this->_dbLog = new Vhmis_Model_System_Log(array('db' => $db));
+        $this->_dbLog = new Vhmis_Model_System_Log(array(
+            'db' => $db
+        ));
     }
 
     public function insert($uid, $username, $app, $message, $type, $more)

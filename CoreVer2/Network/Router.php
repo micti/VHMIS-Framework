@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
- * @link       http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright  Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT License
- * @package    Vhmis_Network
- * @since      Vhmis v2.0
+ * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
+ * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Vhmis_Network
+ * @since Vhmis v2.0
  */
 namespace Vhmis\Network;
+
 use Vhmis\Config\Config;
 use Vhmis\Config\Configure;
 
@@ -156,7 +158,9 @@ class Router
      */
     public function check($uri)
     {
-        $result = array('match' => false);
+        $result = array(
+            'match' => false
+        );
         
         // Kiểm tra webpath trong $uri (thực ra là luôn có)
         if ($uri . '/' === $this->_webPath) {
@@ -214,7 +218,7 @@ class Router
             
             // Kiểm tra ứng dụng
         $appConfing = Configure::get('ConfigApplications', array());
-        if (! isset($appConfing['list']['name'][$this->_app])) {
+        if (!isset($appConfing['list']['name'][$this->_app])) {
             return $result;
         }
         

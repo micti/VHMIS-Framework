@@ -1,5 +1,4 @@
 <?php
-
 require_once '../Core/Filter.php';
 require_once '../Core/Validator.php';
 
@@ -108,18 +107,24 @@ $a = '<b style="font-size:19pt">Anh</b>';
 echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a));
 echo '<br>' . "\n";
 
-echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a, array('b')));
+echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a, array(
+    'b'
+)));
 echo '<br>' . "\n";
 
 $a = '< ahfj jfd fjfjdf djfd jfdjdsfjdsf dsf 19 > 1948 <b style="font-size:19pt">Anh</b>';
 echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a));
 echo '<br>' . "\n";
 
-echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a, array('b')));
+echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a, array(
+    'b'
+)));
 echo '<br>' . "\n";
 
 $a = '< sjfdsjfdjfdsjfdj<b>></b>';
-echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a, array('b')));
+echo htmlentities($a) . " ->> strip HTML ->> " . htmlentities($filter->stripHTML($a, array(
+    'b'
+)));
 echo '<br>' . "\n";
 
 $a = '< sjfdsjfdjfdsjfdj<b>></b>';

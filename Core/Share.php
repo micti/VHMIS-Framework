@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -68,7 +67,9 @@ abstract class Vhmis_Share
         $db = Configure::get('Db' . ___fUpper($db[0]));
         
         $model = 'Vhmis_Model_' . $name;
-        $this->model = new $model(array('db' => $db));
+        $this->model = new $model(array(
+            'db' => $db
+        ));
         $this->_model = $this->model;
     }
 }

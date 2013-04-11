@@ -1,6 +1,8 @@
 <?php
+
 namespace Vhmis\I18n\Output;
-use NumberFormatter;
+
+use \NumberFormatter;
 
 /**
  * Class dùng để định dạng các chuỗi đại diện cho số hoặc số theo Locale
@@ -51,10 +53,10 @@ class Number
     {
         $style = NumberFormatter::DECIMAL;
         $formatter = md5($this->_locale . $style);
-        
-        if (! isset($this->_formatters[$formatter]))
+
+        if (!isset($this->_formatters[$formatter]))
             $this->_formatters[$formatter] = NumberFormatter::create($this->_locale, $style);
-        
+
         return $this->_formatters[$formatter]->format($value, NumberFormatter::TYPE_DOUBLE);
     }
 
@@ -69,17 +71,17 @@ class Number
     {
         $style = NumberFormatter::DECIMAL;
         $formatter = md5($this->_locale . $style);
-        
-        if (! isset($this->_formatters[$formatter]))
+
+        if (!isset($this->_formatters[$formatter]))
             $this->_formatters[$formatter] = NumberFormatter::create($this->_locale, $style);
-        
+
         return $this->_formatters[$formatter]->format($value, NumberFormatter::TYPE_INT64);
     }
 
     /**
      * Định dạng chữ cho số
      *
-     * @param mixed $value            
+     * @param mixed $value
      * @return string
      * @todo Hiện xuất ra tiếng Việt vẫn còn lỗi mươi -> mười, kiểm tra phiên
      *       bản mới hoặc viết riêng hàm
@@ -88,10 +90,10 @@ class Number
     {
         $style = NumberFormatter::SPELLOUT;
         $formatter = md5($this->_locale . $style);
-        
-        if (! isset($this->_formatters[$formatter]))
+
+        if (!isset($this->_formatters[$formatter]))
             $this->_formatters[$formatter] = NumberFormatter::create($this->_locale, $style);
-        
+
         return $this->_formatters[$formatter]->format($value);
     }
 }

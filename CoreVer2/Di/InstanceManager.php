@@ -1,7 +1,6 @@
 <?php
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in the editor.
  */
 
 /**
@@ -11,6 +10,7 @@
  */
 class InstanceManager
 {
+
     protected $_services;
 
     protected $_lazyServices;
@@ -21,25 +21,20 @@ class InstanceManager
 
     public function add($instance, $class)
     {
-        if(!is_object($instance))
-        {
+        if (!is_object($instance)) {
             throw new \Exception("Not object");
         }
 
-        if($service instanceof \Closure)
-        {
+        if ($instance instanceof \Closure) {
             $this->_lazyServices[$class] = $instance;
-        }
-        else
-        {
+        } else {
             $this->_services[$class] = $instance;
         }
     }
 
     public function addParams($params, $class)
     {
-        if($params instanceof \Closure)
-        {
+        if ($params instanceof \Closure) {
             $this->_lazyParams[$class] = $params;
         }
 
@@ -48,13 +43,13 @@ class InstanceManager
 
     public function get($class)
     {
-        if(isset($this->_services[$class])) {
+        if (isset($this->_services[$class])) {
             return $this->_services[$class];
         }
 
-        if(isset($this->_closure[$class])) {
-            $this->_services[$class] = $this->_closure[$id]();
-            return $this->_services[$id];
+        if (isset($this->_closure[$class])) {
+            $this->_services[$class] = $this->_closure[$class]();
+            return $this->_services[$class];
         }
 
         return null;

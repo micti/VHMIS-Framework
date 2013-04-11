@@ -1,5 +1,4 @@
 <?php
-
 use Vhmis\Config\Configure;
 
 /**
@@ -35,7 +34,9 @@ class Vhmis_Component_Employee extends Vhmis_Component
         // Kết nối CSDL
         $this->_db('Hrm');
         $db = Configure::get('DbHrm');
-        $this->_dbEmployee = new Vhmis_Model_Hrm_Employee(array('db' => $db));
+        $this->_dbEmployee = new Vhmis_Model_Hrm_Employee(array(
+            'db' => $db
+        ));
     }
 
     /**

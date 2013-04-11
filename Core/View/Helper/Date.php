@@ -3,7 +3,15 @@
 class Vhmis_View_Helper_Date
 {
 
-    private $_vietnameseWeekday = array('Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7');
+    private $_vietnameseWeekday = array(
+        'Chủ nhật',
+        'Thứ 2',
+        'Thứ 3',
+        'Thứ 4',
+        'Thứ 5',
+        'Thứ 6',
+        'Thứ 7'
+    );
 
     /**
      * Chuyển đổi định dạng giờ sql sang định dạng thường khác

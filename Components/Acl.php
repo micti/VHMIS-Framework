@@ -12,15 +12,14 @@
  *
  * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
  *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Core
- * @subpackage    Security
- * @since         1.0.0
- * @license       All rights reversed
+ * @copyright Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
+ * @link https://github.com/VHIT/VHMIS VHMIS(tm) Project
+ * @category VHMIS
+ * @package Core
+ * @subpackage Security
+ * @since 1.0.0
+ * @license All rights reversed
  */
-
 use Vhmis\Config\Configure;
 
 /**
@@ -45,7 +44,9 @@ class Vhmis_Component_Acl extends Vhmis_Component
         // Kết nối CSDL
         $this->_db('System');
         $db = Configure::get('DbSystem');
-        $this->_dbAcl = new Vhmis_Model_System_Acl_Permission(array('db' => $db));
+        $this->_dbAcl = new Vhmis_Model_System_Acl_Permission(array(
+            'db' => $db
+        ));
     }
 
     /**
@@ -53,7 +54,7 @@ class Vhmis_Component_Acl extends Vhmis_Component
      */
     public function addApp($app)
     {
-        if (! isset($this->_apps[$app]))
+        if (!isset($this->_apps[$app]))
             $this->_apps[$app] = array();
     }
 
@@ -63,7 +64,7 @@ class Vhmis_Component_Acl extends Vhmis_Component
     public function addResource($app, $resource)
     {
         $this->addApp($app);
-        if (! isset($this->_apps[$app][$resource]))
+        if (!isset($this->_apps[$app][$resource]))
             $this->_apps[$app][$resource] = array();
     }
 
@@ -120,36 +121,42 @@ class Vhmis_Component_Acl extends Vhmis_Component
     public function isAllow($user, $app, $action, $resource)
     {
         // Kiểm tra quyền cá nhân với trực tiếp hành động
-        if (isset($this->_acl[$app][$resource][$action]['u_' . $user['id']]) && $this->_acl[$app][$resource][$action]['u_' . $user['id']] < 2)
+        if (isset($this->_acl[$app][$resource][$action]['u_' . $user['id']]) &&
+             $this->_acl[$app][$resource][$action]['u_' . $user['id']] < 2)
             return $this->_acl[$app][$resource][$action]['u_' . $user['id']];
             
             // Kiểm tra quyền cá nhân với hành động đặc biệt '_all'
-        if (isset($this->_acl[$app][$resource]['_all']['u_' . $user['id']]) && $this->_acl[$app][$resource]['_all']['u_' . $user['id']] < 2)
+        if (isset($this->_acl[$app][$resource]['_all']['u_' . $user['id']]) &&
+             $this->_acl[$app][$resource]['_all']['u_' . $user['id']] < 2)
             return $this->_acl[$app][$resource]['_all']['u_' . $user['id']];
             
             // Kiểm tra quyền của group
         if ($user['groups'] !== null) {
             foreach ($user['groups'] as $group) {
                 // Với trực tiếp hành động
-                if (isset($this->_acl[$app][$resource][$action]['g_' . $group]) && $this->_acl[$app][$resource][$action]['g_' . $group] == 1)
+                if (isset($this->_acl[$app][$resource][$action]['g_' . $group]) &&
+                     $this->_acl[$app][$resource][$action]['g_' . $group] == 1)
                     return 1;
                     
                     // Với hành động đặc biệt '_all'
-                if (isset($this->_acl[$app][$resource]['_all']['g_' . $group]) && $this->_acl[$app][$resource]['_all']['g_' . $group] == 1)
+                if (isset($this->_acl[$app][$resource]['_all']['g_' . $group]) &&
+                     $this->_acl[$app][$resource]['_all']['g_' . $group] == 1)
                     return 1;
             }
         }
         
         // Kiểm tra quyền của phòng ban với trực tiếp hành động
-        if (isset($this->_acl[$app][$resource][$action]['d_' . $user['hrm_id_department']]) && $this->_acl[$app][$resource][$action]['d_' . $user['hrm_id_department']] == 1)
+        if (isset($this->_acl[$app][$resource][$action]['d_' . $user['hrm_id_department']]) && $this->_acl[$app][$resource][$action]['d_' .
+             $user['hrm_id_department']] == 1)
             return 1;
             
             // Với hành động đặc biệt '_all'
-        if (isset($this->_acl[$app][$resource]['_all']['d_' . $user['hrm_id_department']]) && $this->_acl[$app][$resource]['_all']['d_' . $user['hrm_id_department']] == 1)
+        if (isset($this->_acl[$app][$resource]['_all']['d_' . $user['hrm_id_department']]) && $this->_acl[$app][$resource]['_all']['d_' .
+             $user['hrm_id_department']] == 1)
             return 1;
             
             // Không có thông tin ở group hoặc toàn bộ quyền ở group là không
-        // cho phép
+            // cho phép
         return 0;
     }
 

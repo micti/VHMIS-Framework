@@ -1,4 +1,5 @@
 <?php
+
 namespace Vhmis\Text;
 
 /**
@@ -24,12 +25,14 @@ class Escaper
      *
      * @var array
      */
-    protected static $_htmlNamedEntityMap = array(34 => 'quot',     // quotation
-                                                                // mark
-    38 => 'amp',     // ampersand
-    60 => 'lt',     // less-than sign
-    62 => 'gt'); // greater-than sign
-    
+    protected static $_htmlNamedEntityMap = array(
+        34 => 'quot', // quotation
+                      // mark
+        38 => 'amp', // ampersand
+        60 => 'lt', // less-than sign
+        62 => 'gt'
+    ); // greater-than sign
+
     /**
      * Current encoding for escaping.
      * If not UTF-8, we convert strings from this encoding
@@ -48,7 +51,7 @@ class Escaper
      *
      * @var string
      */
-    protected $_htmlSpecialCharsFlags =\ENT_QUOTES;
+    protected $_htmlSpecialCharsFlags = \ENT_QUOTES;
 
     /**
      * Static Matcher which escapes characters for HTML Attribute contexts
@@ -76,9 +79,42 @@ class Escaper
      *
      * @var array
      */
-    protected $_supportedEncodings = array('iso-8859-1', 'iso8859-1', 'iso-8859-5', 'iso8859-5', 'iso-8859-15', 'iso8859-15', 'utf-8', 'cp866', 'ibm866', '866', 'cp1251', 'windows-1251', 'win-1251', 
-            '1251', 'cp1252', 'windows-1252', '1252', 'koi8-r', 'koi8-ru', 'koi8r', 'big5', '950', 'gb2312', '936', 'big5-hkscs', 'shift_jis', 'sjis', 'sjis-win', 'cp932', '932', 'euc-jp', 'eucjp', 
-            'eucjp-win', 'macroman');
+    protected $_supportedEncodings = array(
+        'iso-8859-1',
+        'iso8859-1',
+        'iso-8859-5',
+        'iso8859-5',
+        'iso-8859-15',
+        'iso8859-15',
+        'utf-8',
+        'cp866',
+        'ibm866',
+        '866',
+        'cp1251',
+        'windows-1251',
+        'win-1251',
+        '1251',
+        'cp1252',
+        'windows-1252',
+        '1252',
+        'koi8-r',
+        'koi8-ru',
+        'koi8r',
+        'big5',
+        '950',
+        'gb2312',
+        '936',
+        'big5-hkscs',
+        'shift_jis',
+        'sjis',
+        'sjis-win',
+        'cp932',
+        '932',
+        'euc-jp',
+        'eucjp',
+        'eucjp-win',
+        'macroman'
+    );
 
     /**
      * Khởi tạo, tham số encoding dùng để thiết lập kiểu mã hóa của chuỗi, mặc
@@ -91,24 +127,33 @@ class Escaper
     {
         if ($encoding !== null) {
             $encoding = (string) $encoding;
-            
+
             if ($encoding === '') {
                 $encoding = 'utf-8';
             }
-            
+
             $encoding = strtolower($encoding);
-            
+
             $this->_encoding = $encoding;
         }
-        
+
         if (defined('ENT_SUBSTITUTE')) {
             $this->_htmlSpecialCharsFlags |= ENT_SUBSTITUTE;
         }
-        
+
         // set matcher callbacks
-        $this->_htmlAttrMatcher = array($this, '_htmlAttrMatcher');
-        $this->_jsMatcher = array($this, '_jsMatcher');
-        $this->_cssMatcher = array($this, '_cssMatcher');
+        $this->_htmlAttrMatcher = array(
+            $this,
+            '_htmlAttrMatcher'
+        );
+        $this->_jsMatcher = array(
+            $this,
+            '_jsMatcher'
+        );
+        $this->_cssMatcher = array(
+            $this,
+            '_cssMatcher'
+        );
     }
 
     /**
@@ -127,7 +172,7 @@ class Escaper
      * of special meaning.
      * Internally this will use htmlspecialchars().
      *
-     * @param string $string            
+     * @param string $string
      * @return string
      */
     public function escapeHtml($string)
@@ -144,7 +189,7 @@ class Escaper
      * might be unquoted or quoted illegally (e.g. backticks are valid quotes
      * for IE).
      *
-     * @param string $string            
+     * @param string $string
      * @return string
      */
     public function escapeHtmlAttr($string)
@@ -153,7 +198,7 @@ class Escaper
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
-        
+
         $result = preg_replace_callback('/[^a-z0-9,\.\-_]/iSu', $this->_htmlAttrMatcher, $string);
         return $this->_fromUtf8($result);
     }
@@ -173,7 +218,7 @@ class Escaper
      * as-is and so
      * is not useful in a HTML context.
      *
-     * @param string $string            
+     * @param string $string
      * @return string
      */
     public function escapeJs($string)
@@ -182,7 +227,7 @@ class Escaper
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
-        
+
         $result = preg_replace_callback('/[^a-z0-9,\._]/iSu', $this->_jsMatcher, $string);
         return $this->_fromUtf8($result);
     }
@@ -194,7 +239,7 @@ class Escaper
      * simple proxy
      * to rawurlencode() which now implements RFC 3986 since PHP 5.3 completely.
      *
-     * @param string $string            
+     * @param string $string
      * @return string
      */
     public function escapeUrl($string)
@@ -207,7 +252,7 @@ class Escaper
      * CSS escaping can be applied to any string being
      * inserted into CSS and escapes everything except alphanumerics.
      *
-     * @param string $string            
+     * @param string $string
      * @return string
      */
     public function escapeCss($string)
@@ -216,7 +261,7 @@ class Escaper
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
-        
+
         $result = preg_replace_callback('/[^a-z0-9]/iSu', $this->_cssMatcher, $string);
         return $this->_fromUtf8($result);
     }
@@ -225,14 +270,14 @@ class Escaper
      * Callback function for preg_replace_callback that applies HTML Attribute
      * escaping to all matches.
      *
-     * @param array $matches            
+     * @param array $matches
      * @return string
      */
     protected function _htmlAttrMatcher($matches)
     {
         $chr = $matches[0];
         $ord = ord($chr);
-        
+
         /**
          * The following replaces characters undefined in HTML with the
          * hex entity for the Unicode replacement character.
@@ -240,7 +285,7 @@ class Escaper
         if (($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r") || ($ord >= 0x7f && $ord <= 0x9f)) {
             return '&#xFFFD;';
         }
-        
+
         /**
          * Check if the current character to escape has a name entity we should
          * replace it with while grabbing the integer value of the character.
@@ -248,13 +293,13 @@ class Escaper
         if (strlen($chr) > 1) {
             $chr = $this->_convertEncoding($chr, 'UTF-16BE', 'UTF-8');
         }
-        
+
         $hex = bin2hex($chr);
         $ord = hexdec($hex);
         if (isset(static::$_htmlNamedEntityMap[$ord])) {
             return '&' . static::$_htmlNamedEntityMap[$ord] . ';';
         }
-        
+
         /**
          * Per OWASP recommendations, we'll use upper hex entities
          * for any other characters where a named entity does not exist.
@@ -269,7 +314,7 @@ class Escaper
      * Callback function for preg_replace_callback that applies Javascript
      * escaping to all matches.
      *
-     * @param array $matches            
+     * @param array $matches
      * @return string
      */
     protected function _jsMatcher($matches)
@@ -286,7 +331,7 @@ class Escaper
      * Callback function for preg_replace_callback that applies CSS
      * escaping to all matches.
      *
-     * @param array $matches            
+     * @param array $matches
      * @return string
      */
     protected function _cssMatcher($matches)
@@ -306,7 +351,7 @@ class Escaper
      * The base encoding is set via this
      * class' constructor.
      *
-     * @param string $string            
+     * @param string $string
      * @throws Exception\RuntimeException
      * @return string
      */
@@ -317,18 +362,19 @@ class Escaper
         } else {
             $result = $this->_convertEncoding($string, 'UTF-8', $this->getEncoding());
         }
-        
-        if (! $this->_isUtf8($result)) {
-            throw new Exception\RuntimeException(sprintf('String to be escaped was not valid UTF-8 or could not be converted: %s', $result));
+
+        if (!$this->_isUtf8($result)) {
+            throw new \Exception(
+                sprintf('String to be escaped was not valid UTF-8 or could not be converted: %s', $result));
         }
-        
+
         return $result;
     }
 
     /**
      * Chuyển đổi từ mã UTF-8 sang mã mặc định (được thiết lập khi khởi tạo)
      *
-     * @param string $string            
+     * @param string $string
      * @return string
      */
     protected function _fromUtf8($string)
@@ -336,14 +382,14 @@ class Escaper
         if ($this->getEncoding() === 'utf-8') {
             return $string;
         }
-        
+
         return $this->_convertEncoding($string, $this->getEncoding(), 'UTF-8');
     }
 
     /**
      * Checks if a given string appears to be valid UTF-8 or not.
      *
-     * @param string $string            
+     * @param string $string
      * @return bool
      */
     protected function _isUtf8($string)
@@ -354,9 +400,9 @@ class Escaper
     /**
      * Phương thức hỗ trợ chuyển đổi mã bằng iconv hoặc mbstring
      *
-     * @param string $string            
-     * @param string $to            
-     * @param array|string $from            
+     * @param string $string
+     * @param string $to
+     * @param array|string $from
      * @return string
      */
     protected function _convertEncoding($string, $to, $from)
@@ -369,7 +415,7 @@ class Escaper
         } else {
             $result = false;
         }
-        
+
         if ($result === false) {
             return ''; // return non-fatal blank string on encoding errors from
                            // users

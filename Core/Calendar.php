@@ -27,7 +27,7 @@ class Vhmis_Calendar
         $this->_date->time($year . '-W' . $week . '-1');
         $date = $this->_date->toArray();
         $dates[$date['year']][$date['month']][] = $date;
-        for ($i = 0; $i < 6; $i ++) {
+        for ($i = 0; $i < 6; $i++) {
             $this->_date->addDay(1);
             $date = $this->_date->toArray();
             $dates[$date['year']][$date['month']][] = $date;
@@ -69,14 +69,22 @@ class Vhmis_Calendar
             
             if ($mP < 10)
                 $mP = '0' . $mP;
-            for ($i = 1; $i < $day; $i ++) {
-                $dates[$yP][$mP][] = array('date' => $this->outputIso(($dayP - $day + $i + 1), $mP, $yP), 'week' => Vhmis_Utility_String::addZero($week, 2), 'wday' => $i);
+            for ($i = 1; $i < $day; $i++) {
+                $dates[$yP][$mP][] = array(
+                    'date' => $this->outputIso(($dayP - $day + $i + 1), $mP, $yP),
+                    'week' => Vhmis_Utility_String::addZero($week, 2),
+                    'wday' => $i
+                );
             }
         }
         
         // Các ngày trong tháng
-        for ($i = 1; $i <= $total; $i ++) {
-            $dates[$year][$month][] = array('date' => $this->outputIso($i, $month, $year), 'week' => Vhmis_Utility_String::addZero($week, 2), 'wday' => $day);
+        for ($i = 1; $i <= $total; $i++) {
+            $dates[$year][$month][] = array(
+                'date' => $this->outputIso($i, $month, $year),
+                'week' => Vhmis_Utility_String::addZero($week, 2),
+                'wday' => $day
+            );
             
             if ($day == 7) {
                 $day = 1;
@@ -89,9 +97,9 @@ class Vhmis_Calendar
                     if ($m == 12) {
                         $week = date('W', strtotime($year . '-12-' . ($i + 1)));
                     } else
-                        $week ++;
+                        $week++;
             } else {
-                $day ++;
+                $day++;
             }
         }
         
@@ -101,8 +109,12 @@ class Vhmis_Calendar
             list ($mN, $yN) = $this->_date->getNextMonth();
             if ($mN < 10)
                 $mN = '0' . $mN;
-            for ($i = $day; $i <= 7; $i ++) {
-                $dates[$yN][$mN][] = array('date' => $this->outputIso($i - $day + 1, $mN, $yN), 'week' => Vhmis_Utility_String::addZero($week, 2), 'wday' => $i);
+            for ($i = $day; $i <= 7; $i++) {
+                $dates[$yN][$mN][] = array(
+                    'date' => $this->outputIso($i - $day + 1, $mN, $yN),
+                    'week' => Vhmis_Utility_String::addZero($week, 2),
+                    'wday' => $i
+                );
             }
         }
         

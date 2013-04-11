@@ -12,13 +12,13 @@
  *
  * All rights reversed, giữ toàn bộ bản quyền, các thư viện bên ngoài xin xem file thông tin đi kèm
  *
- * @copyright     Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
- * @link          https://github.com/VHIT/VHMIS VHMIS(tm) Project
- * @category      VHMIS
- * @package       Core
- * @subpackage    URI
- * @since         1.0.0
- * @license       All rights reversed
+ * @copyright Copyright 2011, IT Center, Viethan IT College (http://viethanit.edu.vn)
+ * @link https://github.com/VHIT/VHMIS VHMIS(tm) Project
+ * @category VHMIS
+ * @package Core
+ * @subpackage URI
+ * @since 1.0.0
+ * @license All rights reversed
  */
 
 /**
@@ -46,8 +46,14 @@ class Vhmis_Uri_Pattern
     /**
      * Mảng chứa tên của các kiểu dữ liệu và biểu thức điều kiện để kiểm tra
      */
-    protected $_dataTypes = array('year' => VHMIS_URI_PATTERN::YEAR, 'month' => VHMIS_URI_PATTERN::MONTH, 'day' => VHMIS_URI_PATTERN::DAY, 'id' => VHMIS_URI_PATTERN::ID, 
-            'slug' => VHMIS_URI_PATTERN::SLUG, 'monthyear' => VHMIS_URI_PATTERN::YEARMONTH);
+    protected $_dataTypes = array(
+        'year' => VHMIS_URI_PATTERN::YEAR,
+        'month' => VHMIS_URI_PATTERN::MONTH,
+        'day' => VHMIS_URI_PATTERN::DAY,
+        'id' => VHMIS_URI_PATTERN::ID,
+        'slug' => VHMIS_URI_PATTERN::SLUG,
+        'monthyear' => VHMIS_URI_PATTERN::YEARMONTH
+    );
 
     /**
      * Mẫu link
@@ -148,7 +154,7 @@ class Vhmis_Uri_Pattern
         
         // Kiểm tra từng segment của địa chỉ với từng segment của link mẫu, nếu
         // ko khớp với 1 chổ bất kỳ thì sai
-        for ($i = 0; $i < $total; $i ++) {
+        for ($i = 0; $i < $total; $i++) {
             if ($segment[$i] != $uriSegment[$i]) {
                 // Kiem tra xem co phai la param dang type:name
                 $paramInfo = explode(':', $segment[$i], 2);
@@ -199,7 +205,7 @@ class Vhmis_Uri_Pattern
      */
     protected function _validate($type, $data)
     {
-        if (! isset($this->_dataTypes[$type]))
+        if (!isset($this->_dataTypes[$type]))
             return false;
         
         $found = preg_match('/' . $this->_dataTypes[$type] . '/', $data, $match);
