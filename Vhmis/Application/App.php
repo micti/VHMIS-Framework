@@ -11,14 +11,14 @@ class App
     /**
      * Router
      *
-     * @var Vhmis\Network\Router
+     * @var \Vhmis\Network\Router
      */
     protected $_router;
 
     /**
      * Request
      *
-     * @var Vhmis\Network\Request
+     * @var \Vhmis\Network\Request
      */
     protected $_request;
 
