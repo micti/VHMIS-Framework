@@ -93,7 +93,7 @@ class Request
         $config = Configure::get('Config');
 
         if (empty($url)) {
-            $url = $this->url();
+            $url = $this->getUrl();
         }
 
         $this->uri = new Uri($url);

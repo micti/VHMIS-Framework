@@ -85,8 +85,8 @@
  *
  * echo '<br>';
  */
-require '../CoreVer2/Network/RouteInterface.php';
-require '../CoreVer2/Network/Route.php';
+require '../Vhmis/Network/RouteInterface.php';
+require '../Vhmis/Network/Route.php';
 
 $route = new Vhmis\Network\Route();
 

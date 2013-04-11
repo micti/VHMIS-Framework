@@ -4,10 +4,10 @@ error_reporting(E_ALL | E_NOTICE);
 
 define('D_SPEC', DIRECTORY_SEPARATOR);
 
-require '../CoreVer2/Cache/Adapter/StorageInterface.php';
-require '../CoreVer2/Cache/Adapter/Memcached.php';
-require '../CoreVer2/Cache/Adapter/File.php';
-require '../CoreVer2/Cache/AdapterFactory.php';
+require '../Vhmis/Cache/Adapter/StorageInterface.php';
+require '../Vhmis/Cache/Adapter/Memcached.php';
+require '../Vhmis/Cache/Adapter/File.php';
+require '../Vhmis/Cache/AdapterFactory.php';
 
 $cache = \Vhmis\Cache\AdapterFactory::fatory('Memcached', array(
     'persistent' => 'akaka'

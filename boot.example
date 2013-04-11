@@ -30,7 +30,7 @@ define('P_SPEC', PATH_SEPARATOR);
 define('VHMIS_PATH', dirname(__FILE__));
 define('VHMIS_LIBS_PATH', VHMIS_PATH . D_SPEC . 'Libs');
 define('VHMIS_CORE_PATH', VHMIS_PATH . D_SPEC . 'Core');
-define('VHMIS_CORE2_PATH', VHMIS_PATH . D_SPEC . 'CoreVer2');
+define('VHMIS_CORE2_PATH', VHMIS_PATH . D_SPEC . 'Vhmis');
 define('VHMIS_VIEW_PATH', VHMIS_PATH . D_SPEC . 'View');
 define('VHMIS_COMP_PATH', VHMIS_PATH . D_SPEC . 'Components');
 define('VHMIS_SYS_PATH', VHMIS_PATH . D_SPEC . 'System' . D_SPEC . SYSTEM);

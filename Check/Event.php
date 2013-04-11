@@ -2,11 +2,11 @@
 // Cảnh báo toàn bộ
 error_reporting(E_ALL | E_NOTICE);
 
-require '../CoreVer2/Event/EventInterface.php';
-require '../CoreVer2/Event/EventQueue.php';
-require '../CoreVer2/Event/Event.php';
-require '../CoreVer2/Event/Result.php';
-require '../CoreVer2/Event/Manager.php';
+require '../Vhmis/Event/EventInterface.php';
+require '../Vhmis/Event/EventQueue.php';
+require '../Vhmis/Event/Event.php';
+require '../Vhmis/Event/Result.php';
+require '../Vhmis/Event/Manager.php';
 
 class G
 {

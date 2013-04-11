@@ -2,7 +2,7 @@
 // Cảnh báo toàn bộ
 error_reporting(E_ALL | E_NOTICE);
 
-require '../CoreVer2/Di/Di.php';
+require '../Vhmis/Di/Di.php';
 
 class A1
 {

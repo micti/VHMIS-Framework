@@ -17,7 +17,7 @@ error_reporting(E_ALL | E_NOTICE);
 require '../Core/Date.php';
 require '../Core/Calendar.php';
 require '../Core/Benchmark.php';
-require '../CoreVer2/I18n/Output/DateTime.php';
+require '../Vhmis/I18n/Output/DateTime.php';
 
 /*
  * $mark = new Vhmis_Benchmark(); $mark->timer('a'); $date = new Vhmis_Date(); $mark->timer('b'); echo $mark->time('a',

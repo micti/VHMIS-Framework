@@ -28,7 +28,7 @@ function ___autoLoad($class)
     /*
      * if (class_exists($class)) return;
      */
-    
+
     // Từ tháng 11.2012 chuyển dần sang sử dụng Namespace
     // Áp dụng với các class Core
     // php53 trở lên
@@ -36,7 +36,7 @@ function ___autoLoad($class)
         ___loadCoreClassWithNamespace($class);
     } else {
         $name = explode('_', $class);
-        
+
         if ($name[0] == 'Zend')
             ___loadZendClass($class);
         if ($name[0] == 'Vhmis') {
@@ -66,15 +66,17 @@ function ___loadCoreClassWithNamespace($class)
     // Cấu trúc Vhmis\xxx1\xxx2\xxx3
     // Filepath Core PATH \ xxx1\xxx2\xxx3.php
     $class = explode('\\', $class);
-    
-    $count = count($class);
-    $path = '';
-    
-    for ($i = 1; $i < $count - 1; $i++) {
-        $path .= D_SPEC . $class[$i];
+
+    if ($class[0] == 'Vhmis') {
+        $count = count($class);
+        $path = '';
+
+        for ($i = 1; $i < $count - 1; $i++) {
+            $path .= D_SPEC . $class[$i];
+        }
+
+        ___loadFile($class[$count - 1] . '.php', VHMIS_CORE2_PATH . $path);
     }
-    
-    ___loadFile($class[$count - 1] . '.php', VHMIS_CORE2_PATH . $path);
 }
 
 /**
@@ -86,16 +88,16 @@ function ___loadCoreClass($name)
 {
     if (class_exists($name))
         return;
-        
+
         // Tên class Vhmis_Uri_Pattern -> Thư mục Core/Uri/Pattern.php
     $name = explode('_', $name);
     $count = count($name);
     $path = '';
-    
+
     for ($i = 1; $i < $count - 1; $i++) {
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
-    
+
     ___loadFile(___fUpper($name[$count - 1]) . '.php', VHMIS_CORE_PATH . $path);
 }
 
@@ -108,15 +110,15 @@ function ___loadZendClass($name)
 {
     if (class_exists($name))
         return;
-    
+
     $name = explode('_', $name);
     $count = count($name);
     $path = '';
-    
+
     for ($i = 1; $i < $count - 1; $i++) {
         $path .= D_SPEC . ___fUpper($name[$i]);
     }
-    
+
     ___loadFile(___fUpper($name[$count - 1]) . '.php', VHMIS_ZEND_F_PATH . $path);
 }
 
@@ -129,9 +131,9 @@ function ___loadComponentClass($component)
 {
     if (class_exists($component))
         return;
-    
+
     $component = str_replace('Vhmis_Component_', '', $component);
-    
+
     ___loadFile(___fUpper($component . '.php'), VHMIS_COMP_PATH);
 }
 
@@ -144,9 +146,9 @@ function ___loadModelClass($model)
 {
     if (class_exists('Vhmis_Model_' . $model))
         return;
-    
+
     $model = explode('_', $model, 2);
-    
+
     ___loadFile($model[1] . '.php', VHMIS_APPS_PATH . D_SPEC . ___fUpper($model[0]) . D_SPEC . 'Model');
 }
 
@@ -159,9 +161,9 @@ function ___loadShareClass($data)
 {
     if (class_exists('Vhmis_Share_' . $data))
         return;
-    
+
     $data = explode('_', $data, 2);
-    
+
     ___loadFile($data[1] . '.php', VHMIS_APPS_PATH . D_SPEC . ___fUpper($data[0]) . D_SPEC . 'Share');
 }
 
@@ -192,9 +194,9 @@ function ___loadController($request, $response)
     $controllerName = 'Vhmis_Controller_' . ___fUpper($request->app['url']) . '_' . $request->app['info']['controller'];
     $path = VHMIS_APPS_PATH . D_SPEC . ___fUpper($request->app['url']) . D_SPEC . 'Controller';
     $file = $request->app['info']['controller'] . '.php';
-    
+
     ___loadFile($file, $path);
-    
+
     return new $controllerName($request, $response);
 }
 
@@ -210,14 +212,14 @@ function ___loadController($request, $response)
 function ___loadAppConfig($appInfo, $store = true)
 {
     global $_vhmisConfigAll;
-    
+
     if (is_array($appInfo))
         $appInfo = $appInfo['url'];
-    
+
     $appInfo = strtolower($appInfo);
-    
+
     require VHMIS_APPS_PATH . D_SPEC . ___fUpper($appInfo) . D_SPEC . 'Config' . D_SPEC . 'Config.php';
-    
+
     if ($store === true) {
         if (!isset($_vhmisConfigAll['apps']['info'][$appInfo]))
             $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
@@ -237,9 +239,9 @@ function ___loadAppConfig($appInfo, $store = true)
 function ___loadConfig($name, $store = true)
 {
     global $_vhmisConfigAll;
-    
+
     require VHMIS_CONF_PATH . D_SPEC . ___fUpper($name . '.php');
-    
+
     // Tạo hằng số đối với các config 'site' trong global
     if (___fUpper($name) == 'Global') {
         foreach ($_vhmisConfig['site'] as $key => $value) {
@@ -248,7 +250,7 @@ function ___loadConfig($name, $store = true)
             }
         }
     }
-    
+
     if ($store === true)
         $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
     else
@@ -265,11 +267,11 @@ function ___loadConfig($name, $store = true)
 function ___checkApp($app)
 {
     $config = ___loadConfig('Applications', false);
-    
+
     if (!in_array($app, $config['apps']['list']['url'])) {
         return false;
     }
-    
+
     return $config['apps']['list']['name'][$app];
 }
 
@@ -309,7 +311,7 @@ function ___ctv($string)
 function ___removeInvisibleCharacters($str, $url_encoded = TRUE)
 {
     $non_displayables = array();
-    
+
     // every control character except newline (dec 10),
     // carriage return (dec 13) and horizontal tab (dec 09)
     if ($url_encoded) {
@@ -317,15 +319,15 @@ function ___removeInvisibleCharacters($str, $url_encoded = TRUE)
                                                // 15
         $non_displayables[] = '/%1[0-9a-f]/'; // url encoded 16-31
     }
-    
+
     $non_displayables[] = '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S'; // 00-08, 11,
                                                                   // 12, 14-31,
                                                                   // 127
-    
+
     do {
         $str = preg_replace($non_displayables, '', $str, -1, $count);
     } while ($count);
-    
+
     return $str;
 }
 
@@ -344,7 +346,7 @@ function ___stripSlashes($values)
     } else {
         $values = stripslashes($values);
     }
-    
+
     return $values;
 }
 

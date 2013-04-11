@@ -118,12 +118,12 @@ class Controller
 
         $this->appInfo = $request->app;
         $this->app = $this->appInfo['app'];
-        $this->appUrl = $this->appInfo['url'];
+        // $this->appUrl = $this->appInfo['url'];
 
-        $this->action = $this->_action = $this->appInfo['info']['action'];
-        $this->params = $this->_params = $this->appInfo['info']['params'];
-        $this->output = $this->_output = $this->appInfo['info']['output'];
-        $this->controller = $this->_controller = $this->appInfo['info']['controller'];
+        $this->action = $this->_action = $this->appInfo['action'];
+        $this->params = $this->_params = $this->appInfo['params'];
+        $this->output = $this->_output = $this->appInfo['output'];
+        $this->controller = $this->appInfo['controller'];
     }
 
     /**
