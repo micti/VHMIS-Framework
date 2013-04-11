@@ -59,4 +59,4 @@ $benmark = new Vhmis_Benchmark();
 $benmark->timer('start');
 Configure::set('Benchmark', $benmark);
 
-new \Vhmis\Application\Boot();
+new \Vhmis\Application\App();
