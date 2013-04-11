@@ -30,9 +30,9 @@ class Manager
     /**
      * Thực thi sự kiện
      *
-     * @param string $name            
-     * @param mixed $target            
-     * @param array $params            
+     * @param string $name
+     * @param mixed $target
+     * @param array $params
      * @return \Vhmis\Event\Result
      */
     public function trigger($name, $target, $params)
@@ -62,12 +62,9 @@ class Manager
     /**
      * Gắn listener vào sự kiện
      *
-     * @param type $name
-     *            Tên của sự kiện
-     * @param type $callback
-     *            Callback
-     * @param
-     *            int Mức độ ưu tiên, mặc định là 1
+     * @param type $name Tên của sự kiện
+     * @param type $callback Callback
+     * @param int Mức độ ưu tiên, mặc định là 1
      */
     public function attach($name, $callback, $priority = 1)
     {
@@ -81,7 +78,7 @@ class Manager
     /**
      * Xóa các listerner ra khỏi sự kiện
      *
-     * @param string $name            
+     * @param string $name
      */
     public function detach($name)
     {

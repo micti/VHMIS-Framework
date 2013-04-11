@@ -26,8 +26,7 @@ class Load
     /**
      * Load config chứa trong mảng ở file php
      *
-     * @param string $filename
-     *            Đường dẫn file chứa thông tin config
+     * @param string $filename Đường dẫn file chứa thông tin config
      * @return array
      */
     public static function filePhp($filename)

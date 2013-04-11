@@ -80,8 +80,7 @@ class Uri
     /**
      * Khởi tạo
      *
-     * @param string $uri
-     *            địa chỉ, phải bắt đầu bằng https hoặc http
+     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
      */
     public function __construct($uri = '')
     {
@@ -95,8 +94,7 @@ class Uri
     /**
      * Khởi một đối tượng mới từ 1 địa chỉ
      *
-     * @param string $uri
-     *            địa chỉ, phải bắt đầu bằng https hoặc http
+     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
      * @return VHMIS_URI đối tượng được khởi tạo
      */
     public function addUri($uri)

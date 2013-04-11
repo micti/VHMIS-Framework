@@ -49,12 +49,9 @@ class Vhmis_Utility_String
     /**
      * Mã hóa chuỗi
      *
-     * @param string $string
-     *            Chuỗi cần mã hóa
-     * @param string $salt
-     *            Chuỗi chống phá mã hóa
-     * @param string $method
-     *            Phương thức mã hóa, mặc định là sha1
+     * @param string $string Chuỗi cần mã hóa
+     * @param string $salt Chuỗi chống phá mã hóa
+     * @param string $method Phương thức mã hóa, mặc định là sha1
      */
     public static function hash($string, $salt1, $salt2, $method = null)
     {
@@ -72,10 +69,8 @@ class Vhmis_Utility_String
     /**
      * Tạo chuỗi ngẫu nhiên
      *
-     * @param string $type
-     *            Kiểu của chuỗi ngẫu nhiên, mặc định là alnum gồm số với chữ
-     * @param string $type
-     *            Độ dài của chuỗi ngẫu nhiên
+     * @param string $type Kiểu của chuỗi ngẫu nhiên, mặc định là alnum gồm số với chữ
+     * @param string $type Độ dài của chuỗi ngẫu nhiên
      * @return string Chuỗi ngẫu nhiên
      */
     public static function random($type, $length)

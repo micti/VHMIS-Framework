@@ -26,8 +26,8 @@ class DateTime extends \DateTime
      * sử dụng new static() để tránh luôn chuyện này xảy ra nếu tiếp tục extends
      * từ class mới
      *
-     * @param type $format            
-     * @param type $time            
+     * @param type $format
+     * @param type $time
      * @return DateTime
      */
     static public function createFromFormat($format, $time)
@@ -43,9 +43,8 @@ class DateTime extends \DateTime
     /**
      * Trả thời gian về định dạng ISO, sử dụng trong MYSQL
      *
-     * @param int $type
-     *            Kiểu tra về 2 Đúng nguyên định dạng ISO8601 1 Dạng yyyy-mm-dd
-     *            hh:mm:ss 0 Dạng yyyy-mm-dd
+     * @param int $type Kiểu tra về 2 Đúng nguyên định dạng ISO8601 1 Dạng yyyy-mm-dd
+     *        hh:mm:ss 0 Dạng yyyy-mm-dd
      * @return string
      */
     public function formatISO($type = 2)
@@ -69,10 +68,8 @@ class DateTime extends \DateTime
      * - Thêm tháng chỉ dựa vào tháng hiện tại, khi đó tham số thứ 2 nhận giá
      * trị true
      *
-     * @param int $month
-     *            Số lượng tháng cần thêm vào (sử dụng số âm nếu muốn giảm đi)
-     * @param bool $fix
-     *            Sử dụng giá trị true nếu chỉ muốn dựa vào tháng để tính toán
+     * @param int $month Số lượng tháng cần thêm vào (sử dụng số âm nếu muốn giảm đi)
+     * @param bool $fix Sử dụng giá trị true nếu chỉ muốn dựa vào tháng để tính toán
      * @return \Vhmis\DateTime\DateTime
      */
     public function addMonth($month, $fix = true)
@@ -144,7 +141,7 @@ class DateTime extends \DateTime
     /**
      * Tương tự như phương thức modify nhưng trả về đối tượng DateTime mới
      *
-     * @param string $modify            
+     * @param string $modify
      * @return DateTime
      */
     public function getModifiedDate($modify)

@@ -58,8 +58,7 @@ class Vhmis_Date_Repeat
      * Rule là mảng như sau
      * 'freq' => Tần suất (ngày) cho 1 lần thực hiện
      *
-     * @param array $rule
-     *            Luật lặp lại
+     * @param array $rule Luật lặp lại
      * @return array Các ngày lặp lại
      */
     public function calculateDailyRepeat($rule)
@@ -112,8 +111,7 @@ class Vhmis_Date_Repeat
      * 'weekdays' => Các thứ ngày xáy ra sự kiện trong tuần (ngăn cách bằng dấu
      * , sử dụng 1-7, 1 là chủ nhật, 2->7 thứ 2 đến thứ 7)
      *
-     * @param array $rule
-     *            Luật lặp lại
+     * @param array $rule Luật lặp lại
      * @return array Các ngày lặp lại
      */
     public function calculateWeeklyRepeat($rule)
@@ -194,8 +192,7 @@ class Vhmis_Date_Repeat
      * cùng của tháng, 1-4 là vị trí)
      * 'monthday' => Các ngày xảy ra sự kiện trong tháng
      *
-     * @param array $rule
-     *            Luật lặp lại
+     * @param array $rule Luật lặp lại
      * @return array Các ngày lặp lại
      */
     public function calculateMonthlyRepeat($rule)
@@ -285,8 +282,7 @@ class Vhmis_Date_Repeat
      * cùng của tháng, 1-4 là vị trí)
      * 'monthday' => Ngày xảy ra sự kiện trong tháng
      *
-     * @param array $rule
-     *            Luật lặp lại
+     * @param array $rule Luật lặp lại
      * @return array Các ngày lặp lại
      */
     public function calculateYearlyRepeat($rule)

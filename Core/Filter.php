@@ -6,8 +6,7 @@ class Vhmis_Filter
     /**
      * Loại bỏ những ký tự không phải là số (0..9)
      *
-     * @param
-     *            mix Giá trị cần lọc
+     * @param mix Giá trị cần lọc
      * @return string Giá trị sau khi lọc
      */
     public function digit($value)
@@ -73,7 +72,7 @@ class Vhmis_Filter
      *
      * Based Zend Framework
      *
-     * @param string $value            
+     * @param string $value
      * @return string
      */
     public function stripHTML($value, $allowTags = array(), $allowAttributes = array())
@@ -154,7 +153,7 @@ class Vhmis_Filter
     /**
      * Filters a single tag against the current option settings
      *
-     * @param string $tag            
+     * @param string $tag
      * @return string
      */
     protected function _filterTag($tag, $allowTags, $allowAttributes)

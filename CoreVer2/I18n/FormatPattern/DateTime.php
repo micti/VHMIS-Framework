@@ -76,7 +76,7 @@ class DateTime
     {
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
-
+        
         $patterns = array(
             'year' => array(
                 'YYYY' => 'o',
@@ -92,7 +92,7 @@ class DateTime
                 'M' => 'n'
             )
         );
-
+        
         foreach ($patterns as $typePattern) {
             foreach ($typePattern as $pattern => $nativePattern) {
                 if (strpos($format, $pattern) !== false) {
@@ -101,7 +101,7 @@ class DateTime
                 }
             }
         }
-
+        
         return $format;
     }
 }

@@ -14,8 +14,7 @@ class ViewHelpers extends CollectionAbstract
     /**
      * Khởi tạo đối tượng View Helper
      *
-     * @param string $class
-     *            Tên class
+     * @param string $class Tên class
      * @return Vhmis\View\Helper
      */
     public function create($class, $params = null)

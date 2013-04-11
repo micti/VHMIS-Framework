@@ -46,9 +46,8 @@ class Vhmis_Uri
     /**
      * Khởi tạo
      *
-     * @param string $uri
-     *            địa chỉ, phải bắt đầu bằng https hoặc http
-     *            
+     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
+     *       
      */
     public function __construct($uri = '')
     {
@@ -62,8 +61,7 @@ class Vhmis_Uri
     /**
      * Khởi một đối tượng mới từ 1 địa chỉ
      *
-     * @param string $uri
-     *            địa chỉ, phải bắt đầu bằng https hoặc http
+     * @param string $uri địa chỉ, phải bắt đầu bằng https hoặc http
      * @return VHMIS_URI đối tượng được khởi tạo
      *        
      */
@@ -75,9 +73,8 @@ class Vhmis_Uri
     /**
      * Phân tích địa chỉ thành các thành phần
      *
-     * @param string $uri
-     *            địa chỉ
-     *            
+     * @param string $uri địa chỉ
+     *       
      */
     protected function _prase($uri)
     {

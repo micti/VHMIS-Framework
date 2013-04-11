@@ -35,8 +35,7 @@ class Response
     /**
      * Thiết lập nội dung trả về
      *
-     * @param
-     *            string nội dung trả về
+     * @param string nội dung trả về
      */
     public function body($content)
     {
@@ -72,8 +71,7 @@ class Response
     /**
      * Gửi nội dung trả về
      *
-     * @param
-     *            string Nội dung trả về
+     * @param string Nội dung trả về
      */
     protected function _sendContent($content = '')
     {

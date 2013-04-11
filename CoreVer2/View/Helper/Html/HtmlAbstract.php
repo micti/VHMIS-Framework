@@ -66,7 +66,7 @@ abstract class HtmlAbstract
     /**
      * Tạo chuỗi các thuộc tính từ mảng dữ liệu
      *
-     * @param array $attributes            
+     * @param array $attributes
      * @return string
      */
     protected function _attribute($attributes)
@@ -98,8 +98,8 @@ abstract class HtmlAbstract
     /**
      * Lấy giá trị của các thuộc tính có/không
      *
-     * @param string $attr            
-     * @param bool $value            
+     * @param string $attr
+     * @param bool $value
      * @return string
      */
     protected function _booleanAttribute($attr, $value)

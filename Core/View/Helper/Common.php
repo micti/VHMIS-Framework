@@ -6,8 +6,8 @@ class Vhmis_View_Helper_Common
     /**
      * Lấy xưng hô của một người
      *
-     * @param int $gender            
-     * @param bool $teacher            
+     * @param int $gender
+     * @param bool $teacher
      */
     function personalTitle($gender, $teacher)
     {
@@ -21,8 +21,7 @@ class Vhmis_View_Helper_Common
     /**
      * Lấy giới tính
      *
-     * @param
-     *            int Mã giới tính
+     * @param int Mã giới tính
      */
     function gender($genderCode)
     {

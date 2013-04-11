@@ -25,7 +25,7 @@ class Memcached implements StorageInterface
         } else {
             $this->_memcached = $this->_getMemecached();
         }
-
+        
         // Thêm servers
         if (isset($options['servers'])) {
             foreach ($options['servers'] as $server) {
@@ -45,7 +45,7 @@ class Memcached implements StorageInterface
     public function addServer($host = 'localhost', $port = 11211, $weight = 0)
     {
         $this->_memcached->addServer($host, $port, $weight);
-
+        
         return $this;
     }
 

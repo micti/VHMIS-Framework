@@ -108,14 +108,10 @@ class Vhmis_Component_Acl extends Vhmis_Component
     /**
      * Kiểm tra quyền của user với một hành động nào đó
      *
-     * @param array $user
-     *            Thông tin người dùng
-     * @param string $app
-     *            App
-     * @param string $resource
-     *            Tài nguyên
-     * @param string $action
-     *            Hành động
+     * @param array $user Thông tin người dùng
+     * @param string $app App
+     * @param string $resource Tài nguyên
+     * @param string $action Hành động
      * @return bool
      */
     public function isAllow($user, $app, $action, $resource)

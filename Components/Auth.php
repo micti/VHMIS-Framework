@@ -95,10 +95,8 @@ class Vhmis_Component_Auth extends Vhmis_Component
     /**
      * Thực hiện đăng nhập
      *
-     * @param string $username
-     *            Tên người dùng
-     * @param string $password
-     *            Mật khẩu người dùng
+     * @param string $username Tên người dùng
+     * @param string $password Mật khẩu người dùng
      * @return int 0 : Đăng nhập ko thành công, 1 : Đăng nhập thành công lần đầu
      *         qua webmail (có khởi tạo tài khoản), 2 Đăng nhập thành công
      */
@@ -169,10 +167,8 @@ class Vhmis_Component_Auth extends Vhmis_Component
     /**
      * Login qua Webmail
      *
-     * @param string $user
-     *            Username
-     * @param string $pass
-     *            Password, không mã hóa
+     * @param string $user Username
+     * @param string $pass Password, không mã hóa
      * @return boolean Kết quả
      */
     protected function _webmailLogin($user, $pass)

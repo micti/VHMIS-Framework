@@ -100,8 +100,7 @@ class Vhmis_Uri_Pattern
     /**
      * Thiết lập thông tin mẫu link
      *
-     * @param array $patternInfo
-     *            Thông tin mẫu link
+     * @param array $patternInfo Thông tin mẫu link
      */
     public function setPatternInfo($patternInfo)
     {
@@ -116,8 +115,7 @@ class Vhmis_Uri_Pattern
     /**
      * Kiểm tra một URI có hợp lệ với đối tượng cấu trúc link
      *
-     * @param
-     *            string địa chỉ cần đối chiếu với mẫu link
+     * @param string địa chỉ cần đối chiếu với mẫu link
      * @return array kết quả của việc đối chiếu
      */
     public function validateURI($uri)
@@ -197,10 +195,8 @@ class Vhmis_Uri_Pattern
      * Hàm dùng để kiểm tra dữ liệu ở link có thuộc loại dữ liệu đã quy định ở
      * link mẫu hay không
      *
-     * @param string $type
-     *            Kiểu dữ liệu quy định
-     * @param string $data
-     *            Dữ liệu cần kiểm tra
+     * @param string $type Kiểu dữ liệu quy định
+     * @param string $data Dữ liệu cần kiểm tra
      * @return boolean
      */
     protected function _validate($type, $data)

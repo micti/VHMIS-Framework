@@ -39,6 +39,7 @@ class Vhmis_View
      *
      *
      *
+     *
      */
     protected $_activeBlock = array();
 
@@ -96,11 +97,12 @@ class Vhmis_View
      * Thứ tự ưu tiên là Helper .
      *
      *
+     *
      * ..
      *
-     * @param string $name
-     *            Tên đối tượng cần lấy
+     * @param string $name Tên đối tượng cần lấy
      * @return
+     *
      *
      *
      *
@@ -418,8 +420,7 @@ class Vhmis_View
         return;
     }
     
-    if (file_exists(
-        VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php')) {
+    if (file_exists(VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php')) {
         include VHMIS_VIEW_PATH . D_SPEC . 'Default' . D_SPEC . '_Blocks' . D_SPEC . $blockname . '.php';
         return;
     }

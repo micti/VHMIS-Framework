@@ -34,8 +34,8 @@ class Date extends ValidatorAbstract
      * Khởi tạo, 2 tham số locale và format có thể được truyền vào
      * Nếu không sẽ sử dụng mặt định sau này
      *
-     * @param string $locale            
-     * @param string $format            
+     * @param string $locale
+     * @param string $format
      */
     public function __construct($locale = null, $format = null)
     {

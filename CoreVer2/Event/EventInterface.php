@@ -44,7 +44,7 @@ interface EventInterface
     /**
      * Thiết lập tên gọi của sự kiện
      *
-     * @param string $name            
+     * @param string $name
      * @return Vhmis\Event\EventInterface
      */
     public function setName($name);
@@ -52,7 +52,7 @@ interface EventInterface
     /**
      * Thiết lập đối tượng xảy ra sự kiện
      *
-     * @param mixed $target            
+     * @param mixed $target
      * @return Vhmis\Event\EventInterface
      */
     public function setTarget($target);
@@ -60,7 +60,7 @@ interface EventInterface
     /**
      * Thiết lập các tham số truyền theo
      *
-     * @param mixed $params            
+     * @param mixed $params
      * @return Vhmis\Event\EventInterface
      */
     public function setParams($params);
@@ -68,7 +68,7 @@ interface EventInterface
     /**
      * Thiết lập dừng lại
      *
-     * @param bool $bool            
+     * @param bool $bool
      */
     public function setStopPropagation($bool = false);
 

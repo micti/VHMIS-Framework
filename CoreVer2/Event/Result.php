@@ -27,7 +27,7 @@ class Result extends SplStack
     /**
      * Thiết lập dừng
      *
-     * @param type $bool            
+     * @param type $bool
      * @return \Vhmis\Event\EventResult
      */
     public function setStopped($bool)

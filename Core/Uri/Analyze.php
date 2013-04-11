@@ -32,12 +32,9 @@ class Vhmis_Uri_Analyze
     /**
      * Khởi tạo
      *
-     * @param string $link
-     *            URI yêu cầu
-     * @param string $sitePath
-     *            Đường dẫn của site
-     * @param array $indexAppInfo
-     *            Thông tin ứng dụng ứng với trang chủ
+     * @param string $link URI yêu cầu
+     * @param string $sitePath Đường dẫn của site
+     * @param array $indexAppInfo Thông tin ứng dụng ứng với trang chủ
      */
     public function __construct($link, $sitePath, $indexAppInfo)
     {

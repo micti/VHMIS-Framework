@@ -5,10 +5,8 @@ class Vhmis_Collection_Shares extends Vhmis_Collection_Objects
 
     /**
      *
-     * @param string $name
-     *            Tên Shares
-     * @param null|array $param
-     *            Thông số khởi tạo
+     * @param string $name Tên Shares
+     * @param null|array $param Thông số khởi tạo
      * @return Vhmis_Share Đối tượng Vhmis_Sahre
      */
     public function load($name, $param = null)

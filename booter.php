@@ -21,8 +21,7 @@ define('VHMIS_ERROR_ACTIONMISSING', '-99999994');
 /**
  * Hàm gọi class tự động (lazy load)
  *
- * @param string $name
- *            Tên class
+ * @param string $name Tên class
  */
 function ___autoLoad($class)
 {
@@ -60,8 +59,7 @@ spl_autoload_register('___autoLoad');
 /**
  * Load file chứa class Core (sử dụng Namespace)
  *
- * @param string $class
- *            Tên Class
+ * @param string $class Tên Class
  */
 function ___loadCoreClassWithNamespace($class)
 {
@@ -82,8 +80,7 @@ function ___loadCoreClassWithNamespace($class)
 /**
  * Gọi file chứa class Core
  *
- * @param string $name
- *            Tên class
+ * @param string $name Tên class
  */
 function ___loadCoreClass($name)
 {
@@ -105,8 +102,7 @@ function ___loadCoreClass($name)
 /**
  * Gọi file chứa class Zend Framework
  *
- * @param string $name
- *            Tên class
+ * @param string $name Tên class
  */
 function ___loadZendClass($name)
 {
@@ -127,8 +123,7 @@ function ___loadZendClass($name)
 /**
  * Gọi file chứa class Component
  *
- * @param string $component
- *            Tên component cần gọi
+ * @param string $component Tên component cần gọi
  */
 function ___loadComponentClass($component)
 {
@@ -143,8 +138,7 @@ function ___loadComponentClass($component)
 /**
  * Gọi file chứa class Model
  *
- * @param string $model
- *            Tên model
+ * @param string $model Tên model
  */
 function ___loadModelClass($model)
 {
@@ -159,8 +153,7 @@ function ___loadModelClass($model)
 /**
  * Gọi file chứa class Share của app
  *
- * @param string $data
- *            Tên share
+ * @param string $data Tên share
  */
 function ___loadShareClass($data)
 {
@@ -175,12 +168,9 @@ function ___loadShareClass($data)
 /**
  * Gọi file
  *
- * @param string $filename
- *            Tên file
- * @param string $path
- *            Đường dẫn của file
- * @param boolean $once
- *            Kiểm tra xem file đã gọi hay chưa
+ * @param string $filename Tên file
+ * @param string $path Đường dẫn của file
+ * @param boolean $once Kiểm tra xem file đã gọi hay chưa
  */
 function ___loadFile($filename, $path, $once = false)
 {
@@ -193,8 +183,7 @@ function ___loadFile($filename, $path, $once = false)
 /**
  * Gọi đối tượng Controller
  *
- * @param $appInfo Thông
- *            tin app (thông tin request)
+ * @param $appInfo Thông tin app (thông tin request)
  * @return VHMIS_CONTROLLER Đối tượng mở rộng của VHMIS_CONTROLLER ứng với
  *         request
  */
@@ -212,10 +201,8 @@ function ___loadController($request, $response)
 /**
  * Hàm gọi file Config của các ứng dụng
  *
- * @param string $appInfo
- *            Tên url của ứng dụng hoặc biến chứa thông tin ứng dụng
- * @param boolean $store
- *            Thiết lập có lưu vào $_vhmisConfigAll ko, mặc định là true
+ * @param string $appInfo Tên url của ứng dụng hoặc biến chứa thông tin ứng dụng
+ * @param boolean $store Thiết lập có lưu vào $_vhmisConfigAll ko, mặc định là true
  * @return void array $store = true, config được được load và lưu vào
  *         $_vhmisConfigAll, nếu $store = false sẽ trả về kết quả config được
  *         load
@@ -241,10 +228,8 @@ function ___loadAppConfig($appInfo, $store = true)
 /**
  * Hàm gọi file Config
  *
- * @param string $name
- *            Tên config cần gọi
- * @param boolean $store
- *            Thiết lập có lưu vào $_vhmisConfigAll ko, mặc định là true
+ * @param string $name Tên config cần gọi
+ * @param boolean $store Thiết lập có lưu vào $_vhmisConfigAll ko, mặc định là true
  * @return void array $store = true, config được được load và lưu vào
  *         $_vhmisConfigAll, nếu $store = false sẽ trả về kết quả config được
  *         load
@@ -273,9 +258,8 @@ function ___loadConfig($name, $store = true)
 /**
  * Hàm kiểm tra tên app
  *
- * @param string $app
- *            Tên ứng dụng dạng url (thường rút gọn, ko viết hoa, sử dụng ở url
- *            hoặc đặc tên biến, index mảng)
+ * @param string $app Tên ứng dụng dạng url (thường rút gọn, ko viết hoa, sử dụng ở url
+ *        hoặc đặc tên biến, index mảng)
  * @return boolean string nếu ko có apps, nếu có trả về tên App
  */
 function ___checkApp($app)
@@ -292,8 +276,7 @@ function ___checkApp($app)
 /**
  * Hàm viết hoa chữ cái đầu tiên (non-unicode)
  *
- * @param string $string
- *            Chuỗi đưa vào
+ * @param string $string Chuỗi đưa vào
  * @return string
  */
 function ___fUpper($string)
@@ -305,8 +288,7 @@ function ___fUpper($string)
  * Hàm chuyển tên class sang tên biến
  * Dạng Abc_Chakf_Chghfh thành abcChakfChghfh
  *
- * @param string $string
- *            Chuỗi vào
+ * @param string $string Chuỗi vào
  * @return string
  */
 function ___ctv($string)
@@ -320,10 +302,8 @@ function ___ctv($string)
  * This prevents sandwiching null characters
  * between ascii characters, like Java\0script.
  *
- * @param
- *            string
- * @param
- *            bool
+ * @param string
+ * @param bool
  * @return string
  */
 function ___removeInvisibleCharacters($str, $url_encoded = TRUE)
@@ -352,8 +332,7 @@ function ___removeInvisibleCharacters($str, $url_encoded = TRUE)
 /**
  * Hàm bỏ ký tự \ cho dữ liệu mảng một hay nhiều chiều
  *
- * @param array $values
- *            mảng cần thực hiện việc loại bỏ
+ * @param array $values mảng cần thực hiện việc loại bỏ
  * @return array mảng sau khi được loại bỏ
  */
 function ___stripSlashes($values)
@@ -372,10 +351,8 @@ function ___stripSlashes($values)
 /**
  * Kết nối database
  *
- * @param array $config
- *            Mảng chứa dữ liệu kết nối
- * @param string $type
- *            Loại database
+ * @param array $config Mảng chứa dữ liệu kết nối
+ * @param string $type Loại database
  * @return boolean Kết nối thành công hoặc thất bại
  */
 function ___connectDb($config, $type = 'Pdo_Mysql')

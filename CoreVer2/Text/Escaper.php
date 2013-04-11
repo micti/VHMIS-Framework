@@ -32,7 +32,7 @@ class Escaper
         60 => 'lt', // less-than sign
         62 => 'gt'
     ); // greater-than sign
-
+    
     /**
      * Current encoding for escaping.
      * If not UTF-8, we convert strings from this encoding
@@ -51,7 +51,7 @@ class Escaper
      *
      * @var string
      */
-    protected $_htmlSpecialCharsFlags = \ENT_QUOTES;
+    protected $_htmlSpecialCharsFlags =\ENT_QUOTES;
 
     /**
      * Static Matcher which escapes characters for HTML Attribute contexts
@@ -120,27 +120,26 @@ class Escaper
      * Khởi tạo, tham số encoding dùng để thiết lập kiểu mã hóa của chuỗi, mặc
      * định là UTF-8.
      *
-     * @param string $encoding
-     *            Kiểu mã hóa của chuỗi
+     * @param string $encoding Kiểu mã hóa của chuỗi
      */
     public function __construct($encoding = null)
     {
         if ($encoding !== null) {
             $encoding = (string) $encoding;
-
+            
             if ($encoding === '') {
                 $encoding = 'utf-8';
             }
-
+            
             $encoding = strtolower($encoding);
-
+            
             $this->_encoding = $encoding;
         }
-
+        
         if (defined('ENT_SUBSTITUTE')) {
             $this->_htmlSpecialCharsFlags |= ENT_SUBSTITUTE;
         }
-
+        
         // set matcher callbacks
         $this->_htmlAttrMatcher = array(
             $this,
@@ -198,7 +197,7 @@ class Escaper
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
-
+        
         $result = preg_replace_callback('/[^a-z0-9,\.\-_]/iSu', $this->_htmlAttrMatcher, $string);
         return $this->_fromUtf8($result);
     }
@@ -227,7 +226,7 @@ class Escaper
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
-
+        
         $result = preg_replace_callback('/[^a-z0-9,\._]/iSu', $this->_jsMatcher, $string);
         return $this->_fromUtf8($result);
     }
@@ -261,7 +260,7 @@ class Escaper
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
-
+        
         $result = preg_replace_callback('/[^a-z0-9]/iSu', $this->_cssMatcher, $string);
         return $this->_fromUtf8($result);
     }
@@ -277,7 +276,7 @@ class Escaper
     {
         $chr = $matches[0];
         $ord = ord($chr);
-
+        
         /**
          * The following replaces characters undefined in HTML with the
          * hex entity for the Unicode replacement character.
@@ -285,7 +284,7 @@ class Escaper
         if (($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r") || ($ord >= 0x7f && $ord <= 0x9f)) {
             return '&#xFFFD;';
         }
-
+        
         /**
          * Check if the current character to escape has a name entity we should
          * replace it with while grabbing the integer value of the character.
@@ -293,13 +292,13 @@ class Escaper
         if (strlen($chr) > 1) {
             $chr = $this->_convertEncoding($chr, 'UTF-16BE', 'UTF-8');
         }
-
+        
         $hex = bin2hex($chr);
         $ord = hexdec($hex);
         if (isset(static::$_htmlNamedEntityMap[$ord])) {
             return '&' . static::$_htmlNamedEntityMap[$ord] . ';';
         }
-
+        
         /**
          * Per OWASP recommendations, we'll use upper hex entities
          * for any other characters where a named entity does not exist.
@@ -362,12 +361,12 @@ class Escaper
         } else {
             $result = $this->_convertEncoding($string, 'UTF-8', $this->getEncoding());
         }
-
+        
         if (!$this->_isUtf8($result)) {
             throw new \Exception(
                 sprintf('String to be escaped was not valid UTF-8 or could not be converted: %s', $result));
         }
-
+        
         return $result;
     }
 
@@ -382,7 +381,7 @@ class Escaper
         if ($this->getEncoding() === 'utf-8') {
             return $string;
         }
-
+        
         return $this->_convertEncoding($string, $this->getEncoding(), 'UTF-8');
     }
 
@@ -415,7 +414,7 @@ class Escaper
         } else {
             $result = false;
         }
-
+        
         if ($result === false) {
             return ''; // return non-fatal blank string on encoding errors from
                            // users

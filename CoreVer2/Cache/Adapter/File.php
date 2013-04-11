@@ -14,7 +14,7 @@ class File implements StorageInterface
 
     /**
      *
-     * @param type $options            
+     * @param type $options
      * @throws \LogicException
      */
     public function __construct($options)

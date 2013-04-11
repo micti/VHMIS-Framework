@@ -23,23 +23,22 @@ interface StorageInterface
     /**
      * Lấy giá trị ứng
      *
-     * @param string $id            
+     * @param string $id
      */
     public function get($id);
 
     /**
      * Thiết lập giá trị
      *
-     * @param string $id
-     *            Tên giá trị
-     * @param mixed $value            
+     * @param string $id Tên giá trị
+     * @param mixed $value
      */
     public function set($id, $value);
 
     /**
      * Xóa một giá trị
      *
-     * @param type $id            
+     * @param type $id
      */
     public function remove($id);
 

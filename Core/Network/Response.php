@@ -44,8 +44,7 @@ class Vhmis_Network_Response
     /**
      * Thiết lập nội dung trả về
      *
-     * @param
-     *            string nội dung trả về
+     * @param string nội dung trả về
      */
     public function body($content)
     {
@@ -81,8 +80,7 @@ class Vhmis_Network_Response
     /**
      * Gửi nội dung trả về
      *
-     * @param
-     *            string nội dung trả về
+     * @param string nội dung trả về
      */
     protected function _sendContent($content = '')
     {

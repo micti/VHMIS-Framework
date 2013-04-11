@@ -131,12 +131,9 @@ abstract class ValidatorAbstract
     /**
      * Thiết lập thông tin về kết quả kiểm tra
      *
-     * @param string $message
-     *            Nôi dung
-     * @param string $code
-     *            Mã nội dung
-     * @param string $translatorCode
-     *            Mã nội dung dùng để chuyển đổi sang ngôn ngữ khác
+     * @param string $message Nôi dung
+     * @param string $code Mã nội dung
+     * @param string $translatorCode Mã nội dung dùng để chuyển đổi sang ngôn ngữ khác
      */
     protected function _setMessage($message, $code, $translatorCode)
     {
@@ -148,10 +145,8 @@ abstract class ValidatorAbstract
     /**
      * Kiểm tra xem 1 giá trị có hợp lệ theo regex
      *
-     * @param type $value
-     *            Giá trị cần kiểm tra
-     * @param type $pattern
-     *            Regex pattern sử dụng để kiểm tra
+     * @param type $value Giá trị cần kiểm tra
+     * @param type $pattern Regex pattern sử dụng để kiểm tra
      * @return boolean
      */
     protected function _isValidRegex($value, $pattern)

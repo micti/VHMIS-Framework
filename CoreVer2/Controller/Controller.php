@@ -24,7 +24,7 @@ class Controller
 {
 
     /**
-     * Thông tin Apps và Request (chủ yếu dùng khi chuyển qua đối tượng khác)
+     * Thông tin Apps và Request (chủ yếu dùng khi chuyển qua đối tượng khác).
      */
     public $appInfo;
 
@@ -34,11 +34,7 @@ class Controller
     public $app;
 
     /**
-     * Tên url cua app (dung de lam dia chi, dat ten bien .
-     *
-     *
-     *
-     * ..)
+     * Tên url cua app (dung de lam dia chi, dat ten bien).
      */
     public $appUrl;
 
@@ -65,17 +61,7 @@ class Controller
     /**
      * Các thông số đi kèm
      */
-    protected $_params;
-
-    /**
-     * Các thông số đi kèm
-     */
     public $params;
-
-    /**
-     * Kiểu xuất ra
-     */
-    protected $_output;
 
     /**
      * Kiểu xuất ra
@@ -95,57 +81,6 @@ class Controller
         'Acl',
         'Log'
     );
-
-    /**
-     * Mảng chứa các đối tượng của components
-     *
-     * @var Vhmis_Collection_Components
-     */
-    public $components;
-
-    /**
-     * Mảng chứa các model cần gọi
-     */
-    protected $_models = array();
-
-    /**
-     * Mảng chứa các đối tượng model
-     *
-     * @var Vhmis_Collection_Models
-     */
-    public $models;
-
-    /**
-     * Đối tượng share collection
-     *
-     * @var Vhmis_Collection_Shares
-     */
-    public $shares;
-
-    /**
-     * Mảng chứa các Share data cần gọi
-     */
-    protected $_shares = array();
-
-    /**
-     * Yêu cầu login để thực thi controller
-     */
-    protected $_loginFirst = true;
-
-    /**
-     * Yêu cầu login ở một số action nào đó
-     */
-    protected $_actionLoginFirst = array();
-
-    /**
-     * User đang request
-     */
-    public $user = null;
-
-    /**
-     * Nguon tai nguyen va hanh dong len tai nguyen của App
-     */
-    protected $_resources = null;
 
     /**
      * Mảng lưu trữ biến truyền cho View
@@ -173,13 +108,13 @@ class Controller
      * @param \Vhmis\Network\Request $request
      * @param \Vhmis\Network\Response $response
      */
-    public function __construct(Network\Request $request, Network\Response $response)
+    public function __construct(Network\Request $request = null, Network\Response $response = null)
     {
         $this->config['global'] = Configure::get('ConfigGlobal');
         $this->config['application'] = Configure::get('ConfigApplications');
 
-        $this->request = $request;
-        $this->response = $response;
+        $this->request = $request != null ?  : new Network\Request();
+        $this->response = $response != null ?  : new Network\Response();
 
         $this->appInfo = $request->app;
         $this->app = $this->appInfo['app'];
@@ -189,68 +124,6 @@ class Controller
         $this->params = $this->_params = $this->appInfo['info']['params'];
         $this->output = $this->_output = $this->appInfo['info']['output'];
         $this->controller = $this->_controller = $this->appInfo['info']['controller'];
-
-        $this->_resources = isset($this->_config['apps']['info'][$this->appUrl]['resources']) ? $this->_config['apps']['info'][$this->appUrl]['resources'] : null;
-
-        $this->models = new \Vhmis_Collection_Models();
-        $this->shares = new \Vhmis_Collection_Shares();
-
-        // Gọi các components
-        if (is_array($this->_components)) {
-            $this->components = new \Vhmis_Collection_Components();
-            foreach ($this->_components as $comp) {
-                $class = 'Vhmis_Component_' . $comp;
-                $this->components->load($comp, $this);
-            }
-        }
-
-        if ($this->components->auth !== null) {
-            $this->user = $this->components->auth->getUser();
-        }
-
-        // Kiểm tra login nếu cần thiết
-        if ($this->_loginFirst === true || in_array($this->_action, $this->_actionLoginFirst)) {
-            if ($this->user === null) {
-                if ($this->output != 'html') {
-                    $this->set('text', VHMIS_ERROR_LOGINSESSION);
-                    $this->set('array',
-                        array(
-                            'error' => 1,
-                            'code' => VHMIS_ERROR_LOGINSESSION,
-                            'message' => 'Login first or Session expired'
-                        ));
-                    $this->view();
-                    return;
-                }
-
-                // Chuyển hướng đến trang login
-                $this->redirect($this->_config['site']['path'] . $this->_config['apps']['login-url']);
-            }
-        }
-
-        // ACL
-        if ($this->components->acl !== null) {
-            if ($this->_resources !== null) {
-                foreach ($this->_resources as $resourceName => $resourceInfo) {
-                    $this->components->acl->addResource($this->appUrl, $resourceName);
-                }
-            }
-
-            if ($this->user !== null) {
-                $this->components->acl->addUser($this->user['id']);
-
-                if ($this->user['groups'] != null) {
-                    foreach ($this->user['groups'] as $group) {
-                        $this->components->acl->addGroup($group);
-                    }
-                }
-
-                // Theo phòng ban
-                if (isset($this->user['hrm_id_department']) && $this->user['hrm_id_department'] != 0) {
-                    $this->components->acl->addDepartment($this->user['hrm_id_department']);
-                }
-            }
-        }
     }
 
     /**
@@ -261,17 +134,11 @@ class Controller
         $action = 'action' . $this->_action;
 
         if (method_exists($this, $action)) {
-            // Load các model
-            $this->_loadModels();
-
-            // Load các share
-            $this->_loadShares();
-
             $this->_beforeInit();
             $this->$action();
             $this->_afterInit();
         } else {
-            echo 'Không tìm thấy action ' . $this->_action . ' . Xây dựng phương thức : ' . $action;
+            echo 'Not found ' . $this->_action . ' action. Create new method : ' . $action;
             exit();
         }
     }
@@ -279,8 +146,7 @@ class Controller
     /**
      * Chuyển hướng
      *
-     * @param string $url
-     *            Địa chỉ cần chuyển hướng
+     * @param string $url Địa chỉ cần chuyển hướng
      */
     public function redirect($url)
     {
@@ -291,10 +157,8 @@ class Controller
     /**
      * Thiết lập dữ liệu để truyền sang view
      *
-     * @param
-     *            string Tên dữ liệu
-     * @param
-     *            mixed Dữ liệu
+     * @param string Tên dữ liệu
+     * @param mixed Dữ liệu
      */
     public function set($name, $data)
     {
@@ -306,8 +170,9 @@ class Controller
      */
     public function view($view = '', $layout = '', $template = '')
     {
-        if ($layout == '')
+        if ($layout == '') {
             $layout = $this->_viewLayout;
+        }
         if ($template == '') {
             $template = $this->_viewTemplate;
         }
@@ -501,8 +366,7 @@ class Controller
     /**
      * Gọi Model
      *
-     * @param
-     *            string Tên model
+     * @param string Tên model
      * @return Đối tượng của model đó
      */
     protected function _loadModel($model)
@@ -539,8 +403,7 @@ class Controller
     /**
      * Gọi share
      *
-     * @param string $data
-     *            Tên Share
+     * @param string $data Tên Share
      * @return Đối tượng Share
      */
     protected function _loadShare($data)
@@ -562,8 +425,7 @@ class Controller
     /**
      * Kết nối database của app
      *
-     * @param string $name
-     *            Tên của app cần kết nối database
+     * @param string $name Tên của app cần kết nối database
      */
     public function _db($name)
     {

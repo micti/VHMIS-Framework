@@ -42,8 +42,7 @@ class Vhmis_Component_Employee extends Vhmis_Component
     /**
      * Lấy nhân sự theo id
      *
-     * @param int $id
-     *            Id của nhân sự cần lấy
+     * @param int $id Id của nhân sự cần lấy
      * @return mixed Null nếu không có, Vhmis_Core_Entity_Employee nếu có
      */
     public function getById($id)

@@ -74,8 +74,7 @@ class Vhmis_Network_Request
     /**
      * Khởi tạo!
      *
-     * @param string $url
-     *            Địa chỉ url.
+     * @param string $url Địa chỉ url.
      */
     public function __construct($url = null)
     {

@@ -16,8 +16,7 @@ class Vhmis_View_Helper_Date
     /**
      * Chuyển đổi định dạng giờ sql sang định dạng thường khác
      *
-     * @param
-     *            format Định dạng
+     * @param format Định dạng
      */
     public function sqlToNormal($time, $format = 'd/m/Y')
     {
@@ -27,8 +26,7 @@ class Vhmis_View_Helper_Date
     /**
      * Chuyển đổi định dạng giờ sql sang định dạng đầy đủ chữ VN
      *
-     * @param
-     *            time Giờ dạng sql
+     * @param time Giờ dạng sql
      */
     public function sqlToFullVietnameseText($time)
     {

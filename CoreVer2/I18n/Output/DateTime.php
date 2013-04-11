@@ -49,8 +49,7 @@ class DateTime
     /**
      * Thiết lập Locale
      *
-     * @param string $locale
-     *            Locale
+     * @param string $locale Locale
      */
     public function setLocale($locale = null)
     {
@@ -62,26 +61,25 @@ class DateTime
      * Xuất ngày theo các định dạng theo kiểu định nghĩa sẵn trong PHP
      *
      * @param type $value
-     * @param type $style
-     *            Kiểu
+     * @param type $style Kiểu
      * @return string
      */
     public function date($value, $style)
     {
         $timeStyle = IntlDateFormatter::NONE;
-
+        
         $formatter = md5($this->_locale . $style . $timeStyle);
-
+        
         if (!isset($this->_formatters[$formatter])) {
             $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, $style, $timeStyle);
         }
-
+        
         if (is_string($value)) {
             $value = strtotime($value);
             if ($value === false)
                 return '';
         }
-
+        
         $string = $this->_formatters[$formatter]->format($value);
         return $string === false ? '' : $string;
     }
@@ -89,20 +87,20 @@ class DateTime
     public function dateByPattern($value, $pattern)
     {
         $formatter = md5($this->_locale . IntlDateFormatter::FULL . IntlDateFormatter::FULL);
-
+        
         if (!isset($this->_formatters[$formatter])) {
-            $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, IntlDateFormatter::FULL,
+            $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, IntlDateFormatter::FULL, 
                 IntlDateFormatter::FULL);
         }
-
+        
         if (is_string($value)) {
             $value = strtotime($value);
             if ($value === false)
                 return '';
         }
-
+        
         $this->_formatters[$formatter]->setPattern($pattern);
-
+        
         $string = $this->_formatters[$formatter]->format($value);
         return $string === false ? '' : $string;
     }

@@ -75,8 +75,7 @@ abstract class Vhmis_Model extends Zend_Db_Table_Abstract
     /**
      * Hàm lấy dữ liệu theo primary key
      *
-     * @param mixed $keys
-     *            Giá trị của các primary key
+     * @param mixed $keys Giá trị của các primary key
      */
     public function find($keys)
     {
@@ -108,8 +107,7 @@ abstract class Vhmis_Model extends Zend_Db_Table_Abstract
      * Lấy dữ liệu theo primary key id
      * Hàm này là ánh xạ của hàm find()
      *
-     * @param mixed $ids
-     *            Giá trị của các id
+     * @param mixed $ids Giá trị của các id
      */
     public function getById($ids)
     {

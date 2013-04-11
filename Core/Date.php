@@ -84,12 +84,10 @@ class Vhmis_Date
      * 'm'
      * 's'
      *
-     * @param mixed $param
-     *            Thông tin ngày giờ khởi tạo (dạng array,string), còn nếu null
-     *            (mặc định) thì trả về ngày giờ hiện tại
-     * @param mixed $offset
-     *            Chênh lệch theo giờ với UTC, Nếu là null thì offset = offset
-     *            của server
+     * @param mixed $param Thông tin ngày giờ khởi tạo (dạng array,string), còn nếu null
+     *        (mặc định) thì trả về ngày giờ hiện tại
+     * @param mixed $offset Chênh lệch theo giờ với UTC, Nếu là null thì offset = offset
+     *        của server
      */
     public function time($param = null, $offset = null)
     {
@@ -357,8 +355,7 @@ class Vhmis_Date
      * Tính khoảng thời gian theo ngày giữa ngày hiện tại với một một ngày khác
      * trả về dương nếu ngày bị đem ra so lớn hơn ngày so, âm nếu ngược lại
      *
-     * @param Vhmis_Date $date
-     *            Ngày bị đem ra so
+     * @param Vhmis_Date $date Ngày bị đem ra so
      * @return Khoảng cách thời gian theo ngày
      */
     public function differentDay($date)
@@ -377,8 +374,7 @@ class Vhmis_Date
      * - khoảng cách giữa thứ 2 tuần trước với thứ 7 tuần này là 1 tuần
      * - khoảng cách giữa thứ 7 tuần trước với thứ 2 tuần này là 1 tuần
      *
-     * @param Vhmis_Date $date
-     *            Ngày bị đem ra so
+     * @param Vhmis_Date $date Ngày bị đem ra so
      * @return Khoảng cách thời gian theo tuần
      */
     public function differentWeek($date)
@@ -393,8 +389,7 @@ class Vhmis_Date
     /**
      * Tính khoảng thời gian theo tháng giữa ngày hiện tại với một ngày khác
      *
-     * @param Vhmis_Date $date
-     *            Ngày bị đem ra so
+     * @param Vhmis_Date $date Ngày bị đem ra so
      * @return Khoảng cách thời gian theo tháng
      */
     public function differentMonth($date)
@@ -416,8 +411,7 @@ class Vhmis_Date
     /**
      * Tính khoảng thời gian theo năm giữa ngày hiện tại với một ngày khác
      *
-     * @param Vhmis_Date $date
-     *            Ngày bị đem ra so
+     * @param Vhmis_Date $date Ngày bị đem ra so
      * @return Khoảng cách thời gian theo năm
      */
     public function differentYear($date)
@@ -559,11 +553,11 @@ class Vhmis_Date
      * 3 phút trước, 2 giờ 3 phút trước .
      *
      *
+     *
      * ...
      * Kết quả trả về mạng tính tương đối (vì một năm = 365 ngày, 1 = 30 ngày)
      *
-     * @param int $deep
-     *            Số lượng tối đa đại lương thời gian cần thông báo
+     * @param int $deep Số lượng tối đa đại lương thời gian cần thông báo
      */
     public function toAgo($deep = 2)
     {
@@ -684,7 +678,8 @@ class Vhmis_Date
     /**
      * Chuyển đổi nhanh ngày tháng theo SQL sang ngày tháng bình thường
      *
-     * @param            
+     * @param
+     *
      *
      *
      *
@@ -697,7 +692,8 @@ class Vhmis_Date
     /**
      * Chuyển đổi nhanh ngày tháng theo SQL sang ngày tháng bình thường
      *
-     * @param            
+     * @param
+     *
      *
      *
      *

@@ -55,10 +55,8 @@ class Vhmis_Security
      * harvested from examining vulnerabilities in other programs:
      * http://ha.ckers.org/xss.html
      *
-     * @param
-     *            mixed	string or array
-     * @param
-     *            bool
+     * @param mixed	string or array
+     * @param bool
      * @return string
      */
     public function xssClean($str, $is_image = FALSE)
@@ -261,10 +259,8 @@ class Vhmis_Security
      * correctly. html_entity_decode() does not convert entities without
      * semicolons, so we are left with our own little solution here. Bummer.
      *
-     * @param
-     *            string
-     * @param
-     *            string
+     * @param string
+     * @param string
      * @return string
      */
     public function entityDecode($str, $charset = NULL)
@@ -290,8 +286,7 @@ class Vhmis_Security
      * and prevents PREG_BACKTRACK_LIMIT_ERROR from being triggered in
      * PHP 5.2+ on link-heavy strings
      *
-     * @param
-     *            array
+     * @param array
      * @return string
      */
     protected function _jsLinkRemoval($match)
@@ -315,8 +310,7 @@ class Vhmis_Security
      * and prevents PREG_BACKTRACK_LIMIT_ERROR from being triggered in
      * PHP 5.2+ on image tag heavy strings
      *
-     * @param
-     *            array
+     * @param array
      * @return string
      */
     protected function _jsImgRemoval($match)
@@ -338,8 +332,7 @@ class Vhmis_Security
      * Callback function for xss_clean() to remove whitespace from
      * things like j a v a s c r i p t
      *
-     * @param
-     *            array
+     * @param array
      * @return string
      */
     protected function _compactExplodedWords($matches)
@@ -358,10 +351,8 @@ class Vhmis_Security
      * For example, everything between the pipes:
      * <a |style="document.write('hello'); alert('world');"| class="link">
      *
-     * @param string $str
-     *            The string to check
-     * @param boolean $is_image
-     *            TRUE if this is an image
+     * @param string $str The string to check
+     * @param boolean $is_image TRUE if this is an image
      * @return string The string with the evil attributes removed
      */
     protected function _removeEvilAttributes($str, $is_image)
@@ -397,9 +388,8 @@ class Vhmis_Security
             
             // find occurrences of illegal attribute strings with quotes (042
             // and 047 are octal quotes)
-            preg_match_all(
-                '/(' . implode('|', $evil_attributes) . ')\s*=\s*(\042|\047)([^\\2]*?)(\\2)/is', $str, $matches, 
-                PREG_SET_ORDER);
+            preg_match_all('/(' . implode('|', $evil_attributes) . ')\s*=\s*(\042|\047)([^\\2]*?)(\\2)/is', $str, 
+                $matches, PREG_SET_ORDER);
             
             foreach ($matches as $attr) {
                 $attribs[] = preg_quote($attr[0], '/');
@@ -407,9 +397,8 @@ class Vhmis_Security
             
             // replace illegal attribute strings that are inside an html tag
             if (count($attribs) > 0) {
-                $str = preg_replace(
-                    '/<(\/?[^><]+?)([^A-Za-z\-])(' . implode('|', $attribs) . ')([\s><])([><]*)/i', '<$1$2$4$5', $str, 
-                    -1, $count);
+                $str = preg_replace('/<(\/?[^><]+?)([^A-Za-z\-])(' . implode('|', $attribs) . ')([\s><])([><]*)/i', 
+                    '<$1$2$4$5', $str, -1, $count);
             }
         } while ($count);
         
@@ -421,8 +410,7 @@ class Vhmis_Security
      *
      * Callback function for xss_clean() to remove naughty HTML elements
      *
-     * @param
-     *            array
+     * @param array
      * @return string
      */
     protected function _sanitizeNaughtyHtml($matches)
@@ -447,8 +435,7 @@ class Vhmis_Security
      *
      * Used as a callback for XSS Clean
      *
-     * @param
-     *            array
+     * @param array
      * @return string
      */
     protected function _convertAttribute($match)
@@ -469,8 +456,7 @@ class Vhmis_Security
      *
      * Filters tag attributes for consistency and safety
      *
-     * @param
-     *            string
+     * @param string
      * @return string
      */
     protected function _filterAttributes($str)
@@ -490,8 +476,7 @@ class Vhmis_Security
      *
      * Used as a callback for XSS Clean
      *
-     * @param
-     *            array
+     * @param array
      * @return string
      */
     protected function _decodeEntity($match)
@@ -504,8 +489,7 @@ class Vhmis_Security
      *
      * Called by xss_clean()
      *
-     * @param
-     *            string
+     * @param string
      * @return string
      */
     protected function _validateEntities($str)
@@ -539,8 +523,7 @@ class Vhmis_Security
      *
      * A utility function for xss_clean()
      *
-     * @param
-     *            string
+     * @param string
      * @return string
      */
     protected function _doNeverAllowed($str)

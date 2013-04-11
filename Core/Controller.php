@@ -43,6 +43,7 @@ class Vhmis_Controller
      * Tên url cua app (dung de lam dia chi, dat ten bien .
      *
      *
+     *
      * ..)
      */
     public $appUrl;
@@ -180,10 +181,8 @@ class Vhmis_Controller
     /**
      * Khởi tạo
      *
-     * @param Vhmis_Network_Request $request
-     *            Đối tượng chứa các thông tin của request
-     * @param Vhmis_Network_Request $response
-     *            Đối tượng thực hiện việc trả kết quả
+     * @param Vhmis_Network_Request $request Đối tượng chứa các thông tin của request
+     * @param Vhmis_Network_Request $response Đối tượng thực hiện việc trả kết quả
      */
     public function __construct(Vhmis_Network_Request $request, Vhmis_Network_Response $response)
     {
@@ -235,8 +234,7 @@ class Vhmis_Controller
                 }
                 
                 // Chuyển hướng đến trang login
-                $this->redirect(
-                    $this->_config['site']['path'] . $this->_config['apps']['login-url']);
+                $this->redirect($this->_config['site']['path'] . $this->_config['apps']['login-url']);
             }
         }
         
@@ -291,8 +289,7 @@ class Vhmis_Controller
     /**
      * Chuyển hướng
      *
-     * @param string $url
-     *            Địa chỉ cần chuyển hướng
+     * @param string $url Địa chỉ cần chuyển hướng
      */
     public function redirect($url)
     {
@@ -303,10 +300,8 @@ class Vhmis_Controller
     /**
      * Thiết lập dữ liệu để truyền sang view
      *
-     * @param
-     *            string Tên dữ liệu
-     * @param
-     *            mixed Dữ liệu
+     * @param string Tên dữ liệu
+     * @param mixed Dữ liệu
      */
     public function set($name, $data)
     {
@@ -512,8 +507,7 @@ class Vhmis_Controller
     /**
      * Gọi Model
      *
-     * @param
-     *            string Tên model
+     * @param string Tên model
      * @return Đối tượng của model đó
      */
     protected function _loadModel($model)
@@ -550,8 +544,7 @@ class Vhmis_Controller
     /**
      * Gọi share
      *
-     * @param string $data
-     *            Tên Share
+     * @param string $data Tên Share
      * @return Đối tượng Share
      */
     protected function _loadShare($data)
@@ -573,8 +566,7 @@ class Vhmis_Controller
     /**
      * Kết nối database của app
      *
-     * @param string $name
-     *            Tên của app cần kết nối database
+     * @param string $name Tên của app cần kết nối database
      */
     public function _db($name)
     {
@@ -654,8 +646,7 @@ class Vhmis_Controller
     /**
      * Lấy config của một app
      *
-     * @param string $app
-     *            Tên app
+     * @param string $app Tên app
      * @return array null của app nếu có
      */
     protected function _loadAppConfig($app)

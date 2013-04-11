@@ -104,7 +104,7 @@ class Router
     /**
      * Set đường dẫn web chứa trang index.php của hệ thống
      *
-     * @param string $path            
+     * @param string $path
      * @return \Vhmis\Network\Router
      */
     public function webPath($path)
@@ -116,12 +116,9 @@ class Router
     /**
      * Thiết lập các thông tin cơ bản
      *
-     * @param bool $useApp
-     *            Có sử dụng tên app hay không
-     * @param bool $useLang
-     *            Có sử dụng yếu tố ngôn ngữ hay không
-     * @param string $positionLang
-     *            Vị trí của yếu tố
+     * @param bool $useApp Có sử dụng tên app hay không
+     * @param bool $useLang Có sử dụng yếu tố ngôn ngữ hay không
+     * @param string $positionLang Vị trí của yếu tố
      * @return \Vhmis\Network\Router
      */
     public function setting($useApp, $useLang, $positionLang, $defaultApp, $defaultLanguage)
@@ -138,7 +135,7 @@ class Router
     /**
      * Khai báo thông tin dành cho route trang chủ
      *
-     * @param array $homeRouteInfo            
+     * @param array $homeRouteInfo
      * @return \Vhmis\Network\Router
      */
     public function homeRoute($homeRouteInfo)
@@ -153,7 +150,7 @@ class Router
     /**
      * Lây thông tin ứng với một địa chỉ bất kỳ
      *
-     * @param string $uri            
+     * @param string $uri
      * @return array
      */
     public function check($uri)

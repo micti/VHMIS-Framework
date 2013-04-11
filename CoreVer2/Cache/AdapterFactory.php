@@ -7,8 +7,8 @@ abstract class AdapterFactory
 
     /**
      *
-     * @param string $adapter            
-     * @param type $config            
+     * @param string $adapter
+     * @param type $config
      * @return \Vhmis\Cache\Adapter\StorageInterface
      */
     public static function fatory($adapter, $config)

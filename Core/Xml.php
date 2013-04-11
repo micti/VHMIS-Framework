@@ -25,8 +25,7 @@ class Vhmis_Xml
      * )
      * );
      *
-     * @param array $data
-     *            Dữ liệu dạng mảng
+     * @param array $data Dữ liệu dạng mảng
      * @return string Nội dung dạng file xml
      */
     public static function fromArray($data, $root = 'data', $encoding = 'utf-8')
@@ -43,8 +42,7 @@ class Vhmis_Xml
      * Phương thức trợ giúp tạo file XML data từ dữ liệu dạng mảng cho hàm
      * simpleFromArray
      *
-     * @param array $data
-     *            Dữ liệu dạng mảng
+     * @param array $data Dữ liệu dạng mảng
      * @return string Nội dung dạng file xml
      */
     protected function _fromArray($data, $parentkey = '')

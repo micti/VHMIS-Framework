@@ -10,10 +10,8 @@ class Vhmis_Core_Entity_Student
     /**
      * Khởi tạo đối tượng
      *
-     * @param Vhmis_Component_Student $component
-     *            Đối tượng Vhmis_Component_Student
-     * @param array $data
-     *            Dữ liệu dạng mảng của sinh viên
+     * @param Vhmis_Component_Student $component Đối tượng Vhmis_Component_Student
+     * @param array $data Dữ liệu dạng mảng của sinh viên
      */
     public function __construct($component, $data)
     {

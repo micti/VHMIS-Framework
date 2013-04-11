@@ -43,8 +43,8 @@ class Di
 
     /**
      *
-     * @param string $id            
-     * @param object|\Closure $service            
+     * @param string $id
+     * @param object|\Closure $service
      * @throws \Exception
      */
     public function set($id, $service, array $params = array())
@@ -81,8 +81,8 @@ class Di
 
     /**
      *
-     * @param type $class            
-     * @param type $oParams            
+     * @param type $class
+     * @param type $oParams
      * @return object
      */
     public function newInstance($class, $oParams)
@@ -101,7 +101,7 @@ class Di
 
     /**
      *
-     * @param string $class            
+     * @param string $class
      * @return \ReflectionClass
      */
     protected function _getReflect($class)
@@ -114,7 +114,7 @@ class Di
 
     /**
      *
-     * @param string $class            
+     * @param string $class
      * @return array
      */
     protected function _getClassInfo($class)
@@ -146,10 +146,8 @@ class Di
     /**
      * Điền giá trị vào cho $params
      *
-     * @param type $params
-     *            Danh sách params với giá trị mặc định (hoặc được cấu hình sẵn)
-     * @param type $newParams
-     *            Danh sách params với giá trị mới
+     * @param type $params Danh sách params với giá trị mặc định (hoặc được cấu hình sẵn)
+     * @param type $newParams Danh sách params với giá trị mới
      * @return array Danh sách params
      */
     protected function _fillParams($params, $newParams)

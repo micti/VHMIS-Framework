@@ -43,8 +43,7 @@ class Vhmis_Component_Student extends Vhmis_Component
     /**
      * Lấy sinh viên theo id
      *
-     * @param int $id
-     *            Id của sinh viên cần lấy
+     * @param int $id Id của sinh viên cần lấy
      * @return mixed Null nếu không có, Vhmis_Core_Entity_Student nếu có
      */
     public function getById($id)

@@ -81,7 +81,7 @@ class Event implements EventInterface
     /**
      * Thiết lập tên gọi của sự kiện
      *
-     * @param string $name            
+     * @param string $name
      * @return \Vhmis\Event\Event
      */
     public function setName($name)
@@ -94,7 +94,7 @@ class Event implements EventInterface
     /**
      * Thiết lập đối tượng xảy ra sự kiện
      *
-     * @param mixed $target            
+     * @param mixed $target
      * @return Vhmis\Event\Event
      */
     public function setTarget($target)
@@ -107,7 +107,7 @@ class Event implements EventInterface
     /**
      * Thiết lập các tham số truyền theo
      *
-     * @param array $params            
+     * @param array $params
      * @return Vhmis\Event\EventInterface
      */
     public function setParams($params)
@@ -120,7 +120,7 @@ class Event implements EventInterface
     /**
      * Thiết lập dừng lại
      *
-     * @param bool $bool            
+     * @param bool $bool
      */
     public function setStopPropagation($bool = false)
     {
@@ -130,7 +130,7 @@ class Event implements EventInterface
     /**
      * Kiểm tra xem có phải dừng lại không
      *
-     * @param bool $bool            
+     * @param bool $bool
      */
     public function isPropagationStopped()
     {

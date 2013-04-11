@@ -24,7 +24,7 @@ class InstanceManager
         if (!is_object($instance)) {
             throw new \Exception("Not object");
         }
-
+        
         if ($instance instanceof \Closure) {
             $this->_lazyServices[$class] = $instance;
         } else {
@@ -37,7 +37,7 @@ class InstanceManager
         if ($params instanceof \Closure) {
             $this->_lazyParams[$class] = $params;
         }
-
+        
         $this->_params[$class] = $params;
     }
 
@@ -46,12 +46,12 @@ class InstanceManager
         if (isset($this->_services[$class])) {
             return $this->_services[$class];
         }
-
+        
         if (isset($this->_closure[$class])) {
             $this->_services[$class] = $this->_closure[$class]();
             return $this->_services[$class];
         }
-
+        
         return null;
     }
 }

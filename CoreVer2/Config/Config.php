@@ -24,19 +24,18 @@ class Config
      * Load config của hệ thống ứng dụng
      *
      * @param string $name
-     * @param string $part
-     *            Phần muồn lấy
+     * @param string $part Phần muồn lấy
      * @return array
      */
     public static function system($name, $part = '')
     {
         $config = Load::filePhp(VHMIS_SYS_CONF_PATH . '/' . $name . '.php');
-
+        
         if ($config === null || empty($config)) {
             echo 'No System Config : ' . $name;
             exit();
         }
-
+        
         if (is_string($part) && $part != '') {
             $parts = explode('/', $part);
             foreach ($parts as $p) {
@@ -48,7 +47,7 @@ class Config
                 }
             }
         }
-
+        
         return $config;
     }
 
@@ -56,21 +55,18 @@ class Config
      * Load config của 1 ứng dụng
      *
      * @param string $app
-     * @param string $part
-     *            Phần muồn lấy
-     * @param
-     *            array
+     * @param string $part Phần muồn lấy
+     * @param array
      */
     public static function app($app, $part = '')
     {
-        $config = Load::filePhp(
-            VHMIS_APPS_PATH . D_SPEC . ___fUpper($app) . D_SPEC . 'Config' . D_SPEC . 'App.php');
-
+        $config = Load::filePhp(VHMIS_APPS_PATH . D_SPEC . ___fUpper($app) . D_SPEC . 'Config' . D_SPEC . 'App.php');
+        
         if ($config === null || empty($config)) {
             echo 'No App Config : ' . $app;
             exit();
         }
-
+        
         if (is_string($part) && $part != '') {
             $part = strtolower($part);
             $parts = explode('/', $part);
@@ -83,7 +79,7 @@ class Config
                 }
             }
         }
-
+        
         return $config;
     }
 
@@ -91,8 +87,7 @@ class Config
      * Load config route của 1 ứng dụng
      *
      * @param string $app
-     * @param
-     *            array
+     * @param array
      */
     public static function appRoutes($app)
     {

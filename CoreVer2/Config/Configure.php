@@ -50,9 +50,8 @@ class Configure extends ArrayObject
      * Sử dụng tham số thứ 2 để thiết lập giá trị mặc định nếu config đó chưa
      * tồn tại, nếu không sử dụng thì giá trị trả về sẽ là null
      *
-     * @param string $index            
-     * @param mixed $default
-     *            Giá trị trả về mặc định nếu config chưa tồn tại
+     * @param string $index
+     * @param mixed $default Giá trị trả về mặc định nếu config chưa tồn tại
      * @return mixed
      */
     public static function get($index, $default = null)
@@ -69,8 +68,8 @@ class Configure extends ArrayObject
     /**
      * Gán giá trị của 1 config
      *
-     * @param string $index            
-     * @param mixed $value            
+     * @param string $index
+     * @param mixed $value
      */
     public static function set($index, $value)
     {
@@ -85,8 +84,8 @@ class Configure extends ArrayObject
      * Nếu config đó chưa tồn tại thì sẽ khởi tạo, nếu giá trị config đã tồn tại
      * thì sẽ thêm vào theo hàm array_merge_recursive
      *
-     * @param string $index            
-     * @param mixed $value            
+     * @param string $index
+     * @param mixed $value
      */
     public static function add($index, $value)
     {
@@ -102,7 +101,7 @@ class Configure extends ArrayObject
     /**
      * Kiểm tra xem 1 config đã được khai báo chưa
      *
-     * @param string $index            
+     * @param string $index
      * @return boolean
      */
     public static function isRegistered($index)

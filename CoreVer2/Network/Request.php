@@ -6,7 +6,6 @@
  * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
  * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package Vhmis_Network
  * @since Vhmis v2.0
  */
 namespace Vhmis\Network;
@@ -15,9 +14,6 @@ use Vhmis\Config\Configure;
 
 /**
  * Xứ lý yêu câu (request) gửi đến
- *
- * @category Vhmis
- * @package Vhmis_Network
  */
 class Request
 {
@@ -27,7 +23,7 @@ class Request
      *
      * @var Vhmis\Network\Uri
      */
-    protected $_uri;
+    protected $uri;
 
     /**
      * Mảng chứa dữ liệu của POST.
@@ -62,65 +58,64 @@ class Request
      *
      * @var \Vhmis\Network\Router
      */
-    protected $_router;
+    protected $router;
 
     /**
      * Khởi tạo!
      *
-     * @param string $url
-     *            Địa chỉ url.
+     * @param string $url Địa chỉ url.
      */
     public function __construct(Router $router = null)
     {
         if ($router != null)
-            $this->_router = $router;
+            $this->router = $router;
     }
 
     /**
-     * Gán Router vào
+     * Thiết lập Router
      *
-     * @param \Vhmis\Request\Router $router            
+     * @param \Vhmis\Request\Router $router
      */
-    public function addRouter(Router $router)
+    public function setRouter(Router $router)
     {
-        $this->_router = $router;
+        $this->router = $router;
     }
 
     /**
      * Xử lý request
      *
-     * @param string $url            
+     * @param string $url
      */
     public function process($url = null)
     {
         $this->responeCode = '200';
-        
+
         $config = Configure::get('Config');
-        
+
         if (empty($url)) {
             $url = $this->url();
         }
-        
-        $this->_uri = new Uri($url);
-        
-        if ($this->_uri->valid() == false) {
+
+        $this->uri = new Uri($url);
+
+        if ($this->uri->valid() == false) {
             $this->responeCode = '403';
             return;
         }
-        
-        $result = $this->_router->check($this->_uri->getPath());
-        
+
+        $result = $this->router->check($this->uri->getPath());
+
         if ($result['match'] == false) {
             $this->responeCode = '404';
             return;
         }
-        
+
         $this->app = $result;
-        
-        $this->_getPostData();
-        $this->_getGetData();
-        $this->_getFileData();
-        $this->_delData();
+
+        $this->getPostData();
+        $this->getGetData();
+        $this->getFileData();
+        $this->delData();
     }
 
     /**
@@ -131,7 +126,7 @@ class Request
     public function getIp()
     {
         $ip = '0.0.0.0';
-        
+
         if (isset($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP'] != '') {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
         } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '') {
@@ -139,11 +134,11 @@ class Request
         } elseif (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '') {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        
+
         if (($commaPos = strpos($ip, ',')) > 0) {
             $ip = substr($ip, 0, ($commaPos - 1));
         }
-        
+
         return $ip;
     }
 
@@ -167,7 +162,7 @@ class Request
     {
         $referrer = $_SERVER['HTTP_REFERER'];
         $forward = $_SERVER['HTTP_X_FORWARDED_HOST'];
-        
+
         if ($forward) {
             return $forward;
         }
@@ -178,10 +173,10 @@ class Request
      * Lấy dữ liệu của phương thức POST.
      * Dữ liệu sau khi được lấy được lưu và truy xuất thuộc tính $data
      */
-    protected function _getPostData()
+    protected function getPostData()
     {
         $this->post = $_POST;
-        
+
         // Loại bỏ ký tự \
         if (ini_get('magic_quotes_gpc') === '1') {
             $this->post = ___stripSlashes($this->post);
@@ -192,10 +187,10 @@ class Request
      * Lấy dữ liệu của phương thức GET (querystring).
      * Dữ liệu sau khi được lấy được lưu và truy xuất ở thuộc tính $query.
      */
-    protected function _getGetData()
+    protected function getGetData()
     {
         $this->get = $_GET;
-        
+
         // Loại bỏ ký tự \
         if (ini_get('magic_quotes_gpc') === '1') {
             $this->get = ___stripSlashes($this->get);
@@ -206,7 +201,7 @@ class Request
      * Lấy dữ liệu của $_FILE.
      * Dữ liệu sau khi được lấy được lưu và truy xuất ở $post['_files'].
      */
-    protected function _getFileData()
+    protected function getFileData()
     {
         if (isset($_FILES) && is_array($_FILES)) {
             foreach ($_FILES as $name => $data) {
@@ -221,19 +216,16 @@ class Request
                     }
                     $data = $new;
                 }
-                
+
                 $this->post['_files'][$name] = $data;
             }
         }
     }
 
     /**
-     * Xóa dữ liệu các biến GLOBAL (post, get, files, request .
-     *
-     *
-     * ..)
+     * Xóa dữ liệu các biến GLOBAL
      */
-    protected function _delData()
+    protected function delData()
     {
         unset($_POST);
         unset($_FILES);

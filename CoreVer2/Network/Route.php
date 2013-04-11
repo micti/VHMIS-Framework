@@ -109,9 +109,8 @@ class Route implements RouteInterface
     /**
      * Khởi tạo một đối tượng mới
      *
-     * @param array $params
-     *            Thông số khởi tạo
-     *            
+     * @param array $params Thông số khởi tạo
+     *       
      */
     public function __construct($params = null)
     {
@@ -147,7 +146,7 @@ class Route implements RouteInterface
     /**
      * Thiết lập uri pattern
      *
-     * @param string $pattern            
+     * @param string $pattern
      * @return \Vhmis\Network\Route
      */
     public function setPattern($pattern)
@@ -163,7 +162,7 @@ class Route implements RouteInterface
     /**
      * Thiết lập controller
      *
-     * @param string $controller            
+     * @param string $controller
      * @return \Vhmis\Network\Route
      */
     public function setController($controller)
@@ -176,7 +175,7 @@ class Route implements RouteInterface
     /**
      * Thiết lập action
      *
-     * @param string $action            
+     * @param string $action
      * @return \Vhmis\Network\Route
      */
     public function setAction($action)
@@ -189,7 +188,7 @@ class Route implements RouteInterface
     /**
      * Thiết lập thông số
      *
-     * @param array $params            
+     * @param array $params
      * @return \Vhmis\Network\Route
      */
     public function setParams($params)
@@ -206,7 +205,7 @@ class Route implements RouteInterface
     /**
      * Thiết lập chuyển hướng
      *
-     * @param string $redirect            
+     * @param string $redirect
      * @return \Vhmis\Network\Route
      */
     public function setRedirect($redirect)
@@ -219,7 +218,7 @@ class Route implements RouteInterface
     /**
      * Thiết lập dạng trả về
      *
-     * @param string $output            
+     * @param string $output
      * @return \Vhmis\Network\Route
      */
     public function setOutput($output)
@@ -289,8 +288,7 @@ class Route implements RouteInterface
      * Chuyển link redirect sang dạng chính thức
      * Sau khi thay thế giá trị param vào nếu có
      *
-     * @param array $params
-     *            Thông số
+     * @param array $params Thông số
      * @return string
      */
     public function makeRedirect($params)
@@ -307,7 +305,7 @@ class Route implements RouteInterface
     /**
      * Kiểm tra 1 link có hợp lệ với route không
      *
-     * @param string $value            
+     * @param string $value
      * @return array
      */
     public function check($value)

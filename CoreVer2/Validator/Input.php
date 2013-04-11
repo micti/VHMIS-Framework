@@ -49,7 +49,7 @@ class Input extends ValidatorAbstract
      * Trong File controller
      * $inputValidator = new Vhmis\Validator\Input($this->request);
      *
-     * @param Vhmis_Network_Request $request            
+     * @param Vhmis_Network_Request $request
      */
     public function __construct(Vhmis_Network_Request $request, $options = array())
     {
@@ -66,7 +66,7 @@ class Input extends ValidatorAbstract
     /**
      * Thiết lập phương thức truyền dữ liệu của request
      *
-     * @param string $method            
+     * @param string $method
      */
     public function setMethodRequest($method)
     {
