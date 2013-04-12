@@ -4,6 +4,7 @@ namespace Vhmis\Application;
 
 use \Vhmis\Config;
 use \Vhmis\Network;
+use \Vhmis\Di\Di;
 
 class App
 {
@@ -13,14 +14,14 @@ class App
      *
      * @var \Vhmis\Network\Router
      */
-    protected $_router;
+    protected $router;
 
     /**
      * Request
      *
      * @var \Vhmis\Network\Request
      */
-    protected $_request;
+    protected $request;
 
     /**
      * Điều khiển toàn bộ quá trình xử lý của hệ thống
@@ -48,31 +49,35 @@ class App
         Config\Configure::set('ConfigDatabase', Config\Config::system('Database'));
 
         // Các đối tượng trợ giúp
-        $this->_router = new Network\Router();
-        $this->_request = new Network\Request();
+        $this->router = new Network\Router();
+        $this->request = new Network\Request();
 
-        $this->_router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'],
-            $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['locale']['lang'])
-            ->homeRoute($configApp['indexAppInfo'])
-            ->webPath($configGlobal['site']['path']);
-        $this->_request->setRouter($this->_router);
-        $this->_request->process();
+        $this->router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'],
+            $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['locale']['lang']);
+        $this->router->homeRoute($configApp['indexAppInfo'])->webPath($configGlobal['site']['path']);
+
+        $this->request->setRouter($this->router);
+        $this->request->process();
 
         // Khai báo autoload
         $auto = new Autoload('VhmisApps', VHMIS_SYS_PATH);
         $auto->register();
 
-        if ($this->_request->responeCode === '200') {
-            $controllerClass = 'VhmisApps\\' . ucfirst($this->_request->app['app']) . '\\Controller\\' .
-                 $this->_request->app['controller'];
-            $_vhmisController = new $controllerClass($this->_request);
+        // Khai báo di
+        $di = new Di();
+        Config\Configure::set('Di', $di);
+
+        if ($this->request->responeCode === '200') {
+            $controllerClass = 'VhmisApps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' .
+                 $this->request->app['controller'];
+            $_vhmisController = new $controllerClass($this->request);
             $_vhmisController->init();
 
             exit();
         }
 
-        echo $configGlobal['site']['path'] . ' -- ' . $this->_request->responeCode;
-        var_dump($this->_request->app);
+        echo $configGlobal['site']['path'] . ' -- ' . $this->request->responeCode;
+        var_dump($this->request->app);
     }
 
     public function ver1Legacy()
