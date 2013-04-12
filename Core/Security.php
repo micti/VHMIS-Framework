@@ -66,56 +66,56 @@ class Vhmis_Security
             while (list ($key) = each($str)) {
                 $str[$key] = $this->xssClean($str[$key]);
             }
-            
+
             return $str;
         }
-        
+
         // Remove Invisible Characters and validate entities in URLs
         $str = $this->_validateEntities(___removeInvisibleCharacters($str));
-        
+
         /*
          * URL Decode Just in case stuff like this is submitted: <a
          * href="http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D">Google</a> Note: Use rawurldecode() so it does not
          * remove plus signs
          */
         $str = rawurldecode($str);
-        
+
         /*
          * Convert character entities to ASCII This permits our tests below to work reliably. We only convert entities
          * that are within tags since these are the ones that will pose security problems.
          */
-        $str = preg_replace_callback("/[a-z]+=([\'\"]).*?\\1/si", 
+        $str = preg_replace_callback("/[a-z]+=([\'\"]).*?\\1/si",
             array(
                 $this,
                 '_convertAttribute'
             ), $str);
-        $str = preg_replace_callback('/<\w+.*?(?=>|<|$)/si', 
+        $str = preg_replace_callback('/<\w+.*?(?=>|<|$)/si',
             array(
                 $this,
                 '_decodeEntity'
             ), $str);
-        
+
         // Remove Invisible Characters Again!
         $str = ___removeInvisibleCharacters($str);
-        
+
         /*
          * Convert all tabs to spaces This prevents strings like this: ja	vascript NOTE: we deal with spaces between
          * characters later. NOTE: preg_replace was found to be amazingly slow here on large blocks of data, so we use
          * str_replace.
          */
         $str = str_replace("\t", ' ', $str);
-        
+
         // Capture converted string for later comparison
         $converted_string = $str;
-        
+
         // Remove Strings that are never allowed
         $str = $this->_doNeverAllowed($str);
-        
+
         /*
          * Makes PHP tags safe Note: XML tags are inadvertently replaced too: <?/* Makes PHP tags safe Note: XML tags
          * are inadvertently replaced too: <?xml But it doesn't seem to pose a problem.
          */
-        
+
         if ($is_image === TRUE) {
             // Images have a tendency to have the PHP short opening and
             // closing tags every so often so we skip those and only
@@ -130,7 +130,7 @@ class Vhmis_Security
                 '?&gt;'
             ), $str);
         }
-        
+
         /*
          * Compact any exploded words This corrects words like: j a v a s c r i p t These words are compacted back to
          * their correct state.
@@ -147,20 +147,20 @@ class Vhmis_Security
             'cookie',
             'window'
         );
-        
+
         foreach ($words as $word) {
             $word = implode('\s*', str_split($word)) . '\s*';
-            
+
             // We only want to do this when it is followed by a non-word
             // character
             // That way valid stuff like "dealer to" does not become "dealerto"
-            $str = preg_replace_callback('#(' . substr($word, 0, -3) . ')(\W)#is', 
+            $str = preg_replace_callback('#(' . substr($word, 0, -3) . ')(\W)#is',
                 array(
                     $this,
                     '_compactExplodedWords'
                 ), $str);
         }
-        
+
         /*
          * Remove disallowed Javascript in links or img tags We used to do some version comparisons and use of stripos
          * for PHP5, but it is dog slow compared to these simplified non-capturing preg_match(), especially if the
@@ -168,58 +168,58 @@ class Vhmis_Security
          */
         do {
             $original = $str;
-            
+
             if (preg_match('/<a/i', $str)) {
-                $str = preg_replace_callback('#<a\s+([^>]*?)(>|$)#si', 
+                $str = preg_replace_callback('#<a\s+([^>]*?)(>|$)#si',
                     array(
                         $this,
                         '_jsLinkRemoval'
                     ), $str);
             }
-            
+
             if (preg_match('/<img/i', $str)) {
-                $str = preg_replace_callback('#<img\s+([^>]*?)(\s?/?>|$)#si', 
+                $str = preg_replace_callback('#<img\s+([^>]*?)(\s?/?>|$)#si',
                     array(
                         $this,
                         '_jsImgRemoval'
                     ), $str);
             }
-            
+
             if (preg_match('/(script|xss)/i', $str)) {
                 $str = preg_replace('#<(/*)(script|xss)(.*?)\>#si', '', $str);
             }
         } while ($original != $str);
-        
+
         unset($original);
-        
+
         // Remove evil attributes such as style, onclick and xmlns
         $str = $this->_removeEvilAttributes($str, $is_image);
-        
+
         /*
          * Sanitize naughty HTML elements If a tag containing any of the words in the list below is found, the tag gets
          * converted to entities. So this: <blink> Becomes: &lt;blink&gt;
          */
         $naughty = 'alert|applet|audio|basefont|base|behavior|bgsound|blink|body|embed|expression|form|frameset|frame|head|html|ilayer|iframe|input|isindex|layer|link|meta|object|plaintext|style|script|textarea|title|video|xml|xss';
-        $str = preg_replace_callback('#<(/*\s*)(' . $naughty . ')([^><]*)([><]*)#is', 
+        $str = preg_replace_callback('#<(/*\s*)(' . $naughty . ')([^><]*)([><]*)#is',
             array(
                 $this,
                 '_sanitizeNaughtyHtml'
             ), $str);
-        
+
         /*
          * Sanitize naughty scripting elements Similar to above, only instead of looking for tags it looks for PHP and
          * JavaScript commands that are disallowed. Rather than removing the code, it simply converts the parenthesis to
          * entities rendering the code un-executable. For example:	eval('some code') Becomes:	eval&#40;'some code'&#41;
          */
         $str = preg_replace(
-            '#(alert|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)\((.*?)\)#si', 
+            '#(alert|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)\((.*?)\)#si',
             '\\1\\2&#40;\\3&#41;', $str);
-        
+
         // Final clean up
         // This adds a bit of extra precaution in case
         // something got through the above filters
         $str = $this->_doNeverAllowed($str);
-        
+
         /*
          * Images are Handled in a Special Way - Essentially, we want to know that after all of the character conversion
          * is done whether any unwanted, likely XSS, code was found. If not, we return TRUE, as the image is clean.
@@ -229,7 +229,7 @@ class Vhmis_Security
         if ($is_image === TRUE) {
             return ($str === $converted_string);
         }
-        
+
         return $str;
     }
 
@@ -244,7 +244,7 @@ class Vhmis_Security
             mt_srand();
             $this->_xssHash = md5(time() + mt_rand(0, 1999999999));
         }
-        
+
         return $this->_xssHash;
     }
 
@@ -263,16 +263,12 @@ class Vhmis_Security
      * @param string
      * @return string
      */
-    public function entityDecode($str, $charset = NULL)
+    public function entityDecode($str, $charset)
     {
         if (strpos($str, '&') === FALSE) {
             return $str;
         }
-        
-        if (empty($charset)) {
-            $charset = config_item('charset');
-        }
-        
+
         $str = html_entity_decode($str, ENT_COMPAT, $charset);
         $str = preg_replace('~&#x(0*[0-9a-f]{2,5})~ei', 'chr(hexdec("\\1"))', $str);
         return preg_replace('~&#([0-9]{2,4})~e', 'chr(\\1)', $str);
@@ -291,10 +287,10 @@ class Vhmis_Security
      */
     protected function _jsLinkRemoval($match)
     {
-        return str_replace($match[1], 
+        return str_replace($match[1],
             preg_replace(
-                '#href=.*?(alert\(|alert&\#40;|javascript\:|livescript\:|mocha\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si', 
-                '', 
+                '#href=.*?(alert\(|alert&\#40;|javascript\:|livescript\:|mocha\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si',
+                '',
                 $this->_filterAttributes(
                     str_replace(array(
                         '<',
@@ -315,10 +311,10 @@ class Vhmis_Security
      */
     protected function _jsImgRemoval($match)
     {
-        return str_replace($match[1], 
+        return str_replace($match[1],
             preg_replace(
-                '#src=.*?(alert\(|alert&\#40;|javascript\:|livescript\:|mocha\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si', 
-                '', 
+                '#src=.*?(alert\(|alert&\#40;|javascript\:|livescript\:|mocha\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si',
+                '',
                 $this->_filterAttributes(
                     str_replace(array(
                         '<',
@@ -365,7 +361,7 @@ class Vhmis_Security
             'xmlns',
             'formaction'
         );
-        
+
         if ($is_image === TRUE) {
             /*
              * Adobe Photoshop puts XML metadata into JFIF images, including namespacing, so we have to allow this for
@@ -373,35 +369,35 @@ class Vhmis_Security
              */
             unset($evil_attributes[array_search('xmlns', $evil_attributes)]);
         }
-        
+
         do {
             $count = 0;
             $attribs = array();
-            
+
             // find occurrences of illegal attribute strings without quotes
-            preg_match_all('/(' . implode('|', $evil_attributes) . ')\s*=\s*([^\s]*)/is', $str, $matches, 
+            preg_match_all('/(' . implode('|', $evil_attributes) . ')\s*=\s*([^\s]*)/is', $str, $matches,
                 PREG_SET_ORDER);
-            
+
             foreach ($matches as $attr) {
                 $attribs[] = preg_quote($attr[0], '/');
             }
-            
+
             // find occurrences of illegal attribute strings with quotes (042
             // and 047 are octal quotes)
-            preg_match_all('/(' . implode('|', $evil_attributes) . ')\s*=\s*(\042|\047)([^\\2]*?)(\\2)/is', $str, 
+            preg_match_all('/(' . implode('|', $evil_attributes) . ')\s*=\s*(\042|\047)([^\\2]*?)(\\2)/is', $str,
                 $matches, PREG_SET_ORDER);
-            
+
             foreach ($matches as $attr) {
                 $attribs[] = preg_quote($attr[0], '/');
             }
-            
+
             // replace illegal attribute strings that are inside an html tag
             if (count($attribs) > 0) {
-                $str = preg_replace('/<(\/?[^><]+?)([^A-Za-z\-])(' . implode('|', $attribs) . ')([\s><])([><]*)/i', 
+                $str = preg_replace('/<(\/?[^><]+?)([^A-Za-z\-])(' . implode('|', $attribs) . ')([\s><])([><]*)/i',
                     '<$1$2$4$5', $str, -1, $count);
             }
         } while ($count);
-        
+
         return $str;
     }
 
@@ -467,7 +463,7 @@ class Vhmis_Security
                 $out .= preg_replace('#/\*.*?\*/#s', '', $match);
             }
         }
-        
+
         return $out;
     }
 
@@ -497,21 +493,21 @@ class Vhmis_Security
         /*
          * Protect GET variables in URLs
          */
-        
+
         // 901119URL5918AMP18930PROTECT8198
         $str = preg_replace('|\&([a-z\_0-9\-]+)\=([a-z\_0-9\-]+)|i', $this->xssHash() . '\\1=\\2', $str);
-        
+
         /*
          * Validate standard character entities Add a semicolon if missing. We do this to enable the conversion of
          * entities to ASCII later.
          */
         $str = preg_replace('#(&\#?[0-9a-z]{2,})([\x00-\x20])*;?#i', '\\1;\\2', $str);
-        
+
         /*
          * Validate UTF16 two byte encoding (x00) Just as above, adds a semicolon if missing.
          */
         $str = preg_replace('#(&\#x?)([0-9A-F]+);?#i', '\\1\\2;', $str);
-        
+
         /*
          * Un-Protect GET variables in URLs
          */
@@ -529,11 +525,11 @@ class Vhmis_Security
     protected function _doNeverAllowed($str)
     {
         $str = str_replace(array_keys($this->_neverAllowedStr), $this->_neverAllowedStr, $str);
-        
+
         foreach ($this->_neverAllowedRegex as $regex) {
             $str = preg_replace('#' . $regex . '#i', '', $str);
         }
-        
+
         return $str;
     }
 }

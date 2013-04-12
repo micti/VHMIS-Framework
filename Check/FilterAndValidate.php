@@ -2,8 +2,8 @@
 require_once '../Core/Filter.php';
 require_once '../Core/Validator.php';
 
-$filter = new Vhmis_Core_Filter();
-$validator = new Vhmis_Core_Validator();
+$filter = new Vhmis_Filter();
+$validator = new Vhmis_Validator();
 
 $a = '~<:>203854fdjdsfksdk lfdsiw0454350-395435~<:>';
 echo $a . " ->> " . $filter->digit($a);
