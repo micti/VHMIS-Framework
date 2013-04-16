@@ -130,4 +130,42 @@ class Apdater
 
         return false;
     }
+
+    public function beginTransaction()
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $this->resource->beginTransaction();
+        $this->inTransaction = true;
+
+        return $this;
+    }
+
+    public function commit()
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $this->resource->commit();
+        $this->inTransaction = false;
+
+        return $this;
+    }
+
+    public function rollback()
+    {
+        if (!$this->isConnected()) {
+            throw new \Exception('Must be connected before you can rollback');
+        }
+
+        if (!$this->inTransaction) {
+            throw new \Exception('Must call beginTransaction() before you can rollback');
+        }
+
+        $this->resource->rollBack();
+        return $this;
+    }
 }
