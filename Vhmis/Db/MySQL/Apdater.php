@@ -74,6 +74,17 @@ class Apdater
     }
 
     /**
+     * Thực hiện một query
+     *
+     * @param string $sql
+     * @return int Số bảng ghi bị ảnh hưởng
+     */
+    public function query($sql)
+    {
+        return $this->resource->exec($this->resource->quote($sql));
+    }
+
+    /**
      * Tạo một statement mới
      *
      * @param string $sql
