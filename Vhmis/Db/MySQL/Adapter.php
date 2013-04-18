@@ -36,6 +36,8 @@ class Adapter
     {
         $this->resource = new \PDO($this->dns, $this->user, $this->pass);
 
+        $this->resource->exec('SET NAMES \'UTF8\'');
+
         return $this;
     }
 
