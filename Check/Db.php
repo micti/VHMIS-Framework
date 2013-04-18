@@ -13,7 +13,7 @@ $config = array(
     'auto' => true
 );
 
-$db = new Db\Apdater($config);
+$db = new Db\Adapter($config);
 
 $statement = $db->createStatement('select * from hrm_nhansu where id > :id', array(':id' => 200));
 
