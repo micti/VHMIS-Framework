@@ -118,7 +118,7 @@ class Statement
         }
 
         if (is_array($this->parameters) && count($this->parameters) > 0) {
-            foreach ($this->parameters as $key => $value) {
+            foreach ($this->parameters as $key => &$value) {
                 $this->resource->bindParam($key, $value);
             }
         }
