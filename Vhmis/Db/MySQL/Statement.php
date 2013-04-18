@@ -106,7 +106,7 @@ class Statement
 
     /**
      * Thực thi
-     * 
+     *
      * @param type $parameters
      * @return \Vhmis\Db\MySQL\Result
      * @throws Exception
