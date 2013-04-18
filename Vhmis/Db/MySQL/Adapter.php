@@ -2,7 +2,7 @@
 
 namespace Vhmis\Db\MySQL;
 
-class Apdater
+class Adapter
 {
     /**
      * Đối tượng PDO
@@ -30,7 +30,7 @@ class Apdater
     /**
      * Kết nối CSDL
      *
-     * @return \Vhmis\Db\MySQL\Apdater
+     * @return \Vhmis\Db\MySQL\Adapter
      */
     public function connect()
     {
@@ -52,7 +52,7 @@ class Apdater
     /**
      * Ngắt kết nối
      *
-     * @return \Vhmis\Db\MySQL\Apdater
+     * @return \Vhmis\Db\MySQL\Adapter
      */
     public function disconnect()
     {
