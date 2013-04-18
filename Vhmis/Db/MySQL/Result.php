@@ -47,6 +47,7 @@ class Result implements \Iterator
     {
         $this->resource = $resource;
         $this->lastValue = $lastValue;
+        $this->resource->setFetchMode(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -60,7 +61,7 @@ class Result implements \Iterator
             return $this->currentData;
         }
 
-        $this->currentData = $this->resource->fetch(\PDO::FETCH_ASSOC);
+        $this->currentData = $this->resource->fetch();
         return $this->currentData;
     }
 
@@ -71,7 +72,7 @@ class Result implements \Iterator
      */
     public function next()
     {
-        $this->currentData = $this->resource->fetch(\PDO::FETCH_ASSOC);
+        $this->currentData = $this->resource->fetch();
         $this->hasCurrent = true;
         $this->position++;
         return $this->currentData;
@@ -124,5 +125,14 @@ class Result implements \Iterator
         $this->rowCount = (int) $this->resource->rowCount();
 
         return $this->rowCount;
+    }
+
+    public function setFetchMode($mode, $name = null, $arg = null)
+    {
+        if(\PDO::FETCH_CLASS == $mode) {
+            $this->resource->setFetchMode($mode, $name, $arg);
+        } else {
+            $this->resource->setFetchMode(\PDO::FETCH_ASSOC);
+        }
     }
 }
