@@ -40,42 +40,52 @@ class Model
     protected $idKey = 'id';
 
     /**
+     * Danh sách các key của Entity chờ cập nhật (thêm, xóa, sửa) lên CSDL
      *
      * @var array
      */
     protected $entityKey = array();
 
     /**
+     * Danh sách các Entity chờ được insert
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
     protected $entityInsert = array();
 
     /**
+     * Danh sách các Entity chờ được update
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
     protected $entityUpdate = array();
 
     /**
+     * Danh sách các Entity chờ được delete
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
     protected $entityDelete = array();
 
     /**
+     * Danh sách các Entity đã được insert vào CSDL
+     * Dùng trong quá trình rollback nếu có lỗi xảy ra trong toàn bố quá trình cập nhật CSDL
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
     protected $entityHasInserted = array();
 
     /**
+     * Danh sách các Entity đã được update lên CSDL
+     * Dùng trong quá trình rollback nếu có lỗi xảy ra trong toàn bố quá trình cập nhật CSDL
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
     protected $entityHasUpdated = array();
 
     /**
+     * Danh sách các Entity đã được delete khỏi CSDL
+     * Dùng trong quá trình rollback nếu có lỗi xảy ra trong toàn bố quá trình cập nhật CSDL
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
@@ -242,6 +252,12 @@ class Model
         return $result->count();
     }
 
+    /**
+     * Thêm vào danh sách đợi 1 Entity cần insert vào CSDL
+     *
+     * @param \Vhmis\Db\MySQL\Entity $entity
+     * @return \Vhmis\Db\MySQL\Model
+     */
     public function insertQueue($entity)
     {
         if (!($entity instanceof $this->entityClass)) {
@@ -265,6 +281,12 @@ class Model
         return $this;
     }
 
+    /**
+     * Thêm vào danh sách đợi 1 Entity cần update lên CSDL
+     *
+     * @param \Vhmis\Db\MySQL\Entity $entity
+     * @return \Vhmis\Db\MySQL\Model
+     */
     public function updateQueue($entity)
     {
         if (!($entity instanceof $this->entityClass)) {
@@ -292,6 +314,12 @@ class Model
         return $this;
     }
 
+    /**
+     * Thêm vào danh sách đợi 1 Entity cần delete khỏi CSDL
+     *
+     * @param \Vhmis\Db\MySQL\Entity $entity
+     * @return \Vhmis\Db\MySQL\Model
+     */
     public function deleteQueue($entity)
     {
         if (!($entity instanceof $this->entityClass)) {
@@ -347,6 +375,9 @@ class Model
         }
     }
 
+    /**
+     * Thực hiện việc insert các entity vào CSDL
+     */
     protected function doInsert()
     {
         foreach ($this->entityInsert as $id => $entity) {
@@ -368,6 +399,9 @@ class Model
         }
     }
 
+    /**
+     * Thực hiện việc update các entity lên CSDL
+     */
     protected function doUpdate()
     {
         foreach ($this->entityUpdate as $id => $entity) {
@@ -388,6 +422,9 @@ class Model
         }
     }
 
+    /**
+     * Thực hiện việc delete các entity khỏi CSDL
+     */
     protected function doDelete()
     {
         foreach ($this->entityDelete as $id => $entity) {
@@ -402,6 +439,9 @@ class Model
         }
     }
 
+    /**
+     * Phục hồi các entity đã được insert lại như ban đầu nếu quá trình cập nhật CSDL bị lỗi
+     */
     protected function rollbackInsert()
     {
         foreach ($this->entityHasInserted as $id => $entity) {
@@ -412,6 +452,9 @@ class Model
         }
     }
 
+    /**
+     * Phục hồi các entity đã được update lại như ban đầu nếu quá trình cập nhật CSDL bị lỗi
+     */
     protected function rollbackUpdate()
     {
         foreach ($this->entityHasUpdated as $id => $entity) {
@@ -421,6 +464,9 @@ class Model
         }
     }
 
+    /**
+     * Phục hồi các entity đã được xóa lại như ban đầu nếu quá trình cập nhật CSDL bị lỗi
+     */
     protected function rollbackDelete()
     {
         foreach ($this->entityHasDeleted as $id => $entity) {
