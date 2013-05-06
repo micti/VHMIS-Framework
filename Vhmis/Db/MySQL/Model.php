@@ -315,6 +315,11 @@ class Model
         return $this;
     }
 
+    /**
+     * Thực hiện các thay đổi trên CSDL
+     *
+     * @return boolean
+     */
     public function flush()
     {
         $this->adapter->beginTransaction();
@@ -323,15 +328,22 @@ class Model
             $this->doInsert();
             $this->doUpdate();
             $this->doDelete();
+
             $this->adapter->commit();
+
             $this->entityHasInserted = array();
             $this->entityHasUpdated = array();
             $this->entityHasDeleted = array();
+
+            return true;
         } catch (\PDOException $e) {
             $this->adapter->rollback();
+
             $this->rollbackInsert();
             $this->rollbackUpdate();
             $this->rollbackDelete();
+
+            return false;
         }
     }
 
