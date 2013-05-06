@@ -38,12 +38,17 @@ class BuildModel
 
         $content .= 'namespace ' . $this->namespace . '\\' . static::camelCase($table, true) . ';' . "\n";
 
-        $content .= 'class Entity {' . "\n";
+        $content .= 'use \\Vhmis\\Db\\MySQL\\Entity;' . "\n";
+
+        $content .= 'class Entity extends Entity {' . "\n";
 
         $properties = array();
         $getterAndSetter = array();
+        $map = array();
 
         foreach ($info['columns'] as $col) {
+            $map[] = '\'' . $col['name'] . '\' => \'' . $col['phpName'] . '\'';
+
             $properties[] = '/**' . "\n"
                 . '* ' . $col['comment'] . "\n"
                 . '*/' . "\n"
@@ -67,6 +72,12 @@ class BuildModel
                 . 'return $this;' . "\n"
                 . '}' . "\n";
         }
+
+        $content .= 'protected $fieldNameMap = array(';
+
+        $content .= implode(", ", $map);
+
+        $content .= ');' . "\n";
 
         $content .= implode("\n", $properties);
 
