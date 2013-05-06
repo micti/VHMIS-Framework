@@ -152,7 +152,6 @@ class Adapter
         }
 
         $this->resource->commit();
-        $this->inTransaction = false;
 
         return $this;
     }
@@ -168,6 +167,8 @@ class Adapter
         }
 
         $this->resource->rollBack();
+        $this->inTransaction = false;
+
         return $this;
     }
 }
