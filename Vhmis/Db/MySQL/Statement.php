@@ -94,14 +94,11 @@ class Statement
             $sql = $this->sql;
         }
 
-        $this->resource = $this->adapter->getConnection()->prepare($sql);
-
-        if ($this->resource === false) {
-            $error = $this->adapter->errorInfo();
-            throw new \Exception($error[2]);
+        try {
+            $this->resource = $this->adapter->getConnection()->prepare($sql);
+        } catch (\PDOException $e) {
+            $this->isPrepared = false;
         }
-
-        $this->isPrepared = true;
     }
 
     /**
@@ -143,7 +140,7 @@ class Statement
         try {
             $this->resource->execute();
         } catch (\PDOException $e) {
-            throw new Exception('Statement could not be executed');
+            throw $e;
         }
 
         $result = new Result($this->resource, $this->adapter->lastValue());
