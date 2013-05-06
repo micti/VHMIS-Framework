@@ -83,7 +83,8 @@ class Adapter
      */
     public function query($sql)
     {
-        return $this->resource->exec($this->resource->quote($sql));
+        $result = $this->resource->exec($sql);
+        return $result;
     }
 
     /**
