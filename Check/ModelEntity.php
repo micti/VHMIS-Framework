@@ -1,9 +1,15 @@
 <?php
 
-namespace VhmisApp\Nhansu\Model;
+namespace VhmisApp\Nhansu\Model\HrmNhansu;
 
-class HrmNhansuEntity
+use \Vhmis\Db\MySQL;
+
+class Entity extends MySQL\Entity
 {
+    protected $fieldNameMap = array('id' => 'id', 'ma' => 'ma', 'ten' => 'ten', 'ten_ho' => 'tenHo', 'id_chucvu' => 'idChucvu',
+        'id_phongban' => 'idPhongban', 'gioi' => 'gioi', 'ngay_sinh' => 'ngaySinh', 'ngay_vao_truong' => 'ngayVaoTruong',
+        'id_truonghopvao' => 'idTruonghopvao', 'anh_the' => 'anhThe', 'hoatdong' => 'hoatdong', 'ngay_roi_truong' => 'ngayRoiTruong');
+
     /**
      * Id
      */
