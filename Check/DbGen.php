@@ -18,11 +18,11 @@ $config = array(
     'auto' => true
 );
 
-//$build = new Db\BuildModel($config, 'VhmisApp\Nhansu\Model', '/WebServer/www/t2j/Cache/');
+$build = new Db\BuildModel($config, 'VhmisSystem\Apps\Work\Model', '/WebServer/www/t2j/Cache/');
 
-//$build->build('viethanit_hrm');
+$build->build('viethanit_work');
 
-$config = array(
+/*$config = array(
     'host' => 'localhost',
     'user' => 'root',
     'pass' => '123',
@@ -34,7 +34,7 @@ $db = new Db\Adapter($config);
 $model = new \VhmisApp\Nhansu\Model\HrmNhansu();
 
 $model->setAdapter($db);
-$model->init();
+$model->init();*/
 //var_dump($model->findAll());
 //var_dump($model->findById(205));
 //var_dump($model->findById("a"));
