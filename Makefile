@@ -3,7 +3,7 @@
 # Đường dẫn Framework
 FRA = /WebServer/VHMIS/Framework
 # Đường dẫn chứa Hệ thống VHMIS
-SYS = /WebServer/VHMIS/VHMIS
+SYS = /WebServer/VHMIS/VhmisSystem
 # Đường dẫn Nơi cài đặt
 BUILD = /WebServer/www/VHMIS
 # Đường dẫn thư mục web
@@ -13,7 +13,7 @@ WBUILD = /WebServer/www/VHMIS_WWW
 # Đường dẫn web
 URL = /VHMIS_WWW/
 # Ten he thong
-SNAME = Vhmis
+SNAME = VhmisSystem
 
 # Đường dẫn của các thư viện
 DOCT = /WebServer/Doctrine
@@ -66,6 +66,8 @@ clear:
 	@rm -rf ${BUILD}/README
 	@rm -rf ${BUILD}/Makefile
 	@rm -rf ${BUILD}/Config
+	@rm -rf ${BUILD}/nbproject
+	@rm -rf ${BUILD}/System/${SNAME}/nbproject
 
 makeconfig:
 	@for i in $(wildcard ${BUILD}/System/${SNAME}/Apps/*/Config/*.example); do \
