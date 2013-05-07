@@ -34,6 +34,7 @@ define('VHMIS_CORE2_PATH', VHMIS_PATH . D_SPEC . 'Vhmis');
 define('VHMIS_VIEW_PATH', VHMIS_PATH . D_SPEC . 'View');
 define('VHMIS_COMP_PATH', VHMIS_PATH . D_SPEC . 'Components');
 define('VHMIS_SYS_PATH', VHMIS_PATH . D_SPEC . 'System' . D_SPEC . SYSTEM);
+define('VHMIS_SYS2_PATH', VHMIS_PATH . D_SPEC . 'System');
 define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . 'Apps');
 define('VHMIS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Config'); // V1
 define('VHMIS_SYS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Configs'); // V2

@@ -60,7 +60,7 @@ class App
         $this->request->process();
 
         // Khai báo autoload
-        $auto = new Autoload('VhmisApps', VHMIS_SYS_PATH);
+        $auto = new Autoload('VhmisSystem', VHMIS_SYS2_PATH);
         $auto->register();
 
         // Khai báo di
@@ -68,7 +68,7 @@ class App
         Config\Configure::set('Di', $di);
 
         if ($this->request->responeCode === '200') {
-            $controllerClass = 'VhmisApps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' .
+            $controllerClass = '\\VhmisSystem\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' .
                  $this->request->app['controller'];
             $_vhmisController = new $controllerClass($this->request);
             $_vhmisController->init();

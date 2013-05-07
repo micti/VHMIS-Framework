@@ -83,11 +83,6 @@ class Autoload
             $file .= D_SPEC . str_replace('_', D_SPEC, $class);
             $file = $this->path . D_SPEC . $file . '.php';
 
-            /* tạm thời */
-            if ($this->ns === 'VhmisApps') {
-                $file = str_replace('VhmisApps', 'Apps', $file);
-            }
-
             include $file;
         }
     }

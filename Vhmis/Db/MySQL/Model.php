@@ -128,12 +128,17 @@ class Model
         }
 
         $this->class = '\\' . get_class($this);
-        $this->entityClass = $this->class . '\\Entity';
 
         $class = explode('\\', $this->class);
+        $table = $class[count($class) - 1];
+
         if ($this->table == '') {
-            $this->table = $this->camelCaseToUnderscore($class[count($class) - 1]);
+            $this->table = $this->camelCaseToUnderscore(str_replace('Model', '', $table));
         }
+
+        $table1 = str_replace('Model', 'Entity', $table);
+
+        $this->entityClass = str_replace($table, $table1, $this->class);
 
         return $this;
     }
