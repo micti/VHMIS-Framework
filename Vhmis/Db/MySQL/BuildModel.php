@@ -26,8 +26,50 @@ class BuildModel
         $dbInfo = $this->readDatabaseMetadata($database);
 
         foreach ($dbInfo['tables'] as $table) {
-            $tableInfo = $this->buildModelEntity($database, $table['name']);
+            $this->buildModel($database, $table['name']);
+            $this->buildModelEntity($database, $table['name']);
         }
+    }
+
+    public function buildModel($database, $table)
+    {
+        $info = $this->readTableMetadata($database, $table);
+
+        $content = '<?php' . "\n";
+
+        $content .= 'namespace ' . $this->namespace . ';' . "\n";
+
+        $content .= 'use \\Vhmis\\Db\\MySQL\\Model;' . "\n";
+
+        $content .= 'class ' . static::camelCase($table, true) . 'Model extends Model {' . "\n";
+
+        $properties = array();
+
+        $properties[] = '    /**' . "\n"
+            . '     * Tên bảng ứng với model' . "\n"
+            . '     *' . "\n"
+            . '     * @var string' . "\n"
+            . '     */' . "\n"
+            . '    protected $table = \'' . $table . '\';' . "\n";
+
+        foreach ($info['columns'] as $col) {
+            if ($col['key'] == 'PRI') {
+                $properties[] = '    /**' . "\n"
+                    . '     * Tên trường primary key' . "\n"
+                    . '     *' . "\n"
+                    . '     *@var string' . "\n"
+                    . '     */' . "\n"
+                    . '    protected $idKey = \'' . $col['name'] . '\';' . "\n";
+            }
+        }
+
+        $content .= implode("\n", $properties);
+
+        $content .= '}' . "\n";
+
+        file_put_contents($this->path . static::camelCase($table, true) . 'Model.php', $content);
+
+        echo $table . ' : model : done<br>' . "\n";
     }
 
     public function buildModelEntity($database, $table)
@@ -36,11 +78,11 @@ class BuildModel
 
         $content = '<?php' . "\n";
 
-        $content .= 'namespace ' . $this->namespace . '\\' . static::camelCase($table, true) . ';' . "\n";
+        $content .= 'namespace ' . $this->namespace . ';' . "\n";
 
         $content .= 'use \\Vhmis\\Db\\MySQL\\Entity;' . "\n";
 
-        $content .= 'class Entity extends Entity {' . "\n";
+        $content .= 'class ' . static::camelCase($table, true) . 'Entity extends Entity {' . "\n";
 
         $properties = array();
         $getterAndSetter = array();
@@ -85,9 +127,9 @@ class BuildModel
 
         $content .= '}' . "\n";
 
-        file_put_contents($this->path . static::camelCase($table, true) . '.php', $content);
+        file_put_contents($this->path . static::camelCase($table, true) . 'Entity.php', $content);
 
-        echo $table . ' : done<br>' . "\n";
+        echo $table . ' : entity : done<br>' . "\n";
     }
 
     public function readDatabaseMetadata($database)
@@ -127,7 +169,8 @@ class BuildModel
                 'phpName' => static::camelCase($row['COLUMN_NAME']),
                 'name' => $row['COLUMN_NAME'],
                 'comment' => $row['COLUMN_COMMENT'],
-                'type' => $row['DATA_TYPE']
+                'type' => $row['DATA_TYPE'],
+                'key' => $row['COLUMN_KEY'],
             );
         }
 
