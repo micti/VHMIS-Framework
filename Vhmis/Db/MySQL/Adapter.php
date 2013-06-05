@@ -34,7 +34,13 @@ class Adapter
      */
     public function connect()
     {
-        $this->resource = new \PDO($this->dns, $this->user, $this->pass);
+        try {
+            $this->resource = new \PDO($this->dns, $this->user, $this->pass);
+        } catch (\PDOException $e) {
+            echo 'DbError';
+            exit();
+        }
+
         $this->resource->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->resource->exec('SET NAMES \'UTF8\'');
 
