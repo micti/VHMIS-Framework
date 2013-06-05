@@ -1,20 +1,18 @@
 <?php
-// Cảnh báo toàn bộ
 error_reporting(E_ALL | E_NOTICE);
 
 require '../Vhmis/Di/Di.php';
+require '../Vhmis/Di/Service.php';
 
 class A1
 {
-
     protected $_b = 2;
+
 }
 
 class A2
 {
-
     protected $_b = 1;
-
     protected $_A1Class;
 
     public function __construct(A1 $a)
@@ -27,8 +25,7 @@ use Vhmis\Di;
 
 $di = new Di\Di();
 
-$di->set('C1A', function ()
-{
+$di->set('C1A', function () {
     return new A1();
 });
 
@@ -36,8 +33,40 @@ $a = $di->get('C1A');
 
 var_dump($a);
 
-$c = $di->newInstance('A2', array(
-    'a' => $a
+$di->set('C2A', '\\Vhmis\AA\\');
+
+$b = $di->get('C2A');
+
+var_dump($b);
+
+$di->set('C3A', 'A1');
+
+$a = $di->get('C3A');
+
+var_dump($a);
+
+$b1 = $di->get('C1A');
+
+var_dump($b1);
+
+var_dump($b === $b1);
+
+$di->set('C4A', function () {
+    return new A1();
+}, true);
+
+$di->set('C4A', 'A1', true);
+
+$di->set('C9A', array(
+    'class' => 'A2',
+    'params' => array(
+        array(
+            'type' => 'service',
+            'value' => 'C4A'
+        )
+    )
 ));
 
-var_dump($c);
+$b1 = $di->get('C9A');
+
+var_dump($b1);

@@ -18,11 +18,9 @@ class Di
     /**
      * Danh sách các services được đăng ký
      *
-     * @var array
+     * @var \Vhmis\Di\Service[]
      */
-    protected $_services = array();
-
-    protected $_closure = array();
+    protected $services = array();
 
     protected $_definations = array();
 
@@ -42,36 +40,37 @@ class Di
     protected $_params = array();
 
     /**
+     * Gán các service vào
      *
      * @param string $id
-     * @param object|\Closure $service
-     * @throws \Exception
+     * @param mixed $service
+     * @param boolean $share
      */
-    public function set($id, $service, array $params = array())
+    public function set($id, $service, $share = false)
     {
-        if (!is_object($service)) {
-            throw new \Exception("Not object");
+        if($share !== false) {
+            $share = true;
         }
-        
-        if ($service instanceof \Closure) {
-            $this->_closure[$id] = $service;
-        } else {
-            $this->_services[$id] = $service;
-        }
+
+        $this->services[$id] = new Service($this, $id, $service, $share);
+
+        return $this->services[$id];
     }
 
+    /**
+     *
+     * @param type $id
+     * @return type
+     * @throws \Exception
+     */
     public function get($id)
     {
-        if (isset($this->_services[$id])) {
-            return $this->_services[$id];
+        if(isset($this->services[$id]))
+        {
+            return $this->services[$id]->get();
         }
-        
-        if (isset($this->_closure[$id])) {
-            $this->_services[$id] = $this->_closure[$id]();
-            return $this->_services[$id];
-        }
-        
-        return null;
+
+        throw new \Exception('Service ' . $id . ' not exist.');
     }
 
     public function addParams($class, $name, $value)
@@ -89,13 +88,13 @@ class Di
     {
         $reflect = $this->_getReflect($class);
         $info = $this->_getClassInfo($class);
-        
+
         if ($info['constructor'] == null)
             $object = $reflect->newInstanceWithoutConstructor();
         else {
             $object = $reflect->newInstanceArgs($this->_fillParams($info['constructor']['params'], $oParams));
         }
-        
+
         return $object;
     }
 
@@ -108,7 +107,7 @@ class Di
     {
         if (!isset($this->_classReflect[$class]))
             $this->_classReflect[$class] = new \ReflectionClass($class);
-        
+
         return $this->_classReflect[$class];
     }
 
@@ -121,25 +120,25 @@ class Di
     {
         if (isset($this->_classInfo[$class]))
             return $this->_classInfo[$class];
-        
+
         $reflect = $this->_getReflect($class);
         $constructor = $reflect->getConstructor();
-        
+
         if ($constructor !== null) {
             $params = $constructor->getParameters();
             foreach ($params as $param) {
-                if (array_key_exists($param->name, $this->_params[$class])) {
-                    $this->_classInfo[$class]['constructor']['params'][$param->name] = $this->_params[$class][$param->name];
+                if (isset($this->_params[$class]) && array_key_exists($param->name, $this->_params[$class])) {
+                    $this->_classInfo[$class]['constructor']['params'][] = $this->_params[$class][$param->name];
                 } elseif ($param->isOptional()) {
-                    $this->_classInfo[$class]['constructor']['params'][$param->name] = $param->getDefaultValue();
+                    $this->_classInfo[$class]['constructor']['params'][] = $param->getDefaultValue();
                 } else {
-                    $this->_classInfo[$class]['constructor']['params'][$param->name] = null;
+                    $this->_classInfo[$class]['constructor']['params'][] = null;
                 }
             }
         } else {
             $this->_classInfo[$class]['constructor'] = null;
         }
-        
+
         return $this->_classInfo[$class];
     }
 
@@ -155,11 +154,10 @@ class Di
         foreach ($newParams as $key => $value) {
             if (array_key_exists($key, $params)) {
                 $val = $value;
+                $params[$key] = $val;
             }
-            
-            $params[$key] = $val;
         }
-        
+
         return $params;
     }
 }
