@@ -67,6 +67,13 @@ class Controller
     public $output;
 
     /**
+     * Container
+     *
+     * @var \Vhmis\Di\Di
+     */
+    public $di;
+
+    /**
      * Khởi tạo
      *
      * @param \Vhmis\Network\Request $request
@@ -92,6 +99,8 @@ class Controller
      */
     public function init()
     {
+        $this->di = Configure::get('Di');
+
         $action = 'action' . $this->_action;
 
         if (method_exists($this, $action)) {
