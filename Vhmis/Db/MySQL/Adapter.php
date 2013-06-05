@@ -78,6 +78,10 @@ class Adapter
      */
     public function getConnection()
     {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
         return $this->resource;
     }
 
@@ -117,8 +121,6 @@ class Adapter
         }
 
         $statement->setAdapter($this);
-
-
 
         return $statement;
     }
