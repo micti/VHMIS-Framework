@@ -1,18 +1,4 @@
-Framework VHMIS
-===============
+# Framework VHMIS
 
 * Dùng để xây dựng các website ứng dụng cho trường cao đẳng công nghệ thông tin hữu nghị Việt Hàn
 * Học tập tham khảo cách xây dựng framework từ các framework khác
-
-Các framewrork tham khảo
-========================
-
-* ZEND framework
-* Cakephp
-
-Thư viện ngoài
-==============
-
-* Zend_Db của ZEND
-* Doctrine của Symfony Project
-* PHPExcel của Microsoft
