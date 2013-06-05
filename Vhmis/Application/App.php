@@ -8,7 +8,6 @@ use \Vhmis\Di\Di;
 
 class App
 {
-
     /**
      * Router
      *
@@ -30,7 +29,7 @@ class App
     {
         // Thử nghiệm ver2
         $url = (!empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : "http://" .
-             $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         if (strpos($url, '_WWW/work/') !== false) {
             $this->run();
@@ -44,16 +43,16 @@ class App
         // Lấy config
         $configGlobal = Config\Config::system('Global');
         $configApp = Config\Config::system('Applications');
+        $configDatabase = Config\Config::system('Database');
         Config\Configure::set('ConfigGlobal', $configGlobal);
         Config\Configure::set('ConfigApplications', $configApp);
-        Config\Configure::set('ConfigDatabase', Config\Config::system('Database'));
+        Config\Configure::set('ConfigDatabase', $configDatabase);
 
         // Các đối tượng trợ giúp
         $this->router = new Network\Router();
         $this->request = new Network\Request();
 
-        $this->router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'],
-            $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['locale']['lang']);
+        $this->router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['locale']['lang']);
         $this->router->homeRoute($configApp['indexAppInfo'])->webPath($configGlobal['site']['path']);
 
         $this->request->setRouter($this->router);
@@ -65,19 +64,29 @@ class App
 
         // Khai báo di
         $di = new Di();
+
+        // Khai báo các kết nối database
+        foreach ($configDatabase as $db => $config) {
+            $di->set('db' . ucfirst($db) . 'Connection', array(
+                'class'  => '\\Vhmis\\Db\\' . $config['type'] . '\\Adapter',
+                'params' => array(
+                    array(
+                        'type'  => 'param',
+                        'value' => $config
+                    )
+                )
+                ), true);
+        }
+
         Config\Configure::set('Di', $di);
 
         if ($this->request->responeCode === '200') {
-            $controllerClass = '\\VhmisSystem\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' .
-                 $this->request->app['controller'];
+            $controllerClass = '\\VhmisSystem\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
             $_vhmisController = new $controllerClass($this->request);
             $_vhmisController->init();
 
             exit();
         }
-
-        echo $configGlobal['site']['path'] . ' -- ' . $this->request->responeCode;
-        var_dump($this->request->app);
     }
 
     public function ver1Legacy()
