@@ -57,6 +57,16 @@ class Di
         return $this->services[$id];
     }
 
+    public function setOne($id, $service, $share = false)
+    {
+        if(array_key_exists($id, $this->services))
+        {
+            return $this->services['id'];
+        }
+
+        return $this->set($id, $service, $share);
+    }
+
     /**
      *
      * @param type $id
