@@ -4,7 +4,7 @@ namespace Vhmis\Application;
 
 use \Vhmis\Config;
 use \Vhmis\Network;
-use \Vhmis\Di\Di;
+use \Vhmis\Di;
 
 class App
 {
@@ -43,10 +43,8 @@ class App
         // Lấy config
         $configGlobal = Config\Config::system('Global');
         $configApp = Config\Config::system('Applications');
-        $configDatabase = Config\Config::system('Database');
         Config\Configure::set('ConfigGlobal', $configGlobal);
         Config\Configure::set('ConfigApplications', $configApp);
-        Config\Configure::set('ConfigDatabase', $configDatabase);
 
         // Các đối tượng trợ giúp
         $this->router = new Network\Router();
@@ -59,30 +57,19 @@ class App
         $this->request->process();
 
         // Khai báo autoload
-        $auto = new Autoload('VhmisSystem', VHMIS_SYS2_PATH);
+        $auto = new Autoload(SYSTEM, VHMIS_SYS2_PATH);
         $auto->register();
 
-        // Khai báo di
-        $di = new Di();
-
-        // Khai báo các kết nối database
-        foreach ($configDatabase as $db => $config) {
-            $di->set('db' . ucfirst($db) . 'Connection', array(
-                'class'  => '\\Vhmis\\Db\\' . $config['type'] . '\\Adapter',
-                'params' => array(
-                    array(
-                        'type'  => 'param',
-                        'value' => $config
-                    )
-                )
-                ), true);
-        }
-
-        Config\Configure::set('Di', $di);
+        // Khai báo di, service manager;
+        $di = new Di\Di();
+        $di->set('sm', 'Vhmis\Di\ServiceManager');
+        $sm = $di->get('sm');
+        $sm->setConnections();
 
         if ($this->request->responeCode === '200') {
-            $controllerClass = '\\VhmisSystem\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
+            $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
             $_vhmisController = new $controllerClass($this->request);
+            $_vhmisController->setServiceManager($sm);
             $_vhmisController->init();
 
             exit();

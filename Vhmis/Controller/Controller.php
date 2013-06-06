@@ -11,6 +11,7 @@ namespace Vhmis\Controller;
 
 use \Vhmis\Network;
 use \Vhmis\Config\Configure;
+use \Vhmis\Di\ServiceManager;
 
 /**
  * Controller
@@ -18,7 +19,7 @@ use \Vhmis\Config\Configure;
  * @category Vhmis
  * @package Vhmis_Controller
  */
-class Controller
+class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 {
 
     /**
@@ -69,9 +70,9 @@ class Controller
     /**
      * Container
      *
-     * @var \Vhmis\Di\Di
+     * @var \Vhmis\Di\ServiceManager
      */
-    public $di;
+    public $sm;
 
     /**
      * Khởi tạo
@@ -95,12 +96,20 @@ class Controller
     }
 
     /**
+     * Thiết lập Service Manager
+     *
+     * @param \Vhmis\Di\ServiceManager $sm
+     */
+    public function setServiceManager(ServiceManager $sm)
+    {
+        $this->sm = $sm;
+    }
+
+    /**
      * Thực thi request
      */
     public function init()
     {
-        $this->di = Configure::get('Di');
-
         $action = 'action' . $this->_action;
 
         if (method_exists($this, $action)) {
@@ -121,18 +130,6 @@ class Controller
      */
     protected function getModel($model)
     {
-        $modelPart = explode('\\', $model);
-
-        $this->di->setOne($model, array(
-            'class' => '\\VhmisSystem\\Apps\\' . $model,
-            'params' => array(
-                array(
-                    'type' => 'service',
-                    'value' => 'db' . $modelPart[0] . 'Connection'
-                )
-            )
-        ), true);
-
-        return $this->di->get($model);
+        return $this->sm->getModel($model);
     }
 }
