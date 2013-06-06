@@ -22,8 +22,6 @@ class Di
      */
     protected $services = array();
 
-    protected $_definations = array();
-
     /**
      * Thông tin về class, param khi khởi tạo, các method (chủ yếu là setter)
      * cần thực thị
@@ -31,13 +29,6 @@ class Di
      * @var array
      */
     protected $_classInfo = array();
-
-    /**
-     * Danh sách params khởi tạo cho từng class
-     *
-     * @var array
-     */
-    protected $_params = array();
 
     /**
      * Gán service vào
@@ -102,26 +93,21 @@ class Di
         throw new \Exception('Service ' . $id . ' not exist.');
     }
 
-    public function addParams($class, $name, $value)
-    {
-        $this->_params[$class][$name] = $value;
-    }
-
     /**
      *
      * @param type $class
      * @param type $oParams
-     * @return object
+     * @return mixed
      */
-    public function newInstance($class, $oParams)
+    public function newInstance($class, $params)
     {
         $reflect = $this->_getReflect($class);
         $info = $this->_getClassInfo($class);
 
-        if ($info['constructor'] == null)
+        if ($info['constructor'] == null) {
             $object = $reflect->newInstanceWithoutConstructor();
-        else {
-            $object = $reflect->newInstanceArgs($this->_fillParams($info['constructor']['params'], $oParams));
+        } else {
+            $object = $reflect->newInstanceArgs($params);
         }
 
         return $object;
@@ -169,24 +155,5 @@ class Di
         }
 
         return $this->_classInfo[$class];
-    }
-
-    /**
-     * Điền giá trị vào cho $params
-     *
-     * @param type $params Danh sách params với giá trị mặc định (hoặc được cấu hình sẵn)
-     * @param type $newParams Danh sách params với giá trị mới
-     * @return array Danh sách params
-     */
-    protected function _fillParams($params, $newParams)
-    {
-        foreach ($newParams as $key => $value) {
-            if (array_key_exists($key, $params)) {
-                $val = $value;
-                $params[$key] = $val;
-            }
-        }
-
-        return $params;
     }
 }
