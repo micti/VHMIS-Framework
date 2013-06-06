@@ -62,8 +62,7 @@ class App
 
         // Khai báo di, service manager;
         $di = new Di\Di();
-        $di->set('sm', 'Vhmis\Di\ServiceManager');
-        $sm = $di->get('sm');
+        $sm = $di->get('Vhmis\Di\ServiceManager');
         $sm->setConnections();
 
         if ($this->request->responeCode === '200') {
