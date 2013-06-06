@@ -2,7 +2,7 @@
 
 namespace Vhmis\Db\MySQL;
 
-class Model
+class Model implements \Vhmis\Db\ModelInterface
 {
     /**
      * Tên class Model (bắt đầu bằng \)
@@ -96,7 +96,7 @@ class Model
      *
      * @param \Vhmis\Db\MySQL\Adapter $adapter
      */
-    public function __construct(Adapter $adapter = null)
+    public function __construct(Vhmis\Db\AdapterInterface $adapter = null)
     {
         if ($adapter instanceof Adapter) {
             $this->setAdapter($adapter);

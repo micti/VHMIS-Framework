@@ -2,7 +2,7 @@
 
 namespace Vhmis\Db\MySQL;
 
-class Adapter
+class Adapter implements \Vhmis\Db\AdapterInterface
 {
     /**
      * Đối tượng PDO
