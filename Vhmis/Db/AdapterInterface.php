@@ -20,7 +20,7 @@ interface AdapterInterface
 
     public function beginTransaction();
 
-    public function commit($entity);
+    public function commit();
 
     public function rollback();
 }
