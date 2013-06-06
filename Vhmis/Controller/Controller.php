@@ -110,4 +110,29 @@ class Controller
             exit();
         }
     }
+
+    /**
+     * Lấy model, sử dụng tên class (bắt đầu từ tên App)
+     *
+     * Ví dụ \YourSystem\Apps\App1\Model\Model1 thì tên model là App1\Model\Model1
+     *
+     * @param string $model Tên Model
+     * @return \Vhmis\Db\ModelInterface
+     */
+    protected function getModel($model)
+    {
+        $modelPart = explode('\\', $model);
+
+        $this->di->setOne($model, array(
+            'class' => '\\VhmisSystem\\Apps\\' . $model,
+            'params' => array(
+                array(
+                    'type' => 'service',
+                    'value' => 'db' . $modelPart[0] . 'Connection'
+                )
+            )
+        ), true);
+
+        return $this->di->get($model);
+    }
 }
