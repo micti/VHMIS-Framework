@@ -51,24 +51,17 @@ class Service
             if (is_object($this->service)) {
                 if ($this->service instanceof \Closure) {
                     $this->instance = call_user_func($this->service);
-                    return $this->instance;
                 } else {
                     $this->instance = $this->service;
-                    return $this->instance;
                 }
-            }
-
-            if (is_string($this->service)) {
-                if (class_exists($this->service)) {
-                    $this->instance = new $this->service();
-                    return $this->instance;
+            } else if (is_string($this->service)) {
+                if (!class_exists($this->service)) {
+                    //throw new \Exception('Class ' . $this->service . ' not exist');
+                    return null;
                 }
 
-                //throw new \Exception('Class ' . $this->service . ' not exist');
-                return null;
-            }
-
-            if (is_array($this->service)) {
+                $this->instance = new $this->service();
+            } else if (is_array($this->service)) {
                 if (!isset($this->service['class'])) {
                     //throw new \Exception('Must define class name by \'class\' index');
                     return null;
@@ -83,14 +76,19 @@ class Service
 
                 if (!isset($this->service['params']) || !is_array($this->service['params'])) {
                     $this->instance = new $class();
-                    return $this->instance;
+                } else {
+                    $params = $this->buildParams($this->service['params']);
+
+                    $this->instance = $this->di->newInstance($class, $params);
                 }
-
-                $params = $this->buildParams($this->service['params']);
-
-                $this->instance = $this->di->newInstance($class, $params);
-                return $this->instance;
+            } else {
+                return null;
             }
+        }
+
+        // set lại Di cho những đối tượng tượng khởi tạo từ class có implement DiAwareInterface
+        if ($this->instance instanceof DiAwareInterface) {
+            $this->instance->setDi($this->di);
         }
 
         return $this->instance;

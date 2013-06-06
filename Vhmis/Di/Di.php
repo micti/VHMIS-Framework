@@ -10,7 +10,7 @@
 namespace Vhmis\Di;
 
 /**
- * Class container, đối tượng chứa (quản lý) các services sẽ được injection vào
+ * Class container, đối tượng chứa các services
  */
 class Di
 {
