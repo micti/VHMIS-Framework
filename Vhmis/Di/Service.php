@@ -101,12 +101,25 @@ class Service
                     return null;
                 }
 
+                // Khởi tạo đối tượng
                 if (!isset($this->service['params']) || !is_array($this->service['params'])) {
                     $this->instance = new $class();
                 } else {
                     $params = $this->buildParams($this->service['params']);
 
                     $this->instance = $this->di->newInstance($class, $params);
+                }
+
+                // Gọi các phương thức
+                if (isset($this->service['methods']) && is_array($this->service['methods'])) {
+                    foreach ($this->service['methods'] as $name => $info) {
+                        if (isset($info['params']) && is_array($info['params'])) {
+                            $params = $this->buildParams($info['params']);
+                            call_user_func_array(array($this->instance, $name), $params);
+                        } else {
+                            $this->instance->$name();
+                        }
+                    }
                 }
             } else {
                 return null;

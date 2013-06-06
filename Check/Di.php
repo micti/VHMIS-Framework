@@ -19,6 +19,10 @@ class A2
     {
         $this->_A1Class = $a;
     }
+
+    public function abc() {
+        $this->_b = 4;
+    }
 }
 
 use Vhmis\Di;
@@ -68,5 +72,23 @@ $di->set('C9A', array(
 ));
 
 $b1 = $di->get('C9A');
+
+var_dump($b1);
+
+
+$di->set('AAAAAAA', array(
+    'class' => 'A2',
+    'params' => array(
+        array(
+            'type' => 'service',
+            'value' => 'C4A'
+        )
+    ),
+    'methods' => array(
+        'abc' => array()
+    )
+));
+
+$b1 = $di->get('AAAAAAA');
 
 var_dump($b1);
