@@ -10,8 +10,8 @@
 namespace Vhmis\Controller;
 
 use \Vhmis\Network;
-use \Vhmis\Config\Configure;
 use \Vhmis\Di\ServiceManager;
+use \Vhmis\View\View;
 
 /**
  * Controller
@@ -75,6 +75,18 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     public $sm;
 
     /**
+     * View
+     *
+     * @var \Vhmis\View\View
+     */
+    public $view;
+
+    /**
+     * @var \Vhmis\Network\Response
+     */
+    public $response;
+
+    /**
      * Khởi tạo
      *
      * @param \Vhmis\Network\Request $request
@@ -84,6 +96,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     {
         $this->request = $request != null ?  : new Network\Request();
         $this->response = $response != null ?  : new Network\Response();
+        $this->view = new View;
 
         $this->appInfo = $request->app;
         $this->app = $this->appInfo['app'];
@@ -112,12 +125,21 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     {
         $action = 'action' . $this->_action;
 
+        $this->view->setTemplate('Default')->setLayout('Default');
+
         if (method_exists($this, $action)) {
             $this->$action();
         } else {
+            // throw new \Exception('Not found ' . $this->_action . ' action. Create new method : ' . $action);
             echo 'Not found ' . $this->_action . ' action. Create new method : ' . $action;
             exit();
         }
+
+        $this->view->setApp($this->app)->setController($this->controller)->setMethod($this->action);
+
+        $content = $this->view->render();
+
+        $this->response->body($content)->response();
     }
 
     /**
