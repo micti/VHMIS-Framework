@@ -40,11 +40,12 @@ class Di
     protected $_params = array();
 
     /**
-     * Gán các service vào
+     * Gán service vào
      *
      * @param string $id
      * @param mixed $service
      * @param boolean $share
+     * @return \Vhmis\Di\Serivce
      */
     public function set($id, $service, $share = false)
     {
@@ -52,11 +53,19 @@ class Di
             $share = true;
         }
 
-        $this->services[$id] = new Service($this, $id, $service, $share);
+        $this->services[$id] = new Service($this, $service, $share);
 
         return $this->services[$id];
     }
 
+    /**
+     * Gán service vào nếu id của nó chưa được sử dụng
+     *
+     * @param string $id
+     * @param mixed $service
+     * @param boolean $share
+     * @return \Vhmis\Di\Serivce
+     */
     public function setOne($id, $service, $share = false)
     {
         if(array_key_exists($id, $this->services))

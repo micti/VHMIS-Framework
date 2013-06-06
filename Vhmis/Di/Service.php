@@ -20,9 +20,26 @@ class Service
      * @var \Vhmis\Di\Di
      */
     protected $di;
-    protected $id;
+
+    /**
+     * Thông tin về service
+     *
+     * @var mixed
+     */
     protected $service;
+
+    /**
+     * Có được share hay không
+     *
+     * @var boolean
+     */
     protected $share;
+
+    /**
+     * Instance của service
+     *
+     * @var object
+     */
     protected $instance;
 
     /**
@@ -33,15 +50,15 @@ class Service
      * @param mixed $service
      * @param boolean $share
      */
-    public function __construct($di, $id, $service, $share)
+    public function __construct($di, $service, $share)
     {
         $this->di = $di;
-        $this->id = $id;
         $this->service = $service;
         $this->share = $share;
     }
 
     /**
+     * Lấy instance của service
      *
      * @return object
      */
