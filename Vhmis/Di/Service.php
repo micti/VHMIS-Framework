@@ -62,12 +62,16 @@ class Service
      *
      * @return object
      */
-    public function get()
+    public function get($params)
     {
         if ($this->instance === null || $this->share === false) {
             if (is_object($this->service)) {
                 if ($this->service instanceof \Closure) {
-                    $this->instance = call_user_func($this->service);
+                    if ($params == null) {
+                        $this->instance = call_user_func($this->service);
+                    } else {
+                        $this->instance = call_user_func_array($this->service, $params);
+                    }
                 } else {
                     $this->instance = $this->service;
                 }
@@ -75,6 +79,12 @@ class Service
                 if (!class_exists($this->service)) {
                     //throw new \Exception('Class ' . $this->service . ' not exist');
                     return null;
+                }
+
+                if ($params == null) {
+                    $this->instance = new $this->service();
+                } else {
+                    $this->instance = $this->di->newInstance($class, $params);
                 }
 
                 $this->instance = new $this->service();

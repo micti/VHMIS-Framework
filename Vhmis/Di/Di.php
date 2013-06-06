@@ -77,16 +77,26 @@ class Di
     }
 
     /**
+     * Lấy đối tượng đã được thiết lập
      *
-     * @param type $id
-     * @return type
+     * Trong trường hợp đối tượng chưa được thiết lập, nếu truyền vào $id chính là tên class thì đối tượng sẽ được
+     * tạo tự động
+     *
+     * @param string $id
+     * @param array $params
+     * @return mixed
      * @throws \Exception
      */
-    public function get($id)
+    public function get($id, $params = null)
     {
         if(isset($this->services[$id]))
         {
-            return $this->services[$id]->get();
+            return $this->services[$id]->get($params);
+        }
+
+        if(class_exists($id)) {
+            $this->set($id, $id, true);
+            return $this->services[$id]->get($params);
         }
 
         throw new \Exception('Service ' . $id . ' not exist.');
