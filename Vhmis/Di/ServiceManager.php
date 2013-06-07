@@ -37,7 +37,7 @@ class ServiceManager implements DiAwareInterface
 
         // Khai báo các kết nối database
         foreach ($configDatabase as $db => $config) {
-            $this->di->set('db' . ucfirst($db) . 'Connection', array(
+            $this->di->set('db' . $db . 'Connection', array(
                 'class'  => '\\Vhmis\\Db\\' . $config['type'] . '\\Adapter',
                 'params' => array(
                     array(
