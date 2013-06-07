@@ -25,6 +25,11 @@ class Adapter implements \Vhmis\Db\AdapterInterface
         if ($config['auto']) {
             $this->connect();
         }
+
+        if($this->dns === null || $this->user === null || $this->pass === null) {
+            echo 'DbError - Config';
+            exit();
+        }
     }
 
     /**
