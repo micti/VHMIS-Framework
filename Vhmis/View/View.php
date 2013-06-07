@@ -127,7 +127,7 @@ class View
      */
     public function render()
     {
-        return $this->renderHTML();
+        return $this->renderText();
     }
 
     /**
@@ -256,7 +256,7 @@ class View
 
     /**
      * Lấy đường dẫn file layout
-     * 
+     *
      * @return string
      */
     protected function getLayoutDirectory()
