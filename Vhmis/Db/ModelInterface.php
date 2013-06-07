@@ -12,7 +12,9 @@ interface ModelInterface
 
     public function findById($id);
 
-    public function find($where);
+    public function find($where, $skip, $limit);
+
+    public function findOne($where);
 
     public function update($where, $data = null);
 

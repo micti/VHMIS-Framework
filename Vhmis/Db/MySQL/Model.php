@@ -190,7 +190,7 @@ class Model implements ModelInterface
         }
     }
 
-    public function find($where)
+    public function find($where, $skip = 0, $limit = 0)
     {
         if (!is_array($where)) {
             return array();
@@ -212,6 +212,10 @@ class Model implements ModelInterface
 
         $sql = 'select * from `' . $this->table . '` where ' . implode(', ', $sql);
 
+        if($skip != 0 || $limit != 0) {
+            $sql .= 'limit ' . $skip . ', ' . $limit;
+        }
+
         $statement = new Statement;
         $result = $statement->setAdapter($this->adapter)->setParameters($bindData)->setSql($sql)->execute();
 
@@ -222,6 +226,14 @@ class Model implements ModelInterface
         }
 
         return $data;
+    }
+
+    public function findOne($where)
+    {
+        $result = $this->find($where, 0, 1);
+
+        if(count($result) == 0) return null;
+        else return $result[0];
     }
 
     /**
@@ -391,8 +403,7 @@ class Model implements ModelInterface
         foreach ($this->entityInsert as $id => $entity) {
             $prepareSQL = $entity->insertSQL();
 
-            $stm = $this->adapter->createStatement('insert into ' . $this->table . ' ' . $prepareSQL['sql'],
-                $prepareSQL['param']);
+            $stm = $this->adapter->createStatement('insert into ' . $this->table . ' ' . $prepareSQL['sql'], $prepareSQL['param']);
             $res = $stm->execute();
             if ($res->getLastValue()) {
                 $setId = 'set' . $this->underscoreToCamelCase($this->idKey, true);
@@ -417,8 +428,7 @@ class Model implements ModelInterface
             $getId = 'get' . $this->underscoreToCamelCase($this->idKey, true);
             $prepareSQL['param'][':' . $this->idKey] = $entity->$getId();
 
-            $stm = $this->adapter->createStatement('update ' . $this->table . ' set ' . $prepareSQL['sql'] . ' where ' . $this->idKey . ' = :' . $this->idKey,
-                $prepareSQL['param']);
+            $stm = $this->adapter->createStatement('update ' . $this->table . ' set ' . $prepareSQL['sql'] . ' where ' . $this->idKey . ' = :' . $this->idKey, $prepareSQL['param']);
             $res = $stm->execute();
 
             $entity->setNewValue();
@@ -437,8 +447,7 @@ class Model implements ModelInterface
     {
         foreach ($this->entityDelete as $id => $entity) {
             $getId = 'get' . $this->underscoreToCamelCase($this->idKey, true);
-            $stm = $this->adapter->createStatement('delete from ' . $this->table . ' where ' . $this->idKey . ' = ?',
-                array(1 => $entity->$getId()));
+            $stm = $this->adapter->createStatement('delete from ' . $this->table . ' where ' . $this->idKey . ' = ?', array(1 => $entity->$getId()));
             $res = $stm->execute();
             $entity->setDeleted(true);
             $this->entityHasDeleted[$id] = $entity;
