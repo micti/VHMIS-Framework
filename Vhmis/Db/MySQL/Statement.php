@@ -96,6 +96,7 @@ class Statement
 
         try {
             $this->resource = $this->adapter->getConnection()->prepare($sql);
+            $this->isPrepared = true;
         } catch (\PDOException $e) {
             $this->isPrepared = false;
         }
