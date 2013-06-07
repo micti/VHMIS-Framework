@@ -1,5 +1,7 @@
 <?php
 
+require '../Vhmis/Db/AdapterInterface.php';
+require '../Vhmis/Db/ModelInterface.php';
 require '../Vhmis/Db/MySQL/Adapter.php';
 require '../Vhmis/Db/MySQL/Statement.php';
 require '../Vhmis/Db/MySQL/Result.php';
@@ -18,9 +20,9 @@ $config = array(
     'auto' => true
 );
 
-$build = new Db\BuildModel($config, 'VhmisSystem\Apps\Work\Model', '/WebServer/www/t2j/Cache/');
+$build = new Db\BuildModel($config, 'VhmisSystem\Apps\System\Model', '/WebServer/www/t2j/Cache/');
 
-$build->build('viethanit_work');
+$build->build('viethanit_system');
 
 /*$config = array(
     'host' => 'localhost',

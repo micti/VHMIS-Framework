@@ -136,12 +136,12 @@ class Model implements ModelInterface
         $table = $class[count($class) - 1];
 
         if ($this->table == '') {
-            $this->table = $this->camelCaseToUnderscore(str_replace('Model', '', $table));
+            $this->table = $this->camelCaseToUnderscore($table);
         }
 
-        $table1 = str_replace('Model', 'Entity', $table);
+        $class[count($class) - 1] = $table . 'Entity';
 
-        $this->entityClass = str_replace($table, $table1, $this->class);
+        $this->entityClass = implode('\\', $class);
 
         return $this;
     }

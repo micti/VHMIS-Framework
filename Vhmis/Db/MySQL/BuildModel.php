@@ -41,7 +41,7 @@ class BuildModel
 
         $content .= 'use \\Vhmis\\Db\\MySQL\\Model;' . "\n";
 
-        $content .= 'class ' . static::camelCase($table, true) . 'Model extends Model {' . "\n";
+        $content .= 'class ' . static::camelCase($table, true) . ' extends Model {' . "\n";
 
         $properties = array();
 
@@ -67,7 +67,7 @@ class BuildModel
 
         $content .= '}' . "\n";
 
-        file_put_contents($this->path . static::camelCase($table, true) . 'Model.php', $content);
+        file_put_contents($this->path . static::camelCase($table, true) . '.php', $content);
 
         echo $table . ' : model : done<br>' . "\n";
     }
