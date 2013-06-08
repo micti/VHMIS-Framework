@@ -30,12 +30,12 @@ class Config
     public static function system($name, $part = '')
     {
         $config = Load::filePhp(VHMIS_SYS_CONF_PATH . '/' . $name . '.php');
-        
+
         if ($config === null || empty($config)) {
             echo 'No System Config : ' . $name;
             exit();
         }
-        
+
         if (is_string($part) && $part != '') {
             $parts = explode('/', $part);
             foreach ($parts as $p) {
@@ -47,7 +47,7 @@ class Config
                 }
             }
         }
-        
+
         return $config;
     }
 
@@ -61,12 +61,12 @@ class Config
     public static function app($app, $part = '')
     {
         $config = Load::filePhp(VHMIS_APPS_PATH . D_SPEC . ___fUpper($app) . D_SPEC . 'Config' . D_SPEC . 'App.php');
-        
+
         if ($config === null || empty($config)) {
             echo 'No App Config : ' . $app;
             exit();
         }
-        
+
         if (is_string($part) && $part != '') {
             $part = strtolower($part);
             $parts = explode('/', $part);
@@ -79,7 +79,7 @@ class Config
                 }
             }
         }
-        
+
         return $config;
     }
 
@@ -92,5 +92,16 @@ class Config
     public static function appRoutes($app)
     {
         return self::app($app, 'Routes');
+    }
+
+    /**
+     * Load config service của 1 ứng dụng
+     *
+     * @param string $app
+     * @param array
+     */
+    public static function appService($app)
+    {
+        return self::app($app, 'Service');
     }
 }

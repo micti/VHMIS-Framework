@@ -18,7 +18,6 @@ namespace Vhmis\Config;
  *
  * @category Vhmis
  * @package Vhmis_Config
- * @subpackage Load
  */
 class Load
 {
@@ -36,7 +35,7 @@ class Load
         } else {
             $config = null;
         }
-        
+
         return $config;
     }
 }
