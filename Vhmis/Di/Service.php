@@ -126,9 +126,14 @@ class Service
             }
         }
 
-        // set lại Di cho những đối tượng tượng khởi tạo từ class có implement DiAwareInterface
+        // set Di cho những đối tượng tượng khởi tạo từ class có implement DiAwareInterface
         if ($this->instance instanceof DiAwareInterface) {
             $this->instance->setDi($this->di);
+        }
+
+        // set Sm cho những đối tượng tượng khởi tạo từ class có implement ServiceManagerAwareInterface
+        if ($this->instance instanceof ServiceManagerAwareInterface) {
+            $this->instance->setServiceManager($this->di->get('Vhmis\Di\ServiceManager'));
         }
 
         return $this->instance;
