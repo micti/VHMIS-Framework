@@ -112,6 +112,6 @@ abstract class Entity
      */
     public function toArray()
     {
-        return $this->currentValue();
+        return $this->currentValue;
     }
 }
