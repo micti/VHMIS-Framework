@@ -112,6 +112,12 @@ abstract class Entity
      */
     public function toArray()
     {
-        return $this->currentValue;
+        $data = array();
+
+        foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
+            $data[$fieldClass] = $this->currentValue[$fieldSQL];
+        }
+
+        return $data;
     }
 }
