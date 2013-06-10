@@ -94,36 +94,36 @@ class BuildModel
             $properties[] = '/**' . "\n"
                 . '* ' . $col['comment'] . "\n"
                 . '*/' . "\n"
-                . 'protected $' . $col['phpName'] . ';' . "\n";
+                . 'public $' . $col['phpName'] . ';' . "\n";
 
-            $getterAndSetter[] = '/**' . "\n"
-                . '* Get ' . $col['name'] . "\n"
-                . '*' . "\n"
-                . '* ' . $col['comment'] . "\n"
-                . '*/' . "\n"
-                . 'public function get' . ucfirst($col['phpName']) . '() {' . "\n"
-                . 'return $this->' . $col['phpName'] . ';' . "\n"
-                . '}' . "\n\n"
-                . '/**' . "\n"
-                . '* Set ' . $col['name'] . "\n"
-                . '*' . "\n"
-                . '* ' . $col['comment'] . "\n"
-                . '*/' . "\n"
-                . 'public function set' . ucfirst($col['phpName']) . '($' . $col['phpName'] . ') {' . "\n"
-                . '$this->' . $col['phpName'] . ' = $' . $col['phpName'] . ';' . "\n"
-                . 'return $this;' . "\n"
-                . '}' . "\n";
+//            $getterAndSetter[] = '/**' . "\n"
+//                . '* Get ' . $col['name'] . "\n"
+//                . '*' . "\n"
+//                . '* ' . $col['comment'] . "\n"
+//                . '*/' . "\n"
+//                . 'public function get' . ucfirst($col['phpName']) . '() {' . "\n"
+//                . 'return $this->' . $col['phpName'] . ';' . "\n"
+//                . '}' . "\n\n"
+//                . '/**' . "\n"
+//                . '* Set ' . $col['name'] . "\n"
+//                . '*' . "\n"
+//                . '* ' . $col['comment'] . "\n"
+//                . '*/' . "\n"
+//                . 'public function set' . ucfirst($col['phpName']) . '($' . $col['phpName'] . ') {' . "\n"
+//                . '$this->' . $col['phpName'] . ' = $' . $col['phpName'] . ';' . "\n"
+//                . 'return $this;' . "\n"
+//                . '}' . "\n";
         }
 
-        $content .= 'protected $fieldNameMap = array(';
+        $content .= 'protected $fieldNameMap = array(' . "\n";
 
-        $content .= implode(", ", $map);
+        $content .= implode(",\n", $map);
 
-        $content .= ');' . "\n";
+        $content .= "\n" . ');' . "\n";
 
         $content .= implode("\n", $properties);
 
-        $content .= implode("\n", $getterAndSetter);
+//        $content .= implode("\n", $getterAndSetter);
 
         $content .= '}' . "\n";
 

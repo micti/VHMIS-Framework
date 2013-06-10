@@ -284,8 +284,8 @@ class Model implements ModelInterface
             return $this;
         }
 
-        $methodGetIdKey = 'get' . $this->underscoreToCamelCase($this->idKey, true);
-        if ($entity->$methodGetIdKey() != null) {
+        $methodGetIdKey = $this->underscoreToCamelCase($this->idKey, false);
+        if ($entity->$methodGetIdKey != null) {
             return $this;
         }
 
@@ -313,8 +313,8 @@ class Model implements ModelInterface
             return $this;
         }
 
-        $methodGetIdKey = 'get' . $this->underscoreToCamelCase($this->idKey, true);
-        if ($entity->$methodGetIdKey() === null) {
+        $methodGetIdKey = $this->underscoreToCamelCase($this->idKey);
+        if ($entity->$methodGetIdKey === null) {
             return $this;
         }
 
@@ -346,8 +346,8 @@ class Model implements ModelInterface
             return $this;
         }
 
-        $methodGetIdKey = 'get' . $this->underscoreToCamelCase($this->idKey, true);
-        if ($entity->$methodGetIdKey() === null) {
+        $methodGetIdKey = $this->underscoreToCamelCase($this->idKey);
+        if ($entity->$methodGetIdKey === null) {
             return $this;
         }
 
@@ -406,8 +406,8 @@ class Model implements ModelInterface
             $stm = $this->adapter->createStatement('insert into ' . $this->table . ' ' . $prepareSQL['sql'], $prepareSQL['param']);
             $res = $stm->execute();
             if ($res->getLastValue()) {
-                $setId = 'set' . $this->underscoreToCamelCase($this->idKey, true);
-                $entity->$setId($res->getLastValue());
+                $setId = $this->underscoreToCamelCase($this->idKey);
+                $entity->$setId = $res->getLastValue();
             }
 
             $entity->setNewValue();
@@ -425,8 +425,8 @@ class Model implements ModelInterface
     {
         foreach ($this->entityUpdate as $id => $entity) {
             $prepareSQL = $entity->updateSQL();
-            $getId = 'get' . $this->underscoreToCamelCase($this->idKey, true);
-            $prepareSQL['param'][':' . $this->idKey] = $entity->$getId();
+            $getId = $this->underscoreToCamelCase($this->idKey);
+            $prepareSQL['param'][':' . $this->idKey] = $entity->$getId;
 
             $stm = $this->adapter->createStatement('update ' . $this->table . ' set ' . $prepareSQL['sql'] . ' where ' . $this->idKey . ' = :' . $this->idKey, $prepareSQL['param']);
             $res = $stm->execute();
@@ -446,8 +446,8 @@ class Model implements ModelInterface
     protected function doDelete()
     {
         foreach ($this->entityDelete as $id => $entity) {
-            $getId = 'get' . $this->underscoreToCamelCase($this->idKey, true);
-            $stm = $this->adapter->createStatement('delete from ' . $this->table . ' where ' . $this->idKey . ' = ?', array(1 => $entity->$getId()));
+            $getId = $this->underscoreToCamelCase($this->idKey);
+            $stm = $this->adapter->createStatement('delete from ' . $this->table . ' where ' . $this->idKey . ' = ?', array(1 => $entity->$getId));
             $res = $stm->execute();
             $entity->setDeleted(true);
             $this->entityHasDeleted[$id] = $entity;
@@ -462,8 +462,8 @@ class Model implements ModelInterface
     protected function rollbackInsert()
     {
         foreach ($this->entityHasInserted as $id => $entity) {
-            $setId = 'set' . $this->underscoreToCamelCase($this->idKey, true);
-            $entity->rollback()->$setId(null);
+            $setId = $this->underscoreToCamelCase($this->idKey);
+            $entity->rollback()->$setId = null;
 
             unset($this->entityHasInserted[$id]);
         }
