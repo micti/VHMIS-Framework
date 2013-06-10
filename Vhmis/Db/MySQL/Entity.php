@@ -104,4 +104,14 @@ abstract class Entity
 
         return $this;
     }
+
+    /**
+     * Lấy dữ liệu dạng array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->currentValue();
+    }
 }
