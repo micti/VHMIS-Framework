@@ -46,6 +46,11 @@ class Session extends \ArrayObject
         return null;
     }
 
+    public function offsetUnset($key)
+    {
+        if($this->offsetExists($key)) unset($_SESSION[$this->name][$key]);
+    }
+
     public function getIterator()
     {
         return new \ArrayIterator($_SESSION[$this->name]);
