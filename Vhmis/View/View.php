@@ -9,7 +9,7 @@ class View
      *
      * @var array
      */
-    protected $data;
+    protected $data = array();
 
     /**
      * Tên template
