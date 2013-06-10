@@ -83,4 +83,24 @@ class ServiceManager implements DiAwareInterface
 
         return $this->di->get($model);
     }
+
+    /**
+     *
+     * @param string $name
+     * @return \Vhmis\Session\Session
+     */
+    public function getSession($name)
+    {
+        $this->di->setOne($name . 'Session', array(
+            'class' => '\\Vhmis\\System\\Session',
+            'params' => array(
+                array(
+                    'type' => 'param',
+                    'value' => $name
+                )
+            )
+        ), true);
+
+        return $this->di->get($name . 'Session');
+    }
 }
