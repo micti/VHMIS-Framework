@@ -89,7 +89,7 @@ class DbAuth implements AuthInterface
             throw new \Exception('DbAuth need a method to check credential. Set via DbAuth::setCheckCredentialFunction method');
         }
 
-        $user = $this->model->findOne(array($this->identity => $identity));
+        $user = $this->getIdentity($identity);
         $this->identityInfo = array();
 
         if($user === null) {
@@ -102,6 +102,12 @@ class DbAuth implements AuthInterface
 
         $this->identityInfo = $user->toArray();
         return DbAuth::AUTH_OK;
+    }
+
+    public function getIdentity($identity)
+    {
+        $user = $this->model->findOne(array($this->identity => $identity));
+        return $user;
     }
 
     /**
