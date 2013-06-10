@@ -48,12 +48,12 @@ class Session extends \ArrayObject
 
     public function getIterator()
     {
-        return new \ArrayIterator($_SESSION);
+        return new \ArrayIterator($_SESSION[$this->name]);
     }
 
     /**
      * Lấy SID hiện tại
-     * 
+     *
      * @return string
      */
     public function getId()
