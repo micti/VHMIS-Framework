@@ -26,6 +26,16 @@ class ServiceManager implements DiAwareInterface
         $this->di = $di;
     }
 
+    public function set($name, $service, $share)
+    {
+        return $this->di->set($name, $service, $share);
+    }
+
+    public function get($name, $params = null)
+    {
+        return $this->di->get($name, $params);
+    }
+
     /**
      * Khai báo hết các connection thông qua khởi tạo các Db Adapter từ file config db của hệ thống
      *
@@ -55,7 +65,7 @@ class ServiceManager implements DiAwareInterface
      * Tên class đầy đủ của một Model trong ứng dụng có dạng \SystemName\Apps\AppName\Model\ModelName
      * Khi gọi phương thức lấy model thì tên truyền vào có dạng AppName\Model\ModelName
      *
-     * @param type $model
+     * @param \Vhmis\Db\ModelInterface $model
      */
     public function getModel($model)
     {
