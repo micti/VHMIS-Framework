@@ -70,6 +70,12 @@ class Response
         readfile($filepath);
     }
 
+    public function redirect($path)
+    {
+        header('Location: ' . $path);
+        exit();
+    }
+
     /**
      * Gửi nội dung trả về
      *
