@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -9,6 +8,7 @@
  * @package Vhmis_Config
  * @since Vhmis v2.0
  */
+
 namespace Vhmis\Config;
 
 /**
@@ -19,6 +19,12 @@ namespace Vhmis\Config;
  */
 class Config
 {
+    /**
+     * Chứa dữ liệu config
+     *
+     * @var type
+     */
+    protected static $data;
 
     /**
      * Load config của hệ thống ứng dụng
@@ -29,11 +35,17 @@ class Config
      */
     public static function system($name, $part = '')
     {
-        $config = Load::filePhp(VHMIS_SYS_CONF_PATH . '/' . $name . '.php');
+        if (!isset(static::$data['system'][$name])) {
+            $config = Load::filePhp(VHMIS_SYS_CONF_PATH . '/' . $name . '.php');
 
-        if ($config === null || empty($config)) {
-            echo 'No System Config : ' . $name;
-            exit();
+            if ($config === null || empty($config)) {
+                echo 'No System Config : ' . $name;
+                exit();
+            }
+
+            static::$data['system'][$name] = $config;
+        } else {
+            $config = static::$data['system'][$name];
         }
 
         if (is_string($part) && $part != '') {
@@ -42,7 +54,7 @@ class Config
                 if (isset($config[$p])) {
                     $config = $config[$p];
                 } else {
-                    echo 'No Part : ' . $part . ' at App Config : ' . $name;
+                    echo 'No Part : ' . $part . ' at System Config : ' . $name;
                     exit();
                 }
             }
@@ -60,11 +72,17 @@ class Config
      */
     public static function app($app, $part = '')
     {
-        $config = Load::filePhp(VHMIS_APPS_PATH . D_SPEC . ___fUpper($app) . D_SPEC . 'Config' . D_SPEC . 'App.php');
+        if (!isset(static::$data['app'][$app])) {
+            $config = Load::filePhp(VHMIS_APPS_PATH . D_SPEC . $app . D_SPEC . 'Config' . D_SPEC . 'App.php');
 
-        if ($config === null || empty($config)) {
-            echo 'No App Config : ' . $app;
-            exit();
+            if ($config === null || empty($config)) {
+                echo 'No App Config : ' . $app;
+                exit();
+            }
+
+            static::$data['app'][$app] = $config;
+        } else {
+            $config = static::$data['app'][$app];
         }
 
         if (is_string($part) && $part != '') {
