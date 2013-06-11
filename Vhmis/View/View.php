@@ -160,6 +160,8 @@ class View
         // Lấy view
         ob_start();
 
+        include $this->getViewBoot();
+
         include $this->getViewDirectory();
 
         $content = ob_get_clean();
@@ -227,6 +229,8 @@ class View
         // Chuyển $data sang dạng biến với tên ứng với key
         extract($this->data);
 
+        extract($data);
+
         // Lấy block
         ob_start();
 
@@ -248,10 +252,12 @@ class View
      * @param array $data
      * @return string
      */
-    protected function getBlock($name, $data = array())
+    protected function block($name, $data = array())
     {
         // Chuyển $data sang dạng biến với tên ứng với key
         extract($this->data);
+
+        extract($data);
 
         // Lấy block
         ob_start();
@@ -273,6 +279,19 @@ class View
     {
         $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
             . $this->template . D_SPEC . $this->controller . D_SPEC . $this->method . '.php';
+
+        return $dir;
+    }
+
+    /**
+     * Lấy đường dẫn file view
+     *
+     * @return string
+     */
+    protected function getViewBoot()
+    {
+        $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
+            . $this->template . D_SPEC . 'boot.php';
 
         return $dir;
     }
