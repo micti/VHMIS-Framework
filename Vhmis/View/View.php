@@ -224,7 +224,7 @@ class View
      * @param array $data
      * @return string
      */
-    protected function getAppBlock($app, $name, $data = array())
+    protected function appBlock($app, $name, $data = array())
     {
         // Chuyển $data sang dạng biến với tên ứng với key
         extract($this->data);
