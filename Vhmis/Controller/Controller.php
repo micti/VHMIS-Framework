@@ -40,17 +40,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     /**
      * Tên controller
      */
-    protected $_controller;
-
-    /**
-     * Tên controller
-     */
     public $controller;
-
-    /**
-     * Tên Action
-     */
-    protected $_action;
 
     /**
      * Tên Action
@@ -100,11 +90,11 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 
         $this->appInfo = $request->app;
         $this->app = $this->appInfo['app'];
-        // $this->appUrl = $this->appInfo['url'];
+        $this->appUrl = $this->appInfo['appUrl'];
 
-        $this->action = $this->_action = $this->appInfo['action'];
-        $this->params = $this->_params = $this->appInfo['params'];
-        $this->output = $this->_output = $this->appInfo['output'];
+        $this->action = $this->appInfo['action'];
+        $this->params = $this->appInfo['params'];
+        $this->output = $this->appInfo['output'];
         $this->controller = $this->appInfo['controller'];
     }
 
