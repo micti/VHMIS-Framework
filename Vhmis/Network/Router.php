@@ -238,6 +238,7 @@ class Router
 
             if ($result['match'] === true) {
                 $result['app'] = $appConfing['list']['cname'][$this->_app];
+                $result['appUrl'] = $this->_app;
                 $result['language'] = $this->_language;
                 return $result;
             }
