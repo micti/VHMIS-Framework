@@ -47,6 +47,23 @@ class View
     protected $controller;
 
     /**
+     * Danh sách các helper
+     *
+     * @var array
+     */
+    protected $helperList = array(
+        'path' => 'Path',
+        'date' => 'Date'
+    );
+
+    /**
+     * Các đối tượng Helper đã được tạo
+     *
+     * @var array
+     */
+    protected $helpers = array();
+
+    /**
      * Thiết lập template
      *
      * @param string $name
@@ -158,6 +175,41 @@ class View
 
         // Trả kết quả cuối cùng cho response
         return $content;
+    }
+
+    /**
+     * Sử dụng để gọi các helper
+     *
+     * Mỗi helper có 1 tên, tên của helper và tên class của helper được cấu hình trong property $helperName;
+     *
+     * Nếu class helper có khai báo phương __invoke, thì helper sẽ được gọi như function
+     * Nếu không, đối tượng được tạo ra từ helper sẽ được trả về
+     *
+     * @param string $name
+     * @param array $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        if(!isset($this->helpers[$name])) {
+            $this->helpers[$name] = $this->getHelper($name);
+        }
+
+        if(is_callable($this->helpers[$name])) {
+            return call_user_func_array($this->helpers[$name], $arguments);
+        }
+
+        return $this->helpers[$name];
+    }
+
+    protected function getHelper($name)
+    {
+        if(!isset($this->helperList[$name])) {
+            throw new \Exception('Helper ' . $name . ' is not found.');
+        }
+
+        $class = '\Vhmis\View\Helper\\' . $this->helperList[$name];
+
+        return new $class;
     }
 
     /**
