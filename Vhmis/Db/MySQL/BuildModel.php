@@ -11,14 +11,16 @@ class BuildModel
     protected $adapter;
     protected $namespace;
     protected $path;
+    protected $prefix;
 
-    public function __construct($config, $namespace, $path)
+    public function __construct($config, $namespace, $path, $prefix)
     {
         $config['db'] = 'information_schema';
 
         $this->adapter = new Adapter($config);
         $this->namespace = $namespace;
         $this->path = $path;
+        $this->prefix = $prefix;
     }
 
     public function build($database)
@@ -41,7 +43,7 @@ class BuildModel
 
         $content .= 'use \\Vhmis\\Db\\MySQL\\Model;' . "\n";
 
-        $content .= 'class ' . static::camelCase($table, true) . ' extends Model {' . "\n";
+        $content .= 'class ' . static::camelCase($this->removePrefix($table), true) . ' extends Model {' . "\n";
 
         $properties = array();
 
@@ -67,7 +69,7 @@ class BuildModel
 
         $content .= '}' . "\n";
 
-        file_put_contents($this->path . static::camelCase($table, true) . '.php', $content);
+        file_put_contents($this->path . static::camelCase($this->removePrefix($table), true) . '.php', $content);
 
         echo $table . ' : model : done<br>' . "\n";
     }
@@ -82,7 +84,7 @@ class BuildModel
 
         $content .= 'use \\Vhmis\\Db\\MySQL\\Entity;' . "\n";
 
-        $content .= 'class ' . static::camelCase($table, true) . 'Entity extends Entity {' . "\n";
+        $content .= 'class ' . static::camelCase($this->removePrefix($table), true) . 'Entity extends Entity {' . "\n";
 
         $properties = array();
         $getterAndSetter = array();
@@ -127,7 +129,7 @@ class BuildModel
 
         $content .= '}' . "\n";
 
-        file_put_contents($this->path . static::camelCase($table, true) . 'Entity.php', $content);
+        file_put_contents($this->path . static::camelCase($this->removePrefix($table), true) . 'Entity.php', $content);
 
         echo $table . ' : entity : done<br>' . "\n";
     }
@@ -175,6 +177,12 @@ class BuildModel
         }
 
         return array('columns' => $columns);
+    }
+
+    public function removePrefix($name)
+    {
+        $name = str_replace($this->prefix, '', $name);
+        return $name;
     }
 
     static public function camelCase($str, $ucfirst = false)

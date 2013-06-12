@@ -20,7 +20,7 @@ $config = array(
     'auto' => true
 );
 
-$build = new Db\BuildModel($config, 'VhmisSystem\Apps\System\Model', '/WebServer/DbCreate/');
+$build = new Db\BuildModel($config, 'VhmisSystem\Apps\System\Model', '/WebServer/DbCreate/', 'system_');
 
 $build->build('viethanit_system');
 
