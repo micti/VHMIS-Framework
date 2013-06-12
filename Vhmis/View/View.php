@@ -67,6 +67,7 @@ class View
      */
     protected $helperList = array(
         'path' => 'Path',
+        'appInfo' => 'App',
         'date' => 'Date'
     );
 
