@@ -31,7 +31,7 @@ class App
         $url = (!empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : "http://" .
             $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-        if (strpos($url, '_WWW/work/') !== false) {
+        if (strpos($url, '_WWW/work') !== false) {
             $this->run();
         } else {
             $this->ver1Legacy();
