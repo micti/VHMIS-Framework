@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -9,6 +8,7 @@
  * @package Vhmis_Network
  * @since Vhmis v2.0
  */
+
 namespace Vhmis\Network;
 
 use Vhmis\Config\Config;
@@ -25,7 +25,6 @@ use Vhmis\Config\Configure;
  */
 class Router
 {
-
     /**
      * Ngôn ngữ được yêu cầu
      *
@@ -174,14 +173,16 @@ class Router
 
         // Thêm ký hiệu / ở cuối nếu không có
         $length = strlen($uri);
-        if ($uri[$length - 1] !== '/')
+        if ($uri[$length - 1] !== '/') {
             $uri .= '/';
+        }
 
-            // Root
-        if ($uri == '/')
+        // Root
+        if ($uri == '/') {
             return $this->_homeRouteInfo;
+        }
 
-            // Lấy thông tin app và ngôn ngữ yêu cầu
+        // Lấy thông tin app và ngôn ngữ yêu cầu
         if ($this->_useLanguage && $this->_useApp) {
             $uri = explode('/', $uri, 3);
             if (count($uri) != 3)
@@ -190,7 +191,7 @@ class Router
             $this->_language = $this->_positionLanguage === 'beforeappname' ? $uri[0] : $uri[1];
             $this->_app = $this->_positionLanguage === 'beforeappname' ? $uri[1] : $uri[0];
             $uri = $uri[2];
-        } else
+        } else {
             if ($this->_useLanguage) {
                 $uri = explode('/', $uri, 2);
                 if (count($uri) != 2)
@@ -198,7 +199,7 @@ class Router
 
                 $this->_language = $uri[0];
                 $uri = $uri[1];
-            } else
+            } else {
                 if ($this->_useApp) {
                     $uri = explode('/', $uri, 2);
                     if (count($uri) != 2)
@@ -207,15 +208,18 @@ class Router
                     $this->_app = $uri[0];
                     $uri = $uri[1];
                 }
+            }
+        }
 
         // Xóa ký tự / thừa ở cuối nếu có
         $length = strlen($uri);
-        if ($length >= 1 && $uri[$length - 1] === '/')
+        if ($length >= 1 && $uri[$length - 1] === '/') {
             $uri = substr($uri, 0, $length - 1);
+        }
 
         // Kiểm tra ứng dụng
-        $appConfing = Configure::get('ConfigApplications', array());
-        if (!isset($appConfing['list']['name'][$this->_app])) {
+        $appConfig = Configure::get('ConfigApplications', array());
+        if (!isset($appConfig['list']['name'][$this->_app])) {
             return $result;
         }
 
@@ -237,7 +241,7 @@ class Router
             $result = $this->_route->check($uri);
 
             if ($result['match'] === true) {
-                $result['app'] = $appConfing['list']['cname'][$this->_app];
+                $result['app'] = $appConfig['list']['cname'][$this->_app];
                 $result['appUrl'] = $this->_app;
                 $result['language'] = $this->_language;
                 return $result;
