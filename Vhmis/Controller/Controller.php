@@ -113,9 +113,12 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      */
     public function init()
     {
-        $action = 'action' . $this->_action;
+        $this->beforeInit();
 
-        $this->view->setTemplate('Default')->setLayout('Default');
+        $action = 'action' . $this->action;
+
+        $this->view->setTemplate('Default')->setLayout('Default')->setAppUrl($this->appUrl);
+        $this->view->setApp($this->app)->setController($this->controller)->setMethod($this->action);
 
         if (method_exists($this, $action)) {
             $this->$action();
@@ -125,12 +128,16 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
             exit();
         }
 
-        $this->view->setApp($this->app)->setController($this->controller)->setMethod($this->action);
-
         $content = $this->view->render();
 
         $this->response->body($content)->response();
+
+        $this->afterInit();
     }
+
+    public function beforeInit();
+
+    public function afterInit();
 
     /**
      * Lấy model, sử dụng tên class (bắt đầu từ tên App)
