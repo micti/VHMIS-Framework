@@ -243,7 +243,10 @@ class View
 
         $class = '\Vhmis\View\Helper\\' . $this->helperList[$name];
 
-        return new $class;
+        $helper = new $class;
+        $helper->setView($this);
+
+        return $helper;
     }
 
     /**
