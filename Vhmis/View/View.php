@@ -40,11 +40,25 @@ class View
     protected $app;
 
     /**
+     * Tên url của app
+     *
+     * @var string
+     */
+    protected $appUrl;
+
+    /**
      * Tên controller
      *
      * @var string
      */
     protected $controller;
+
+    /**
+     * Thông tin người dùng / người đăng nhập
+     *
+     * @var array
+     */
+    protected $user;
 
     /**
      * Danh sách các helper
@@ -100,6 +114,18 @@ class View
     }
 
     /**
+     * Thiết lập url của App
+     *
+     * @param string $url
+     * @return \Vhmis\View\View
+     */
+    public function setAppUrl($url)
+    {
+        $this->appUrl = $url;
+        return $this;
+    }
+
+    /**
      * Thiết lập tên Controller
      *
      * @param type $name
@@ -120,6 +146,12 @@ class View
     public function setMethod($name)
     {
         $this->method = $name;
+        return $this;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
         return $this;
     }
 
