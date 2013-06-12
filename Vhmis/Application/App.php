@@ -65,13 +65,20 @@ class App
         $sm = $di->get('Vhmis\Di\ServiceManager');
         $sm->setConnections();
 
+        // Thuc thi
         if ($this->request->responeCode === '200') {
+
+            //Load cac service vào Di
+            $services = Config\Config::system('Service');
+            foreach ($services as $name => $service) {
+                $sm->set($name, $service, true);
+            }
+
+
             $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
             $_vhmisController = new $controllerClass($this->request);
             $_vhmisController->setServiceManager($sm);
             $_vhmisController->init();
-
-            exit();
         }
     }
 
