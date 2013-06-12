@@ -90,8 +90,6 @@ class Request
     {
         $this->responeCode = '200';
 
-        $config = Configure::get('Config');
-
         if (empty($url)) {
             $url = $this->getUrl();
         }
