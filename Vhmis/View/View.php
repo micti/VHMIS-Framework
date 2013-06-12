@@ -126,6 +126,16 @@ class View
     }
 
     /**
+     * Lấy url của app
+     * 
+     * @return string
+     */
+    public function getAppUrl()
+    {
+        return $this->appUrl;
+    }
+
+    /**
      * Thiết lập tên Controller
      *
      * @param type $name
