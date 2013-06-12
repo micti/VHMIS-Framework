@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -7,6 +6,7 @@
  * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Vhmis\Controller;
 
 use \Vhmis\Network;
@@ -21,7 +21,6 @@ use \Vhmis\View\View;
  */
 class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 {
-
     /**
      * Thông tin Apps và Request (chủ yếu dùng khi chuyển qua đối tượng khác).
      */
@@ -84,8 +83,8 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      */
     public function __construct(Network\Request $request = null, Network\Response $response = null)
     {
-        $this->request = $request != null ?  : new Network\Request();
-        $this->response = $response != null ?  : new Network\Response();
+        $this->request = $request != null ? : new Network\Request();
+        $this->response = $response != null ? : new Network\Response();
         $this->view = new View;
 
         $this->appInfo = $request->app;
@@ -135,9 +134,15 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
         $this->afterInit();
     }
 
-    public function beforeInit();
+    public function beforeInit()
+    {
 
-    public function afterInit();
+    }
+
+    public function afterInit()
+    {
+
+    }
 
     /**
      * Lấy model, sử dụng tên class (bắt đầu từ tên App)
