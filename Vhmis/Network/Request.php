@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -8,6 +7,7 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  * @since Vhmis v2.0
  */
+
 namespace Vhmis\Network;
 
 use Vhmis\Config\Configure;
@@ -17,7 +17,6 @@ use Vhmis\Config\Configure;
  */
 class Request
 {
-
     /**
      * Uri
      *
@@ -148,7 +147,7 @@ class Request
     public function getUrl()
     {
         return (!empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : "http://" .
-             $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
     }
 
     /**
@@ -165,6 +164,44 @@ class Request
             return $forward;
         }
         return $referrer;
+    }
+
+    /**
+     * Lấy giá trị post
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getPost($name = null)
+    {
+        if ($name === null) {
+            return $this->post;
+        }
+
+        if (isset($this->post[$name])) {
+            return $this->post[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Lấy giá trị get
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getGet($name = null)
+    {
+        if ($name === null) {
+            return $this->get;
+        }
+
+        if (isset($this->get[$name])) {
+            return $this->get[$name];
+        }
+
+        return null;
     }
 
     /**
