@@ -61,7 +61,7 @@ class Di
     {
         if(array_key_exists($id, $this->services))
         {
-            return $this->services['id'];
+            return $this->services[$id];
         }
 
         return $this->set($id, $service, $share);
