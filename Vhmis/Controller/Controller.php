@@ -76,6 +76,11 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     public $response;
 
     /**
+     * @var \Vhmis\Network\Request
+     */
+    public $request;
+
+    /**
      * Khởi tạo
      *
      * @param \Vhmis\Network\Request $request
@@ -83,8 +88,8 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      */
     public function __construct(Network\Request $request = null, Network\Response $response = null)
     {
-        $this->request = $request != null ? : new Network\Request();
-        $this->response = $response != null ? : new Network\Response();
+        $this->request = $request != null ? $request : new Network\Request();
+        $this->response = $response != null ? $response : new Network\Response();
         $this->view = new View;
 
         $this->appInfo = $request->app;
