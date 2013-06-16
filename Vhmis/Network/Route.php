@@ -110,34 +110,34 @@ class Route implements RouteInterface
      * Khởi tạo một đối tượng mới
      *
      * @param array $params Thông số khởi tạo
-     *       
+     *
      */
     public function __construct($params = null)
     {
         if (!is_array($params)) {
             return;
         }
-        
+
         if (isset($params['pattern'])) {
             $this->setPattern($params['pattern']);
         }
-        
+
         if (isset($params['controller'])) {
             $this->setController($params['controller']);
         }
-        
+
         if (isset($params['action'])) {
             $this->setAction($params['action']);
         }
-        
+
         if (isset($params['params'])) {
             $this->setParams($params['params']);
         }
-        
+
         if (isset($params['redirect'])) {
             $this->setRedirect($params['redirect']);
         }
-        
+
         if (isset($params['output'])) {
             $this->setOutput($params['output']);
         }
@@ -152,10 +152,10 @@ class Route implements RouteInterface
     public function setPattern($pattern)
     {
         $this->_pattern = $pattern;
-        
+
         // Tạo link regex khi có pattern
         $this->patternToRegex();
-        
+
         return $this;
     }
 
@@ -168,7 +168,7 @@ class Route implements RouteInterface
     public function setController($controller)
     {
         $this->_controller = $controller;
-        
+
         return $this;
     }
 
@@ -181,7 +181,7 @@ class Route implements RouteInterface
     public function setAction($action)
     {
         $this->_action = $action;
-        
+
         return $this;
     }
 
@@ -198,7 +198,7 @@ class Route implements RouteInterface
                 $this->_params[$key] = $value;
             }
         }
-        
+
         return $this;
     }
 
@@ -211,7 +211,7 @@ class Route implements RouteInterface
     public function setRedirect($redirect)
     {
         $this->_redirect = $redirect;
-        
+
         return $this;
     }
 
@@ -224,7 +224,7 @@ class Route implements RouteInterface
     public function setOutput($output)
     {
         $this->_output = $output;
-        
+
         return $this;
     }
 
@@ -243,7 +243,7 @@ class Route implements RouteInterface
         $this->_redirect = '';
         $this->_params = array();
         $this->_paramsInPattern = array();
-        
+
         return $this;
     }
 
@@ -257,10 +257,10 @@ class Route implements RouteInterface
         // Nếu kieuthamso để trống [:tenthamso] thì được xem là kiểu slug
         // Nếu kieuthamso không chưa được định nghĩa thì được xem là kiểu slug
         $match = preg_match_all('/\[(.*?)\]/', $this->_pattern, $params);
-        
+
         $regex = array(); // Mảng chứa regex của tham số
         $param = array(); // Mảng chứa tên của tham số
-        
+
         if ($match >= 1) { // Có tham số
             foreach ($params[1] as $value) {
                 $value = explode(':', $value, 2);
@@ -272,12 +272,12 @@ class Route implements RouteInterface
                     } else {
                         $regex[] = $this->_dataTypes['slug'];
                     }
-                    
+
                     $param[] = $value[1];
                 }
             }
         }
-        
+
         // Chuyển link pattern sang link regex
         $this->_regex = str_replace('/', '\\/', $this->_pattern);
         $this->_regex = '/' . str_replace($params[0], $regex, $this->_regex) . '/';
@@ -294,11 +294,11 @@ class Route implements RouteInterface
     public function makeRedirect($params)
     {
         $redirect = '';
-        
+
         foreach ($params as $name => $value) {
             $redirect = str_replace('[' . $name . ']', $value, $this->_redirect);
         }
-        
+
         return $redirect;
     }
 
@@ -313,32 +313,40 @@ class Route implements RouteInterface
         $result = array(
             'match' => false
         );
-        
+
         if (!is_string($value))
             return $result;
-        
+
         $match = preg_match_all($this->_regex, $value, $params, PREG_SET_ORDER);
-        
+
         // Không hợp lệ
         if ($match !== 1) { // Chỉ match 1 và chỉ duy nhất 1 lần
             return $result;
         }
-        
+
+        // Có một vài trường hợp regex là một phần nhỏ của $value, ví dụ regex là /log/ và value là fhdhfd/logdsddddf
+        // Thì kết quả vẫn đúng, vì vậy kiểm tra thêm số thành phần
+        $countReg = count(explode('/', $this->_regex));
+        $countVal = count(explode('/', '/' . $value . '/'));
+        if ($countReg !== $countVal) {
+            return $result;
+        }
+
         // Hợp lệ
         $result['match'] = true;
         $result['controller'] = $this->_controller;
         $result['output'] = $this->_output;
         $result['action'] = $this->_action;
         $result['params'] = $this->_params;
-        
+
         // Thiết lập giá trị cho params
         foreach ($this->_paramsInPattern as $key => $name) {
             $result['params'][$name] = $params[0][$key + 1];
         }
-        
+
         // Lấy chính xác link redirect
         $result['redirect'] = $this->_redirect === '' ? '' : $this->makeRedirect($result['params']);
-        
+
         return $result;
     }
 }
