@@ -65,7 +65,8 @@ class ServiceManager implements DiAwareInterface
      * Tên class đầy đủ của một Model trong ứng dụng có dạng \SystemName\Apps\AppName\Model\ModelName
      * Khi gọi phương thức lấy model thì tên truyền vào có dạng AppName\Model\ModelName
      *
-     * @param \Vhmis\Db\ModelInterface $model
+     * @param string $model
+     * @return \Vhmis\Db\ModelInterface $model
      */
     public function getModel($model)
     {
