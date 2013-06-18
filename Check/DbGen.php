@@ -20,9 +20,10 @@ $config = array(
     'auto' => true
 );
 
-$build = new Db\BuildModel($config, 'VhmisSystem\Apps\System\Model', '/WebServer/DbCreate/', 'system_');
+$build = new Db\BuildModel($config, 'VhmisSystem\Apps\Hr\Model', '/WebServer/DbCreate/', 'hrm_');
 
-$build->build('viethanit_system');
+//$build->build('viethanit_system');
+$build->build('viethanit_hrm');
 
 /*$config = array(
     'host' => 'localhost',
