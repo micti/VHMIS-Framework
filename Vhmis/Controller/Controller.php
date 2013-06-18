@@ -127,8 +127,8 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
         if (method_exists($this, $action)) {
             $this->$action();
         } else {
-            // throw new \Exception('Not found ' . $this->_action . ' action. Create new method : ' . $action);
-            echo 'Not found ' . $this->_action . ' action. Create new method : ' . $action;
+            // throw new \Exception('Not found ' . $this->action . ' action. Create new method : ' . $action);
+            echo 'Not found ' . $this->action . ' action. Create new method : ' . $action;
             exit();
         }
 
