@@ -106,7 +106,7 @@ class DbAuth implements AuthInterface
 
     public function getIdentity($identity)
     {
-        $user = $this->model->findOne(array($this->identity => $identity));
+        $user = $this->model->findOne(array(array($this->identity, 'like', $identity)));
         return $user;
     }
 
