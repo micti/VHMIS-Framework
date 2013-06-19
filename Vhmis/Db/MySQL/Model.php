@@ -204,16 +204,49 @@ class Model implements ModelInterface
         $bindData = array();
         $pos = 1;
 
-        foreach ($where as $field => $value) {
-            $sql[] = $field . ' = ?';
-            $bindData[$pos] = $value;
-            $pos++;
+        foreach ($where as $w) {
+            $field = $w[0];
+            $operator = $w[1];
+            $value = $w[2];
+
+            // Try to camelCaseToUnderscore field name
+            $field = $this->camelCaseToUnderscore($field);
+
+            // Prepare query
+            $sql_temp = '';
+            if ($operator == 'in') {
+                $sql_temp = $field . ' in ';
+            } else {
+                $sql[] = $field . ' ' . $operator . ' ?';
+            }
+
+            // Bind value
+            if ($operator == 'in') {
+                if (is_array($value)) {
+                    $values = array();
+                    foreach ($value as $v) {
+                        if (is_numeric($v)) {
+                            $values[] = $v;
+                        } else {
+                            $values[] = $this->adapter->qoute($v);
+                        }
+                    }
+                    $sql_temp .= '(' . implode(', ', $values) . ')';
+                    $sql[] = $sql_temp;
+                } else {
+                    throw new \Exception('Value for IN must be an array');
+                }
+            } else {
+                $bindData[$pos] = $value;
+                // Count
+                $pos++;
+            }
         }
 
-        $sql = 'select * from `' . $this->table . '` where ' . implode(', ', $sql);
+        $sql = 'select * from `' . $this->table . '` where ' . implode(' and ', $sql);
 
-        if($skip != 0 || $limit != 0) {
-            $sql .= 'limit ' . $skip . ', ' . $limit;
+        if ($skip != 0 || $limit != 0) {
+            $sql .= ' limit ' . $skip . ', ' . $limit;
         }
 
         $statement = new Statement;
@@ -232,8 +265,10 @@ class Model implements ModelInterface
     {
         $result = $this->find($where, 0, 1);
 
-        if(count($result) == 0) return null;
-        else return $result[0];
+        if (count($result) == 0)
+            return null;
+        else
+            return $result[0];
     }
 
     /**
@@ -248,21 +283,56 @@ class Model implements ModelInterface
             $pos = 1;
 
             foreach ($data as $field => $value) {
+                $field = $this->camelCaseToUnderscore($field);
+
                 $update[] = $field . ' = ?';
                 $bindData[$pos] = $value;
                 $pos++;
             }
 
-            foreach ($where as $field => $value) {
-                $sqlWhere[] = $field . ' = ?';
-                $bindData[$pos] = $value;
-                $pos++;
+            foreach ($where as $w) {
+                $field = $w[0];
+                $operator = $w[1];
+                $value = $w[2];
+
+                // Try to camelCaseToUnderscore field name
+                $field = $this->camelCaseToUnderscore($field);
+
+                // Prepare query
+                $sql_temp = '';
+                if ($operator == 'in') {
+                    $sql_temp = $field . ' in ';
+                } else {
+                    $sqlWhere[] = $field . ' ' . $operator . ' ?';
+                }
+
+                // Bind value
+                if ($operator == 'in') {
+                    if (is_array($value)) {
+                        $values = array();
+                        foreach ($value as $v) {
+                            if (is_numeric($v)) {
+                                $values[] = $v;
+                            } else {
+                                $values[] = $this->adapter->qoute($v);
+                            }
+                        }
+                        $sql_temp .= '(' . implode(', ', $values) . ')';
+                        $sqlWhere[] = $sql_temp;
+                    } else {
+                        throw new \Exception('Value for IN must be an array');
+                    }
+                } else {
+                    $bindData[$pos] = $value;
+                    // Count
+                    $pos++;
+                }
             }
 
             $sql = 'update `' . $this->table . '` set ';
             $sql .= implode(', ', $update);
             $sql .= ' where ';
-            $sql .= implode(', ', $sqlWhere);
+            $sql .= implode(' and ', $sqlWhere);
         } else {
             return 0;
         }
