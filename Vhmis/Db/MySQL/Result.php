@@ -132,7 +132,7 @@ class Result implements \Iterator
         if(\PDO::FETCH_CLASS == $mode) {
             $this->resource->setFetchMode($mode, $name, $arg);
         } else {
-            $this->resource->setFetchMode(\PDO::FETCH_ASSOC);
+            $this->resource->setFetchMode($mode);
         }
     }
 }
