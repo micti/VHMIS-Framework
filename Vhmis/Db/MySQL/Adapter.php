@@ -91,6 +91,17 @@ class Adapter implements \Vhmis\Db\AdapterInterface
     }
 
     /**
+     * Quote 1 chuỗi giá trị
+     *
+     * @param string $value
+     * @return string
+     */
+    public function qoute($value)
+    {
+        return $this->resource->quote($value);
+    }
+
+    /**
      * Thực hiện một query
      *
      * @param string $sql
