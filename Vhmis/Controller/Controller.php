@@ -146,7 +146,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 
     public function afterInit()
     {
-
+        exit();
     }
 
     /**
