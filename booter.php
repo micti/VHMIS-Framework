@@ -25,34 +25,7 @@ define('VHMIS_ERROR_ACTIONMISSING', '-99999994');
  */
 function ___autoLoad($class)
 {
-    /*
-     * if (class_exists($class)) return;
-     */
-
-    // Từ tháng 11.2012 chuyển dần sang sử dụng Namespace
-    // Áp dụng với các class Core
-    // php53 trở lên
-    if (strpos($class, "\\") !== false) {
-        ___loadCoreClassWithNamespace($class);
-    } else {
-        $name = explode('_', $class);
-
-        if ($name[0] == 'Zend')
-            ___loadZendClass($class);
-        if ($name[0] == 'Vhmis') {
-            if (isset($name[2]) && $name[2] != '') {
-                if ($name[1] == 'Component')
-                    ___loadComponentClass($class);
-                elseif ($name[1] == 'Model')
-                    ___loadModelClass(str_replace('Vhmis_Model_', '', $class));
-                elseif ($name[1] == 'Share')
-                    ___loadShareClass(str_replace('Vhmis_Share_', '', $class));
-                else
-                    ___loadCoreClass($class);
-            } else
-                ___loadCoreClass($class);
-        }
-    }
+    ___loadCoreClassWithNamespace($class);
 }
 spl_autoload_register('___autoLoad');
 
@@ -80,94 +53,6 @@ function ___loadCoreClassWithNamespace($class)
 }
 
 /**
- * Gọi file chứa class Core
- *
- * @param string $name Tên class
- */
-function ___loadCoreClass($name)
-{
-    if (class_exists($name))
-        return;
-
-        // Tên class Vhmis_Uri_Pattern -> Thư mục Core/Uri/Pattern.php
-    $name = explode('_', $name);
-    $count = count($name);
-    $path = '';
-
-    for ($i = 1; $i < $count - 1; $i++) {
-        $path .= D_SPEC . ___fUpper($name[$i]);
-    }
-
-    ___loadFile(___fUpper($name[$count - 1]) . '.php', VHMIS_CORE_PATH . $path);
-}
-
-/**
- * Gọi file chứa class Zend Framework
- *
- * @param string $name Tên class
- */
-function ___loadZendClass($name)
-{
-    if (class_exists($name))
-        return;
-
-    $name = explode('_', $name);
-    $count = count($name);
-    $path = '';
-
-    for ($i = 1; $i < $count - 1; $i++) {
-        $path .= D_SPEC . ___fUpper($name[$i]);
-    }
-
-    ___loadFile(___fUpper($name[$count - 1]) . '.php', VHMIS_ZEND_F_PATH . $path);
-}
-
-/**
- * Gọi file chứa class Component
- *
- * @param string $component Tên component cần gọi
- */
-function ___loadComponentClass($component)
-{
-    if (class_exists($component))
-        return;
-
-    $component = str_replace('Vhmis_Component_', '', $component);
-
-    ___loadFile(___fUpper($component . '.php'), VHMIS_COMP_PATH);
-}
-
-/**
- * Gọi file chứa class Model
- *
- * @param string $model Tên model
- */
-function ___loadModelClass($model)
-{
-    if (class_exists('Vhmis_Model_' . $model))
-        return;
-
-    $model = explode('_', $model, 2);
-
-    ___loadFile($model[1] . '.php', VHMIS_APPS_PATH . D_SPEC . ___fUpper($model[0]) . D_SPEC . 'Model');
-}
-
-/**
- * Gọi file chứa class Share của app
- *
- * @param string $data Tên share
- */
-function ___loadShareClass($data)
-{
-    if (class_exists('Vhmis_Share_' . $data))
-        return;
-
-    $data = explode('_', $data, 2);
-
-    ___loadFile($data[1] . '.php', VHMIS_APPS_PATH . D_SPEC . ___fUpper($data[0]) . D_SPEC . 'Share');
-}
-
-/**
  * Gọi file
  *
  * @param string $filename Tên file
@@ -180,24 +65,6 @@ function ___loadFile($filename, $path, $once = false)
         include_once $path . D_SPEC . $filename;
     else
         include $path . D_SPEC . $filename;
-}
-
-/**
- * Gọi đối tượng Controller
- *
- * @param $appInfo Thông tin app (thông tin request)
- * @return VHMIS_CONTROLLER Đối tượng mở rộng của VHMIS_CONTROLLER ứng với
- *         request
- */
-function ___loadController($request, $response)
-{
-    $controllerName = 'Vhmis_Controller_' . ___fUpper($request->app['url']) . '_' . $request->app['info']['controller'];
-    $path = VHMIS_APPS_PATH . D_SPEC . ___fUpper($request->app['url']) . D_SPEC . 'Controller';
-    $file = $request->app['info']['controller'] . '.php';
-
-    ___loadFile($file, $path);
-
-    return new $controllerName($request, $response);
 }
 
 /**
@@ -216,29 +83,6 @@ function ___checkApp($app)
     }
 
     return $config['apps']['list']['name'][$app];
-}
-
-/**
- * Hàm viết hoa chữ cái đầu tiên (non-unicode)
- *
- * @param string $string Chuỗi đưa vào
- * @return string
- */
-function ___fUpper($string)
-{
-    return ucfirst(strtolower($string));
-}
-
-/**
- * Hàm chuyển tên class sang tên biến
- * Dạng Abc_Chakf_Chghfh thành abcChakfChghfh
- *
- * @param string $string Chuỗi vào
- * @return string
- */
-function ___ctv($string)
-{
-    return lcfirst(str_replace('_', '', $string));
 }
 
 /**
@@ -291,24 +135,4 @@ function ___stripSlashes($values)
     }
 
     return $values;
-}
-
-/**
- * Kết nối database
- *
- * @param array $config Mảng chứa dữ liệu kết nối
- * @param string $type Loại database
- * @return boolean Kết nối thành công hoặc thất bại
- */
-function ___connectDb($config, $type = 'Pdo_Mysql')
-{
-    try {
-        $db = Zend_Db::factory($type, $config);
-        $db->getConnection();
-        return $db;
-    } catch (Zend_Db_Adapter_Exception $e) {
-        return false;
-    } catch (Zend_Db_Exception $e) {
-        return false;
-    }
 }
