@@ -9,7 +9,6 @@
  * @package    Vhmis_Boot
  * @since      Vhmis v1.0
  */
-use Vhmis\Config\Configure;
 
 /**
  * DÀNH CHO BẢN ĐANG PHÁT TRIỂN, hiện thị tất cả các lỗi
@@ -37,8 +36,6 @@ define('VHMIS_SYS_PATH', VHMIS_PATH . D_SPEC . 'System' . D_SPEC . SYSTEM);
 define('VHMIS_SYS2_PATH', VHMIS_PATH . D_SPEC . 'System');
 define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . 'Apps');
 define('VHMIS_SYS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Config');
-define('VHMIS_ZEND_F_PATH', VHMIS_LIBS_PATH . D_SPEC . 'Zend');
-define('VHMIS_DOCTRINE_PATH', '/WebServer');
 
 // Một số thư viện
 set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
@@ -48,15 +45,9 @@ set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
  */
 require VHMIS_PATH . D_SPEC . 'booter.php';
 
-/**
- * Auto load cho Doctrine
- */
-require VHMIS_DOCTRINE_PATH . '/Doctrine/ORM/Tools/Setup.php';
-Doctrine\ORM\Tools\Setup::registerAutoloadDirectory(VHMIS_DOCTRINE_PATH);
-
 // Benchmark
-$benmark = new Vhmis_Benchmark();
+$benmark = new \Vhmis\Benchmark\Benchmark();
 $benmark->timer('start');
-Configure::set('Benchmark', $benmark);
+\Vhmis\Config\Configure::set('Benchmark', $benmark);
 
 new \Vhmis\Application\App();
