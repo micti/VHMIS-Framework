@@ -61,14 +61,19 @@ class View
     protected $user;
 
     /**
+     * Không sử dụng view của controller/method
+     */
+    protected $noView = false;
+
+    /**
      * Danh sách các helper
      *
      * @var array
      */
     protected $helperList = array(
-        'path' => 'Path',
+        'path'    => 'Path',
         'appInfo' => 'App',
-        'date' => 'Date'
+        'date'    => 'Date'
     );
 
     /**
@@ -128,7 +133,7 @@ class View
 
     /**
      * Lấy url của app
-     * 
+     *
      * @return string
      */
     public function getAppUrl()
@@ -181,6 +186,18 @@ class View
     }
 
     /**
+     * Thiết lập không sử dụng view, gọi thẳng layout
+     *
+     * @return \Vhmis\View\View
+     */
+    public function setNoView()
+    {
+        $this->noView = true;
+
+        return $this;
+    }
+
+    /**
      * Render view
      *
      * @return string
@@ -201,13 +218,15 @@ class View
         extract($this->data);
 
         // Lấy view
-        ob_start();
+        if (!$this->noView) {
+            ob_start();
 
-        include $this->getViewBoot();
+            include $this->getViewBoot();
 
-        include $this->getViewDirectory();
+            include $this->getViewDirectory();
 
-        $content = ob_get_clean();
+            $content = ob_get_clean();
+        }
 
         // Render view vào layout nếu có
         if ($this->layout !== null && $this->layout !== '') {
@@ -235,11 +254,11 @@ class View
      */
     public function __call($name, $arguments)
     {
-        if(!isset($this->helpers[$name])) {
+        if (!isset($this->helpers[$name])) {
             $this->helpers[$name] = $this->getHelper($name);
         }
 
-        if(is_callable($this->helpers[$name])) {
+        if (is_callable($this->helpers[$name])) {
             return call_user_func_array($this->helpers[$name], $arguments);
         }
 
@@ -248,7 +267,7 @@ class View
 
     protected function getHelper($name)
     {
-        if(!isset($this->helperList[$name])) {
+        if (!isset($this->helperList[$name])) {
             throw new \Exception('Helper ' . $name . ' is not found.');
         }
 
