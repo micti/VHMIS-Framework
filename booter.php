@@ -201,63 +201,6 @@ function ___loadController($request, $response)
 }
 
 /**
- * Hàm gọi file Config của các ứng dụng
- *
- * @param string $appInfo Tên url của ứng dụng hoặc biến chứa thông tin ứng dụng
- * @param boolean $store Thiết lập có lưu vào $_vhmisConfigAll ko, mặc định là true
- * @return void array $store = true, config được được load và lưu vào
- *         $_vhmisConfigAll, nếu $store = false sẽ trả về kết quả config được
- *         load
- */
-function ___loadAppConfig($appInfo, $store = true)
-{
-    global $_vhmisConfigAll;
-
-    if (is_array($appInfo))
-        $appInfo = $appInfo['url'];
-
-    $appInfo = strtolower($appInfo);
-
-    require VHMIS_APPS_PATH . D_SPEC . ___fUpper($appInfo) . D_SPEC . 'Config' . D_SPEC . 'Config.php';
-
-    if ($store === true) {
-        if (!isset($_vhmisConfigAll['apps']['info'][$appInfo]))
-            $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
-    } else
-        return $_vhmisConfig;
-}
-
-/**
- * Hàm gọi file Config
- *
- * @param string $name Tên config cần gọi
- * @param boolean $store Thiết lập có lưu vào $_vhmisConfigAll ko, mặc định là true
- * @return void array $store = true, config được được load và lưu vào
- *         $_vhmisConfigAll, nếu $store = false sẽ trả về kết quả config được
- *         load
- */
-function ___loadConfig($name, $store = true)
-{
-    global $_vhmisConfigAll;
-
-    require VHMIS_CONF_PATH . D_SPEC . ___fUpper($name . '.php');
-
-    // Tạo hằng số đối với các config 'site' trong global
-    if (___fUpper($name) == 'Global') {
-        foreach ($_vhmisConfig['site'] as $key => $value) {
-            if (is_string($value)) {
-                define(strtoupper('SITE_' . $key), $value);
-            }
-        }
-    }
-
-    if ($store === true)
-        $_vhmisConfigAll = array_merge_recursive($_vhmisConfigAll, $_vhmisConfig);
-    else
-        return $_vhmisConfig;
-}
-
-/**
  * Hàm kiểm tra tên app
  *
  * @param string $app Tên ứng dụng dạng url (thường rút gọn, ko viết hoa, sử dụng ở url
