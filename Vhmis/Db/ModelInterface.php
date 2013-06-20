@@ -10,10 +10,27 @@ interface ModelInterface
 
     public function findAll();
 
+    /**
+     *
+     * @param int|array $id
+     * @return \Vhmis\Db\EntityInterface|\Vhmis\Db\EntityInterface[]|array
+     */
     public function findById($id);
 
+    /**
+     *
+     * @param array $where
+     * @param int $skip
+     * @param int $limit
+     * @return \Vhmis\Db\EntityInterface[]|array
+     */
     public function find($where, $skip, $limit);
 
+    /**
+     *
+     * @param array $where
+     * @return \Vhmis\Db\EntityInterface|array
+     */
     public function findOne($where);
 
     public function update($where, $data = null);
