@@ -30,7 +30,7 @@ class Upload
         'gif'  => 'image/gif',
         // Zip, rar
         'zip' => 'application/x-zip application/zip application/x-zip-compressed',
-        'rar' => 'application/rar',
+        'rar' => 'application/x-rar application/rar application/x-rar-compressed',
     );
 
     /**
