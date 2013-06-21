@@ -190,60 +190,70 @@ class Model implements ModelInterface
         }
     }
 
-    public function find($where, $skip = 0, $limit = 0)
+    public function find($where = array(), $order = array(), $skip = 0, $limit = 0)
     {
-        if (!is_array($where)) {
-            return array();
-        }
-
-        if (count($where) == 0) {
-            return $this->findAll();
-        }
-
-        $sql = array();
         $bindData = array();
-        $pos = 1;
+        if (is_array($where) && count($where) != 0) {
+            $sql = array();
+            $pos = 1;
 
-        foreach ($where as $w) {
-            $field = $w[0];
-            $operator = $w[1];
-            $value = $w[2];
+            foreach ($where as $w) {
+                $field = $w[0];
+                $operator = $w[1];
+                $value = $w[2];
 
-            // Try to camelCaseToUnderscore field name
-            $field = $this->camelCaseToUnderscore($field);
+                // Try to camelCaseToUnderscore field name
+                $field = $this->camelCaseToUnderscore($field);
 
-            // Prepare query
-            $sql_temp = '';
-            if ($operator == 'in') {
-                $sql_temp = $field . ' in ';
-            } else {
-                $sql[] = $field . ' ' . $operator . ' ?';
-            }
-
-            // Bind value
-            if ($operator == 'in') {
-                if (is_array($value)) {
-                    $values = array();
-                    foreach ($value as $v) {
-                        if (is_numeric($v)) {
-                            $values[] = $v;
-                        } else {
-                            $values[] = $this->adapter->qoute($v);
-                        }
-                    }
-                    $sql_temp .= '(' . implode(', ', $values) . ')';
-                    $sql[] = $sql_temp;
+                // Prepare query
+                $sql_temp = '';
+                if ($operator == 'in') {
+                    $sql_temp = $field . ' in ';
                 } else {
-                    throw new \Exception('Value for IN must be an array');
+                    $sql[] = $field . ' ' . $operator . ' ?';
                 }
-            } else {
-                $bindData[$pos] = $value;
-                // Count
-                $pos++;
+
+                // Bind value
+                if ($operator == 'in') {
+                    if (is_array($value)) {
+                        $values = array();
+                        foreach ($value as $v) {
+                            if (is_numeric($v)) {
+                                $values[] = $v;
+                            } else {
+                                $values[] = $this->adapter->qoute($v);
+                            }
+                        }
+                        $sql_temp .= '(' . implode(', ', $values) . ')';
+                        $sql[] = $sql_temp;
+                    } else {
+                        throw new \Exception('Value for IN must be an array');
+                    }
+                } else {
+                    $bindData[$pos] = $value;
+                    // Count
+                    $pos++;
+                }
             }
+
+            $sql = 'select * from `' . $this->table . '` where ' . implode(' and ', $sql);
+        } else {
+            $sql = 'select * from `' . $this->table . '`';
         }
 
-        $sql = 'select * from `' . $this->table . '` where ' . implode(' and ', $sql);
+        if (is_array($order)) {
+            $orderby = array();
+
+            foreach ($order as $field => $or) {
+                $field = $this->camelCaseToUnderscore($field);
+                $or = $or === 'asc' ? 'acs' : 'desc';
+                $orderby[] = $field . ' ' . $or;
+            }
+
+            if (count($orderby) > 0) {
+                $sql .= ' order by ' . implode(', ', $orderby);
+            }
+        }
 
         if ($skip != 0 || $limit != 0) {
             $sql .= ' limit ' . $skip . ', ' . $limit;
@@ -261,9 +271,9 @@ class Model implements ModelInterface
         return $data;
     }
 
-    public function findOne($where)
+    public function findOne($where, $order = array())
     {
-        $result = $this->find($where, 0, 1);
+        $result = $this->find($where, $order, 0, 1);
 
         if (count($result) == 0)
             return null;

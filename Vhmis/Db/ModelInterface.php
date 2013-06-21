@@ -24,14 +24,14 @@ interface ModelInterface
      * @param int $limit
      * @return \Vhmis\Db\EntityInterface[]|array
      */
-    public function find($where, $skip, $limit);
+    public function find($where, $order, $skip, $limit);
 
     /**
      *
      * @param array $where
      * @return \Vhmis\Db\EntityInterface|array
      */
-    public function findOne($where);
+    public function findOne($where, $order);
 
     public function update($where, $data = null);
 
