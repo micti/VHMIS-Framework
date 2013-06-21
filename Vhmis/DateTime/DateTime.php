@@ -59,6 +59,26 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Định dang cho SQL Datetime
+     *
+     * @return string
+     */
+    public function formatSQLDateTime()
+    {
+        return $this->formatISO(1);
+    }
+
+    /**
+     * Định dang cho SQL Date
+     *
+     * @return string
+     */
+    public function formatSQLDate()
+    {
+        return $this->formatISO(0);
+    }
+
+    /**
      * Hàm thêm / giảm số tháng vào ngày hiện tại
      *
      * Ở đây có 2 trường hợp:
@@ -79,20 +99,20 @@ class DateTime extends \DateTime
             $nowmonth = (int) $this->format('m');
             $nowyear = (int) $this->format('Y');
             $nowday = (int) $this->format('d');
-            
+
             // Sử dụng 0-11 để biểu diễn tháng
             $nowmonth--;
-            
+
             // Tính toán tháng mới, năm mới
             $totalmonth = $nowmonth + $nowyear * 12 + $month;
             $nowmonth = $totalmonth % 12 + 1; // + 1 để trả lại tháng 1-12
             $nowyear = $totalmonth / 12; // Số nguyên
-            
+
             $this->setDate($nowyear, $nowmonth, $nowday);
         } else {
             $this->modify($month . ' months');
         }
-        
+
         return $this;
     }
 
@@ -147,9 +167,9 @@ class DateTime extends \DateTime
     public function getModifiedDate($modify)
     {
         $new = clone $this;
-        
+
         $new->modify($modify);
-        
+
         return $new;
     }
 
