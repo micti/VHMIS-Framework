@@ -20,6 +20,11 @@ namespace Vhmis\DateTime;
  */
 class DateTime extends \DateTime
 {
+    /**
+     * Ngày bắt đầu trong tuần
+     * @var string
+     */
+    protected $startOfWeek = 'monday';
 
     /**
      * Các class static trả về DateTime cần viết lại để trả về đúng class mới
@@ -38,6 +43,23 @@ class DateTime extends \DateTime
             return false;
         $ext_dt->setTimestamp($dt->getTimestamp());
         return $ext_dt;
+    }
+
+    /**
+     * Thiết lập ngày đầu tuần, monday hoặc sunday
+     *
+     * @param string $day
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function setStartDayOfWeek($day)
+    {
+        if ($day === 'sunday') {
+            $this->startOfWeek = 'sunday';
+        } else {
+            $this->startOfWeek = 'monday';
+        }
+
+        return $this;
     }
 
     /**
@@ -239,5 +261,19 @@ class DateTime extends \DateTime
     public function getTomorrow()
     {
         return $this->getModifiedDate('+ 1 days');
+    }
+
+    public function modify($modify)
+    {
+        // Sunday, php default start day of week is sunday and if your calendar start day of week is monday
+        if ($this->format('N') == 7 && $this->startOfWeek === 'monday') {
+            $matches = array();
+            $pattern = '/this week|next week|previous week|last week/i';
+            if (preg_match($pattern, $modify, $matches)) {
+                $modify = str_replace($matches[0], '-7 days ' . $matches[0], $modify);
+            }
+        }
+
+        return parent::modify($modify);
     }
 }
