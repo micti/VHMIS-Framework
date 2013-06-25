@@ -79,6 +79,30 @@ class DateTime extends \DateTime
     }
 
     /**
+     * So sánh với một ngày bất kỳ
+     *
+     * @param \Vhmis\DateTime\DateTime|string $date Ngày ở dạng str hoặc DateTime
+     * @return int|null
+     */
+    public function compare($date)
+    {
+        if(is_string($date)) {
+            $time = strtotime($date);
+            if($this->getTimestamp() > $time) return 1;
+            elseif($this->getTimestamp() === $time) return 0;
+            else return -1;
+        }
+
+        if($date instanceof \DateTime) {
+            if($this > $date) return 1;
+            elseif($this === $date) return 0;
+            else return -1;
+        }
+
+        return null;
+    }
+
+    /**
      * Hàm thêm / giảm số tháng vào ngày hiện tại
      *
      * Ở đây có 2 trường hợp:
@@ -162,7 +186,7 @@ class DateTime extends \DateTime
      * Tương tự như phương thức modify nhưng trả về đối tượng DateTime mới
      *
      * @param string $modify
-     * @return DateTime
+     * @return \Vhmis\DateTime\DateTime
      */
     public function getModifiedDate($modify)
     {
