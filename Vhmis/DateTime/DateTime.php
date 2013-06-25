@@ -103,6 +103,30 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Tính số ngày khác nhau (không quan tâm đến đến thời gian)
+     * Giá trị âm nghĩa là ngày được so sánh bé hơn
+     *
+     * Ví dụ 2013-12-30 00:00:00 với 2013-12-31 11:59:59 khác nhau 1 ngày
+     *
+     * @param \Vhmis\DateTime\DateTime $date
+     * @return int
+     */
+    public function diffDay($date) {
+        $origin1 = $this->getTimestamp();
+        $origin2 = $date->getTimestamp();
+
+        $a = $this->setTime(0, 0, 0);
+
+        $day1 = floor($this->setTime(0, 0, 0)->getTimestamp() / 86400);
+        $day2 = floor($date->setTime(0, 0, 0)->getTimestamp() / 86400);
+
+        $this->setTimestamp($origin1);
+        $date->setTimestamp($origin2);
+
+        return $day2 - $day1;
+    }
+
+    /**
      * Hàm thêm / giảm số tháng vào ngày hiện tại
      *
      * Ở đây có 2 trường hợp:
