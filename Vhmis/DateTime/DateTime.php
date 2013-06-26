@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -9,6 +8,7 @@
  * @package Vhmis_DateTime
  * @since Vhmis v2.0
  */
+
 namespace Vhmis\DateTime;
 
 /**
@@ -108,17 +108,23 @@ class DateTime extends \DateTime
      */
     public function compare($date)
     {
-        if(is_string($date)) {
+        if (is_string($date)) {
             $time = strtotime($date);
-            if($this->getTimestamp() > $time) return 1;
-            elseif($this->getTimestamp() === $time) return 0;
-            else return -1;
+            if ($this->getTimestamp() > $time)
+                return 1;
+            elseif ($this->getTimestamp() === $time)
+                return 0;
+            else
+                return -1;
         }
 
-        if($date instanceof \DateTime) {
-            if($this > $date) return 1;
-            elseif($this === $date) return 0;
-            else return -1;
+        if ($date instanceof \DateTime) {
+            if ($this > $date)
+                return 1;
+            elseif ($this === $date)
+                return 0;
+            else
+                return -1;
         }
 
         return null;
@@ -133,11 +139,10 @@ class DateTime extends \DateTime
      * @param \Vhmis\DateTime\DateTime $date
      * @return int
      */
-    public function diffDay($date) {
+    public function diffDay($date)
+    {
         $origin1 = $this->getTimestamp();
         $origin2 = $date->getTimestamp();
-
-        $a = $this->setTime(0, 0, 0);
 
         $day1 = floor($this->setTime(0, 0, 0)->getTimestamp() / 86400);
         $day2 = floor($date->setTime(0, 0, 0)->getTimestamp() / 86400);
@@ -146,6 +151,72 @@ class DateTime extends \DateTime
         $date->setTimestamp($origin2);
 
         return $day2 - $day1;
+    }
+
+    /**
+     * Tính số tuần khác nhau (không quan tâm đến đến ngày nào trong tuần)
+     * Giá trị âm nghĩa là ngày được so sánh bé hơn
+     *
+     * Ví dụ Chủ Nhật 2013-06-29 23:59:59 với Thứ 2 2013-06-30 08:12:12 khác nhau 1 tuần nếu thứ 2 là ngày đầu tuần
+     * và khác nhau 0 tuần nếu chủ nhật là ngày đầu tuần
+     *
+     * @param \Vhmis\DateTime\DateTime $date
+     * @return int
+     */
+    public function diffWeek($date)
+    {
+        $origin1 = $this->getTimestamp();
+        $origin2 = $date->getTimestamp();
+
+        // Use monday this week
+        $wek1 = floor($this->modify('monday this week')->getTimestamp() / 86400 / 7);
+        $wek2 = floor($date->modify('monday this week')->getTimestamp() / 86400 / 7);
+
+        $this->setTimestamp($origin1);
+        $date->setTimestamp($origin2);
+
+        return $wek2 - $wek1;
+    }
+
+    /**
+     * Tính số tháng khác nhau (không quan tâm đến đến ngày giờ ... nào trong tháng)
+     *
+     * Ví dụ 2016-04-30 08:12:12 với 2013-06-01 23:59:59 khác nhau -34 tháng
+     *
+     * @param \Vhmis\DateTime\DateTime $date
+     * @return int
+     */
+    public function diffMonth($date)
+    {
+        $month1 = (int) $this->format('m');
+        $year1 = (int) $this->format('Y');
+
+        $month2 = (int) $date->format('m');
+        $year2 = (int) $date->format('Y');
+
+        if($year1 === $year2) {
+            return $month2 - $month1;
+        }
+
+        if($year1 < $year2) {
+            return ($year2 - $year1 - 1) * 12 + $month2 + (12 - $month1);
+        }
+
+        return (($year1 - $year2 - 1) * 12 + $month1 + (12 - $month2)) * -1;
+    }
+
+    /**
+     * Tính số năm khác nhau, không quan tâm đến tháng ngày giờ ...
+     *
+     * @param \Vhmis\DateTime\DateTime $date
+     * @return int
+     */
+    public function diffYear($date)
+    {
+        $year1 = (int) $this->format('Y');
+        $year2 = (int) $date->format('Y');
+
+        return $year2 - $year1;
     }
 
     /**
