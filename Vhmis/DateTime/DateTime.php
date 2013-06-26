@@ -20,6 +20,10 @@ namespace Vhmis\DateTime;
  */
 class DateTime extends \DateTime
 {
+    const TIME_COMPARE_GREATER = 1;
+    const TIME_COMPARE_EQUAL = 0;
+    const TIME_COMPARE_LESS_THAN = -1;
+
     /**
      * Ngày bắt đầu trong tuần
      * @var string
@@ -110,21 +114,23 @@ class DateTime extends \DateTime
     {
         if (is_string($date)) {
             $time = strtotime($date);
-            if ($this->getTimestamp() > $time)
-                return 1;
-            elseif ($this->getTimestamp() === $time)
-                return 0;
-            else
-                return -1;
+            if ($this->getTimestamp() > $time) {
+                return static::TIME_COMPARE_GREATER;
+            } elseif ($this->getTimestamp() === $time) {
+                return static::TIME_COMPARE_EQUAL;
+            } else {
+                return static::TIME_COMPARE_LESS_THAN;
+            }
         }
 
         if ($date instanceof \DateTime) {
-            if ($this > $date)
-                return 1;
-            elseif ($this === $date)
-                return 0;
-            else
-                return -1;
+            if ($this > $date) {
+                return static::TIME_COMPARE_GREATER;
+            } elseif ($this === $date) {
+                return static::TIME_COMPARE_EQUAL;
+            } else {
+                return static::TIME_COMPARE_LESS_THAN;
+            }
         }
 
         return null;
@@ -194,11 +200,11 @@ class DateTime extends \DateTime
         $month2 = (int) $date->format('m');
         $year2 = (int) $date->format('Y');
 
-        if($year1 === $year2) {
+        if ($year1 === $year2) {
             return $month2 - $month1;
         }
 
-        if($year1 < $year2) {
+        if ($year1 < $year2) {
             return ($year2 - $year1 - 1) * 12 + $month2 + (12 - $month1);
         }
 
