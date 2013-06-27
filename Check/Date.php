@@ -14,10 +14,10 @@ error_reporting(E_ALL | E_NOTICE);
  * A', strtotime('2012-03-02 08:26:06 +07:00')));
  */
 
-require '../Core/Date.php';
+/*require '../Core/Date.php';
 require '../Core/Calendar.php';
 require '../Core/Benchmark.php';
-require '../Vhmis/I18n/Output/DateTime.php';
+require '../Vhmis/I18n/Output/DateTime.php';*/
 
 /*
  * $mark = new Vhmis_Benchmark(); $mark->timer('a'); $date = new Vhmis_Date(); $mark->timer('b'); echo $mark->time('a',
@@ -39,7 +39,7 @@ require '../Vhmis/I18n/Output/DateTime.php';
  * $calendar = new Vhmis_Calendar(); print_r($calendar->datesOfMonth('05', '2012'));
  */
 
-$format = new Vhmis\I18n\Output\DateTime();
+/*$format = new Vhmis\I18n\Output\DateTime();
 $string = "2012-11-11";
 
 $format->setLocale('en_US');
@@ -50,4 +50,63 @@ $a = \DateTime::createFromFormat('Y-m-d H:i:s', '2012-01-01 10:56:31');
 $formatter = new \IntlDateFormatter('it', \IntlDateFormatter::FULL, \IntlDateFormatter::FULL);
 
 echo "\ndate: " . date('d-m-Y H:i:s', $a->getTimestamp()) . "\n";
-echo "formatter: " . $formatter->format($a->getTimestamp()) . "\n\n";
+echo "formatter: " . $formatter->format($a->getTimestamp()) . "\n\n";*/
+
+require '../Vhmis/DateTime/DateTime.php';
+
+$a = new \Vhmis\DateTime\DateTime('2013-12-30 00:00:00');
+$b = new \Vhmis\DateTime\DateTime('2013-12-31 23:59:59');
+
+echo 'Số ngày khác nhau : ' . $a->diffDay($b) . ' = ';
+
+echo $a->formatSQLDateTime() . ' - ';
+echo $b->formatSQLDateTime() . '<br>';
+
+$a->modify('2013-12-31 23:59:59');
+$b->modify('2013-01-01 08:12:12');
+
+echo 'Số ngày khác nhau : ' . $a->diffDay($b) . ' = ';
+
+echo $a->formatSQLDateTime() . ' - ';
+echo $b->formatSQLDateTime() . '<br>';
+
+$a->modify('2013-06-25 23:59:59');
+$b->modify('2013-07-03 08:12:12');
+
+echo 'Số tuần khác nhau : ' . $a->diffWeek($b) . ' = ';
+
+echo $a->formatSQLDateTime() . ' - ';
+echo $b->formatSQLDateTime() . '<br>';
+
+$a->modify('2013-06-29 23:59:59');
+$b->modify('2013-06-30 08:12:12');
+
+echo 'Số tuần khác nhau : ' . $a->diffWeek($b) . ' = ';
+
+echo $a->formatSQLDateTime() . ' - ';
+echo $b->formatSQLDateTime() . '<br>';
+
+$a->modify('2013-06-29 23:59:59');
+$b->modify('2016-04-30 08:12:12');
+
+echo 'Số tuần khác nhau : ' . $a->diffMonth($b) . ' = ';
+
+echo $a->formatSQLDateTime() . ' - ';
+echo $b->formatSQLDateTime() . '<br>';
+
+echo $a->formatSQLDateTime() . ' + ' . $a->diffMonth($b) . ' months = ' . $a->addMonth($a->diffMonth($b))->formatSQLDateTime() . '<br>';
+
+$a->modify('2016-04-30 08:12:12');
+$b->modify('2013-06-29 23:59:59');
+
+echo 'Số tuần khác nhau : ' . $a->diffMonth($b) . ' = ';
+
+echo $a->formatSQLDateTime() . ' - ';
+echo $b->formatSQLDateTime() . '<br>';
+
+echo $a->formatSQLDateTime() . ' + ' . $a->diffMonth($b) . ' months = ' . $a->addMonth($a->diffMonth($b))->formatSQLDateTime() . '<br>';
+
+echo 'Số năm khác nhau : ' . $a->diffYear($b) . ' = ';
+
+echo $a->formatSQLDateTime() . ' - ';
+echo $b->formatSQLDateTime() . '<br>';
