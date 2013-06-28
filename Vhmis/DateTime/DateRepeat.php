@@ -407,9 +407,23 @@ class DateRepeat
             return $this->findDailyRepeat();
         }
 
+        /* Tìm theo tuần */
+        if ($this->type === static::REPEAT_TYPE_WEEKLY) {
+            if ($this->timesEnd !== null) {
+                $this->dateEnd = $this->weeklyRepeatTimesToDateStop();
+                $this->objDateEnd->modify($this->dateEnd);
+            }
+            return $this->findWeeklyRepeat();
+        }
+
         return $dates;
     }
 
+    /**
+     * Tìm các ngày lặp lại theo ngày
+     *
+     * @return array
+     */
     protected function findDailyRepeat()
     {
         $dates = array();
@@ -446,6 +460,68 @@ class DateRepeat
         }
 
         return $dates;
+    }
+
+    /**
+     * Tìm các ngày lặp lại theo tuần
+     *
+     * @return array
+     */
+    protected function findWeeklyRepeat()
+    {
+        $dates = array();
+        $times = 0;
+
+        // Reset objDate, về lại mốc thời gian ngày bắt đầu
+        $this->objDate->modify($this->dateBegin);
+
+        $useDateToStop = $this->dateEnd !== null ? true : false;
+
+        if ($this->objDate < $this->objDateRangeBegin) {
+            $diff = $this->objDate->diffWeek($this->objDateRangeBegin);
+            $skip = ceil($diff / $this->freq) * $this->freq;
+            $this->objDate->modify('+ ' . $skip . ' weeks');
+        }
+
+        while (true) {
+            // Liệt kê hết các ngày lặp lại trong tuần
+            foreach($this->wday as $w) {
+                $this->objDate->modify($this->allday[$w] . ' this week');
+
+                // Kết thúc nếu đã vượt quá 1 trong 2 giới hạn
+                if($this->objDate > $this->objDateRangeEnd) {
+                    return $dates;
+                }
+                if($useDateToStop && $this->objDate > $this->objDateEnd) {
+                    return $dates;
+                }
+
+                // Bỏ qua nếu vẫn chưa vào range
+                if($this->objDate->formatSQLDate() === '2013-07-10') echo $this->objDateRangeBegin->formatISO();
+                if($this->objDate < $this->objDateRangeBegin) {
+                    continue;
+                }
+
+                // Thêm vào danh sách lặp lại
+                $dates[] = $this->objDate->formatISO(0);
+            }
+
+            // Nhảy đến tuần tiếp theo
+            $this->objDate->modify('+ ' . $this->freq . ' weeks');
+        }
+
+        return $dates;
+    }
+
+    /**
+     * Chuyển đối số lần dừng lại thành ngày dừng lại
+     */
+    public function timesToDateStop()
+    {
+        /* theo tuần */
+        if ($this->type === static::REPEAT_TYPE_WEEKLY) {
+            return $this->weeklyRepeatTimesToDateStop();
+        }
     }
 
     /**
