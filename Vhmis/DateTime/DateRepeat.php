@@ -166,6 +166,14 @@ class DateRepeat
         $this->objDateRangeEnd = new DateTime();
     }
 
+    public function reset()
+    {
+        $this->dateBegin = null;
+        $this->dateEnd = null;
+        $this->freq = null;
+        $this->timesEnd = null;
+    }
+
     /**
      * Thiết lập ngày đầu tiên
      *
