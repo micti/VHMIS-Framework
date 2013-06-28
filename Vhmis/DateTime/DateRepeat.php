@@ -471,32 +471,32 @@ class DateRepeat
         }
 
         foreach ($wdays as $w) {
-            if ($w >= $this->wday) {
+            if ($w >= $wday) {
                 $times--;
                 $this->objDate->modify($this->allday[$w] . ' this week');
-                if ($times == 0) {
+                if ($times === 0) {
                     return $this->objDate->formatISO(0);
                 }
             }
         }
 
         // Các tuần tiếp theo
-        $weeks = floor($times / count($this->wday)) * $this->freq;
+        $weeks = floor($times / count($wdays)) * $this->freq;
 
         // Số lần của tuần cuối cùng
-        $timesLastWeek = $times % count($this->wday);
+        $timesLastWeek = $times % count($wdays);
 
         if ($weeks !== 0) {
             $this->objDate->modify('+ ' . $weeks . ' weeks');
         }
 
         if ($timesLastWeek === 0) {
-            return $this->objDate->modify($this->allday[end($wday)] . ' this week')->formatISO(0);
+            return $this->objDate->modify($this->allday[end($wdays)] . ' this week')->formatISO(0);
         }
 
         // Đến tuần cuối cùng
         $this->objDate->modify('+ ' . $this->freq . ' week');
-        foreach ($wday as $w) {
+        foreach ($wdays as $w) {
             $timesLastWeek--;
             $this->objDate->modify($this->allday[$w] . ' this week');
             if ($timesLastWeek === 0) {
