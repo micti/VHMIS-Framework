@@ -139,6 +139,17 @@ class DateRepeat
      * @var \Vhmis\DateTime\DateTime
      */
     protected $objDateRangeEnd;
+    protected $startDateOfWeek = 'monday';
+    protected $allday = array(
+        '1' => 'sunday',
+        '2' => 'monday',
+        '3' => 'tuesday',
+        '4' => 'wednesday',
+        '5' => 'thursday',
+        '6' => 'friday',
+        '7' => 'saturday',
+        '8' => 'sunday'
+    );
 
     /**
      * Định nghĩa ngày nghỉ
@@ -419,5 +430,72 @@ class DateRepeat
         }
 
         return $dates;
+    }
+
+    /**
+     * Tìm ngày cuối cùng trong lặp lại theo tuần dựa trên số lần lặp lại
+     */
+    protected function weeklyRepeatTimesToDateStop()
+    {
+        if ($this->timesEnd === null) {
+            return null;
+        }
+
+        // Reset
+        $this->objDate->modify($this->dateBegin);
+
+        $times = $this->timesEnd;
+
+        // Sắp xếp danh sách các ngày theo thứ tự tăng dần
+        $wdays[] = array();
+        foreach ($this->wday as $w) {
+            $w = (int) $w;
+            if ($w === 1 && $this->startDateOfWeek === 'monday') {
+                $wdays[] = 8;
+            } else {
+                $wdays[] = $w;
+            }
+        }
+        sort($wdays);
+
+        // Tìm số lần lặp lại của tuần đầu tiên
+        $wday = 1 + (int) $this->objDate->format('N');
+        if ($wday === 8 && $this->startDateOfWeek !== 'monday') {
+            $wday = 1;
+        }
+
+        foreach ($wdays as $w) {
+            if ($w >= $this->wday) {
+                $times--;
+                $this->objDate->modify($this->allday[$w] . ' this week');
+                if ($times == 0) {
+                    return $this->objDate->formatISO(0);
+                }
+            }
+        }
+
+        // Các tuần tiếp theo
+        $weeks = floor($times / count($this->wday)) * $this->freq;
+
+        // Số lần của tuần cuối cùng
+        $timesLastWeek = $times % count($this->wday);
+
+        if ($weeks !== 0) {
+            $this->objDate->modify('+ ' . $weeks . ' weeks');
+        }
+
+        if ($timesLastWeek === 0) {
+            return $this->objDate->modify($this->allday[end($wday)] . ' this week')->formatISO(0);
+        }
+
+        // Đến tuần cuối cùng
+        $this->objDate->modify('+ ' . $this->freq . ' week');
+        foreach ($wday as $w) {
+            $timesLastWeek--;
+            $this->objDate->modify($this->allday[$w] . ' this week');
+            if ($timesLastWeek === 0) {
+                return $this->objDate->formatISO(0);
+            }
+        }
     }
 }
