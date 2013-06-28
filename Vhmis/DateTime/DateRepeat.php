@@ -308,6 +308,16 @@ class DateRepeat
         $this->freq = $info['freq'];
         $this->wday = is_string($info['wday']) ? explode(',', $info['wday']) : $info['wday'];
 
+        // Sắp xếp wday
+        foreach ($this->wday as &$w) {
+            $w = (int) $w;
+            if ($w === 1 && $this->startDateOfWeek === 'monday') {
+                $w = 8;
+            }
+        }
+
+        sort($this->wday);
+
         return $this;
     }
 
@@ -446,17 +456,7 @@ class DateRepeat
 
         $times = $this->timesEnd;
 
-        // Sắp xếp danh sách các ngày theo thứ tự tăng dần
-        $wdays[] = array();
-        foreach ($this->wday as $w) {
-            $w = (int) $w;
-            if ($w === 1 && $this->startDateOfWeek === 'monday') {
-                $wdays[] = 8;
-            } else {
-                $wdays[] = $w;
-            }
-        }
-        sort($wdays);
+        $wdays = $this->wday;
 
         // Tìm số lần lặp lại của tuần đầu tiên
         $wday = 1 + (int) $this->objDate->format('N');
