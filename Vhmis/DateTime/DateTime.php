@@ -323,7 +323,7 @@ class DateTime extends \DateTime
     /**
      * Lấy ngày hôm qua
      *
-     * @return DateTime
+     * @return \Vhmis\DateTime\DateTime
      */
     public function getYesterday()
     {
@@ -333,13 +333,24 @@ class DateTime extends \DateTime
     /**
      * Lấy ngày ngày mai
      *
-     * @return DateTime
+     * @return \Vhmis\DateTime\DateTime
      */
     public function getTomorrow()
     {
         return $this->getModifiedDate('+ 1 days');
     }
 
+    /**
+     * Viết lại phương thức modify
+     *
+     * Mặc định PHP thiết lập ngày chủ nhật là ngày đầu tuần do đó một số chuỗi để hiệu chỉnh thời gian liên quan đến
+     * tuần có thể trả về ngày không chính xác nếu ta xem ngày thứ hai là ngày đầu tuần.
+     *
+     * Phương thức này được viết lại để xét các trường hợp này, còn lại sử dụng mặc định
+     *
+     * @param mixed $modify
+     * @return \Vhmis\DateTime\DateTime
+     */
     public function modify($modify)
     {
         // Sunday, php default start day of week is sunday and if your calendar start day of week is monday
