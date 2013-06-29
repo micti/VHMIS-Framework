@@ -226,6 +226,34 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Thêm / giảm ngày, thay cho modify và add
+     *
+     * @param int $day
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function addDay($day) {
+        $a = $this->getTimestamp();
+        $a += $day * 86400;
+        $this->setTimestamp($a);
+
+        return $this;
+    }
+
+    /**
+     * Thêm / giảm tuần, thay cho modify và add
+     *
+     * @param int $week
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function addWeek($week) {
+        $a = $this->getTimestamp();
+        $a += $week * 86400 * 7;
+        $this->setTimestamp($a);
+
+        return $this;
+    }
+
+    /**
      * Hàm thêm / giảm số tháng vào ngày hiện tại
      *
      * Ở đây có 2 trường hợp:
@@ -259,6 +287,21 @@ class DateTime extends \DateTime
         } else {
             $this->modify($month . ' months');
         }
+
+        return $this;
+    }
+
+    /**
+     * Thiết lập ngày
+     * 
+     * @param int $day
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function setDay($day) {
+        $nowmonth = (int) $this->format('m');
+        $nowyear = (int) $this->format('Y');
+
+        $this->setDate($nowyear, $nowmonth, $day);
 
         return $this;
     }
