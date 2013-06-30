@@ -32,7 +32,7 @@ class DateRepeat
     /**
      * Cách chọn ngày lặp lại dựa trên ngày trong tuần
      */
-    const REPEAT_BASED_ON_WDAY = 1;
+    const REPEAT_BASED_ON_WDAY = 2;
 
     /**
      * Ngày bắt đầu
@@ -110,7 +110,7 @@ class DateRepeat
      *
      * @var array
      */
-    protected $weekday = array(2, 3, 4, 5, 6); // Monday to Thursday
+    protected $weekday = array(2, 3, 4, 5, 6); // Monday to Friday
 
     /**
      * Đối tượng DateTime, dùng để xử lý thời gian
@@ -150,13 +150,20 @@ class DateRepeat
         '7' => 'saturday',
         '8' => 'sunday'
     );
+    protected $positions = array(
+        '1' => 'first',
+        '2' => 'second',
+        '3' => 'third',
+        '4' => 'fourth',
+        '5' => 'last'
+    );
 
     /**
      * Định nghĩa ngày nghỉ
      *
      * @var array
      */
-    protected $weekend = array(1, 7); // Sunday, Saturday
+    protected $weekend = array(7, 1); // Sunday, Saturday
 
     public function __construct()
     {
@@ -485,20 +492,19 @@ class DateRepeat
 
         while (true) {
             // Liệt kê hết các ngày lặp lại trong tuần
-            foreach($this->wday as $w) {
+            foreach ($this->wday as $w) {
                 $this->objDate->modify($this->allday[$w] . ' this week');
 
                 // Kết thúc nếu đã vượt quá 1 trong 2 giới hạn
-                if($this->objDate > $this->objDateRangeEnd) {
+                if ($this->objDate > $this->objDateRangeEnd) {
                     return $dates;
                 }
-                if($useDateToStop && $this->objDate > $this->objDateEnd) {
+                if ($useDateToStop && $this->objDate > $this->objDateEnd) {
                     return $dates;
                 }
 
                 // Bỏ qua nếu vẫn chưa vào range
-                if($this->objDate->formatSQLDate() === '2013-07-10') echo $this->objDateRangeBegin->formatISO();
-                if($this->objDate < $this->objDateRangeBegin) {
+                if ($this->objDate < $this->objDateRangeBegin) {
                     continue;
                 }
 
@@ -515,12 +521,19 @@ class DateRepeat
 
     /**
      * Chuyển đối số lần dừng lại thành ngày dừng lại
+     *
+     * @return string
      */
     public function timesToDateStop()
     {
         /* theo tuần */
         if ($this->type === static::REPEAT_TYPE_WEEKLY) {
             return $this->weeklyRepeatTimesToDateStop();
+        }
+
+        /* theo tháng */
+        if ($this->type === static::REPEAT_TYPE_MONTHLY) {
+            return $this->monthlyRepeatTimesToDateStop();
         }
     }
 
@@ -579,5 +592,115 @@ class DateRepeat
                 return $this->objDate->formatISO(0);
             }
         }
+    }
+
+    /**
+     * Tìm ngày cuối cùng trong lặp lại theo tuần dựa trên số lần lặp lại
+     */
+    protected function monthlyRepeatTimesToDateStop()
+    {
+        if ($this->timesEnd === null) {
+            return null;
+        }
+
+        // Reset
+        $this->objDate->modify($this->dateBegin);
+
+        $times = $this->timesEnd;
+
+        // Tìm số lần lặp lại của tháng đầu tiên
+        $day = (int) $this->objDate->format('j');
+
+        // Lặp lại theo ngày trong tháng
+        if ($this->base === static::REPEAT_BASED_ON_DAY) {
+            $days = $this->day;
+
+            foreach ($days as $d) {
+                if ($d >= $day) {
+                    $times--;
+                    $this->objDate->setDay($d);
+                    if ($times === 0) {
+                        return $this->objDate->formatISO(0);
+                    }
+                }
+            }
+
+            // Các tuần tiếp theo
+            $months = floor($times / count($days)) * $this->freq;
+
+            // Số lần của tuần cuối cùng
+            $timesLastMonth = $times % count($days);
+
+            if ($weeks !== 0) {
+                $this->objDate->addMonth($months);
+            }
+
+            if ($timesLastMonth === 0) {
+                return $this->objDate->setDay(end($days))->formatISO(0);
+            }
+
+            // Đến tháng cuối cùng
+            $this->objDate->addMonth($this->freq);
+
+            foreach ($days as $d) {
+                $timesLastMonth--;
+                $this->objDate->setDay($d);
+                if ($timesLastMonth === 0) {
+                    return $this->objDate->formatISO(0);
+                }
+            }
+        }
+
+        // Lặp lại theo ngày trong tuần
+        if ($this->base === static::REPEAT_BASED_ON_WDAY) {
+
+            $this->objDate->addMonth(($times - 1) * $this->freq);
+
+            if ($this->wday > 0 & $this->wday < 8) { // Thứ 2 đến Chủ nhật
+                $this->objDate->modify($this->positions[$this->wdayPosition] . ' ' . $this->allday[$this->wday] . ' of this month');
+                return $this->formatISO(0);
+            }
+
+            else if ($this->wday == 0) { // Một ngày bất kỳ
+                if($this->wdayPosition < 5) {
+                    return $this->objDate->setDay($this->wdayPosition)->formatISO(0);
+                }
+                else { // Ngay cuoi cung
+                    return $this->objDate->modify('last day of this month')->format(0);
+                }
+            }
+
+            else if ($this->wday === 8) { // Cac ngay di lam
+                if($this->wdayPosition < 5) {
+                    // Tìm ngày nghỉ đầu tiên của tháng
+                    $wk = $this->objDate->modify('first ' . $this->allday[$this->weekend[0]] . ' of this month')->format('j');
+
+                    if($this->wdayPosition < $wk) {
+                        return $this->objDate->setDay($this->wdayPosition)->formatISO(0);
+                    } else {
+                        $modifyday = $this->wdayPosition + count($this->weekend);
+                        return $this->objDate->setDay($modifyday)->formatISO(0);
+                    }
+                } else {
+                    return $this->objDate->modify('last ' . $this->allday[end($this->weekday)] . ' of this month')->formatISO(0);
+                }
+            }
+
+            else { // Ngày nghỉ
+                if($this->wdayPosition < 5) {
+                    // Tìm ngày nghỉ đầu tiên của tháng
+                    $wk = $this->objDate->modify('first ' . $this->allday[$this->weekend[0]] . ' of this month')->format('j');
+                    // Vị trí
+                    $wPosition = ceil($this->wdayPosition / count($this->weekend));
+                    $dPosition = $this->wdayPosition % count($this->weekend);
+                    $modifyday = $wk + $dPosition + $wPosition * 7;
+                    return $this->objDate->setDay($modifyday)->formatISO(0);
+                } else {
+                    return $this->objDate->modify('last ' . $this->allday[end($this->weekend)] . ' of this month')->formatISO(0);
+                }
+            }
+        }
+
+        return null;
     }
 }
