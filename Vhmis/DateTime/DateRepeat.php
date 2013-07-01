@@ -363,6 +363,13 @@ class DateRepeat
 
         if ($this->base === 1) {
             $this->day = is_string($info['day']) ? explode(',', $info['day']) : $info['day'];
+
+            // Sắp xếp
+            foreach ($this->day as &$w) {
+                $w = (int) $w;
+            }
+
+            sort($this->day);
         } else if ($this->base === 2) {
             $this->wday = (int) $info['wday'];
             $this->wdayPosition = (int) $info['wday_position'];
@@ -390,13 +397,24 @@ class DateRepeat
      */
     public function setYearlyRepeatInfo($info)
     {
-
         $this->freq = (int) $info['freq'];
         $this->month = is_string($info['month']) ? explode(',', $info['month']) : $info['month'];
+
+        // Sắp xếp
+        foreach ($this->month as &$m) {
+            $m = (int) $m;
+        }
+
+        sort($this->month);
+
         $this->base = (int) $info['base'];
-        $this->day = (int) $info['day'];
-        $this->wday = (int) $info['wday'];
-        $this->wdayPosition = (int) $info['wday_position'];
+
+        if ($this->base === 1) {
+            $this->day = (int) $info['day'];
+        } else if ($this->base === 2) {
+            $this->wday = (int) $info['wday'];
+            $this->wdayPosition = (int) $info['wday_position'];
+        }
 
         return $this;
     }
