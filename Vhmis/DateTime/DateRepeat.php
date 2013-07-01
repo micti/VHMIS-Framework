@@ -163,7 +163,7 @@ class DateRepeat
      *
      * @var array
      */
-    protected $weekend = array(7, 1); // Sunday, Saturday
+    protected $weekend = array(7, 8); // Sunday, Saturday
 
     public function __construct()
     {
@@ -173,12 +173,19 @@ class DateRepeat
         $this->objDateRangeEnd = new DateTime();
     }
 
+    /**
+     * Reset lại các thông số
+     *
+     * @return \Vhmis\DateTime\DateRepeat
+     */
     public function reset()
     {
         $this->dateBegin = null;
         $this->dateEnd = null;
         $this->freq = null;
         $this->timesEnd = null;
+
+        return $this;
     }
 
     /**
@@ -353,9 +360,14 @@ class DateRepeat
     {
         $this->freq = (int) $info['freq'];
         $this->base = (int) $info['base'];
-        $this->day = is_string($info['day']) ? explode(',', $info['day']) : $info['day'];
-        $this->wday = (int) $info['wday'];
-        $this->wdayPosition = (int) $info['wday_position'];
+
+        if ($this->base === 1) {
+            $this->day = is_string($info['day']) ? explode(',', $info['day']) : $info['day'];
+        } else if ($this->base === 2) {
+            $this->wday = (int) $info['wday'];
+            $this->wdayPosition = (int) $info['wday_position'];
+        }
+
 
         return $this;
     }
@@ -631,7 +643,7 @@ class DateRepeat
             // Số lần của tuần cuối cùng
             $timesLastMonth = $times % count($days);
 
-            if ($weeks !== 0) {
+            if ($months !== 0) {
                 $this->objDate->addMonth($months);
             }
 
@@ -658,45 +670,56 @@ class DateRepeat
 
             if ($this->wday > 0 & $this->wday < 8) { // Thứ 2 đến Chủ nhật
                 $this->objDate->modify($this->positions[$this->wdayPosition] . ' ' . $this->allday[$this->wday] . ' of this month');
-                return $this->formatISO(0);
-            }
-
-            else if ($this->wday == 0) { // Một ngày bất kỳ
-                if($this->wdayPosition < 5) {
+                return $this->objDate->formatISO(0);
+            } else if ($this->wday == 0) { // Một ngày bất kỳ
+                if ($this->wdayPosition < 5) {
                     return $this->objDate->setDay($this->wdayPosition)->formatISO(0);
+                } else { // Ngay cuoi cung
+                    return $this->objDate->modify('last day of this month')->formatISO(0);
                 }
-                else { // Ngay cuoi cung
-                    return $this->objDate->modify('last day of this month')->format(0);
-                }
-            }
-
-            else if ($this->wday === 8) { // Cac ngay di lam
-                if($this->wdayPosition < 5) {
-                    // Tìm ngày nghỉ đầu tiên của tháng
-                    $wk = $this->objDate->modify('first ' . $this->allday[$this->weekend[0]] . ' of this month')->format('j');
-
-                    if($this->wdayPosition < $wk) {
-                        return $this->objDate->setDay($this->wdayPosition)->formatISO(0);
-                    } else {
-                        $modifyday = $this->wdayPosition + count($this->weekend);
-                        return $this->objDate->setDay($modifyday)->formatISO(0);
+            } else if ($this->wday === 8) { // Cac ngay di lam
+                if ($this->wdayPosition === 1) {
+                    // Tìm ngày đi làm đầu tiên của tháng
+                    $wk = 31;
+                    foreach ($this->weekday as $wken) {
+                        $wkd = (int) $this->objDate->modify('first ' . $this->allday[$wken] . ' of this month')->format('j');
+                        if ($wkd < $wk) {
+                            $wk = $wkd;
+                        }
                     }
+                    return $this->objDate->setDay($wk)->formatISO(0);
                 } else {
-                    return $this->objDate->modify('last ' . $this->allday[end($this->weekday)] . ' of this month')->formatISO(0);
+                    // Tìm ngày đi làm cuối cùng của tháng
+                    $wk = 0;
+                    foreach ($this->weekday as $wken) {
+                        $wkd = (int) $this->objDate->modify('last ' . $this->allday[$wken] . ' of this month')->format('j');
+                        if ($wkd > $wk) {
+                            $wk = $wkd;
+                        }
+                    }
+                    return $this->objDate->setDay($wk)->formatISO(0);
                 }
-            }
-
-            else { // Ngày nghỉ
-                if($this->wdayPosition < 5) {
+            } else { // Ngày nghỉ
+                if ($this->wdayPosition === 1) {
                     // Tìm ngày nghỉ đầu tiên của tháng
-                    $wk = $this->objDate->modify('first ' . $this->allday[$this->weekend[0]] . ' of this month')->format('j');
-                    // Vị trí
-                    $wPosition = ceil($this->wdayPosition / count($this->weekend));
-                    $dPosition = $this->wdayPosition % count($this->weekend);
-                    $modifyday = $wk + $dPosition + $wPosition * 7;
-                    return $this->objDate->setDay($modifyday)->formatISO(0);
+                    $wk = 31;
+                    foreach ($this->weekend as $wken) {
+                        $wkd = (int) $this->objDate->modify('first ' . $this->allday[$wken] . ' of this month')->format('j');
+                        if ($wkd < $wk) {
+                            $wk = $wkd;
+                        }
+                    }
+                    return $this->objDate->setDay($wk)->formatISO(0);
                 } else {
-                    return $this->objDate->modify('last ' . $this->allday[end($this->weekend)] . ' of this month')->formatISO(0);
+                    // Tìm ngày nghỉ cuối cùng của tháng
+                    $wk = 0;
+                    foreach ($this->weekend as $wken) {
+                        $wkd = (int) $this->objDate->modify('last ' . $this->allday[$wken] . ' of this month')->format('j');
+                        if ($wkd > $wk) {
+                            $wk = $wkd;
+                        }
+                    }
+                    return $this->objDate->setDay($wk)->formatISO(0);
                 }
             }
         }
