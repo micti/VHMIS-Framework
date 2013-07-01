@@ -435,6 +435,15 @@ class DateRepeat
             return $this->findWeeklyRepeat();
         }
 
+        /* Tìm theo tháng */
+        if ($this->type === static::REPEAT_TYPE_MONTHLY) {
+            if ($this->timesEnd !== null) {
+                $this->dateEnd = $this->monthlyRepeatTimesToDateStop();
+                $this->objDateEnd->modify($this->dateEnd);
+            }
+            return $this->findMonthlyRepeat();
+        }
+
         return $dates;
     }
 
@@ -531,6 +540,127 @@ class DateRepeat
         return $dates;
     }
 
+    protected function findMonthlyRepeat()
+    {
+        $dates = array();
+        $times = 0;
+
+        // Reset objDate, về lại mốc thời gian ngày bắt đầu
+        $this->objDate->modify($this->dateBegin);
+
+        $useDateToStop = $this->dateEnd !== null ? true : false;
+
+        if ($this->objDate < $this->objDateRangeBegin) {
+            $diff = $this->objDate->diffMonth($this->objDateRangeBegin);
+            $skip = ceil($diff / $this->freq) * $this->freq;
+            $this->objDate->addMonth($skip);
+        }
+
+        while (true) {
+
+            // Lặp lại theo ngày trong tháng
+            if ($this->base === static::REPEAT_BASED_ON_DAY) {
+                foreach ($this->day as $d) {
+                    $this->objDate->setDay($d);
+
+                    // Kết thúc nếu đã vượt quá 1 trong 2 giới hạn
+                    if ($this->objDate > $this->objDateRangeEnd) {
+                        return $dates;
+                    }
+                    if ($useDateToStop && $this->objDate > $this->objDateEnd) {
+                        return $dates;
+                    }
+
+                    // Bỏ qua nếu vẫn chưa vào range
+                    if ($this->objDate < $this->objDateRangeBegin) {
+                        continue;
+                    }
+
+                    // Thêm vào danh sách lặp lại
+                    $dates[] = $this->objDate->formatISO(0);
+                }
+
+                // Nhảy đến tháng tiếp theo
+                $this->objDate->addMonth($this->freq);
+            } else if ($this->base === static::REPEAT_BASED_ON_WDAY) {
+                if ($this->wday > 0 & $this->wday < 8) { // Thứ 2 đến Chủ nhật
+                    $this->objDate->modify($this->positions[$this->wdayPosition] . ' ' . $this->allday[$this->wday] . ' of this month');
+                } else if ($this->wday == 0) { // Một ngày bất kỳ
+                    if ($this->wdayPosition < 5) {
+                        $this->objDate->setDay($this->wdayPosition);
+                    } else { // Ngay cuoi cung
+                        $this->objDate->modify('last day of this month');
+                    }
+                } else if ($this->wday === 8) { // Cac ngay di lam
+                    if ($this->wdayPosition === 1) {
+                        // Tìm ngày đi làm đầu tiên của tháng
+                        $wk = 31;
+                        foreach ($this->weekday as $wken) {
+                            $wkd = (int) $this->objDate->modify('first ' . $this->allday[$wken] . ' of this month')->format('j');
+                            if ($wkd < $wk) {
+                                $wk = $wkd;
+                            }
+                        }
+                        $this->objDate->setDay($wk);
+                    } else {
+                        // Tìm ngày đi làm cuối cùng của tháng
+                        $wk = 0;
+                        foreach ($this->weekday as $wken) {
+                            $wkd = (int) $this->objDate->modify('last ' . $this->allday[$wken] . ' of this month')->format('j');
+                            if ($wkd > $wk) {
+                                $wk = $wkd;
+                            }
+                        }
+                        $this->objDate->setDay($wk);
+                    }
+                } else { // Ngày nghỉ
+                    if ($this->wdayPosition === 1) {
+                        // Tìm ngày nghỉ đầu tiên của tháng
+                        $wk = 31;
+                        foreach ($this->weekend as $wken) {
+                            $wkd = (int) $this->objDate->modify('first ' . $this->allday[$wken] . ' of this month')->format('j');
+                            if ($wkd < $wk) {
+                                $wk = $wkd;
+                            }
+                        }
+                        $this->objDate->setDay($wk);
+                    } else {
+                        // Tìm ngày nghỉ cuối cùng của tháng
+                        $wk = 0;
+                        foreach ($this->weekend as $wken) {
+                            $wkd = (int) $this->objDate->modify('last ' . $this->allday[$wken] . ' of this month')->format('j');
+                            if ($wkd > $wk) {
+                                $wk = $wkd;
+                            }
+                        }
+                        $this->objDate->setDay($wk);
+                    }
+                }
+
+                // Kết thúc nếu đã vượt quá 1 trong 2 giới hạn
+                if ($this->objDate > $this->objDateRangeEnd) {
+                    return $dates;
+                }
+                if ($useDateToStop && $this->objDate > $this->objDateEnd) {
+                    return $dates;
+                }
+
+                // Bỏ qua nếu vẫn chưa vào range
+                if ($this->objDate < $this->objDateRangeBegin) {
+                    continue;
+                }
+
+                // Thêm vào danh sách lặp lại
+                $dates[] = $this->objDate->formatISO(0);
+
+                // Nhảy đến tháng tiếp theo
+                $this->objDate->addMonth($this->freq);
+            } else {
+                return $dates;
+            }
+        }
+    }
+
     /**
      * Chuyển đối số lần dừng lại thành ngày dừng lại
      *
@@ -620,11 +750,11 @@ class DateRepeat
 
         $times = $this->timesEnd;
 
-        // Tìm số lần lặp lại của tháng đầu tiên
-        $day = (int) $this->objDate->format('j');
-
         // Lặp lại theo ngày trong tháng
         if ($this->base === static::REPEAT_BASED_ON_DAY) {
+            // Tìm số lần lặp lại của tháng đầu tiên
+            $day = (int) $this->objDate->format('j');
+
             $days = $this->day;
 
             foreach ($days as $d) {
