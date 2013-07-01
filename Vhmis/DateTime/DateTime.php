@@ -231,7 +231,8 @@ class DateTime extends \DateTime
      * @param int $day
      * @return \Vhmis\DateTime\DateTime
      */
-    public function addDay($day) {
+    public function addDay($day)
+    {
         $a = $this->getTimestamp();
         $a += $day * 86400;
         $this->setTimestamp($a);
@@ -245,7 +246,8 @@ class DateTime extends \DateTime
      * @param int $week
      * @return \Vhmis\DateTime\DateTime
      */
-    public function addWeek($week) {
+    public function addWeek($week)
+    {
         $a = $this->getTimestamp();
         $a += $week * 86400 * 7;
         $this->setTimestamp($a);
@@ -282,8 +284,12 @@ class DateTime extends \DateTime
             $totalmonth = $nowmonth + $nowyear * 12 + $month;
             $nowmonth = $totalmonth % 12 + 1; // + 1 để trả lại tháng 1-12
             $nowyear = $totalmonth / 12; // Số nguyên
-
-            $this->setDate($nowyear, $nowmonth, $nowday);
+            $lastday = date('j', strtotime('last day of ' . $nowyear . '-' . $nowmonth));
+            if ($nowday < $lastday) {
+                $this->setDate($nowyear, $nowmonth, $nowday);
+            } else {
+                $this->setDate($nowyear, $nowmonth, $lastday);
+            }
         } else {
             $this->modify($month . ' months');
         }
@@ -293,11 +299,12 @@ class DateTime extends \DateTime
 
     /**
      * Thiết lập ngày
-     * 
+     *
      * @param int $day
      * @return \Vhmis\DateTime\DateTime
      */
-    public function setDay($day) {
+    public function setDay($day)
+    {
         $nowmonth = (int) $this->format('m');
         $nowyear = (int) $this->format('Y');
 
