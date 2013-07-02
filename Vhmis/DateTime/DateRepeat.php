@@ -484,34 +484,34 @@ class DateRepeat
         $dates = array();
         $times = 0;
 
-        $useTimesToStop = $this->timesEnd !== null ? true : false;
+        // Reset objDate, về lại mốc thời gian ngày bắt đầu
+        $this->objDate->modify($this->dateBegin);
+
         $useDateToStop = $this->dateEnd !== null ? true : false;
 
-        // Nếu ngày bắt đầu bé hơn ngày bắt đầu của vùng cần lấy
         if ($this->objDate < $this->objDateRangeBegin) {
             $diff = $this->objDate->diffDay($this->objDateRangeBegin);
-            $times = $diff % $this->freq === 0 ? $diff / $this->freq : floor($diff / $this->freq) + 1; // +1 là tính luôn mốc thời gian ban đầu
-
-            if ($useTimesToStop && $times >= $this->timesEnd) {
-                return $dates;
-            }
-
-            // Di chuyển đến mốc thời gian tiếp theo xảy ra sự kiện
-            $this->objDate->modify('+ ' . ($times * $this->freq) . ' days');
+            $skip = ceil($diff / $this->freq) * $this->freq;
+            $this->objDate->addDay($skip);
+        } else {
+            $this->objDateRangeBegin->modify($this->objDate->formatISO());
         }
 
-        while ($this->objDate <= $this->objDateRangeEnd) {
-            if ($useTimesToStop && $times >= $this->timesEnd) {
+        while (true) {
+            // Kết thúc nếu đã vượt quá 1 trong 2 giới hạn
+            if ($this->objDate > $this->objDateRangeEnd) {
                 return $dates;
             }
-
             if ($useDateToStop && $this->objDate > $this->objDateEnd) {
                 return $dates;
             }
 
-            $dates[] = $this->objDate->formatISO(0);
-            $times++;
-            $this->objDate->modify('+ ' . $this->freq . ' days');
+            // Bỏ qua nếu vẫn chưa vào range
+            if ($this->objDate >= $this->objDateRangeBegin) {
+                $dates[] = $this->objDate->formatISO(0);
+            }
+
+            $this->objDate->addDay($this->freq);
         }
 
         return $dates;
@@ -536,6 +536,8 @@ class DateRepeat
             $diff = $this->objDate->diffWeek($this->objDateRangeBegin);
             $skip = ceil($diff / $this->freq) * $this->freq;
             $this->objDate->modify('+ ' . $skip . ' weeks');
+        } else {
+            $this->objDateRangeBegin->modify($this->objDate->formatISO());
         }
 
         while (true) {
@@ -581,6 +583,8 @@ class DateRepeat
             $diff = $this->objDate->diffMonth($this->objDateRangeBegin);
             $skip = ceil($diff / $this->freq) * $this->freq;
             $this->objDate->addMonth($skip);
+        } else {
+            $this->objDateRangeBegin->modify($this->objDate->formatISO());
         }
 
         while (true) {
@@ -799,10 +803,15 @@ class DateRepeat
     /**
      * Chuyển đối số lần dừng lại thành ngày dừng lại
      *
-     * @return string
+     * @return string Ngày cuối cùng lặp lại theo định dạng ISO yyyy-mm-dd hh:mm:ss
      */
     public function timesToDateStop()
     {
+        /* theo tuần */
+        if ($this->type === static::REPEAT_TYPE_DAILY) {
+            return $this->dailyRepeatTimesToDateStop();
+        }
+
         /* theo tuần */
         if ($this->type === static::REPEAT_TYPE_WEEKLY) {
             return $this->weeklyRepeatTimesToDateStop();
@@ -817,10 +826,33 @@ class DateRepeat
         if ($this->type === static::REPEAT_TYPE_YEARLY) {
             return $this->yearlyRepeatTimesToDateStop();
         }
+
+        return null;
+    }
+
+    /**
+     * Tìm ngày cuối cùng trong lặp lại theo ngày dựa trên số lần lặp lại
+     *
+     * @return string Ngày cuối cùng lặp lại theo định dạng ISO yyyy-mm-dd hh:mm:ss
+     */
+    protected function dailyRepeatTimesToDateStop()
+    {
+        if ($this->timesEnd === null) {
+            return null;
+        }
+
+        // Reset
+        $this->objDate->modify($this->dateBegin);
+
+        $goto = ($this->timesEnd - 1) * $this->freq;
+
+        return $this->objDate->addDay($goto)->formatISO();
     }
 
     /**
      * Tìm ngày cuối cùng trong lặp lại theo tuần dựa trên số lần lặp lại
+     *
+     * @return string Ngày cuối cùng lặp lại theo định dạng ISO yyyy-mm-dd hh:mm:ss
      */
     protected function weeklyRepeatTimesToDateStop()
     {
@@ -878,6 +910,8 @@ class DateRepeat
 
     /**
      * Tìm ngày cuối cùng trong lặp lại theo tháng dựa trên số lần lặp lại
+     *
+     * @return string Ngày cuối cùng lặp lại theo định dạng ISO yyyy-mm-dd hh:mm:ss
      */
     protected function monthlyRepeatTimesToDateStop()
     {
@@ -1001,6 +1035,8 @@ class DateRepeat
      * Tìm ngày cuối cùng trong lặp lại theo năm dựa trên số lần lặp lại
      *
      * Chú ý là hàm này ko trả về kết quả chính xác mà chỉ trả về ngày cuối cùng của tháng cuối cùng lặp lại
+     *
+     * @return string Ngày cuối cùng của tháng cuối cùng lặp lại theo định dạng ISO yyyy-mm-dd hh:mm:ss
      */
     public function yearlyRepeatTimesToDateStop()
     {
