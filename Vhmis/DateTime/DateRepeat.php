@@ -441,6 +441,10 @@ class DateRepeat
 
         /* Tìm theo ngày */
         if ($this->type === static::REPEAT_TYPE_DAILY) {
+            if ($this->timesEnd !== null) {
+                $this->dateEnd = $this->dailyRepeatTimesToDateStop();
+                $this->objDateEnd->modify($this->dateEnd);
+            }
             return $this->findDailyRepeat();
         }
 
