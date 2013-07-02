@@ -297,6 +297,29 @@ class DateTime extends \DateTime
         return $this;
     }
 
+    public function addYear($year, $fix = true)
+    {
+        $nowmonth = (int) $this->format('m');
+        $nowyear = (int) $this->format('Y');
+        $nowday = (int) $this->format('d');
+
+        $year = $nowyear + $year;
+
+        if ($fix === true) {
+
+            $lastday = date('j', strtotime('last day of ' . $year . '-' . $nowmonth));
+            if ($nowday < $lastday) {
+                $this->setDate($year, $nowmonth, $nowday);
+            } else {
+                $this->setDate($year, $nowmonth, $lastday);
+            }
+        } else {
+            $this->setDate($year, $nowmonth, $nowday);
+        }
+
+        return $this;
+    }
+
     /**
      * Thiết lập ngày
      *
@@ -309,6 +332,27 @@ class DateTime extends \DateTime
         $nowyear = (int) $this->format('Y');
 
         $this->setDate($nowyear, $nowmonth, $day);
+
+        return $this;
+    }
+
+    /**
+     * Thiết lập tháng
+     *
+     * @param int $month
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function setMonth($month)
+    {
+        $nowday = (int) $this->format('j');
+        $nowyear = (int) $this->format('Y');
+        $lastday = date('j', strtotime('last date of ' . $nowyear . '-' . $month));
+
+        if ($nowday <= $lastday) {
+            $this->setDate($nowyear, $month, $nowday);
+        } else {
+            $this->setDate($nowyear, $month, $lastday);
+        }
 
         return $this;
     }
