@@ -110,3 +110,7 @@ echo 'Số năm khác nhau : ' . $a->diffYear($b) . ' = ';
 
 echo $a->formatSQLDateTime() . ' - ';
 echo $b->formatSQLDateTime() . '<br>';
+
+$b->modify('2012-02-29 08:12:12');
+
+echo 'Số 2 năm sau của ' . $b->formatSQLDateTime() . ' là ' . $b->addYear(2, false)->formatSQLDateTime() . '<br>';
