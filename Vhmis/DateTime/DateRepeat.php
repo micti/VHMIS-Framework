@@ -462,6 +462,15 @@ class DateRepeat
             return $this->findMonthlyRepeat();
         }
 
+        /* Tìm theo năm */
+        if ($this->type === static::REPEAT_TYPE_YEARLY) {
+            if ($this->timesEnd !== null) {
+                $this->dateEnd = $this->yearlyRepeatTimesToDateStop();
+                $this->objDateEnd->modify($this->dateEnd);
+            }
+            return $this->findYearlyRepeat();
+        }
+
         return $dates;
     }
 
@@ -679,6 +688,114 @@ class DateRepeat
         }
     }
 
+    protected function findYearlyRepeat()
+    {
+        $dates = array();
+        $times = 0;
+
+        // Reset objDate, về lại mốc thời gian ngày bắt đầu
+        $this->objDate->modify($this->dateBegin);
+
+        $useDateToStop = $this->dateEnd !== null ? true : false;
+
+        if ($this->objDate < $this->objDateRangeBegin) {
+            $diff = $this->objDate->diffYear($this->objDateRangeBegin);
+            $skip = ceil($diff / $this->freq) * $this->freq;
+            $this->objDate->addYear($skip);
+        } else {
+            $this->objDateRangeBegin->modify($this->objDate->formatISO());
+        }
+
+        while (true) {
+            foreach ($this->month as $month) {
+                $this->objDate->setMonth($month);
+
+                // Lặp lại theo ngày trong tháng
+                if ($this->base === static::REPEAT_BASED_ON_DAY) {
+                    $this->objDate->setDay($this->day);
+                }
+
+                // Lặp lại theo ngày trong tuần
+                else if ($this->base === static::REPEAT_BASED_ON_WDAY) {
+                    if ($this->wday > 0 & $this->wday < 8) { // Thứ 2 đến Chủ nhật
+                        $this->objDate->modify($this->positions[$this->wdayPosition] . ' ' . $this->allday[$this->wday] . ' of this month');
+                    } else if ($this->wday == 0) { // Một ngày bất kỳ
+                        if ($this->wdayPosition < 5) {
+                            $this->objDate->setDay($this->wdayPosition);
+                        } else { // Ngay cuoi cung
+                            $this->objDate->modify('last day of this month');
+                        }
+                    } else if ($this->wday === 8) { // Cac ngay di lam
+                        if ($this->wdayPosition === 1) {
+                            // Tìm ngày đi làm đầu tiên của tháng
+                            $wk = 31;
+                            foreach ($this->weekday as $wken) {
+                                $wkd = (int) $this->objDate->modify('first ' . $this->allday[$wken] . ' of this month')->format('j');
+                                if ($wkd < $wk) {
+                                    $wk = $wkd;
+                                }
+                            }
+                            $this->objDate->setDay($wk);
+                        } else {
+                            // Tìm ngày đi làm cuối cùng của tháng
+                            $wk = 0;
+                            foreach ($this->weekday as $wken) {
+                                $wkd = (int) $this->objDate->modify('last ' . $this->allday[$wken] . ' of this month')->format('j');
+                                if ($wkd > $wk) {
+                                    $wk = $wkd;
+                                }
+                            }
+                            $this->objDate->setDay($wk);
+                        }
+                    } else { // Ngày nghỉ
+                        if ($this->wdayPosition === 1) {
+                            // Tìm ngày nghỉ đầu tiên của tháng
+                            $wk = 31;
+                            foreach ($this->weekend as $wken) {
+                                $wkd = (int) $this->objDate->modify('first ' . $this->allday[$wken] . ' of this month')->format('j');
+                                if ($wkd < $wk) {
+                                    $wk = $wkd;
+                                }
+                            }
+                            $this->objDate->setDay($wk);
+                        } else {
+                            // Tìm ngày nghỉ cuối cùng của tháng
+                            $wk = 0;
+                            foreach ($this->weekend as $wken) {
+                                $wkd = (int) $this->objDate->modify('last ' . $this->allday[$wken] . ' of this month')->format('j');
+                                if ($wkd > $wk) {
+                                    $wk = $wkd;
+                                }
+                            }
+                            $this->objDate->setDay($wk);
+                        }
+                    }
+                } else {
+                    return $dates;
+                }
+
+                // Kết thúc nếu đã vượt quá 1 trong 2 giới hạn
+                if ($this->objDate > $this->objDateRangeEnd) {
+                    return $dates;
+                }
+                if ($useDateToStop && $this->objDate > $this->objDateEnd) {
+                    return $dates;
+                }
+
+                // Bỏ qua nếu vẫn chưa vào range
+                if ($this->objDate < $this->objDateRangeBegin) {
+                    continue;
+                }
+
+                // Thêm vào danh sách lặp lại
+                $dates[] = $this->objDate->formatISO(0);
+            }
+
+            // Nhảy đến năm tiếp theo
+            $this->objDate->addYear($this->freq);
+        }
+    }
+
     /**
      * Chuyển đối số lần dừng lại thành ngày dừng lại
      *
@@ -694,6 +811,11 @@ class DateRepeat
         /* theo tháng */
         if ($this->type === static::REPEAT_TYPE_MONTHLY) {
             return $this->monthlyRepeatTimesToDateStop();
+        }
+
+        /* theo năm */
+        if ($this->type === static::REPEAT_TYPE_YEARLY) {
+            return $this->yearlyRepeatTimesToDateStop();
         }
     }
 
@@ -755,7 +877,7 @@ class DateRepeat
     }
 
     /**
-     * Tìm ngày cuối cùng trong lặp lại theo tuần dựa trên số lần lặp lại
+     * Tìm ngày cuối cùng trong lặp lại theo tháng dựa trên số lần lặp lại
      */
     protected function monthlyRepeatTimesToDateStop()
     {
@@ -785,10 +907,10 @@ class DateRepeat
                 }
             }
 
-            // Các tuần tiếp theo
+            // Các tháng tiếp theo
             $months = floor($times / count($days)) * $this->freq;
 
-            // Số lần của tuần cuối cùng
+            // Số lần của tháng cuối cùng
             $timesLastMonth = $times % count($days);
 
             if ($months !== 0) {
@@ -873,5 +995,62 @@ class DateRepeat
         }
 
         return null;
+    }
+
+    /**
+     * Tìm ngày cuối cùng trong lặp lại theo năm dựa trên số lần lặp lại
+     *
+     * Chú ý là hàm này ko trả về kết quả chính xác mà chỉ trả về ngày cuối cùng của tháng cuối cùng lặp lại
+     */
+    public function yearlyRepeatTimesToDateStop()
+    {
+        if ($this->timesEnd === null) {
+            return null;
+        }
+
+        // Reset
+        $this->objDate->modify($this->dateBegin)->modify('last day of this month');
+
+        $times = $this->timesEnd;
+
+        // Tìm số lần lặp lại của năm đầu tiên
+        $month = (int) $this->objDate->format('n');
+
+        $months = $this->month;
+
+        foreach ($months as $m) {
+            if ($m >= $month) {
+                $times--;
+                $this->objDate->setMonth($m);
+                if ($times === 0) {
+                    return $this->objDate->formatISO(0);
+                }
+            }
+        }
+
+        // Các năm tiếp theo
+        $years = floor($times / count($months)) * $this->freq;
+
+        // Số lần của tuần cuối cùng
+        $timesLastYear = $times % count($months);
+
+        if ($years !== 0) {
+            $this->objDate->addYear($years);
+        }
+
+        if ($timesLastYear === 0) {
+            return $this->objDate->setMonth(end($months))->formatISO(0);
+        }
+
+        // Đến năm cuối cùng
+        $this->objDate->addYear($this->freq);
+
+        foreach ($months as $m) {
+            $timesLastYear--;
+            $this->objDate->setMonth($m);
+            if ($timesLastYear === 0) {
+                return $this->objDate->formatISO(0);
+            }
+        }
     }
 }
