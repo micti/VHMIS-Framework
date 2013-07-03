@@ -40,6 +40,14 @@ class Validator
     protected $allowNull = array();
 
     /**
+     * Danh sách các trường bỏ qua không kiểm tra
+     * Khi chúng nằm trong danh sách allow null hoặc empty và giá trị của chúng là null và empty
+     *
+     * @var array
+     */
+    protected $skip = array();
+
+    /**
      * Danh sách cần kiểm tra tính hợp lệ
      *
      * @var array
@@ -253,6 +261,7 @@ class Validator
             /* Kiểm tra null */
             if ($this->value[$name] === null) {
                 if (in_array($name, $this->allowNull)) {
+                    $this->skip[] = $name;
                     continue;
                 } else {
                     return false;
@@ -262,6 +271,7 @@ class Validator
             /* Kiểm tra rỗng */
             if ($this->value[$name] === '') {
                 if (in_array($name, $this->allowEmpty)) {
+                    $this->skip[] = $name;
                     continue;
                 } else {
                     return false;
@@ -275,7 +285,8 @@ class Validator
             $params = $validatorInfo[2];
             $validator = $validatorInfo[1];
 
-            if ($this->value[$name] === null) {
+            // Bỏ qua kiểm tra
+            if (array_key_exists($name, $this->skip)) {
                 //Không thực hiện kiểm tra
                 continue;
             }
