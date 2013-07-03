@@ -19,6 +19,13 @@ class Validator
     protected $value = array();
 
     /**
+     * Giá trị chuẩn của các trường
+     *
+     * @var array
+     */
+    protected $standardValue = array();
+
+    /**
      * Giá trị các trường được phép empty
      *
      * @var array
@@ -63,11 +70,11 @@ class Validator
 
         $this->value[$name] = $value;
 
-        if($allowEmpty) {
+        if ($allowEmpty) {
             $this->addAllowEmpty($name);
         }
 
-        if($allowNull) {
+        if ($allowNull) {
             $this->addAllowNull($name);
         }
 
@@ -208,16 +215,23 @@ class Validator
         return $this;
     }
 
+    public function addValidator($name, $validator, $params = null)
+    {
+        $this->checkValidator[] = array($name, $validator, $params);
+
+        return $this;
+    }
+
     public function addPostValidator($name, $validator, $params = null)
     {
-        $this->checkValidator['_POST_' . $name][] = array($validator, $params);
+        $this->checkValidator[] = array('_POST_' . $name, $validator, $params);
 
         return $this;
     }
 
     public function addGetValidator($name, $validator, $params = null)
     {
-        $this->checkValidator['_GET_' . $name][] = array($validator, $params);
+        $this->checkValidator[] = array('_GET_' . $name, $validator, $params);
 
         return $this;
     }
@@ -229,8 +243,8 @@ class Validator
      */
     public function isValid()
     {
+        // Kiểm tra xem field có giá trị ko, thực chất là post với get
         foreach ($this->name as $name) {
-
             /* Kiểm tra tồn tại */
             if (!array_key_exists($name, $this->value)) {
                 return false;
@@ -253,31 +267,41 @@ class Validator
                     return false;
                 }
             }
+        }
 
-            $value = $this->value[$name];
+        /* Kiểm tra */
+        foreach ($this->checkValidator as $validatorInfo) {
+            $name = $validatorInfo[0];
+            $params = $validatorInfo[2];
+            $validator = $validatorInfo[1];
 
-            /* Kiểm tra */
-            if (isset($this->checkValidator[$name])) {
-                foreach ($this->checkValidator[$name] as $validatorInfo) {
-                    $params = $validatorInfo[1];
-                    $validator = $validatorInfo[0];
-
-                    // Khởi tạo validator nếu chưa có
-                    if (!isset($this->validator[$validator])) {
-                        $class = '\Vhmis\Validator\\' . $validator;
-                        $this->validator[$validator] = new $class();
-                    }
-
-                    // Thiết lập options
-                    if ($params !== null) {
-                        $this->validator[$validator]->setOptions($params);
-                    }
-
-                    if (!$this->validator[$validator]($value)) {
-                        return false;
-                    }
-                }
+            if ($this->value[$name] === null) {
+                //Không thực hiện kiểm tra
+                continue;
             }
+
+            if (array_key_exists($name, $this->standardValue)) {
+                $value = $this->standardValue[$name];
+            } else {
+                $value = $this->value[$name];
+            }
+
+            // Khởi tạo validator nếu chưa có
+            if (!isset($this->validator[$validator])) {
+                $class = '\Vhmis\Validator\\' . $validator;
+                $this->validator[$validator] = new $class();
+            }
+
+            // Thiết lập options
+            if ($params !== null) {
+                $this->validator[$validator]->setOptions($params);
+            }
+
+            if (!$this->validator[$validator]($value)) {
+                return false;
+            }
+
+            $this->standardValue[$name] = $this->validator[$validator]->getStandardValue();
         }
 
         return true;
