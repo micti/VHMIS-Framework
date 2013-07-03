@@ -317,4 +317,24 @@ class Validator
 
         return true;
     }
+
+    /**
+     * Lấy giá trị ban đầu của 1 trường
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getRawValue($name) {
+        return $this->value[$name];
+    }
+
+    /**
+     * Lấy giá trị chuẩn của 1 trường
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getStandardValue($name) {
+        return $this->standardValue[$name];
+    }
 }
