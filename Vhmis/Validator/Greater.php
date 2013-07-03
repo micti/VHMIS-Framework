@@ -2,7 +2,7 @@
 
 namespace Vhmis\Validator;
 
-class Equal extends ValidatorAbstract
+class Greater extends ValidatorAbstract
 {
     /**
      * Giá trị được đem ra so sánh
@@ -21,7 +21,7 @@ class Equal extends ValidatorAbstract
     }
 
     /**
-     * Kiểm tra xem có bằng với giá trị cần so sánh không
+     * Kiểm tra xem có lớn hơn với giá trị cần so sánh không
      *
      * @param mixed $value
      * @return boolean
@@ -31,7 +31,7 @@ class Equal extends ValidatorAbstract
         $this->value = $value;
         $this->standardValue = null;
 
-        if ($value !== $this->comparedValue) {
+        if ($value <= $this->comparedValue) {
             return false;
         }
 
