@@ -15,19 +15,21 @@ $validator = new Vhmis\Validator\Validator;
 
 $postn = array('day_in_month', 'day_in_month2', 'day_in_month1', 'day', 'base');
 $postv = array(
-    'day_in_month' => array(1,2,3),
-    'day_in_month2' => array(),
-    'day_in_month1' => 'a',
+    'day_in_month' => null,
+    'day_in_month2' => null,
+    'day_in_month1' => '',
     'day' => '07/12/2013',
-    'base' => '11,111.'
+    'base' => ''
 );
 
 $validator->fromPost($postn, $postv);
-//$validator->addPostAllowEmpty(array('day_in_month1'));
+$validator->addPostAllowNull(array('day_in_month2', 'day_in_month'));
+$validator->addPostAllowEmpty(array('day_in_month1', 'base'));
+$validator->addField('a', '', true);
 //$validator->addPostValidator('day_in_month', 'Arr')->addPostValidator('day_in_month2', 'Arr')->addPostValidator('day_in_month1', 'Arr');
 //$validator->addPostValidator('day', 'Int');
 //$validator->addPostValidator('base', 'Float');
-$validator->addPostValidator('day', 'Date');
+//$validator->addPostValidator('day', 'Date');
 
 var_dump($validator->isValid());
 
