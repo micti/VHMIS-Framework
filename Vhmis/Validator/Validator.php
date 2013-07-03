@@ -2,110 +2,142 @@
 
 namespace Vhmis\Validator;
 
-/**
- * Bộ kiểm tra dữ liệu
- */
-class Validator extends ValidatorAbstract
+class Validator
 {
+    /**
+     * Danh sách các trường của GET
+     *
+     * @var array
+     */
+    protected $getName = array();
 
     /**
-     * Validator này sử dụng chung, dùng để kiểm tra nhiều thứ, nên hàm isValid
-     * không được sử dụng
-     * Kết quả luôn trả về là false
+     * Giá trị các trường của GET
      *
-     * @param type $value Giá trị cần kiểm tra
-     * @param type $option
+     * @var array
+     */
+    protected $getValue = array();
+
+    /**
+     * Danh sách các trường của POST
+     *
+     * @var array
+     */
+    protected $postName = array();
+
+    /**
+     * Giá trị các trường của POST
+     *
+     * @var array
+     */
+    protected $postValue = array();
+
+    /**
+     * Giá trị các trường của POST được phép empty
+     *
+     * @var array
+     */
+    protected $postAllowEmpty = array();
+
+    /**
+     * Danh sách các đối tượng validator
+     *
+     * @var \Vhmis\Validator\ValidatorAbstract[]
+     */
+    protected $validator = array();
+
+    /**
+     * Danh sách các trường POST cần kiểm tra
+     *
+     * @param array $name Mảng danh sách tên
+     * @param array $value Mảng danh sách giá trị
+     * @return \Vhmis\Validator\Validator
+     */
+    public function fromPost($name, $value)
+    {
+        $this->postName = $name;
+        $this->postValue = $value;
+
+        return $this;
+    }
+
+    /**
+     * Danh sách các trường GET cần kiểm tra
+     *
+     * @param array $name Mảng danh sách tên
+     * @param array $value Mảng danh sách giá trị
+     * @return \Vhmis\Validator\Validator
+     */
+    public function fromGet($name, $value)
+    {
+        $this->getName = $name;
+        $this->getValue = $value;
+
+        return $this;
+    }
+
+    public function addPostAllowEmpty($name)
+    {
+        $this->postAllowEmpty = $name;
+    }
+
+    public function addPostValidator($name, $validator, $params = null)
+    {
+        $this->postValidator[$name][] = array($validator, $params);
+
+        return $this;
+    }
+
+    /**
+     * Kiểm tra
+     *
      * @return boolean
      */
-    public function isValid($value, $option = null)
+    public function isValid()
     {
-        if (!is_array($option)) {
-            $this->_setMessage('Không có thuộc tính kèm', 1, 'notoption');
-            return false;
-        }
-        
-        if (!isset($option['type']) || $option['type'] !== 'NotEmpty' || $option['type'] !== 'InRange' ||
-             $option['type'] !== 'Regex') {
-            $this->_setMessage('Không có kiểu kiểm tra', 2, 'nottype');
-            return false;
-        }
-        
-        if ($option['type'] == 'NotEmpty') {
-            return $this->isNotEmpty($value);
-        } elseif ($option['type'] == 'InRange') {
-            if (!isset($option['max']) || !isset($option['min'])) {
-                $this->_setMessage('Không đủ tham số', 3, 'notparam');
+        /* 1. Kiểm tra POST */
+        foreach ($this->postName as $name) {
+
+            /* Kiểm tra tồn tại */
+            if (!isset($this->postValue[$name])) {
                 return false;
             }
-            
-            return $this->isInRange($value, $option['min'], $option['max']);
-        } elseif ($option['type'] == 'Regex') {
-            if (!isset($option['regex'])) {
-                $this->_setMessage('Không đủ tham số', 3, 'notparam');
-                return false;
+
+            /* Kiểm tra rỗng */
+            if ($this->postValue[$name] === '') {
+                if (in_array($name, $this->postAllowEmpty)) {
+                    continue;
+                } else {
+                    return false;
+                }
             }
-            
-            return $this->isRegex($value, $option['pattern']);
-        }
-        
-        $this->_setMessage('', '', '');
-        return false;
-    }
 
-    /**
-     * Kiểm tra xem một chuỗi có phải là không rỗng hay không
-     *
-     * @param string $value Chuỗi cần kiểm tra
-     * @return boolean
-     */
-    public function isNotEmpty($value)
-    {
-        $value = (string) $value;
-        
-        $result = $this->_isValidRegex($value, '/[^\s]+/m');
-        
-        if (false === $result) {
-            $this->_setMessage('Giá trị nhập vào rỗng', 4, 'notvalid');
-            return false;
+            $value = $this->postValue[$name];
+
+            /* Kiểm tra */
+            if(isset($this->postValidator[$name])) {
+                foreach($this->postValidator[$name] as $validatorInfo) {
+                    $params = $validatorInfo[1];
+                    $validator = $validatorInfo[0];
+
+                    // Khởi tạo validator nếu chưa có
+                    if(!isset($this->validator[$validator])) {
+                        $class = '\Vhmis\Validator\\' . $validator;
+                        $this->validator[$validator] = new $class();
+                    }
+
+                    // Thiết lập options
+                    if($params !== null) {
+                        $this->validator[$validator]->setOptions($params);
+                    }
+
+                    if(!$this->validator[$validator]($value)) {
+                        return false;
+                    }
+                }
+            }
         }
-        
+
         return true;
-    }
-
-    /**
-     * Kiểm tra giá trị có nằm trong một khoảng min max nào đó không
-     *
-     * @param string|float|int $value Giá trị cần kiểm tra
-     * @param string|float|int $min Giá trị mốc dưới
-     * @param string|float|int $max Giá trị mốc trên
-     * @return boolean
-     */
-    public function isInRange($value, $min, $max)
-    {
-        $result = $value >= $min && $value <= $max;
-        
-        if (false === $result) {
-            $this->_setMessage('Giá trị nhập vào không nằm trong khoảng %min% - %max%', 4, 'notvalid');
-            return false;
-        }
-        
-        return true;
-    }
-
-    /**
-     * Kiểm tra giá trị có hợp với regex pattern không
-     *
-     * @param type $value Giá trị cần kiểm tra
-     * @param type $pattern Regex
-     * @return boolean
-     */
-    public function isRegex($value, $pattern)
-    {
-        $result = $this->_isValidRegex($value, $pattern);
-        
-        if (false === $result) {
-            $this->_setMessage('Giá trị nhập vào không hợp lệ với %pattern%', 4, 'notvalid');
-            return false;
-        }
     }
 }

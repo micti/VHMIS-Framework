@@ -15,82 +15,85 @@ use Vhmis\I18n\FormatPattern\DateTime as FormatDateTime;
  */
 class Date extends ValidatorAbstract
 {
-
     /**
      * Locale
      *
      * @var string
      */
-    protected $_locale;
+    protected $locale;
 
     /**
      * Format ngày tháng để kiểm tra
      *
      * @var string
      */
-    protected $_format;
+    protected $format;
 
     /**
-     * Khởi tạo, 2 tham số locale và format có thể được truyền vào
-     * Nếu không sẽ sử dụng mặt định sau này
-     *
-     * @param string $locale
-     * @param string $format
+     * Khởi tạo
      */
-    public function __construct($locale = null, $format = null)
+    public function __construct()
     {
-        if (null !== $locale)
-            $this->_locale = $locale;
-        
-        if (null !== $format)
-            $this->_format = $format;
-        
-        if (!is_string($this->_locale)) {
-            $this->_locale = Configure::get('Locale');
-        }
-        
-        if (!is_string($this->_format)) {
-            $this->_format = '';
-        }
-        
-        parent::__construct();
+        $this->locale = Configure::get('Locale') === null ? 'en_US' : Configure::get('Locale');
+        $this->format = FormatDateTime::date($this->locale, 3);
     }
 
-    public function isValid($value, $params = null)
+    /**
+     * Thiết lập
+     *
+     * @param type $options
+     * @return \Vhmis\Validator\ValidatorAbstract
+     */
+    public function setOptions($options)
     {
-        if (!is_string($value) && !is_int($value) && !($value instanceof DateTime)) {
-            $this->_setMessage('Ngày tháng không đúng kiểu', static::DATENOTTYPE, 'datenottype');
+        if (isset($options['locale'])) {
+            $this->locale = $options['locale'];
+        }
+
+        if (isset($options['format'])) {
+            $this->format = $options['format'];
+        } else {
+            $this->format = FormatDateTime::dateNativeFormat($this->locale, 3);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Kiểm tra xem giá trị có phải là ngày tháng không (Có dựa theo locale)
+     *
+     * @param mixed $value
+     * @return boolean
+     */
+    public function isValid($value)
+    {
+        $this->value = $value;
+
+        if (!is_string($value) && !is_int($value) && !($value instanceof \DateTime)) {
             return false;
         }
-        
-        if ($value instanceof DateTime) {
-            $this->_standardValue = $value;
+
+        if ($value instanceof \DateTime) {
+            $this->standardValue = $value;
             return true;
         }
-        
-        if (is_string($value) || is_int($value)) {
-            if ($this->_format === '')
-                $this->_format = FormatDateTime::dateNativeFormat($this->_locale, 3);
-            
-            $date = (is_int($value)) ? new DateTime("@$value") : DateTime::createFromFormat($this->_format, $value);
-            
-            // Có một số ngày tháng sai nhưng được DateTime điều chỉnh lại cho
-            // đúng, đối với trường hợp này
-            // ta vẫn xem như là không hợp lệ
-            $errors = DateTime::getLastErrors();
-            if ($errors['warning_count'] > 0) {
-                $this->_setMessage('Ngày tháng không hợp lệ', static::DATENOTVALID, 'datenotvalid');
-                return false;
-            }
-            
-            if ($date === false) {
-                $this->_setMessage('Ngày tháng không hợp lệ', static::DATENOTVALID, 'datenotvalid');
-                return false;
-            }
-            
-            $this->_standardValue = $date;
+
+
+        $date = (is_int($value)) ? new DateTime("@$value") : DateTime::createFromFormat($this->format, $value);
+
+        // Có một số ngày tháng sai nhưng được DateTime điều chỉnh lại cho
+        // đúng, đối với trường hợp này
+        // ta vẫn xem như là không hợp lệ
+        $errors = DateTime::getLastErrors();
+        if ($errors['warning_count'] > 0) {
+            return false;
         }
-        
+
+        if ($date === false) {
+            return false;
+        }
+
+        $this->standardValue = $date;
         return true;
     }
 }
