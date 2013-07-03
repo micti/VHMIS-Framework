@@ -46,7 +46,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
      */
     public function getStandardValue()
     {
-        return $this->_standardValue;
+        return $this->standardValue;
     }
 
     /**
