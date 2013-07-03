@@ -78,7 +78,7 @@ class Int extends ValidatorAbstract
             return false;
         }
 
-        $this->_standardValue = $parsedInt;
+        $this->standardValue = $parsedInt;
         return true;
     }
 }
