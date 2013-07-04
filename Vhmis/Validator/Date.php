@@ -47,8 +47,8 @@ class Date extends ValidatorAbstract
      */
     public function __construct()
     {
-        $this->locale = Configure::get('Locale') === null ? 'en_US' : Configure::get('Locale');
-        $this->format = FormatDateTime::date($this->locale, 3);
+        $this->locale = Configure::get('Locale') === null ? 'vi_VN' : Configure::get('Locale');
+        $this->format = FormatDateTime::dateNativeFormat($this->locale, 3);
     }
 
     /**
