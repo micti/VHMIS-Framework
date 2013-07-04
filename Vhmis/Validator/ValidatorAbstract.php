@@ -2,6 +2,8 @@
 
 namespace Vhmis\Validator;
 
+use \Vhmis\I18n\Translator;
+
 abstract class ValidatorAbstract implements ValidatorInterface
 {
     /**
@@ -19,24 +21,82 @@ abstract class ValidatorAbstract implements ValidatorInterface
      */
     protected $standardValue;
 
+    /**
+     * Các message báo lỗi
+     *
+     * @var array
+     */
+    protected $messages = array();
+
+    /**
+     * Thông báo kết quả
+     *
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * Mã thông báo kết quả
+     *
+     * @var string
+     */
+    protected $messageCode;
+
+    /**
+     * Translator
+     *
+     * @var \Vhmis\I18n\Translator\Translator
+     */
+    protected $translator;
+
+    /**
+     * Thực thi trực tiếp
+     *
+     * @param mixed $value
+     * @return bool
+     */
     public function __invoke($value)
     {
         return $this->isValid($value);
     }
 
-    public function getMessage()
+    public function setTranslator($translator)
     {
-        return '';
+        if($translator instanceof Translator\Translator) {
+            $this->translator = $translator;
+        }
     }
 
     /**
-     * Lấy mã của kết quả kiểm tra
+     * Thiết lập thông báo
+     *
+     * @param type $message Thông báo
+     * @param type $code Mã thông báo
+     */
+    protected function setMessage($code)
+    {
+        $this->message = $this->messages[$code];
+        $this->messageCode = $code;
+    }
+
+    /**
+     * Lấy thông báo của kết quả kiểm tra
+     *
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * Lấy mã thông báo của kết quả kiểm tra
      *
      * @return string
      */
     public function getMessageCode()
     {
-        return '';
+        return $this->messageCode;
     }
 
     /**
