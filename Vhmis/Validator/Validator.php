@@ -14,8 +14,8 @@ class Validator
      * @var array
      */
     protected $messages = array(
-        self::NOTVALUE => 'Không có giá trị',
-        self::NULLVALUE => 'Giá trị null',
+        self::NOTVALUE   => 'Không có giá trị',
+        self::NULLVALUE  => 'Giá trị null',
         self::EMPTYVALUE => 'Giá trị rỗng'
     );
 
@@ -268,7 +268,13 @@ class Validator
 
     public function addPostValidator($name, $validator, $params = null)
     {
-        $this->checkValidator[] = array('_POST_' . $name, $validator, $params);
+        if (is_array($name)) {
+            foreach ($name as $n) {
+                $this->checkValidator[] = array('_POST_' . $n, $validator, $params);
+            }
+        } else {
+            $this->checkValidator[] = array('_POST_' . $name, $validator, $params);
+        }
 
         return $this;
     }
@@ -325,7 +331,7 @@ class Validator
             $validator = $validatorInfo[1];
 
             // Bỏ qua kiểm tra
-            if (array_key_exists($name, $this->skip)) {
+            if (in_array($name, $this->skip)) {
                 //Không thực hiện kiểm tra
                 continue;
             }
