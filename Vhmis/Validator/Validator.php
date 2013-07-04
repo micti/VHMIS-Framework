@@ -4,6 +4,21 @@ namespace Vhmis\Validator;
 
 class Validator
 {
+    const NOTVALUE = 'notvalue';
+    const NULLVALUE = 'nullvalue';
+    const EMPTYVALUE = 'emptyvalue';
+
+    /**
+     * Các message báo lỗi
+     *
+     * @var array
+     */
+    protected $messages = array(
+        self::NOTVALUE => 'Không có giá trị',
+        self::NULLVALUE => 'Giá trị null',
+        self::EMPTYVALUE => 'Giá trị rỗng'
+    );
+
     /**
      * Danh sách các trường
      *
@@ -60,6 +75,27 @@ class Validator
      * @var \Vhmis\Validator\ValidatorAbstract[]
      */
     protected $validator = array();
+
+    /**
+     * Trường bị lỗi
+     *
+     * @var string
+     */
+    protected $messageField = '';
+
+    /**
+     * Thông báo lỗi
+     *
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * Mã lỗi
+     *
+     * @var string
+     */
+    protected $messageCode;
 
     /**
      * Thêm một trường vào để kiểm tra
@@ -255,6 +291,7 @@ class Validator
         foreach ($this->name as $name) {
             /* Kiểm tra tồn tại */
             if (!array_key_exists($name, $this->value)) {
+                $this->setMessage($name, $this->messages[self::NOTVALUE], self::NOTVALUE);
                 return false;
             }
 
@@ -264,6 +301,7 @@ class Validator
                     $this->skip[] = $name;
                     continue;
                 } else {
+                    $this->setMessage($name, $this->messages[self::NULLVALUE], self::NULLVALUE);
                     return false;
                 }
             }
@@ -274,6 +312,7 @@ class Validator
                     $this->skip[] = $name;
                     continue;
                 } else {
+                    $this->setMessage($name, $this->messages[self::EMPTYVALUE], self::EMPTYVALUE);
                     return false;
                 }
             }
@@ -309,6 +348,7 @@ class Validator
             }
 
             if (!$this->validator[$validator]($value)) {
+                $this->setMessage($name, $this->validator[$validator]->getMessage(), $this->validator[$validator]->getMessageCode());
                 return false;
             }
 
@@ -324,7 +364,8 @@ class Validator
      * @param string $name
      * @return mixed
      */
-    public function getRawValue($name) {
+    public function getRawValue($name)
+    {
         return $this->value[$name];
     }
 
@@ -334,7 +375,32 @@ class Validator
      * @param string $name
      * @return mixed
      */
-    public function getStandardValue($name) {
+    public function getStandardValue($name)
+    {
         return $this->standardValue[$name];
+    }
+
+    public function setMessage($field, $message, $code)
+    {
+        $this->message = $message;
+        $this->messageCode = $code;
+        $this->messageField = $field;
+    }
+
+    public function getMessage($type = '')
+    {
+        if ($type === 'field') {
+            return $this->messageField;
+        } else if ($type === 'message') {
+            return $this->message;
+        } else if ($type === 'code') {
+            return $this->messageCode;
+        } else {
+            return array(
+                'field'   => $this->messageField,
+                'message' => $this->message,
+                'code'    => $this->messageCode
+            );
+        }
     }
 }
