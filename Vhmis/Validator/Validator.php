@@ -403,4 +403,21 @@ class Validator
             );
         }
     }
+
+    /**
+     * Reset lại thông tin validator
+     * 
+     * @return \Vhmis\Validator\Validator
+     */
+    public function reset()
+    {
+        $this->allowEmpty = array();
+        $this->allowNull = array();
+        $this->value = array();
+        $this->name = array();
+        $this->checkValidator = array();
+        $this->message = $this->messageCode = $this->messageField = '';
+
+        return $this;
+    }
 }
