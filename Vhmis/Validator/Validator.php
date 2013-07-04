@@ -386,33 +386,49 @@ class Validator
         return $this->standardValue[$name];
     }
 
+    /**
+     * Thiết lập thông tin lỗi
+     *
+     * @param type $field Trường bị lỗi
+     * @param type $message Thông báo lỗi
+     * @param type $code Mã lỗi
+     */
     public function setMessage($field, $message, $code)
     {
+        $this->messageField = $field;
         $this->message = $message;
         $this->messageCode = $code;
-        $this->messageField = $field;
     }
 
-    public function getMessage($type = '')
+    /**
+     * Lấy thông tin lỗi
+     *
+     * @return array
+     */
+    public function getMessage()
     {
-        if ($type === 'field') {
-            return $this->messageField;
-        } else if ($type === 'message') {
-            return $this->message;
-        } else if ($type === 'code') {
-            return $this->messageCode;
+        if (strpos($this->messageField, '_POST_') === 0) {
+            $field = str_replace('_POST_', '', $this->messageField);
+            $method = 'post';
+        } else if (strpos($this->messageField, '_GET_') === 0) {
+            $field = str_replace('_GET_', '', $this->messageField);
+            $method = 'get';
         } else {
-            return array(
-                'field'   => $this->messageField,
-                'message' => $this->message,
-                'code'    => $this->messageCode
-            );
+            $field = $this->messageField;
+            $method = '';
         }
+
+        return array(
+            'field'   => $field,
+            'message' => $this->message,
+            'code'    => $this->messageCode,
+            'method'  => $method
+        );
     }
 
     /**
      * Reset lại thông tin validator
-     * 
+     *
      * @return \Vhmis\Validator\Validator
      */
     public function reset()
