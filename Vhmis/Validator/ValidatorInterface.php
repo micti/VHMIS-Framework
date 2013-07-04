@@ -21,7 +21,7 @@ interface ValidatorInterface
     /**
      * Dùng để lấy code lỗi
      *
-     * @return int
+     * @return string
      */
     public function getMessageCode();
 }
