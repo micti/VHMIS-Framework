@@ -4,6 +4,17 @@ namespace Vhmis\Validator;
 
 class Equal extends ValidatorAbstract
 {
+    const NOTEQUAL = 'notequal';
+
+    /**
+     * Các thông báo lỗi
+     *
+     * @var array
+     */
+    protected $messages = array(
+        self::NOTEQUAL => 'Giá trị không bằng giá trị được so sánh'
+    );
+
     /**
      * Giá trị được đem ra so sánh
      *
@@ -32,6 +43,7 @@ class Equal extends ValidatorAbstract
         $this->standardValue = null;
 
         if ($value !== $this->comparedValue) {
+            $this->setMessage(self::NOTEQUAL);
             return false;
         }
 

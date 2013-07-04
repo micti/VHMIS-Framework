@@ -10,6 +10,17 @@ use Vhmis\Config\Configure;
  */
 class Float extends ValidatorAbstract
 {
+    const NOTFLOAT = 'notarray';
+
+    /**
+     * Các thông báo lỗi
+     *
+     * @var array
+     */
+    protected $messages = array(
+        self::NOTFLOAT => 'Giá trị không phải là số thực'
+    );
+
     /**
      * Locale
      *
@@ -51,6 +62,7 @@ class Float extends ValidatorAbstract
         $this->value = $value;
 
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            $this->setMessage(self::NOTFLOAT);
             return false;
         }
 
@@ -68,6 +80,7 @@ class Float extends ValidatorAbstract
 
         $parsedFloat = $format->parse($value, NumberFormatter::TYPE_DOUBLE);
         if (intl_is_failure($format->getErrorCode())) {
+            $this->setMessage(self::NOTFLOAT);
             return false;
         }
 
@@ -85,6 +98,7 @@ class Float extends ValidatorAbstract
 
         // Kiểm tra lại
         if (strval($parsedFloat) !== $valueFiltered) {
+            $this->setMessage(self::NOTFLOAT);
             return false;
         }
 

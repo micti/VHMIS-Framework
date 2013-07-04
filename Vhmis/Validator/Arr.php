@@ -6,6 +6,11 @@ class Arr extends ValidatorAbstract
 {
     const NOTARRAY = 'notarray';
 
+    /**
+     * Các thông báo lỗi
+     *
+     * @var array
+     */
     protected $messages = array(
         self::NOTARRAY => 'Giá trị không phải là mảng'
     );

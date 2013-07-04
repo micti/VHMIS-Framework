@@ -22,21 +22,21 @@ abstract class ValidatorAbstract implements ValidatorInterface
     protected $standardValue;
 
     /**
-     * Các message báo lỗi
+     * Các thông báo lỗi
      *
      * @var array
      */
     protected $messages = array();
 
     /**
-     * Thông báo kết quả
+     * Thông báo lỗi
      *
      * @var string
      */
     protected $message;
 
     /**
-     * Mã thông báo kết quả
+     * Mã lỗi
      *
      * @var string
      */

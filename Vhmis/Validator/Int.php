@@ -10,6 +10,17 @@ use Vhmis\Config\Configure;
  */
 class Int extends ValidatorAbstract
 {
+    const NOTINT = 'notarray';
+
+    /**
+     * Các thông báo lỗi
+     *
+     * @var array
+     */
+    protected $messages = array(
+        self::NOTINT => 'Giá trị không phải là số nguyên'
+    );
+
     /**
      * Locale
      *
@@ -51,6 +62,7 @@ class Int extends ValidatorAbstract
         $this->value = $value;
 
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            $this->setMessage(self::NOTINT);
             return false;
         }
 
@@ -63,6 +75,7 @@ class Int extends ValidatorAbstract
 
         $parsedInt = $format->parse($value, NumberFormatter::TYPE_INT64);
         if (intl_is_failure($format->getErrorCode())) {
+            $this->setMessage(self::NOTINT);
             return false;
         }
 
@@ -75,6 +88,7 @@ class Int extends ValidatorAbstract
 
         // Kiểm tra lại
         if (strval($parsedInt) !== $valueFiltered) {
+            $this->setMessage(self::NOTINT);
             return false;
         }
 

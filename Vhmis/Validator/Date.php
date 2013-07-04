@@ -15,6 +15,19 @@ use Vhmis\I18n\FormatPattern\DateTime as FormatDateTime;
  */
 class Date extends ValidatorAbstract
 {
+    const NOTDATE = 'notdate';
+    const NOTVALID = 'notvalid';
+
+    /**
+     * Các thông báo lỗi
+     *
+     * @var array
+     */
+    protected $messages = array(
+        self::NOTDATE => 'Không phải là ngày',
+        self::NOTVALID => 'Ngày không hợp lệ'
+    );
+
     /**
      * Locale
      *
@@ -69,7 +82,8 @@ class Date extends ValidatorAbstract
     {
         $this->value = $value;
 
-        if (!is_string($value) && !is_int($value) && !($value instanceof \DateTime)) {
+        if (!is_string($value) && !($value instanceof \DateTime)) {
+            $this->setMessage(self::NOTDATE);
             return false;
         }
 
@@ -79,17 +93,19 @@ class Date extends ValidatorAbstract
         }
 
 
-        $date = (is_int($value)) ? new DateTime("@$value") : DateTime::createFromFormat($this->format, $value);
+        $date = DateTime::createFromFormat($this->format, $value);
 
         // Có một số ngày tháng sai nhưng được DateTime điều chỉnh lại cho
         // đúng, đối với trường hợp này
         // ta vẫn xem như là không hợp lệ
         $errors = DateTime::getLastErrors();
         if ($errors['warning_count'] > 0) {
+            $this->setMessage(self::NOTVALID);
             return false;
         }
 
         if ($date === false) {
+            $this->setMessage(self::NOTDATE);
             return false;
         }
 

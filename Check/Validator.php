@@ -9,6 +9,8 @@ require '../Vhmis/Validator/Int.php';
 require '../Vhmis/Validator/Float.php';
 require '../Vhmis/Validator/Date.php';
 require '../Vhmis/Validator/Equal.php';
+require '../Vhmis/Validator/Greater.php';
+require '../Vhmis/Validator/Range.php';
 require '../Vhmis/I18n/FormatPattern/DateTime.php';
 require '../Vhmis/DateTime/DateTime.php';
 
@@ -28,13 +30,17 @@ $validator->addPostAllowNull(array('day_in_month2', 'day_in_month'));
 $validator->addPostAllowEmpty(array('day_in_month1', 'base'));
 $validator->addField('a', '', true);
 $validator->addField('b', '1');
-$validator->addValidator('b', 'Int');
-$validator->addValidator('b', 'Equal', array('compare' => 1));
+//$validator->addValidator('b', 'Int');
+//$validator->addValidator('b', 'Equal', array('compare' => 1));
+//$validator->addValidator('b', 'Greater', array('compare' => 0));
+//$validator->addValidator('b', 'Greater', array('compare' => -2));
+//$validator->addValidator('b', 'Range', array('min' => 2, 'max' => 3));
 //$validator->addPostValidator('day_in_month', 'Arr')->addPostValidator('day_in_month2', 'Arr')->addPostValidator('day_in_month1', 'Arr');
 //$validator->addPostValidator('day', 'Int');
 //$validator->addPostValidator('base', 'Float');
 //$validator->addPostValidator('day', 'Date');
+$validator->addValidator('b', 'Arr');
 
-var_dump($validator->isValid());
-
-var_dump($validator);
+if(!$validator->isValid()) {
+    print_r($validator->getMessage());
+}
