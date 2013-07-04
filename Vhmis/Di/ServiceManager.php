@@ -104,4 +104,14 @@ class ServiceManager implements DiAwareInterface
 
         return $this->di->get($name . 'Session');
     }
+
+    /**
+     * Lấy validator
+     * 
+     * @return \Vhmis\Validator\Validator
+     */
+    public function getValidator()
+    {
+        return $this->get('Vhmis\Validator\Validator');
+    }
 }
