@@ -322,6 +322,8 @@ class Validator
                     return false;
                 }
             }
+
+            $this->standardValue[$name] = $this->value[$name];
         }
 
         /* Kiểm tra */
@@ -336,11 +338,7 @@ class Validator
                 continue;
             }
 
-            if (array_key_exists($name, $this->standardValue)) {
-                $value = $this->standardValue[$name];
-            } else {
-                $value = $this->value[$name];
-            }
+            $value = $this->standardValue[$name];
 
             // Khởi tạo validator nếu chưa có
             if (!isset($this->validator[$validator])) {
@@ -384,6 +382,17 @@ class Validator
     public function getStandardValue($name)
     {
         return $this->standardValue[$name];
+    }
+
+    /**
+     * Lấy giá trị chuẩn của 1 trường thuộc post
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getPostStandardValue($name)
+    {
+        return $this->standardValue['_POST_' . $name];
     }
 
     /**
