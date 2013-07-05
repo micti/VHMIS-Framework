@@ -31,7 +31,7 @@ class Greater extends ValidatorAbstract
         $this->value = $value;
         $this->standardValue = null;
 
-        if ($value <= $this->comparedValue) {
+        if ($value < $this->comparedValue) {
             return false;
         }
 
