@@ -68,24 +68,6 @@ function ___loadFile($filename, $path, $once = false)
 }
 
 /**
- * Hàm kiểm tra tên app
- *
- * @param string $app Tên ứng dụng dạng url (thường rút gọn, ko viết hoa, sử dụng ở url
- *        hoặc đặc tên biến, index mảng)
- * @return boolean string nếu ko có apps, nếu có trả về tên App
- */
-function ___checkApp($app)
-{
-    $config = ___loadConfig('Applications', false);
-
-    if (!in_array($app, $config['apps']['list']['url'])) {
-        return false;
-    }
-
-    return $config['apps']['list']['name'][$app];
-}
-
-/**
  * Remove Invisible Characters, hàm từ CI
  *
  * This prevents sandwiching null characters
