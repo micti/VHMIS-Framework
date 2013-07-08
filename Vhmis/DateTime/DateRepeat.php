@@ -171,7 +171,7 @@ class DateRepeat
         $this->objDateEnd = new DateTime();
         $this->objDateRangeBegin = new DateTime();
         $this->objDateRangeEnd = new DateTime();
-        
+
         $this->objDate->setStartDayOfWeek($this->startDateOfWeek);
     }
 
@@ -531,7 +531,7 @@ class DateRepeat
             $skip = ceil($diff / $this->freq) * $this->freq;
             $this->objDate->addDay($skip);
         } else {
-            $this->objDateRangeBegin->modify($this->objDate->formatISO());
+            $this->objDateRangeBegin->modify($this->objDate->formatISO(1));
         }
 
         while (true) {
@@ -545,7 +545,7 @@ class DateRepeat
 
             // Bỏ qua nếu vẫn chưa vào range
             if ($this->objDate >= $this->objDateRangeBegin) {
-                $dates[] = $this->objDate->formatISO(0);
+                $dates[] = $this->objDate->formatISO(1);
             }
 
             $this->objDate->addDay($this->freq);
@@ -574,7 +574,7 @@ class DateRepeat
             $skip = ceil($diff / $this->freq) * $this->freq;
             $this->objDate->modify('+ ' . $skip . ' weeks');
         } else {
-            $this->objDateRangeBegin->modify($this->objDate->formatISO());
+            $this->objDateRangeBegin->modify($this->objDate->formatISO(1));
         }
 
         while (true) {
@@ -596,7 +596,7 @@ class DateRepeat
                 }
 
                 // Thêm vào danh sách lặp lại
-                $dates[] = $this->objDate->formatISO(0);
+                $dates[] = $this->objDate->formatISO(1);
             }
 
             // Nhảy đến tuần tiếp theo
@@ -621,7 +621,7 @@ class DateRepeat
             $skip = ceil($diff / $this->freq) * $this->freq;
             $this->objDate->addMonth($skip);
         } else {
-            $this->objDateRangeBegin->modify($this->objDate->formatISO());
+            $this->objDateRangeBegin->modify($this->objDate->formatISO(1));
         }
 
         while (true) {
@@ -645,7 +645,7 @@ class DateRepeat
                     }
 
                     // Thêm vào danh sách lặp lại
-                    $dates[] = $this->objDate->formatISO(0);
+                    $dates[] = $this->objDate->formatISO(1);
                 }
 
                 // Nhảy đến tháng tiếp theo
@@ -667,7 +667,7 @@ class DateRepeat
                 }
 
                 // Thêm vào danh sách lặp lại
-                $dates[] = $this->objDate->formatISO(0);
+                $dates[] = $this->objDate->formatISO(1);
 
                 // Nhảy đến tháng tiếp theo
                 $this->objDate->addMonth($this->freq);
@@ -692,7 +692,7 @@ class DateRepeat
             $skip = ceil($diff / $this->freq) * $this->freq;
             $this->objDate->addYear($skip);
         } else {
-            $this->objDateRangeBegin->modify($this->objDate->formatISO());
+            $this->objDateRangeBegin->modify($this->objDate->formatISO(1));
         }
 
         while (true) {
@@ -725,7 +725,7 @@ class DateRepeat
                 }
 
                 // Thêm vào danh sách lặp lại
-                $dates[] = $this->objDate->formatISO(0);
+                $dates[] = $this->objDate->formatISO(1);
             }
 
             // Nhảy đến năm tiếp theo
@@ -779,7 +779,7 @@ class DateRepeat
 
         $goto = ($this->timesEnd - 1) * $this->freq;
 
-        return $this->objDate->addDay($goto)->formatISO();
+        return $this->objDate->addDay($goto)->formatISO(1);
     }
 
     /**
@@ -811,7 +811,7 @@ class DateRepeat
                 $times--;
                 $this->objDate->modify($this->allday[$w] . ' this week');
                 if ($times === 0) {
-                    return $this->objDate->formatISO(0);
+                    return $this->objDate->formatISO(1);
                 }
             }
         }
@@ -827,7 +827,7 @@ class DateRepeat
         }
 
         if ($timesLastWeek === 0) {
-            return $this->objDate->modify($this->allday[end($wdays)] . ' this week')->formatISO(0);
+            return $this->objDate->modify($this->allday[end($wdays)] . ' this week')->formatISO(1);
         }
 
         // Đến tuần cuối cùng
@@ -836,7 +836,7 @@ class DateRepeat
             $timesLastWeek--;
             $this->objDate->modify($this->allday[$w] . ' this week');
             if ($timesLastWeek === 0) {
-                return $this->objDate->formatISO(0);
+                return $this->objDate->formatISO(1);
             }
         }
     }
@@ -869,7 +869,7 @@ class DateRepeat
                     $times--;
                     $this->objDate->setDay($d);
                     if ($times === 0) {
-                        return $this->objDate->formatISO(0);
+                        return $this->objDate->formatISO(1);
                     }
                 }
             }
@@ -885,7 +885,7 @@ class DateRepeat
             }
 
             if ($timesLastMonth === 0) {
-                return $this->objDate->setDay(end($days))->formatISO(0);
+                return $this->objDate->setDay(end($days))->formatISO(1);
             }
 
             // Đến tháng cuối cùng
@@ -895,7 +895,7 @@ class DateRepeat
                 $timesLastMonth--;
                 $this->objDate->setDay($d);
                 if ($timesLastMonth === 0) {
-                    return $this->objDate->formatISO(0);
+                    return $this->objDate->formatISO(1);
                 }
             }
         }
@@ -908,7 +908,7 @@ class DateRepeat
             //Tim
             $this->findDayByWeekday();
 
-            return $this->objDate->formatISO();
+            return $this->objDate->formatISO(1);
         }
 
         return null;
@@ -942,7 +942,7 @@ class DateRepeat
                 $times--;
                 $this->objDate->setMonth($m);
                 if ($times === 0) {
-                    return $this->objDate->formatISO(0);
+                    return $this->objDate->formatISO(1);
                 }
             }
         }
@@ -958,7 +958,7 @@ class DateRepeat
         }
 
         if ($timesLastYear === 0) {
-            return $this->objDate->setMonth(end($months))->formatISO(0);
+            return $this->objDate->setMonth(end($months))->formatISO(1);
         }
 
         // Đến năm cuối cùng
@@ -968,7 +968,7 @@ class DateRepeat
             $timesLastYear--;
             $this->objDate->setMonth($m);
             if ($timesLastYear === 0) {
-                return $this->objDate->formatISO(0);
+                return $this->objDate->formatISO(1);
             }
         }
     }
