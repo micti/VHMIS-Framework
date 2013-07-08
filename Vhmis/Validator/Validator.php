@@ -305,6 +305,7 @@ class Validator
             if ($this->value[$name] === null) {
                 if (in_array($name, $this->allowNull)) {
                     $this->skip[] = $name;
+                    $this->standardValue[$name] = null;
                     continue;
                 } else {
                     $this->setMessage($name, $this->messages[self::NULLVALUE], self::NULLVALUE);
@@ -316,6 +317,7 @@ class Validator
             if ($this->value[$name] === '') {
                 if (in_array($name, $this->allowEmpty)) {
                     $this->skip[] = $name;
+                    $this->standardValue[$name] = '';
                     continue;
                 } else {
                     $this->setMessage($name, $this->messages[self::EMPTYVALUE], self::EMPTYVALUE);
