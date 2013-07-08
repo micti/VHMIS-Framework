@@ -107,11 +107,11 @@ class ServiceManager implements DiAwareInterface
 
     /**
      * Lấy validator
-     * 
+     *
      * @return \Vhmis\Validator\Validator
      */
     public function getValidator()
     {
-        return $this->get('Vhmis\Validator\Validator');
+        return $this->get('\Vhmis\Validator\Validator');
     }
 }
