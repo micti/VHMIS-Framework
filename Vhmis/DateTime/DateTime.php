@@ -358,6 +358,17 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Thiết lập lại ngày giờ hiện tại
+     *
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function setNow()
+    {
+        $this->setTimestamp(time());
+
+        return $this;
+    }
+
     /**
      * Tìm xem có quan hệ với một ngày nào đó không
      *
@@ -391,6 +402,7 @@ class DateTime extends \DateTime
         return $relative;
     }
 
+    /**
      * Lấy ngày của thời gian hiện tại (2 chữ số)
      *
      * @return string
