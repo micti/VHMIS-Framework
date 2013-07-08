@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -9,6 +8,7 @@
  * @package Vhmis_I18n
  * @since Vhmis v2.0
  */
+
 namespace Vhmis\I18n\Output;
 
 use \IntlDateFormatter;
@@ -22,7 +22,6 @@ use \IntlDateFormatter;
  */
 class DateTime
 {
-
     /**
      * Locale mặc định
      *
@@ -67,40 +66,58 @@ class DateTime
     public function date($value, $style)
     {
         $timeStyle = IntlDateFormatter::NONE;
-        
+
         $formatter = md5($this->_locale . $style . $timeStyle);
-        
+
         if (!isset($this->_formatters[$formatter])) {
             $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, $style, $timeStyle);
         }
-        
+
         if (is_string($value)) {
             $value = strtotime($value);
             if ($value === false)
                 return '';
         }
-        
+
         $string = $this->_formatters[$formatter]->format($value);
         return $string === false ? '' : $string;
     }
 
-    public function dateByPattern($value, $pattern)
+    public function dateTime($value, $dateStyle, $timeStyle)
     {
-        $formatter = md5($this->_locale . IntlDateFormatter::FULL . IntlDateFormatter::FULL);
-        
+        $formatter = md5($this->_locale . $dateStyle . $timeStyle);
+
         if (!isset($this->_formatters[$formatter])) {
-            $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, IntlDateFormatter::FULL, 
-                IntlDateFormatter::FULL);
+            $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, $dateStyle, $timeStyle);
         }
-        
+
         if (is_string($value)) {
             $value = strtotime($value);
             if ($value === false)
                 return '';
         }
-        
+
+        //$this->_formatters[$formatter]->setPattern(null);
+        $string = $this->_formatters[$formatter]->format($value);
+        return $string === false ? '' : $string;
+    }
+
+    public function customPattern($value, $pattern)
+    {
+        $formatter = md5($this->_locale . 'custom');
+
+        if (!isset($this->_formatters[$formatter])) {
+            $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL);
+        }
+
+        if (is_string($value)) {
+            $value = strtotime($value);
+            if ($value === false)
+                return '';
+        }
+
         $this->_formatters[$formatter]->setPattern($pattern);
-        
+
         $string = $this->_formatters[$formatter]->format($value);
         return $string === false ? '' : $string;
     }
