@@ -358,6 +358,39 @@ class DateTime extends \DateTime
     }
 
     /**
+    /**
+     * Tìm xem có quan hệ với một ngày nào đó không
+     *
+     * Các giá trị năm tháng tuần ngày không hơn nhau quá 1 đơn vị
+     */
+    public function findRelative($date)
+    {
+        $diffDay = $date->diffDay($this);
+        $diffWeek = $date->diffWeek($this);
+        $diffMonth = $date->diffMonth($this);
+        $diffYear = $date->diffYear($this);
+
+        $relative = array();
+
+        if($diffDay >= -1 && $diffDay <= 1) {
+            $relative['d'] = $diffDay;
+        }
+
+        if($diffWeek >= -1 && $diffWeek <= 1) {
+            $relative['w'] = $diffWeek;
+        }
+
+        if($diffMonth >= -1 && $diffMonth <= 1) {
+            $relative['m'] = $diffMonth;
+        }
+
+        if($diffYear >= -1 && $diffYear <= 1) {
+            $relative['y'] = $diffYear;
+        }
+
+        return $relative;
+    }
+
      * Lấy ngày của thời gian hiện tại (2 chữ số)
      *
      * @return string
