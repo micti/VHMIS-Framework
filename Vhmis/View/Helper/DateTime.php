@@ -37,6 +37,6 @@ class DateTime extends HelperAbstract
 
     public function linkYearWeek($date)
     {
-        return date('o-\WW', strtotime($date));
+        return date('o-\wW', strtotime($date));
     }
 }
