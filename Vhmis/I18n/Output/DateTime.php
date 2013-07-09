@@ -58,32 +58,37 @@ class DateTime
     }
 
     /**
-     * Xuất ngày theo các định dạng theo kiểu định nghĩa sẵn trong PHP
+     * Xuất ngày theo các kiểu định dạng có sẵn trong PHP
      *
-     * @param type $value
-     * @param type $style Kiểu
+     * @param mixed $value
+     * @param int $style Kiểu
      * @return string
      */
     public function date($value, $style)
     {
-        $timeStyle = IntlDateFormatter::NONE;
-
-        $formatter = md5($this->_locale . $style . $timeStyle);
-
-        if (!isset($this->_formatters[$formatter])) {
-            $this->_formatters[$formatter] = new IntlDateFormatter($this->_locale, $style, $timeStyle);
-        }
-
-        if (is_string($value)) {
-            $value = strtotime($value);
-            if ($value === false)
-                return '';
-        }
-
-        $string = $this->_formatters[$formatter]->format($value);
-        return $string === false ? '' : $string;
+        return $this->dateTime($value, $style, IntlDateFormatter::NONE);
     }
 
+    /**
+     * Xuất giờ theo các kiểu định dạng có sẵn trong PHP
+     *
+     * @param mixed $value
+     * @param int $style Kiểu
+     * @return string
+     */
+    public function time($value, $style)
+    {
+        return $this->dateTime($value, IntlDateFormatter::NONE, $style);
+    }
+
+    /**
+     * Xuất ngày giờ theo các kiểu định dạng có sẵn trong PHP
+     *
+     * @param type $value
+     * @param type $dateStyle
+     * @param type $timeStyle
+     * @return string
+     */
     public function dateTime($value, $dateStyle, $timeStyle)
     {
         $formatter = md5($this->_locale . $dateStyle . $timeStyle);
