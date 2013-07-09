@@ -36,6 +36,8 @@ class Route implements RouteInterface
 
     const YEARMONTH = '([12][0-9]{3}-0[1-9]|1[012])';
 
+    const YEARWEEK = '([12][0-9]{3}-W(0[1-9]|[1-4][0-9]|5[0-2]))';
+
     /**
      * Link pattern
      *
@@ -103,7 +105,8 @@ class Route implements RouteInterface
         'day' => self::DAY,
         'id' => self::ID,
         'slug' => self::SLUG,
-        'monthyear' => self::YEARMONTH
+        'monthyear' => self::YEARMONTH,
+        'weekyear' => self::YEARWEEK
     );
 
     /**
