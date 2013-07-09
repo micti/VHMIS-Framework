@@ -5,83 +5,152 @@ namespace Vhmis\I18n\Resource;
 class Resource
 {
     /**
-     * Dữ liệu
+     * Mảng chứa dữ liệu
      *
      * @var array
      */
-    protected static $data = array();
+    protected static $i18nData = array();
 
-    public static function locale($locale)
+    /**
+     * Locale mặc định
+     *
+     * @var array
+     */
+    protected static $locale = 'vi';
+
+    /**
+     * Danh mục các locale support
+     *
+     * @var type
+     */
+    protected static $locales = array(
+        'vi',
+        'en',
+        'ko'
+    );
+
+    /**
+     * Danh mục các dữ liệu chính support
+     *
+     * @var type
+     */
+    protected static $main = array(
+        'gregorian' => 'ca-gregorian',
+        'datefields' => 'dateFields',
+        'listPattern',
+        'number',
+        'units'
+    );
+
+    /**
+     * Chỉnh lại tên locale đúng với tên trong dữ liệu CLDR
+     *
+     * @param string $locale
+     * @return string
+     */
+    protected static function fixLocaleName($locale)
     {
         return str_replace('_', '-', $locale);
     }
 
     /**
-     * Load file dữ liệu vào data
+     * Load dữ liệu
      *
-     * @param string $locale
      * @param string $field
+     * @param string $locale
+     * @throws \Exception Ngoại lệ nếu dữ liệu locale không được support
      */
-    public static function loadResource($locale, $field)
+    protected static function loadMain($field, $locale = '')
     {
-        $locale = static::locale($locale);
+        $locale = static::fixLocaleName($locale);
+        $locale = $locale == '' ? self::$locale : str_replace('_', '-', $locale);
 
-        $lang = explode('-', $locale);
-        $lang = $lang[0];
-
-        if (is_readable(__DIR__ . D_SPEC . $locale . D_SPEC . $field . '.php')) {
-            static::$data[$locale . '-' . $field] = include $locale . D_SPEC . $field . '.php';
-            return;
+        if(isset(static::$i18nData[$field])) {
+            throw new \Exception($field . ' I18n Data Not Supported.');
         }
 
-        if (is_readable(__DIR__ . D_SPEC . $lang . D_SPEC . $field . '.php')) {
-            static::$data[$locale . '-' . $field] = include $lang . D_SPEC . $field . '.php';
-            return;
+        list($lang, $ter) = explode('-', $locale, 2);
+
+        $data = array();
+
+        /** pls check **/
+        if (is_readable(__DIR__ . D_SPEC . $locale . D_SPEC . static::$main[$field] . '.php')) {
+            $data = include $locale . D_SPEC . static::$main[$field] . '.php';
         }
+
+        /** pls check **/
+        if (is_readable(__DIR__ . D_SPEC . $lang . D_SPEC . static::$main[$field] . '.php')) {
+            $data = $data + include $lang . D_SPEC . static::$main[$field] . '.php';
+        }
+
+        if($field === 'gregorian') {
+            $data = $data['dates']['calendar']['gregorian'];
+        } else if($field === 'datefields') {
+            $data = $data['dates']['fields'];
+        }
+
+        static::$i18nData[$locale][$field] = $data;
+        unset($data);
     }
 
-    public static function getDateTimePattern($datePattern, $timePattern, $locale = '', $calendar = 'gregorian')
+    /**
+     * Lấy pattern của ngày giờ dựa theo format Id của nó
+     *
+     * Nếu chỉ muốn lấy 1 trong 2 thì truyền vào giá trị rỗng cho một tham số bất kỳ
+     *
+     * @param string $pDate format Id của ngày
+     * @param string $pTime format Id của giờ
+     * @param string $locale
+     * @param string $calendar
+     * @return string
+     */
+    public static function datePattern($pDate, $pTime, $locale = '', $calendar = 'gregorian')
     {
-        $locale = static::locale($locale);
-
-        static::loadResource($locale, 'ca-' . $calendar);
-
-        $index = $locale . '-ca-' . $calendar;
-
-        // Pattern
-        if (isset(static::$data[$index]['dates']['calendars'][$calendar]['dateTimeFormats']['availableFormats'][$datePattern])) {
-            $datePattern = static::$data[$index]['dates']['calendars'][$calendar]['dateTimeFormats']['availableFormats'][$datePattern];
-        } else {
-            $datePattern = '';
+        if($calendar !== 'gregorian') {
+            return '';
         }
 
-        if (isset(static::$data[$index]['dates']['calendars'][$calendar]['dateTimeFormats']['availableFormats'][$timePattern])) {
-            $timePattern = static::$data[$index]['dates']['calendars'][$calendar]['dateTimeFormats']['availableFormats'][$timePattern];
-        } else {
-            $timePattern = '';
+        $locale = static::fixLocaleName($locale);
+        static::loadMain($calendar, $locale);
+
+        if ($pDate !== '' && isset(static::$i18nData[$locale][$calendar]['dateTimeFormats']['availableFormats'][$pDate])) {
+            $pDate = static::$i18nData[$locale][$calendar]['dateTimeFormats']['availableFormats'][$pDate];
         }
 
-        if ($timePattern != '' && $datePattern != '') {
-            $pattern = static::$data[$index]['dates']['calendars'][$calendar]['dateTimeFormats']['short'];
-            $pattern = str_replace(array('{1}', '{0}'), array($datePattern, $timePattern), $pattern);
+        if ($pTime !== '' && isset(static::$i18nData[$locale][$calendar]['dateTimeFormats']['availableFormats'][$pTime])) {
+            $pTime = static::$i18nData[$locale][$calendar]['dateTimeFormats']['availableFormats'][$pTime];
+        }
+
+        if ($pDate != '' && $pTime != '') {
+            $pattern = static::$i18nData[$index][$calendar]['dateTimeFormats']['short'];
+            $pattern = str_replace(array('{1}', '{0}'), array($pDate, $pTime), $pattern);
         } else {
-            $pattern = $timePattern === '' ? $datePattern : $timePattern;
+            $pattern = $pDate === '' ? $pTime : $pDate;
         }
 
         return $pattern;
     }
 
-    public static function getDateField($field, $locale = '') {
-        $locale = static::locale($locale);
+    /**
+     * Lấy dữ liệu trong dateFields
+     *
+     * @param string $field
+     * @param string $locale
+     * @return array
+     */
+    public static function dateField($field, $locale = '') {
+        $locale = static::fixLocaleName($locale);
+        static::loadMain('datefields', $locale);
 
-        static::loadResource($locale, 'dateFields');
-
-        $index = $locale . '-dateFields';
-
-        if (isset(static::$data[$index]['dates']['fields'][$field])) {
-            return static::$data[$index]['dates']['fields'][$field];
+        if (isset(static::$i18nData[$locale]['datefields'][$field])) {
+            return static::$i18nData[$locale]['datefields'][$field];
         }
 
-        return array();
+        return array(
+            'displayName' => '',
+            '-1' => '',
+            '0' => '',
+            '1' => ''
+        );
     }
 }

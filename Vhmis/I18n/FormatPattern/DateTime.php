@@ -18,50 +18,9 @@ use \IntlDateFormatter;
  *
  * @category Vhmis
  * @package Vhmis_I18n
- * @subpackage FormatPattern
  */
 class DateTime
 {
-
-    /**
-     * Lấy định dạng của ngày
-     *
-     * @param string $locale
-     * @param int $type
-     * @return string
-     */
-    static public function date($locale, $type)
-    {
-        $format = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
-        return $format->getPattern();
-    }
-
-    /**
-     * Lấy định dạng của giờ
-     *
-     * @param string $locale
-     * @param int $type
-     * @return string
-     */
-    static public function time($locale, $type)
-    {
-        $format = new IntlDateFormatter($locale, IntlDateFormatter::NONE, $type);
-        return $format->getPattern();
-    }
-
-    /**
-     * Lấy định dạng của ngày và giờ
-     *
-     * @param string $locale
-     * @param int $type
-     * @return string
-     */
-    static public function dateTime($locale, $type)
-    {
-        $format = new IntlDateFormatter($locale, $type, $type);
-        return $format->getPattern();
-    }
-
     /**
      * Lấy format theo PHP date()
      * Dùng chủ yếu kiểm tra dữ liệu nhập vào
@@ -76,7 +35,7 @@ class DateTime
     {
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
-        
+
         $patterns = array(
             'year' => array(
                 'YYYY' => 'o',
@@ -92,7 +51,7 @@ class DateTime
                 'M' => 'n'
             )
         );
-        
+
         foreach ($patterns as $typePattern) {
             foreach ($typePattern as $pattern => $nativePattern) {
                 if (strpos($format, $pattern) !== false) {
@@ -101,7 +60,7 @@ class DateTime
                 }
             }
         }
-        
+
         return $format;
     }
 }
