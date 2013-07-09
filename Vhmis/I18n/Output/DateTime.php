@@ -85,7 +85,7 @@ class DateTime
     public function __construct()
     {
         // Locale mặc định
-        $this->locale = 'en_VN';
+        $this->locale = 'vi_VN';
     }
 
     /**
@@ -150,6 +150,14 @@ class DateTime
         return $string === false ? '' : $string;
     }
 
+    /**
+     * Xuất ngày giờ theo các pattern tự tạo hoặc dựa trên formatId từ dữ liệu CLDR
+     * Nếu muốn xuất cả ngày và giờ theo formatId thì truyền vào formatID của ngày và giờ, được phân cách bằng ký tự |
+     *
+     * @param string $value
+     * @param string $pattern
+     * @return string
+     */
     public function customPattern($value, $pattern)
     {
         $formatter = md5($this->locale . 'custom');
@@ -182,46 +190,18 @@ class DateTime
         return $string === false ? '' : $string;
     }
 
-    public function appendPattern($value, $pattern, $item)
-    {
-        $formatter = md5($this->locale . 'custom');
-
-        // Is it pattern id
-        if (in_array($pattern, $this->dateTimePatternId)) {
-            $pattern = I18nResource::getDateTimePattern($pattern, '', $this->locale);
-        } else if (strpos('|', $pattern) > 0) {
-            $patterns = explode('|', $pattern);
-            if (count($patterns) === 2) {
-                if (in_array($patterns[0], $this->dateTimePatternId) && in_array($patterns[1], $this->dateTimePatternId)) {
-                    $pattern = I18nResource::getDateTimePattern($patterns[0], $patterns[1], $this->locale);
-                }
-            }
-        }
-
-        $itemPattern = array(
-            'Week' => 'ww'
-        );
-
-        $appendPattern = I18nResource::getDateTimeWithAppendItems($item, $pattern, $itemPattern[$item], $this->locale);
-
-        if (!isset($this->formatters[$formatter])) {
-            $this->formatters[$formatter] = new IntlDateFormatter($this->locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL);
-        }
-
-        if (is_string($value)) {
-            $value = strtotime($value);
-            if ($value === false)
-                return '';
-        }
-
-        echo $appendPattern;
-
-        $this->formatters[$formatter]->setPattern($appendPattern);
-
-        $string = $this->formatters[$formatter]->format($value);
-        return $string === false ? '' : $string;
-    }
-
+    /**
+     * Hiển thị ngày giờ theo quan hệ với 1 ngày nào đó
+     * Nếu không $relative không nhận giá trị hợp lệ, sẽ xuất ra ngày giờ bình thường theo style hoặc pattern
+     *
+     *
+     * @param array $relative Kết quả được từ phương thức \Vhmis\DateTime\DateTime::relative()
+     * @param string $date Ngày cần xuất kết quả
+     * @param int $dateStyle Kiểu ngày được định dạng sẵn bởi PHP
+     * @param int $timeStyle Kiểu giờ được định dạng sẵn bởi PHP
+     * @param string $pattern Pattern hoặc FormatId
+     * @return string
+     */
     public function relative($relative, $date, $dateStyle = 3, $timeStyle = 3, $pattern = '')
     {
         if (isset($relative['d'])) {
@@ -251,15 +231,27 @@ class DateTime
         }
     }
 
+    /**
+     * Xuất định dạng tháng và năm
+     *
+     * @param string $value
+     * @return string
+     */
     public function yearMonth($value)
     {
         return $this->customPattern($value, 'MMMM y');
     }
 
+    /**
+     * Xuất định dạng tuần của năm
+     *
+     * @param string $value
+     * @return string
+     */
     public function yearWeek($value)
     {
         $w = I18nResource::dateField('week', $this->locale);
 
-        return $this->customPattern($value, '\'' . $w['displayName'] . '\' ww y');
+        return $this->customPattern($value, '\'' . $w['displayName'] . ':\' ww - y');
     }
 }
