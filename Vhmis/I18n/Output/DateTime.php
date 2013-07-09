@@ -12,6 +12,7 @@
 namespace Vhmis\I18n\Output;
 
 use \IntlDateFormatter;
+use \Vhmis\I18n\Resource\Resource as I18nResource;
 
 /**
  * Xuất ngày giờ theo các định dạng
@@ -120,5 +121,34 @@ class DateTime
 
         $string = $this->_formatters[$formatter]->format($value);
         return $string === false ? '' : $string;
+    }
+
+    public function relative($relative, $date, $dateStyle = 3, $timeStyle = 3, $pattern = '')
+    {
+        if(isset($relative['d'])) {
+            $day = I18nResource::getDateField('day', $this->_locale);
+            return $day[$relative['d']];
+        }
+
+        if(isset($relative['w'])) {
+            $day = I18nResource::getDateField('week', $this->_locale);
+            return $this->customPattern($date, 'EEEE') . ' ' . $day[$relative['w']];
+        }
+
+        if(isset($relative['m'])) {
+            $day = I18nResource::getDateField('month', $this->_locale);
+            return $this->customPattern($date, I18nResource::getDateTimePattern('d', '', $this->_locale)) . ' ' . $day[$relative['m']];
+        }
+
+        if(isset($relative['y'])) {
+            $day = I18nResource::getDateField('year', $this->_locale);
+            return $this->customPattern($date, I18nResource::getDateTimePattern('Md', '', $this->_locale)) . ' ' . $day[$relative['y']];
+        }
+
+        if($pattern == '') {
+            return $this->dateTime($date, $dateStyle, $timeStyle);
+        } else {
+            return $this->customPattern($date, $pattern);
+        }
     }
 }
