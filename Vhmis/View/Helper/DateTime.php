@@ -30,6 +30,16 @@ class DateTime extends HelperAbstract
         return $this->dt->relative($relative, $date, $dateStyle, $timeStyle, $pattern);
     }
 
+    public function yearMonth($date)
+    {
+        return $this->dt->yearMonth($date);
+    }
+
+    public function yearWeek($date)
+    {
+        return $this->dt->yearWeek($date);
+    }
+
     public function linkYearMonth($date)
     {
         return date('Y-m', strtotime($date));
