@@ -252,6 +252,6 @@ class DateTime
     {
         $w = I18nResource::dateField('week', $this->locale);
 
-        return $this->customPattern($value, '\'' . $w['displayName'] . ':\' ww - y');
+        return $this->customPattern($value, '\'' . $w['displayName'] . ':\' ww - Y');
     }
 }
