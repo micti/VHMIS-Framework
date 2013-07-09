@@ -19,7 +19,6 @@ class Reflection
     }
 }
 
-use A\B\Reflection as Re;
 $re = new \ReflectionClass('A\B\Reflection');
 
 $params = array(
