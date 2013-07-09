@@ -66,6 +66,12 @@ class App
                 $sm->set($name, $service, true);
             }
 
+            // Set default timezone
+            date_default_timezone_set($configGlobal['timezone']['name']);
+
+            // Ngôn ngữ
+            Config\Configure::set('Locale', $configGlobal['locale']['lang'] . '_' . $configGlobal['locale']['region']);
+
             $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
             $_vhmisController = new $controllerClass($this->request);
             $_vhmisController->setServiceManager($sm);
