@@ -34,7 +34,7 @@ class Route implements RouteInterface
 
     const SLUG = '([a-z0-9-]+)';
 
-    const YEARMONTH = '([12][0-9]{3})-(0[1-9]|1[012])';
+    const YEARMONTH = '([12][0-9]{3}-0[1-9]|1[012])';
 
     /**
      * Link pattern
