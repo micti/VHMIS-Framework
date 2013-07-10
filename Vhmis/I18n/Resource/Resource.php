@@ -37,7 +37,7 @@ class Resource
     protected static $main = array(
         'gregorian' => 'ca-gregorian',
         'datefields' => 'dateFields',
-        'listPattern',
+        'list' => 'listPatterns',
         'number',
         'units'
     );
@@ -88,6 +88,8 @@ class Resource
             $data = $data['dates']['calendars']['gregorian'];
         } else if($field === 'datefields') {
             $data = $data['dates']['fields'];
+        } else if($field === 'list') {
+            $data = $data['listPatterns']['listPattern'];
         }
 
         static::$i18nData[$locale][$field] = $data;
@@ -217,5 +219,12 @@ class Resource
             'patternbegin' => $firstIsFirst ? $patternpart[0] : $patternpart[1],
             'patternend' => $firstIsFirst ? $patternpart[1] : $patternpart[0]
         );
+    }
+
+    public static function listPattern($locale) {
+        $locale = static::fixLocaleName($locale);
+        static::loadMain('list', $locale);
+
+        return static::$i18nData[$locale]['list'];
     }
 }
