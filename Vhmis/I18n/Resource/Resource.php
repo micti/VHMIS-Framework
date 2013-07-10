@@ -154,4 +154,68 @@ class Resource
             '1' => ''
         );
     }
+
+    public static function dateIntervalPattern($field, $diffrenceField, $locale = '', $calendar = 'gregorian')
+    {
+        $falseReturn = array(
+            'pattern' => '{0} - {1}',
+            'patternbegin' => 'YYYY-MM-DD HH:mm:ss',
+            'patternend' => 'YYYY-MM-DD HH:mm:ss'
+        );
+
+        $punctuationMark = '/-|~|‐|–|—/';
+        if($calendar !== 'gregorian') {
+            return $falseReturn;
+        }
+
+        $locale = static::fixLocaleName($locale);
+        static::loadMain($calendar, $locale);
+
+        $formatFallback = static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats']['intervalFormatFallback'];
+
+        if (!isset(static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field][$diffrenceField])) {
+            // TODO: check again format Id
+            return $falseReturn;
+        }
+
+        $pattern = static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field][$diffrenceField];
+
+        $formatpart = preg_split($punctuationMark, $formatFallback);
+
+        if(count($formatpart) !== 2) {
+            return $falseReturn;
+        }
+
+        // The begin date in the first flag
+        $firstIsFirst = true;
+        if(trim($formatpart[0]) === '{1}') {
+            $firstIsFirst = false;
+        }
+
+        $patternpart = preg_split($punctuationMark, $pattern);
+
+        $patternpart[0] = trim($patternpart[0]);
+        $patternpart[1] = trim($patternpart[1]);
+
+        if(strlen($patternpart[0]) >= strlen($patternpart[1])) {
+            $pattern = str_replace($patternpart[0], '', $pattern);
+            $pattern = str_replace($patternpart[1], '', $pattern);
+        } else {
+            $pattern = str_replace($patternpart[1], '', $pattern);
+            $pattern = str_replace($patternpart[0], '', $pattern);
+        }
+
+        // Replace begin
+        if($firstIsFirst) {
+            $pattern = '{0}' . $pattern . '{1}';
+        } else {
+            $pattern = '{1}' . $pattern . '{0}';
+        }
+
+        return array(
+            'pattern' => $pattern,
+            'patternbegin' => $firstIsFirst ? $patternpart[0] : $patternpart[1],
+            'patternend' => $firstIsFirst ? $patternpart[1] : $patternpart[0]
+        );
+    }
 }

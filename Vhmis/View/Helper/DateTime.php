@@ -49,4 +49,8 @@ class DateTime extends HelperAbstract
     {
         return date('o-\wW', strtotime($date));
     }
+
+    public function interval($date1, $date2, $pattern) {
+        return $this->dt->interval($date1, $date2, $pattern);
+    }
 }

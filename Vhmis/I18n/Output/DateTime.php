@@ -80,12 +80,27 @@ class DateTime
     );
 
     /**
+     *
+     * @var \Vhmis\DateTime\DateTime;
+     */
+    protected $date1;
+
+    /**
+     *
+     * @var \Vhmis\DateTime\DateTime;
+     */
+    protected $date2;
+
+    /**
      * Khởi tạo
      */
     public function __construct()
     {
         // Locale mặc định
         $this->locale = 'vi_VN';
+
+        $this->date1 = new \Vhmis\DateTime\DateTime;
+        $this->date2 = new \Vhmis\DateTime\DateTime;
     }
 
     /**
@@ -253,5 +268,68 @@ class DateTime
         $w = I18nResource::dateField('week', $this->locale);
 
         return $this->customPattern($value, '\'' . $w['displayName'] . ':\' ww - Y');
+    }
+
+    /**
+     * Xuất khoảng thời gian
+     *
+     * @param string $value1
+     * @param string $value2
+     * @param string $pattern
+     * @return type
+     */
+    public function interval($value1, $value2, $pattern)
+    {
+        $this->date1->modify($value1);
+        $this->date2->modify($value2);
+
+        if ($this->date1 > $this->date2) {
+            $this->date1->modify($value2);
+            $this->date2->modify($value1);
+        }
+
+        $interval = $this->date1->findInterval($this->date2);
+
+        // Tìm interval cho ngày
+        $intervalField = '';
+
+        if ($interval['y'] !== 0 && strpos($pattern, 'y') !== false) {
+            $intervalField = 'y';
+        } else {
+            if ($interval['M'] !== 0 && strpos($pattern, 'M') !== false) {
+                $intervalField = 'M';
+            } else {
+                if ($interval['d'] !== 0 && strpos($pattern, 'd') !== false) {
+                    $intervalField = 'd';
+                }
+            }
+        }
+
+        // Tìm interval cho giờ
+        if ($interval['H'] !== 0 && strpos($pattern, 'H') !== false) {
+            $intervalField = 'H';
+        } else {
+            if (strpos($pattern, 'h') !== false) {
+                if ($interval['a'] !== 0) {
+                    $intervalField = 'a';
+                } else {
+                    $intervalField = 'h';
+                }
+            } else {
+                if ($interval['m'] !== 0 && strpos($pattern, 'm') !== false) {
+                    $intervalField = 'm';
+                }
+            }
+        }
+
+        $data = I18nResource::dateIntervalPattern($pattern, $intervalField, $this->locale);
+
+        $value1 = $this->customPattern($this->date1->formatISO(1), $data['patternbegin']);
+        $value2 = $this->customPattern($this->date2->formatISO(1), $data['patternend']);
+
+        $value = str_replace('{0}', $value1, $data['pattern']);
+        $value = str_replace('{1}', $value2, $value);
+
+        return $value;
     }
 }
