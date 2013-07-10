@@ -63,10 +63,11 @@ class Resource
     protected static function loadMain($field, $locale = '')
     {
         $locale = static::fixLocaleName($locale);
-        $locale = $locale == '' ? self::$locale : str_replace('_', '-', $locale);
+        $locale = $locale === '' ? self::$locale : $locale;
 
         if(isset(static::$i18nData[$field])) {
-            throw new \Exception($field . ' I18n Data Not Supported.');
+            return;
+            //throw new \Exception($field . ' I18n Data Not Supported.');
         }
 
         list($lang, $ter) = explode('-', $locale, 2);
@@ -84,7 +85,7 @@ class Resource
         }
 
         if($field === 'gregorian') {
-            $data = $data['dates']['calendar']['gregorian'];
+            $data = $data['dates']['calendars']['gregorian'];
         } else if($field === 'datefields') {
             $data = $data['dates']['fields'];
         }
