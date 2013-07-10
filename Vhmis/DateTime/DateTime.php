@@ -370,6 +370,26 @@ class DateTime extends \DateTime
     }
 
     /**
+     *
+     * @param \Vhmis\DateTime\DateTime $date
+     * @return type
+     */
+    public function findInterval($date)
+    {
+        $interval = array();
+
+        $interval['d'] = (int) $date->getDay() - (int) $this->getDay();
+        $interval['M'] = (int) $date->getMonth() - (int) $this->getMonth();
+        $interval['y'] = (int) $date->getYear() - (int) $this->getYear();
+        $interval['h'] = (int) $date->format('g') - (int) $this->format('g');
+        $interval['H'] = (int) $date->format('G') - (int) $this->format('G');
+        $interval['m'] = (int) $date->format('i') - (int) $this->format('i');
+        $interval['a'] = $date->format('a') !== $this->format('a') ? 1 : 0;
+
+        return $interval;
+    }
+
+    /**
      * Tìm xem có quan hệ với một ngày nào đó không
      *
      * Các giá trị năm tháng tuần ngày không hơn nhau quá 1 đơn vị
