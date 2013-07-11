@@ -13,6 +13,7 @@ namespace Vhmis\I18n\Output;
 
 use \IntlDateFormatter;
 use \Vhmis\I18n\Resource\Resource as I18nResource;
+use \Vhmis\I18n\Plurals\Plurals as I18nPlurals;
 
 /**
  * Xuất ngày giờ theo các định dạng
@@ -331,5 +332,48 @@ class DateTime
         $value = str_replace('{1}', $value2, $value);
 
         return $value;
+    }
+
+    public function ago($date, $rootDate = '')
+    {
+        $this->date1->modify($date);
+
+        if ($rootDate === '') {
+            $this->date2->setNow();
+        } else {
+            $this->date2->modify($rootDate);
+        }
+
+        $diff = $this->date1->diff($this->date2);
+
+        if ($diff->invert === 1) {
+            return '';
+        }
+
+        if ($diff->y != 0) {
+            $type = I18nPlurals::type($diff->y, $this->locale);
+            $unitsPattern = I18nResource::units('year-past', $this->locale);
+            return str_replace('{0}', $diff->y, $unitsPattern['unitPattern-count-' . $type]);
+        } else if ($diff->m != 0) {
+            $type = I18nPlurals::type($diff->m, $this->locale);
+            $unitsPattern = I18nResource::units('month-past', $this->locale);
+            return str_replace('{0}', $diff->m, $unitsPattern['unitPattern-count-' . $type]);
+        } else if ($diff->d != 0) {
+            $type = I18nPlurals::type($diff->d, $this->locale);
+            $unitsPattern = I18nResource::units('day-past', $this->locale);
+            return str_replace('{0}', $diff->d, $unitsPattern['unitPattern-count-' . $type]);
+        } else if ($diff->h != 0) {
+            $type = I18nPlurals::type($diff->h, $this->locale);
+            $unitsPattern = I18nResource::units('hour-past', $this->locale);
+            return str_replace('{0}', $diff->h, $unitsPattern['unitPattern-count-' . $type]);
+        } else if ($diff->i != 0) {
+            $type = I18nPlurals::type($diff->i, $this->locale);
+            $unitsPattern = I18nResource::units('minute-past', $this->locale);
+            return str_replace('{0}', $diff->i, $unitsPattern['unitPattern-count-' . $type]);
+        } else {
+            $type = I18nPlurals::type($diff->s, $this->locale);
+            $unitsPattern = I18nResource::units('second-past', $this->locale);
+            return str_replace('{0}', $diff->s, $unitsPattern['unitPattern-count-' . $type]);
+        }
     }
 }

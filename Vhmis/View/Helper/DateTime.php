@@ -53,4 +53,8 @@ class DateTime extends HelperAbstract
     public function interval($date1, $date2, $pattern) {
         return $this->dt->interval($date1, $date2, $pattern);
     }
+
+    public function ago($date1, $date2 = '') {
+        return $this->dt->ago($date1, $date2);
+    }
 }
