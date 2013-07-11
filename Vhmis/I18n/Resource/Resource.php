@@ -39,7 +39,7 @@ class Resource
         'datefields' => 'dateFields',
         'list' => 'listPatterns',
         'number',
-        'units'
+        'units' => 'units'
     );
 
     /**
@@ -51,6 +51,20 @@ class Resource
     protected static function fixLocaleName($locale)
     {
         return str_replace('_', '-', $locale);
+    }
+
+    protected static function loadSupplemental($supplemental)
+    {
+        if(isset(static::$i18nData[$supplemental])) {
+            return;
+        }
+
+        if (is_readable(__DIR__ . D_SPEC . $supplemental . '.php')) {
+            $data = include $supplemental . '.php';
+        }
+
+        static::$i18nData[$supplemental] = $data;
+        unset($data);
     }
 
     /**
@@ -65,7 +79,7 @@ class Resource
         $locale = static::fixLocaleName($locale);
         $locale = $locale === '' ? self::$locale : $locale;
 
-        if(isset(static::$i18nData[$field])) {
+        if(isset(static::$i18nData[$locale][$field])) {
             return;
             //throw new \Exception($field . ' I18n Data Not Supported.');
         }
@@ -90,6 +104,8 @@ class Resource
             $data = $data['dates']['fields'];
         } else if($field === 'list') {
             $data = $data['listPatterns']['listPattern'];
+        } else if($field === 'units') {
+            $data = $data['units'];
         }
 
         static::$i18nData[$locale][$field] = $data;
@@ -226,6 +242,13 @@ class Resource
         static::loadMain('list', $locale);
 
         return static::$i18nData[$locale]['list'];
+    }
+
+    public static function units($field, $locale) {
+        $locale = static::fixLocaleName($locale);
+        static::loadMain('units', $locale);
+
+        return static::$i18nData[$locale]['units'][$field];
     }
 
     /**
