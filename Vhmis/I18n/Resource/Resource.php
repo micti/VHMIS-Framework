@@ -227,4 +227,19 @@ class Resource
 
         return static::$i18nData[$locale]['list'];
     }
+
+    /**
+     * Laay dfdfd
+     *
+     * @param type $locale
+     * @return type
+     */
+    public static function plurals($locale) {
+        $locale = static::fixLocaleName($locale);
+        static::loadSupplemental('plurals');
+
+        $lang = explode('-', $locale);
+
+        return static::$i18nData['plurals'][$lang[0]];
+    }
 }
