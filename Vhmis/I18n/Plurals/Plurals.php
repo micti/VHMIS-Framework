@@ -39,7 +39,7 @@ class Plurals
         if ($locale === '')
             $locale = $this->locale;
 
-        $rules = I18nResource::plurals($locale);
+        $rules = I18nResource::pluralsRule($locale);
 
         foreach ($rules as $key => $rule) {
             $rule = strtolower($rule);

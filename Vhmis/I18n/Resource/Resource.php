@@ -255,12 +255,12 @@ class Resource
     }
 
     /**
-     * Laay dfdfd
+     * Lấy luật về số nhiều
      *
-     * @param type $locale
-     * @return type
+     * @param string $locale
+     * @return array
      */
-    public static function plurals($locale)
+    public static function pluralsRule($locale)
     {
         $locale = static::fixLocaleName($locale);
         static::loadSupplemental('plurals');
@@ -272,7 +272,7 @@ class Resource
 
     /**
      * Lấy trường thông tin của 1 calendar
-     * 
+     *
      * @param string $field
      * @param string $locale
      * @param strung $calendar
