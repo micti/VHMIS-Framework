@@ -30,6 +30,11 @@ class DateTime extends HelperAbstract
         return $this->dt->relative($relative, $date, $dateStyle, $timeStyle, $pattern);
     }
 
+    public function appendPattern($value, $pattern, $item)
+    {
+        return $this->dt->appendPattern($value, $pattern, $item);
+    }
+
     public function yearMonth($date)
     {
         return $this->dt->yearMonth($date);
@@ -56,5 +61,29 @@ class DateTime extends HelperAbstract
 
     public function ago($date1, $date2 = '') {
         return $this->dt->ago($date1, $date2);
+    }
+
+    /**
+     * Tên tháng
+     *
+     * @param string $month
+     * @param string $format
+     * @param string $type
+     * @return string
+     */
+    public function monthName($month, $format = 'wide', $type = 'stand-alone') {
+        return $this->dt->calendarFieldName('months', $type, $format);
+    }
+
+    /**
+     * Tên ngày trong tuần
+     *
+     * @param string $day
+     * @param string $type
+     * @param string $format
+     * @return string
+     */
+    public function dayName($day, $type = 'stand-alone', $format = 'wide') {
+        return $this->dt->calendarFieldName($day, 'days', $type, $format);
     }
 }

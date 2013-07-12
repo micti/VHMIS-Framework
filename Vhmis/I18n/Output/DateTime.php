@@ -207,6 +207,32 @@ class DateTime
     }
 
     /**
+     * Lấy tên của tháng hoặc ngày trong tuần
+     *
+     * @param string $field
+     * @param string $type
+     * @param string $format
+     * @return string
+     */
+    public function calendarFieldName($value, $field, $type, $format) {
+        if($field !== 'months' || $field !== 'dates') {
+            return '';
+        }
+
+        if($type !== 'format' || $type !== 'stand-alone') {
+            return '';
+        }
+
+        $data = I18nResource::getCalendarField($field, $this->locale);
+
+        if(isset($data[$type][$format])) {
+            return $data[$type][$format][$value];
+        }
+
+        return '';
+    }
+
+    /**
      * Hiển thị ngày giờ theo quan hệ với 1 ngày nào đó
      * Nếu không $relative không nhận giá trị hợp lệ, sẽ xuất ra ngày giờ bình thường theo style hoặc pattern
      *
