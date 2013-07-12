@@ -71,7 +71,7 @@ class DateTime extends HelperAbstract
      * @param string $type
      * @return string
      */
-    public function monthName($month, $format = 'wide', $type = 'stand-alone') {
+    public function monthName($month, $type = 'stand-alone', $format = 'wide') {
         return $this->dt->calendarFieldName('months', $type, $format);
     }
 
