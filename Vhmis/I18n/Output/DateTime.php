@@ -25,7 +25,7 @@ use \Vhmis\I18n\Plurals\Plurals as I18nPlurals;
 class DateTime
 {
     /**
-     * Locale mặc định
+     * Locale
      *
      * @var string
      */
@@ -98,7 +98,7 @@ class DateTime
     public function __construct()
     {
         // Locale mặc định
-        $this->locale = 'vi_VN';
+        $this->locale = locale_get_default();
 
         $this->date1 = new \Vhmis\DateTime\DateTime;
         $this->date2 = new \Vhmis\DateTime\DateTime;

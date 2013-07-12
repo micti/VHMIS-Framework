@@ -14,14 +14,14 @@ class Resource
     /**
      * Locale mặc định
      *
-     * @var array
+     * @var string
      */
-    protected static $locale = 'vi';
+    protected static $locale;
 
     /**
      * Danh mục các locale support
      *
-     * @var type
+     * @var array
      */
     protected static $locales = array(
         'vi',
@@ -50,7 +50,14 @@ class Resource
      */
     protected static function fixLocaleName($locale)
     {
-        return str_replace('_', '-', $locale);
+        $locale = str_replace('_', '-', $locale);
+
+        if($locale == '') {
+            $locale = locale_get_default();
+        }
+
+        return $locale;
+
     }
 
     protected static function loadSupplemental($supplemental)
@@ -77,7 +84,6 @@ class Resource
     protected static function loadMain($field, $locale = '')
     {
         $locale = static::fixLocaleName($locale);
-        $locale = $locale === '' ? self::$locale : $locale;
 
         if (isset(static::$i18nData[$locale][$field])) {
             return;

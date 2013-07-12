@@ -19,7 +19,18 @@ class Text
     public function __construct()
     {
         // Locale mặc định
-        $this->locale = 'ko_VN';
+        $this->locale = locale_get_default();
+    }
+
+    /**
+     * Thiết lập Locale
+     *
+     * @param string $locale Locale
+     */
+    public function setLocale($locale = null)
+    {
+        if (null !== $locale)
+            $this->locale = locale;
     }
 
     public function toList($group)

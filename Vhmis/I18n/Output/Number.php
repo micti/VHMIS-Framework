@@ -14,11 +14,11 @@ class Number
 {
 
     /**
-     * Locale mặc định
+     * Locale
      *
      * @var string
      */
-    protected $_locale;
+    protected $locale;
 
     /**
      * Các đối tượng NumberFormatter, ứng với mỗi cặp locale và format style
@@ -27,7 +27,8 @@ class Number
 
     public function __construct()
     {
-        $this->_locale = 'vi_VN';
+        // Locale mặc định
+        $this->locale = locale_get_default();
     }
 
     /**
@@ -38,7 +39,7 @@ class Number
     public function setLocale($locale = null)
     {
         if (null !== $locale)
-            $this->_locale = locale;
+            $this->locale = locale;
     }
 
     /**
@@ -50,11 +51,11 @@ class Number
     public function float($value)
     {
         $style = NumberFormatter::DECIMAL;
-        $formatter = md5($this->_locale . $style);
-        
+        $formatter = md5($this->locale . $style);
+
         if (!isset($this->_formatters[$formatter]))
-            $this->_formatters[$formatter] = NumberFormatter::create($this->_locale, $style);
-        
+            $this->_formatters[$formatter] = NumberFormatter::create($this->locale, $style);
+
         return $this->_formatters[$formatter]->format($value, NumberFormatter::TYPE_DOUBLE);
     }
 
@@ -67,11 +68,11 @@ class Number
     public function interger($value)
     {
         $style = NumberFormatter::DECIMAL;
-        $formatter = md5($this->_locale . $style);
-        
+        $formatter = md5($this->locale . $style);
+
         if (!isset($this->_formatters[$formatter]))
-            $this->_formatters[$formatter] = NumberFormatter::create($this->_locale, $style);
-        
+            $this->_formatters[$formatter] = NumberFormatter::create($this->locale, $style);
+
         return $this->_formatters[$formatter]->format($value, NumberFormatter::TYPE_INT64);
     }
 
@@ -86,11 +87,11 @@ class Number
     public function string($value)
     {
         $style = NumberFormatter::SPELLOUT;
-        $formatter = md5($this->_locale . $style);
-        
+        $formatter = md5($this->locale . $style);
+
         if (!isset($this->_formatters[$formatter]))
-            $this->_formatters[$formatter] = NumberFormatter::create($this->_locale, $style);
-        
+            $this->_formatters[$formatter] = NumberFormatter::create($this->locale, $style);
+
         return $this->_formatters[$formatter]->format($value);
     }
 }

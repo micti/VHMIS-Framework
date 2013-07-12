@@ -71,6 +71,7 @@ class App
 
             // Ngôn ngữ
             Config\Configure::set('Locale', $configGlobal['locale']['lang'] . '_' . $configGlobal['locale']['region']);
+            locale_set_default($configGlobal['locale']['lang'] . '_' . $configGlobal['locale']['region']);
 
             $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
             $_vhmisController = new $controllerClass($this->request);
