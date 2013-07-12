@@ -35,11 +35,11 @@ class Resource
      * @var type
      */
     protected static $main = array(
-        'gregorian' => 'ca-gregorian',
+        'gregorian'  => 'ca-gregorian',
         'datefields' => 'dateFields',
-        'list' => 'listPatterns',
+        'list'       => 'listPatterns',
         'number',
-        'units' => 'units'
+        'units'      => 'units'
     );
 
     /**
@@ -55,7 +55,7 @@ class Resource
 
     protected static function loadSupplemental($supplemental)
     {
-        if(isset(static::$i18nData[$supplemental])) {
+        if (isset(static::$i18nData[$supplemental])) {
             return;
         }
 
@@ -79,7 +79,7 @@ class Resource
         $locale = static::fixLocaleName($locale);
         $locale = $locale === '' ? self::$locale : $locale;
 
-        if(isset(static::$i18nData[$locale][$field])) {
+        if (isset(static::$i18nData[$locale][$field])) {
             return;
             //throw new \Exception($field . ' I18n Data Not Supported.');
         }
@@ -88,23 +88,23 @@ class Resource
 
         $data = array();
 
-        /** pls check **/
+        /** pls check * */
         if (is_readable(__DIR__ . D_SPEC . $locale . D_SPEC . static::$main[$field] . '.php')) {
             $data = include $locale . D_SPEC . static::$main[$field] . '.php';
         }
 
-        /** pls check **/
+        /** pls check * */
         if (is_readable(__DIR__ . D_SPEC . $lang . D_SPEC . static::$main[$field] . '.php')) {
             $data = $data + include $lang . D_SPEC . static::$main[$field] . '.php';
         }
 
-        if($field === 'gregorian') {
+        if ($field === 'gregorian') {
             $data = $data['dates']['calendars']['gregorian'];
-        } else if($field === 'datefields') {
+        } else if ($field === 'datefields') {
             $data = $data['dates']['fields'];
-        } else if($field === 'list') {
+        } else if ($field === 'list') {
             $data = $data['listPatterns']['listPattern'];
-        } else if($field === 'units') {
+        } else if ($field === 'units') {
             $data = $data['units'];
         }
 
@@ -125,7 +125,7 @@ class Resource
      */
     public static function datePattern($pDate, $pTime, $locale = '', $calendar = 'gregorian')
     {
-        if($calendar !== 'gregorian') {
+        if ($calendar !== 'gregorian') {
             return '';
         }
 
@@ -157,7 +157,8 @@ class Resource
      * @param string $locale
      * @return array
      */
-    public static function dateField($field, $locale = '') {
+    public static function dateField($field, $locale = '')
+    {
         $locale = static::fixLocaleName($locale);
         static::loadMain('datefields', $locale);
 
@@ -167,22 +168,22 @@ class Resource
 
         return array(
             'displayName' => '',
-            '-1' => '',
-            '0' => '',
-            '1' => ''
+            '-1'          => '',
+            '0'           => '',
+            '1'           => ''
         );
     }
 
     public static function dateIntervalPattern($field, $diffrenceField, $locale = '', $calendar = 'gregorian')
     {
         $falseReturn = array(
-            'pattern' => '{0} - {1}',
+            'pattern'      => '{0} - {1}',
             'patternbegin' => 'YYYY-MM-DD HH:mm:ss',
-            'patternend' => 'YYYY-MM-DD HH:mm:ss'
+            'patternend'   => 'YYYY-MM-DD HH:mm:ss'
         );
 
         $punctuationMark = '/-|~|‐|–|—/';
-        if($calendar !== 'gregorian') {
+        if ($calendar !== 'gregorian') {
             return $falseReturn;
         }
 
@@ -200,13 +201,13 @@ class Resource
 
         $formatpart = preg_split($punctuationMark, $formatFallback);
 
-        if(count($formatpart) !== 2) {
+        if (count($formatpart) !== 2) {
             return $falseReturn;
         }
 
         // The begin date in the first flag
         $firstIsFirst = true;
-        if(trim($formatpart[0]) === '{1}') {
+        if (trim($formatpart[0]) === '{1}') {
             $firstIsFirst = false;
         }
 
@@ -215,7 +216,7 @@ class Resource
         $patternpart[0] = trim($patternpart[0]);
         $patternpart[1] = trim($patternpart[1]);
 
-        if(strlen($patternpart[0]) >= strlen($patternpart[1])) {
+        if (strlen($patternpart[0]) >= strlen($patternpart[1])) {
             $pattern = str_replace($patternpart[0], '', $pattern);
             $pattern = str_replace($patternpart[1], '', $pattern);
         } else {
@@ -224,27 +225,29 @@ class Resource
         }
 
         // Replace begin
-        if($firstIsFirst) {
+        if ($firstIsFirst) {
             $pattern = '{0}' . $pattern . '{1}';
         } else {
             $pattern = '{1}' . $pattern . '{0}';
         }
 
         return array(
-            'pattern' => $pattern,
+            'pattern'      => $pattern,
             'patternbegin' => $firstIsFirst ? $patternpart[0] : $patternpart[1],
-            'patternend' => $firstIsFirst ? $patternpart[1] : $patternpart[0]
+            'patternend'   => $firstIsFirst ? $patternpart[1] : $patternpart[0]
         );
     }
 
-    public static function listPattern($locale) {
+    public static function listPattern($locale)
+    {
         $locale = static::fixLocaleName($locale);
         static::loadMain('list', $locale);
 
         return static::$i18nData[$locale]['list'];
     }
 
-    public static function units($field, $locale) {
+    public static function units($field, $locale)
+    {
         $locale = static::fixLocaleName($locale);
         static::loadMain('units', $locale);
 
@@ -257,12 +260,33 @@ class Resource
      * @param type $locale
      * @return type
      */
-    public static function plurals($locale) {
+    public static function plurals($locale)
+    {
         $locale = static::fixLocaleName($locale);
         static::loadSupplemental('plurals');
 
         $lang = explode('-', $locale);
 
         return static::$i18nData['plurals'][$lang[0]];
+    }
+
+    /**
+     * Lấy trường thông tin của 1 calendar
+     * 
+     * @param string $field
+     * @param string $locale
+     * @param strung $calendar
+     * @return array
+     */
+    public static function calendarField($field, $locale = '', $calendar = 'gregorian')
+    {
+        if ($calendar !== 'gregorian') {
+            return array();
+        }
+
+        $locale = static::fixLocaleName($locale);
+        static::loadMain($calendar, $locale);
+
+        return static::$i18nData[$locale][$calendar][$field];
     }
 }
