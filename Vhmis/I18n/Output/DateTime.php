@@ -215,15 +215,15 @@ class DateTime
      * @return string
      */
     public function calendarFieldName($value, $field, $type, $format) {
-        if($field !== 'months' || $field !== 'dates') {
-            return '';
+        if($field !== 'months' && $field !== 'days') {
+            return '1';
         }
 
-        if($type !== 'format' || $type !== 'stand-alone') {
-            return '';
+        if($type !== 'format' && $type !== 'stand-alone') {
+            return '2';
         }
 
-        $data = I18nResource::getCalendarField($field, $this->locale);
+        $data = I18nResource::calendarField($field, $this->locale);
 
         if(isset($data[$type][$format])) {
             return $data[$type][$format][$value];
