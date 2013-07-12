@@ -86,4 +86,8 @@ class DateTime extends HelperAbstract
     public function dayName($day, $type = 'stand-alone', $format = 'wide') {
         return $this->dt->calendarFieldName($day, 'days', $type, $format);
     }
+
+    public function fieldName($field, $format = 'displayName') {
+        return $this->dt->dateFieldName($field, $format);
+    }
 }

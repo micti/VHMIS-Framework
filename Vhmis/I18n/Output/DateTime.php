@@ -232,6 +232,13 @@ class DateTime
         return '';
     }
 
+    public function dateFieldName($field, $format = 'displayName')
+    {
+        $data = I18nResource::dateField($field, $this->locale);
+
+        return $data[$format];
+    }
+
     /**
      * Hiển thị ngày giờ theo quan hệ với 1 ngày nào đó
      * Nếu không $relative không nhận giá trị hợp lệ, sẽ xuất ra ngày giờ bình thường theo style hoặc pattern
