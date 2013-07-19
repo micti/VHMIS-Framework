@@ -156,7 +156,7 @@ class DateTime extends \DateTime
         $this->setTimestamp($origin1);
         $date->setTimestamp($origin2);
 
-        return $day2 - $day1;
+        return (int) ($day2 - $day1);
     }
 
     /**
@@ -181,7 +181,7 @@ class DateTime extends \DateTime
         $this->setTimestamp($origin1);
         $date->setTimestamp($origin2);
 
-        return $wek2 - $wek1;
+        return (int) ($wek2 - $wek1);
     }
 
     /**
