@@ -398,6 +398,17 @@ class Validator
     }
 
     /**
+     * Lấy giá trị chuẩn của 1 trường thuộc get
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getGetStandardValue($name)
+    {
+        return $this->standardValue['_GET_' . $name];
+    }
+
+    /**
      * Thiết lập thông tin lỗi
      *
      * @param type $field Trường bị lỗi
