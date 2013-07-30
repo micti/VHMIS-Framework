@@ -367,6 +367,60 @@ class DateTime
         return $value;
     }
 
+    /**
+     * Xuất khoảng cách thời gian tính theo số năm, số ngày ....
+     *
+     * @param string $value1
+     * @param string $value2
+     * @param string $pattern
+     * @return type
+     */
+    public function interval($value1, $value2)
+    {
+        $this->date1->modify($value1);
+        $this->date2->modify($value2);
+
+        if ($this->date1 > $this->date2) {
+            $this->date1->modify($value2);
+            $this->date2->modify($value1);
+        }
+
+        $diff = $this->date1->diff($this->date2);
+        $interval = array();
+
+        if ($diff->y != 0) {
+            $type = I18nPlurals::type($diff->y, $this->locale);
+            $unitsPattern = I18nResource::units('year', $this->locale);
+            $interval[] = str_replace('{0}', $diff->y, $unitsPattern['unitPattern-count-' . $type]);
+        }
+
+        if ($diff->m != 0) {
+            $type = I18nPlurals::type($diff->m, $this->locale);
+            $unitsPattern = I18nResource::units('month', $this->locale);
+            $interval[] = str_replace('{0}', $diff->m, $unitsPattern['unitPattern-count-' . $type]);
+        }
+
+        if ($diff->d != 0) {
+            $type = I18nPlurals::type($diff->d, $this->locale);
+            $unitsPattern = I18nResource::units('day', $this->locale);
+            $interval[] = str_replace('{0}', $diff->d, $unitsPattern['unitPattern-count-' . $type]);
+        }
+
+        if ($diff->h != 0) {
+            $type = I18nPlurals::type($diff->h, $this->locale);
+            $unitsPattern = I18nResource::units('hour', $this->locale);
+            $interval[] = str_replace('{0}', $diff->h, $unitsPattern['unitPattern-count-' . $type]);
+        }
+
+        if ($diff->i != 0) {
+            $type = I18nPlurals::type($diff->i, $this->locale);
+            $unitsPattern = I18nResource::units('minute', $this->locale);
+            $interval[] = str_replace('{0}', $diff->i, $unitsPattern['unitPattern-count-' . $type]);
+        }
+
+        return implode(' ', $interval);
+    }
+
     public function ago($date, $rootDate = '')
     {
         $this->date1->modify($date);
