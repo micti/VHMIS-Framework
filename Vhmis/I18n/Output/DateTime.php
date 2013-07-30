@@ -312,7 +312,7 @@ class DateTime
      * @param string $pattern
      * @return type
      */
-    public function interval($value1, $value2, $pattern)
+    public function range($value1, $value2, $pattern)
     {
         $this->date1->modify($value1);
         $this->date2->modify($value2);
