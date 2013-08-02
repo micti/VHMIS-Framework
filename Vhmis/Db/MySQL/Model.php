@@ -246,7 +246,7 @@ class Model implements ModelInterface
 
             foreach ($order as $field => $or) {
                 $field = $this->camelCaseToUnderscore($field);
-                $or = $or === 'asc' ? 'acs' : 'desc';
+                $or = $or === 'asc' ? 'asc' : 'desc';
                 $orderby[] = $field . ' ' . $or;
             }
 
