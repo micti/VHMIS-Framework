@@ -8,6 +8,11 @@ interface ModelInterface
 
     public function init();
 
+    /**
+     * Tìm tất cả
+     *
+     * @return \Vhmis\Db\EntityInterface[]
+     */
     public function findAll();
 
     /**
