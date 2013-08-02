@@ -77,6 +77,23 @@ class Number
     }
 
     /**
+     * Định dạng tiền tệ
+     *
+     * @param mixed $value Giá trị cần định dạng
+     * @return string
+     */
+    public function currency($value, $currency)
+    {
+        $style = NumberFormatter::CURRENCY;
+        $formatter = md5($this->locale . $style);
+
+        if (!isset($this->_formatters[$formatter]))
+            $this->_formatters[$formatter] = NumberFormatter::create($this->locale, $style);
+
+        return $this->_formatters[$formatter]->formatCurrency($value, $currency);
+    }
+
+    /**
      * Định dạng chữ cho số
      *
      * @param mixed $value
