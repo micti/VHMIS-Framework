@@ -281,7 +281,13 @@ class Validator
 
     public function addGetValidator($name, $validator, $params = null)
     {
-        $this->checkValidator[] = array('_GET_' . $name, $validator, $params);
+        if (is_array($name)) {
+            foreach ($name as $n) {
+                $this->checkValidator[] = array('_GET_' . $n, $validator, $params);
+            }
+        } else {
+            $this->checkValidator[] = array('_GET_' . $name, $validator, $params);
+        }
 
         return $this;
     }
