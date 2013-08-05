@@ -275,7 +275,7 @@ class Model implements ModelInterface
     {
         $result = $this->find($where, $order, 0, 1);
 
-        if (count($result) == 0)
+        if (count($result) === 0)
             return null;
         else
             return $result[0];
