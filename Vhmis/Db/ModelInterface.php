@@ -40,11 +40,30 @@ interface ModelInterface
 
     public function update($where, $data = null);
 
+    /**
+     *
+     * @param \Vhmis\Db\EntityInterface $entity
+     * @return \Vhmis\Db\ModelInterface
+     */
     public function insertQueue($entity);
 
+    /**
+     *
+     * @param \Vhmis\Db\EntityInterface $entity
+     * @return \Vhmis\Db\ModelInterface
+     */
     public function updateQueue($entity);
 
+    /**
+     *
+     * @param \Vhmis\Db\EntityInterface $entity
+     * @return \Vhmis\Db\ModelInterface
+     */
     public function deleteQueue($entity);
 
+    /**
+     *
+     * @return bool
+     */
     public function flush();
 }
