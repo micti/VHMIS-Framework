@@ -214,18 +214,19 @@ class DateTime
      * @param string $format
      * @return string
      */
-    public function calendarFieldName($value, $field, $type, $format) {
-        if($field !== 'months' && $field !== 'days') {
+    public function calendarFieldName($value, $field, $type, $format)
+    {
+        if ($field !== 'months' && $field !== 'days') {
             return '1';
         }
 
-        if($type !== 'format' && $type !== 'stand-alone') {
+        if ($type !== 'format' && $type !== 'stand-alone') {
             return '2';
         }
 
         $data = I18nResource::calendarField($field, $this->locale);
 
-        if(isset($data[$type][$format])) {
+        if (isset($data[$type][$format])) {
             return $data[$type][$format][$value];
         }
 
@@ -370,22 +371,27 @@ class DateTime
     /**
      * Xuất khoảng cách thời gian tính theo số năm, số ngày ....
      *
-     * @param string $value1
+     * @param \Interval|string $value1
      * @param string $value2
      * @param string $pattern
      * @return type
      */
-    public function interval($value1, $value2)
+    public function interval($value1, $value2 = null)
     {
-        $this->date1->modify($value1);
-        $this->date2->modify($value2);
+        if ($value1 instanceof \DateInterval) {
+            $diff = $value1;
+        } else {
+            $this->date1->modify($value1);
+            $this->date2->modify($value2);
 
-        if ($this->date1 > $this->date2) {
-            $this->date1->modify($value2);
-            $this->date2->modify($value1);
+            if ($this->date1 > $this->date2) {
+                $this->date1->modify($value2);
+                $this->date2->modify($value1);
+            }
+
+            $diff = $this->date1->diff($this->date2);
         }
-
-        $diff = $this->date1->diff($this->date2);
+        
         $interval = array();
 
         if ($diff->y != 0) {
