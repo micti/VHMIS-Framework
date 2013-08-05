@@ -205,15 +205,15 @@ class View
      */
     public function render()
     {
-        return $this->renderText();
+        return $this->renderHtml();
     }
 
     /**
-     * Render dạng text
+     * Render dạng html đầy đủ
      *
      * @return string
      */
-    protected function renderText()
+    protected function renderHtml()
     {
         // Chuyển $data sang dạng biến với tên ứng với key
         extract($this->data);
