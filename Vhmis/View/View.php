@@ -33,6 +33,13 @@ class View
     protected $method;
 
     /**
+     * Dạng trả về
+     *
+     * @var string
+     */
+    protected $output = 'html';
+
+    /**
      * Tên app
      *
      * @var string
@@ -166,6 +173,36 @@ class View
         return $this;
     }
 
+    /**
+     * Thiết lập view
+     *
+     * @param type $name
+     * @return \Vhmis\View\View
+     */
+    public function setView($name)
+    {
+        $this->method = $name;
+        return $this;
+    }
+
+    /**
+     * Thiết lập dạng trả về
+     *
+     * @param type $name
+     * @return \Vhmis\View\View
+     */
+    public function setOutput($name)
+    {
+        $this->output = $name;
+        return $this;
+    }
+
+    /**
+     * Thiết lập thông tin user
+     *
+     * @param type $user
+     * @return \Vhmis\View\View
+     */
     public function setUser($user)
     {
         $this->user = $user;
@@ -205,6 +242,11 @@ class View
      */
     public function render()
     {
+        if($this->output === 'text')
+        {
+            return $this->renderText();
+        }
+
         return $this->renderHtml();
     }
 
@@ -237,6 +279,29 @@ class View
 
             $content = ob_get_clean();
         }
+
+        // Trả kết quả cuối cùng cho response
+        return $content;
+    }
+
+    /**
+     * Render dạng text
+     *
+     * @return string
+     */
+    protected function renderText()
+    {
+        // Chuyển $data sang dạng biến với tên ứng với key
+        extract($this->data);
+
+        // Lấy view
+        ob_start();
+
+        include $this->getViewBoot();
+
+        include $this->getViewDirectory();
+
+        $content = ob_get_clean();
 
         // Trả kết quả cuối cùng cho response
         return $content;
