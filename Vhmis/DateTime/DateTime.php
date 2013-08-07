@@ -390,6 +390,41 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Find booking (dorm, hotel) interval
+     *
+     * @param \Vhmis\DateTime\DateTime
+     * @return \DateTimeInterval
+     */
+    public function findBookingInterval($date)
+    {
+        $diff = $this->diff($date);
+
+        $diff->m += $diff->y * 12;
+        $diff->y = 0;
+
+        if ($this->getDay() === $date->getDay()) {
+            if ($diff->d >= 27) {
+                $diff->d = 0;
+                $diff->m++;
+
+                return $diff;
+            }
+
+            if ($diff->d <= 4 & $diff->d > 0) {
+                $diff->d = 0;
+                return $diff;
+            }
+        }
+
+        if ($diff->d >= 30) {
+            $diff->d = 0;
+            $diff->m++;
+        }
+
+        return $diff;
+    }
+
+    /**
      * Tìm xem có quan hệ với một ngày nào đó không
      *
      * Các giá trị năm tháng tuần ngày không hơn nhau quá 1 đơn vị
@@ -403,19 +438,19 @@ class DateTime extends \DateTime
 
         $relative = array();
 
-        if($diffDay >= -1 && $diffDay <= 1) {
+        if ($diffDay >= -1 && $diffDay <= 1) {
             $relative['d'] = $diffDay;
         }
 
-        if($diffWeek >= -1 && $diffWeek <= 1) {
+        if ($diffWeek >= -1 && $diffWeek <= 1) {
             $relative['w'] = $diffWeek;
         }
 
-        if($diffMonth >= -1 && $diffMonth <= 1) {
+        if ($diffMonth >= -1 && $diffMonth <= 1) {
             $relative['m'] = $diffMonth;
         }
 
-        if($diffYear >= -1 && $diffYear <= 1) {
+        if ($diffYear >= -1 && $diffYear <= 1) {
             $relative['y'] = $diffYear;
         }
 
