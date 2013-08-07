@@ -34,7 +34,7 @@ class DateTime
     static public function dateNativeFormat($locale, $type)
     {
         if($locale === 'ko_Kr') return 'Y-m-d';
-        
+
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
 
@@ -42,7 +42,8 @@ class DateTime
             'year' => array(
                 'YYYY' => 'o',
                 'yyyy' => 'Y',
-                'yy' => 'y'
+                'yy' => 'y',
+                'y' => 'Y'
             ),
             'day' => array(
                 'dd' => 'd',
