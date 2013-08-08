@@ -33,6 +33,24 @@ class Response
     }
 
     /**
+     * Thông báo lỗi
+     */
+    public function reponseError($code)
+    {
+        if($code === '404') {
+            header('HTTP/1.0 404 Not Found');
+            echo 'Page not found 404';
+            exit();
+        }
+
+        if($code === '403') {
+            header('HTTP/1.0 403 Forbidden');
+            echo 'Forbidden!';
+            exit();
+        }
+    }
+
+    /**
      * Thiết lập nội dung trả về
      *
      * @param string nội dung trả về

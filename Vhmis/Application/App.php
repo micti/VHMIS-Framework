@@ -23,6 +23,13 @@ class App
     protected $request;
 
     /**
+     * Response
+     *
+     * @var \Vhmis\Network\Response
+     */
+    protected $response;
+
+    /**
      * Điều khiển toàn bộ quá trình xử lý của hệ thống
      */
     public function __construct()
@@ -41,6 +48,7 @@ class App
         // Các đối tượng trợ giúp
         $this->router = new Network\Router();
         $this->request = new Network\Request();
+        $this->response = new Network\Response();
 
         $this->router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['locale']['lang']);
         $this->router->homeRoute($configApp['indexAppInfo'])->webPath($configGlobal['site']['path']);
@@ -74,11 +82,11 @@ class App
             locale_set_default($configGlobal['locale']['lang'] . '_' . $configGlobal['locale']['region']);
 
             $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
-            $_vhmisController = new $controllerClass($this->request);
+            $_vhmisController = new $controllerClass($this->request, $this->response);
             $_vhmisController->setServiceManager($sm);
             $_vhmisController->init();
         } else {
-            echo $this->request->responeCode;
+            $this->response->reponseError($this->request->responeCode);
         }
     }
 }
