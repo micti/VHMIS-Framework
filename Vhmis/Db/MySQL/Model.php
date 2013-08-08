@@ -450,6 +450,10 @@ class Model implements ModelInterface
      */
     public function flush()
     {
+        if (empty($this->entityKey)) {
+            return true;
+        }
+
         $this->adapter->beginTransaction();
 
         try {
