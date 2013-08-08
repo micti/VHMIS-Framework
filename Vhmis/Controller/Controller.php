@@ -98,7 +98,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 
         $this->action = $this->appInfo['action'];
         $this->params = $this->appInfo['params'];
-        $this->output = $this->appInfo['output'];
+        $this->output = $this->findOutputType($this->appInfo['output']);
         $this->controller = $this->appInfo['controller'];
     }
 
@@ -147,6 +147,27 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     public function afterInit()
     {
         exit();
+    }
+
+    /**
+     * Tìm kiểu trả về
+     *
+     * html|json|xml|text
+     *
+     * @param string $output
+     * @return string
+     */
+    protected function findOutputType($output)
+    {
+        if ($output === 'auto') {
+            if ($this->request->isAjaxRequest()) {
+                $output = $this->request->findAjaxReponseContentType();
+            } else {
+                $output = 'html';
+            }
+        }
+
+        return $output;
     }
 
     /**

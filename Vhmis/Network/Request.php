@@ -10,8 +10,6 @@
 
 namespace Vhmis\Network;
 
-use Vhmis\Config\Configure;
-
 /**
  * Xứ lý yêu câu (request) gửi đến
  */
@@ -202,6 +200,69 @@ class Request
         }
 
         return null;
+    }
+
+    /**
+     * Lấy tất cả kiểu accept có thể trả về
+     *
+     * @return array
+     */
+    public function getAcceptType()
+    {
+        if (isset($_SERVER['HTTP_ACCEPT'])) {
+            $accepts = explode(';', $_SERVER['HTTP_ACCEPT']);
+            $accepts = explode(',', $accepts[0]);
+
+            // Trim
+            foreach ($accepts as &$accept) {
+                $accept = trim($accept);
+            }
+
+            return $accepts;
+        }
+
+        return array();
+    }
+
+    /**
+     * Kiểm tra xem có phải là Ajax/XMLHttpRequest request không
+     *
+     * Đúng với một số thư viện như jQuery, Mootools, Prototype ...
+     *
+     * @return boolean
+     */
+    public function isAjaxRequest()
+    {
+        if (issset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Tìm kiểu trả về thích hợp nhất cho ajax
+     *
+     * html|json|text|xml
+     *
+     * @return string
+     */
+    public function findAjaxReponseContentType()
+    {
+        if ($this->isAjaxRequest()) {
+            $accepts = $this->getAcceptType();
+            if (!empty($accepts)) {
+                if ($accepts[0] === 'application/json') {
+                    return 'json';
+                } elseif ($accepts[0] === 'text/xml') {
+                    return 'xml';
+                } else {
+                    return 'text';
+                }
+            }
+        }
+
+        return 'html';
     }
 
     /**
