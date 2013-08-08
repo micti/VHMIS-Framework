@@ -55,7 +55,7 @@ class ServiceManager implements DiAwareInterface
                         'value' => $config
                     )
                 )
-                ), true);
+            ), true);
         }
     }
 
@@ -73,10 +73,10 @@ class ServiceManager implements DiAwareInterface
         $modelPart = explode('\\', $model);
 
         $this->di->setOne($model, array(
-            'class' => '\\' . SYSTEM . '\\Apps\\' . $model,
+            'class'  => '\\' . SYSTEM . '\\Apps\\' . $model,
             'params' => array(
                 array(
-                    'type' => 'service',
+                    'type'  => 'service',
                     'value' => 'db' . $modelPart[0] . 'Connection'
                 )
             )
@@ -93,10 +93,10 @@ class ServiceManager implements DiAwareInterface
     public function getSession($name)
     {
         $this->di->setOne($name . 'Session', array(
-            'class' => '\\Vhmis\\System\\Session',
+            'class'  => '\\Vhmis\\System\\Session',
             'params' => array(
                 array(
-                    'type' => 'param',
+                    'type'  => 'param',
                     'value' => $name
                 )
             )

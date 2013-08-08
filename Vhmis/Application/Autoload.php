@@ -7,7 +7,6 @@ namespace Vhmis\Application;
  */
 class Autoload
 {
-
     /**
      * Tên namespace
      *
