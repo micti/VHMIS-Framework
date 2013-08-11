@@ -199,40 +199,45 @@ class Model implements ModelInterface
 
             foreach ($where as $w) {
                 $field = $w[0];
-                $operator = $w[1];
-                $value = $w[2];
 
-                // Try to camelCaseToUnderscore field name
-                $field = $this->camelCaseToUnderscore($field);
+                if (isset($w[1]) && isset($w[1])) {
+                    $operator = $w[1];
+                    $value = $w[2];
 
-                // Prepare query
-                $sql_temp = '';
-                if ($operator == 'in') {
-                    $sql_temp = $field . ' in ';
-                } else {
-                    $sql[] = $field . ' ' . $operator . ' ?';
-                }
+                    // Try to camelCaseToUnderscore field name
+                    $field = $this->camelCaseToUnderscore($field);
 
-                // Bind value
-                if ($operator == 'in') {
-                    if (is_array($value)) {
-                        $values = array();
-                        foreach ($value as $v) {
-                            if (is_numeric($v)) {
-                                $values[] = $v;
-                            } else {
-                                $values[] = $this->adapter->qoute($v);
-                            }
-                        }
-                        $sql_temp .= '(' . implode(', ', $values) . ')';
-                        $sql[] = $sql_temp;
+                    // Prepare query
+                    $sql_temp = '';
+                    if ($operator == 'in') {
+                        $sql_temp = $field . ' in ';
                     } else {
-                        throw new \Exception('Value for IN must be an array');
+                        $sql[] = $field . ' ' . $operator . ' ?';
+                    }
+
+                    // Bind value
+                    if ($operator == 'in') {
+                        if (is_array($value)) {
+                            $values = array();
+                            foreach ($value as $v) {
+                                if (is_numeric($v)) {
+                                    $values[] = $v;
+                                } else {
+                                    $values[] = $this->adapter->qoute($v);
+                                }
+                            }
+                            $sql_temp .= '(' . implode(', ', $values) . ')';
+                            $sql[] = $sql_temp;
+                        } else {
+                            throw new \Exception('Value for IN must be an array');
+                        }
+                    } else {
+                        $bindData[$pos] = $value;
+                        // Count
+                        $pos++;
                     }
                 } else {
-                    $bindData[$pos] = $value;
-                    // Count
-                    $pos++;
+                    $sql[] = $w[0];
                 }
             }
 
