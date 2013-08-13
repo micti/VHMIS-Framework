@@ -362,6 +362,10 @@ class DateTime
         $value1 = $this->customPattern($this->date1->formatISO(1), $data['patternbegin']);
         $value2 = $this->customPattern($this->date2->formatISO(1), $data['patternend']);
 
+        if($value1 === $value2) {
+            return $value1;
+        }
+
         $value = str_replace('{0}', $value1, $data['pattern']);
         $value = str_replace('{1}', $value2, $value);
 
@@ -391,7 +395,7 @@ class DateTime
 
             $diff = $this->date1->diff($this->date2);
         }
-        
+
         $interval = array();
 
         if ($diff->y != 0) {
