@@ -184,8 +184,8 @@ class Resource
     {
         $falseReturn = array(
             'pattern'      => '{0} - {1}',
-            'patternbegin' => 'YYYY-MM-DD HH:mm:ss',
-            'patternend'   => 'YYYY-MM-DD HH:mm:ss'
+            'patternbegin' => 'YYYY-MM-dd HH:mm:ss',
+            'patternend'   => 'YYYY-MM-dd HH:mm:ss'
         );
 
         $punctuationMark = '/-|~|‐|–|—/';
