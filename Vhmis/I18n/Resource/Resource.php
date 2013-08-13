@@ -198,12 +198,16 @@ class Resource
 
         $formatFallback = static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats']['intervalFormatFallback'];
 
-        if (!isset(static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field][$diffrenceField])) {
+        if (!isset(static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field])) {
             // TODO: check again format Id
             return $falseReturn;
         }
 
-        $pattern = static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field][$diffrenceField];
+        if (!isset(static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field][$diffrenceField])) {
+            $pattern = end(static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field]);
+        } else {
+            $pattern = static::$i18nData[$locale][$calendar]['dateTimeFormats']['intervalFormats'][$field][$diffrenceField];
+        }
 
         $formatpart = preg_split($punctuationMark, $formatFallback);
 
