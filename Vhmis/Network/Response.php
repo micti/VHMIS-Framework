@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -9,6 +8,7 @@
  * @package Vhmis_Network
  * @since Vhmis v2.0
  */
+
 namespace Vhmis\Network;
 
 use Vhmis\Config\Configure;
@@ -29,7 +29,7 @@ class Response
     {
         // header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
         // header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-        $this->_sendContent();
+        $this->sendContent();
     }
 
     /**
@@ -37,13 +37,13 @@ class Response
      */
     public function reponseError($code)
     {
-        if($code === '404') {
+        if ($code === '404') {
             header('HTTP/1.0 404 Not Found');
             echo 'Page not found 404';
             exit();
         }
 
-        if($code === '403') {
+        if ($code === '403') {
             header('HTTP/1.0 403 Forbidden');
             echo 'Forbidden!';
             exit();
@@ -63,29 +63,29 @@ class Response
     }
 
     /**
-     * Thiết lập download
+     * Tải file
+     *
+     * @param string $filepath
+     * @param string $filename
+     * @param string $filetype
      */
-    public function download($filepath, $filename, $filetype = null)
+    public function download($path, $filename, $type = null)
     {
         header('Content-disposition: attachment; filename="' . $filename . '"');
 
         // Xác định file type
-        if (!is_string($filetype)) {
-            $mines = ___loadConfig('Mine', false);
-            $mines = $mines['minetypes'];
-
-            $ext = explode('.', $filename);
-            $ext = end($ext);
-
-            if (isset($mines[$ext])) {
-                header('Content-type: ' . $mines[$ext]);
+        if (!is_string($type)) {
+            if ($finfo = new \finfo(FILEINFO_MIME_TYPE)) {
+                $type = $finfo->file($path);
             }
         } else {
-            header('Content-type: ' . $filetype);
+            header('Content-type: ' . $type);
         }
 
         flush();
-        readfile($filepath);
+        readfile($path);
+
+        exit();
     }
 
     public function redirect($path)
@@ -99,7 +99,7 @@ class Response
      *
      * @param string Nội dung trả về
      */
-    protected function _sendContent($content = '')
+    protected function sendContent($content = '')
     {
         $benmark = Configure::get('Benchmark');
         $body = str_replace('::::xxxxx-memory-xxxx::::', memory_get_usage(), $this->_body);
