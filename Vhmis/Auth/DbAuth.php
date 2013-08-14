@@ -119,4 +119,27 @@ class DbAuth implements AuthInterface
     {
         return $this->identityInfo;
     }
+
+    /**
+     * Thiết lập Check Credential
+     *
+     * @param \Vhmis\Auth\CheckCredentialInterface $checkCredential
+     * @return \Vhmis\Auth\DbAuth
+     */
+    public function setCheckCredential(CheckCredentialInterface $checkCredential)
+    {
+        $this->checkCredential = $checkCredential;
+
+        return $this;
+    }
+
+    /**
+     * Lấy Check Credential
+     *
+     * @return \Vhmis\Auth\CheckCredentialInterface
+     */
+    public function getCheckCredential()
+    {
+        return $this->checkCredential;
+    }
 }
