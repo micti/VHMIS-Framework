@@ -2,7 +2,7 @@
 
 namespace Vhmis\Auth;
 
-class DbAuth implements AuthInterface
+class DbAuth implements AuthInterface, CheckCredentialAwareInterface
 {
     /**
      *
@@ -21,23 +21,18 @@ class DbAuth implements AuthInterface
      *
      * @var string
      */
-    protected $identity = 'username';
-
-    /**
-     * Trường chứng thực
-     *
-     * @var string
-     */
-    protected $credential = 'password';
+    protected $identityField = 'username';
 
     /**
      *
-     * @var \Closure
+     * @var \Vhmis\Auth\CheckCredentialInterface
      */
     protected $checkCredential;
 
     public function __construct()
-    {}
+    {
+
+    }
 
     /**
      * Bảng dữ liệu chứa thông tin đăng nhập
@@ -55,58 +50,48 @@ class DbAuth implements AuthInterface
      *
      * @param string $identity;
      */
-    public function setIdentity($identity)
+    public function setIdentityField($identityField)
     {
-        $this->identity = $identity;
-        return $this;
-    }
-
-    /**
-     * Thông tin trường chứng thực (password)
-     *
-     * @param string $credential
-     */
-    public function setCredential($credential)
-    {
-        $this->credential = $credential;
-        return $this;
-    }
-
-    public function setCheckCredentialFunction(\Closure $checkCredential)
-    {
-        $this->checkCredential = $checkCredential;
+        $this->identityField = $identityField;
         return $this;
     }
 
     /**
      * Chứng thực
      *
+     * @param string $identity
+     * @param string $credential
      * @return int
      */
-    public function auth($identity, $credential, $options)
+    public function auth($identity, $credential)
     {
-        if(!($this->checkCredential instanceof \Closure)) {
-            throw new \Exception('DbAuth need a method to check credential. Set via DbAuth::setCheckCredentialFunction method');
-        }
-
-        $user = $this->getIdentity($identity);
         $this->identityInfo = array();
 
-        if($user === null) {
+        $user = $this->getIdentity($identity);
+
+        if ($user === null) {
             return DbAuth::AUTH_NOT_FOUND_IDENTITY;
         }
 
-        if($this->checkCredential->__invoke($credential, $user, $options) === DbAuth::AUTH_NOT_MATCH_CREDENTIAL) {
+        if ($this->checkCredential->check($user, $credential) === false) {
             return DbAuth::AUTH_NOT_MATCH_CREDENTIAL;
         }
 
         $this->identityInfo = $user->toArray();
+
         return DbAuth::AUTH_OK;
     }
 
+    /**
+     * Lấy đối tượng được nhận dạng trong database
+     *
+     * @param string $identity
+     * @return \Vhmis\Db\EntityInterface
+     */
     public function getIdentity($identity)
     {
-        $user = $this->model->findOne(array(array($this->identity, 'like', $identity)));
+        $user = $this->model->findOne(array(array($this->identityField, 'like', $identity)));
+
         return $user;
     }
 
