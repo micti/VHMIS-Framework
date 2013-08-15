@@ -24,19 +24,19 @@ class Route implements RouteInterface
     /**
      * Các thành phần hay gặp trong 1 uri
      */
-    const YEAR = '([12][0-9]{3})';
+    const YEAR = '[12][0-9]{3}';
 
-    const MONTH = '(0[1-9]|1[012])';
+    const MONTH = '0[1-9]|1[012]';
 
-    const DAY = '(0[1-9]|[12][0-9]|3[01])';
+    const DAY = '0[1-9]|[12][0-9]|3[01]';
 
-    const ID = '([0-9]+)';
+    const ID = '[0-9]+';
 
-    const SLUG = '([a-z0-9-]+)';
+    const SLUG = '[a-z0-9-]+';
 
-    const YEARMONTH = '([12][0-9]{3}-(0[1-9]|1[012]))';
+    const YEARMONTH = '[12][0-9]{3}-(0[1-9]|1[012])';
 
-    const YEARWEEK = '([12][0-9]{3}-w(0[1-9]|[1-4][0-9]|5[0-2]))';
+    const YEARWEEK = '[12][0-9]{3}-w(0[1-9]|[1-4][0-9]|5[0-2])';
 
     /**
      * Link pattern
@@ -269,11 +269,11 @@ class Route implements RouteInterface
                 $value = explode(':', $value, 2);
                 if (count($value) == 2) {
                     if ($value[0] === '') {
-                        $regex[] = $this->_dataTypes['slug'];
+                        $regex[] = '(?<' . $value[1] . '>' . $this->_dataTypes['slug'] . ')';
                     } elseif (isset($this->_dataTypes[$value[0]])) {
-                        $regex[] = $this->_dataTypes[$value[0]];
+                        $regex[] = '(?<' . $value[1] . '>' . $this->_dataTypes[$value[0]] . ')';
                     } else {
-                        $regex[] = $this->_dataTypes['slug'];
+                        $regex[] = '(?<' . $value[1] . '>' . $this->_dataTypes['slug'] . ')';
                     }
 
                     $param[] = $value[1];
@@ -344,7 +344,7 @@ class Route implements RouteInterface
 
         // Thiết lập giá trị cho params
         foreach ($this->_paramsInPattern as $key => $name) {
-            $result['params'][$name] = $params[0][$key + 1];
+            $result['params'][$name] = $params[0][$name];
         }
 
         // Lấy chính xác link redirect
