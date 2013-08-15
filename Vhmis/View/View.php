@@ -409,9 +409,13 @@ class View
     protected function getViewDirectory()
     {
         $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
-            . $this->template . D_SPEC . $this->controller . D_SPEC . $this->method . '.php';
+            . $this->template . D_SPEC . $this->controller . D_SPEC . $this->method;
 
-        return $dir;
+        if($this->output === 'text') {
+            $dir .= '_Text';
+        }
+
+        return $dir . '.php';
     }
 
     /**
