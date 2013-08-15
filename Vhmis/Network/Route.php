@@ -159,6 +159,17 @@ class Route implements RouteInterface
     {
         $this->_pattern = $pattern;
 
+        // Escape các ký tự đặt biệt
+        $special = array(
+            '.'
+        );
+
+        $escape = array(
+            '\\.'
+        );
+
+        $this->_pattern = str_replace($special, $escape, $this->_pattern);
+
         // Tạo link regex khi có pattern
         $this->patternToRegex();
 
