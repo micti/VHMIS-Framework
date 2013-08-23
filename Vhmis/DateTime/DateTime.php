@@ -69,8 +69,11 @@ class DateTime extends \DateTime
     /**
      * Trả thời gian về định dạng ISO, sử dụng trong MYSQL
      *
-     * @param int $type Kiểu tra về 2 Đúng nguyên định dạng ISO8601 1 Dạng yyyy-mm-dd
-     *        hh:mm:ss 0 Dạng yyyy-mm-dd
+     * @param int $type Kiểu tra về
+     *        2 Đúng nguyên định dạng ISO8601
+     *        1 Dạng yyyy-mm-dd hh:mm:ss
+     *        0 Dạng yyyy-mm-dd
+     *        3 Dạng yyyy-mm
      * @return string
      */
     public function formatISO($type = 2)
@@ -79,6 +82,8 @@ class DateTime extends \DateTime
             return $this->format('Y-m-d');
         } elseif ($type == 1) {
             return $this->format('Y-m-d H:i:s');
+        } elseif ($type == 3) {
+            return $this->format('Y-m');
         } else {
             return $this->format(DateTime::ISO8601);
         }
