@@ -177,10 +177,31 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      *
      * @param string $model Tên Model
      * @return \Vhmis\Db\ModelInterface
+     * @throws \Exception
      */
     protected function getModel($model)
     {
         $model = $this->sm->getModel($model);
+
+        if($model === null) {
+            throw new \Exception('Model ' . $model . 'not found');
+        }
+
+        return $model;
+    }
+
+    /**
+     * Lấy model của app hiện hành
+     *
+     * @param string $model
+     * @return \Vhmis\Db\ModelInterface
+     * @throws \Exception
+     */
+    public function model($model)
+    {
+        $fullname = $this->appInfo['app'] . '\Model\\' . $model;
+
+        $model = $this->sm->getModel($fullname);
 
         if($model === null) {
             throw new \Exception('Model ' . $model . 'not found');
