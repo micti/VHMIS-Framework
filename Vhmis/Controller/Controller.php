@@ -232,7 +232,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      * @param string $layout
      * @param string $template
      */
-    public function end($info, $view = '', $layout = '', $template = '')
+    public function end($data, $view = '', $layout = '', $template = '')
     {
         if ($view !== '') {
             $this->view->setMethod($view);
@@ -259,7 +259,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      * @param mixed $info
      * @param string $layout
      */
-    public function error($info, $view = '', $layout = '')
+    public function error($data, $view = '', $layout = '')
     {
         if ($layout == '') {
             $layout = 'Error';
@@ -267,7 +267,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 
         $this->view->setNoView();
 
-        $content = $this->view->setLayout($layout)->render($info);
+        $content = $this->view->setLayout($layout)->render($data);
 
         $this->response->body($content)->response();
 
