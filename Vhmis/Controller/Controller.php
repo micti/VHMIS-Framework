@@ -183,7 +183,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     {
         $model = $this->sm->getModel($model);
 
-        if($model === null) {
+        if ($model === null) {
             throw new \Exception('Model ' . $model . 'not found');
         }
 
@@ -197,13 +197,13 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      * @return \Vhmis\Db\ModelInterface
      * @throws \Exception
      */
-    public function model($model)
+    protected function model($model)
     {
         $fullname = $this->appInfo['app'] . '\Model\\' . $model;
 
         $model = $this->sm->getModel($fullname);
 
-        if($model === null) {
+        if ($model === null) {
             throw new \Exception('Model ' . $model . 'not found');
         }
 
@@ -212,14 +212,65 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 
     /**
      * Thiết lập dữ liệu cho view
-     * 
+     *
      * @param type $key
      * @param type $data
      * @return \Vhmis\Controller\Controller
      */
-    public function set($key, $data) {
+    public function set($key, $data)
+    {
         $this->view->setData($key, $data);
 
         return $this;
+    }
+
+    /**
+     * Gọi view
+     *
+     * @param mixed $info
+     * @param string $view
+     * @param string $layout
+     * @param string $template
+     */
+    public function end($info, $view = '', $layout = '', $template = '')
+    {
+        if ($view !== '') {
+            $this->view->setMethod($view);
+        }
+
+        if ($layout !== '') {
+            $this->view->setLayout($layout);
+        }
+
+        if ($template !== '') {
+            $this->view->setTemplate($template);
+        }
+
+        $content = $this->view->render($data);
+
+        $this->response->body($content)->response();
+
+        $this->afterInit();
+    }
+
+    /**
+     * Xuất thông báo lỗi
+     *
+     * @param mixed $info
+     * @param string $layout
+     */
+    public function error($info, $view = '', $layout = '')
+    {
+        if ($layout == '') {
+            $layout = 'Error';
+        }
+
+        $this->view->setNoView();
+
+        $content = $this->view->setLayout($layout)->render($info);
+
+        $this->response->body($content)->response();
+
+        $this->afterInit();
     }
 }
