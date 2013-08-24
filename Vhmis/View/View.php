@@ -250,7 +250,7 @@ class View
             return $this->renderJson($data);
         }
 
-        return $this->renderHtml();
+        return $this->renderHtml($data);
     }
 
     /**
@@ -258,10 +258,14 @@ class View
      *
      * @return string
      */
-    protected function renderHtml()
+    protected function renderHtml($data)
     {
         // Chuyển $data sang dạng biến với tên ứng với key
         extract($this->data);
+
+        if(is_array($data)) {
+            extract($data);
+        }
 
         // Lấy view
         if (!$this->noView) {
