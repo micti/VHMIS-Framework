@@ -209,4 +209,17 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 
         return $model;
     }
+
+    /**
+     * Thiết lập dữ liệu cho view
+     * 
+     * @param type $key
+     * @param type $data
+     * @return \Vhmis\Controller\Controller
+     */
+    public function set($key, $data) {
+        $this->view->setData($key, $data);
+
+        return $this;
+    }
 }
