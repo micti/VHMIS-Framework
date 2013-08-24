@@ -240,11 +240,14 @@ class View
      *
      * @return string
      */
-    public function render()
+    public function render($data = null)
     {
-        if($this->output === 'text')
-        {
-            return $this->renderText();
+        if ($this->output === 'text') {
+            return $this->renderText($data);
+        }
+
+        if ($this->output === 'json') {
+            return $this->renderJson($data);
         }
 
         return $this->renderHtml();
@@ -287,24 +290,52 @@ class View
     /**
      * Render dạng text
      *
+     * @param mixed $data
      * @return string
      */
-    protected function renderText()
+    protected function renderText($data)
     {
-        // Chuyển $data sang dạng biến với tên ứng với key
-        extract($this->data);
+        if (!$this->noView) {
+            // Chuyển $data sang dạng biến với tên ứng với key
+            extract($this->data);
 
-        // Lấy view
-        ob_start();
+            // Lấy view
+            ob_start();
 
-        include $this->getViewBoot();
+            include $this->getViewBoot();
 
-        include $this->getViewDirectory();
+            include $this->getViewDirectory();
 
-        $content = ob_get_clean();
+            $content = ob_get_clean();
 
-        // Trả kết quả cuối cùng cho response
-        return $content;
+            // Trả kết quả cuối cùng cho response
+            return $content;
+        }
+
+        if (is_string($data)) {
+            return $data;
+        }
+
+        if (is_array($data)) {
+            return $data['message'];
+        }
+
+        return 'nothing returns';
+    }
+
+    /**
+     * Render dạng json
+     *
+     * @param array $data
+     * @return string
+     */
+    protected function renderJson($data = null)
+    {
+        if ($data === null || !is_array($data)) {
+            return json_encode(array());
+        }
+
+        return json_encode($data);
     }
 
     /**
@@ -411,7 +442,7 @@ class View
         $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
             . $this->template . D_SPEC . $this->controller . D_SPEC . $this->method;
 
-        if($this->output === 'text') {
+        if ($this->output === 'text') {
             $dir .= '_Text';
         }
 
