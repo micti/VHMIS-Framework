@@ -211,6 +211,26 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
+     * Lấy model của một app nào đó
+     *
+     * @param string $model
+     * @return \Vhmis\Db\ModelInterface
+     * @throws \Exception
+     */
+    protected function appModel($app, $model)
+    {
+        $fullname = $app . '\Model\\' . $model;
+
+        $model = $this->sm->getModel($fullname);
+
+        if ($model === null) {
+            throw new \Exception('Model ' . $fullname . 'not found');
+        }
+
+        return $model;
+    }
+
+    /**
      * Thiết lập dữ liệu cho view
      *
      * @param type $key
