@@ -259,7 +259,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      * @param mixed $info
      * @param string $layout
      */
-    public function error($data, $view = '', $layout = '')
+    public function error($data, $layout = '')
     {
         if ($layout == '') {
             $layout = 'Error';
