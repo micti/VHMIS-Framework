@@ -82,9 +82,9 @@ class App
             locale_set_default($configGlobal['locale']['lang'] . '_' . $configGlobal['locale']['region']);
 
             $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
-            $_vhmisController = new $controllerClass($this->request, $this->response);
-            $_vhmisController->setServiceManager($sm);
-            $_vhmisController->init();
+            $controller = new $controllerClass($this->request, $this->response);
+            $controller->setServiceManager($sm);
+            $controller->init();
         } else {
             $this->response->reponseError($this->request->responeCode);
         }
