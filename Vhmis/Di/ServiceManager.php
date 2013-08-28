@@ -62,22 +62,22 @@ class ServiceManager implements DiAwareInterface
     /**
      * Lấy model
      *
-     * Tên class đầy đủ của một Model trong ứng dụng có dạng \SystemName\Apps\AppName\Model\ModelName
-     * Khi gọi phương thức lấy model thì tên truyền vào có dạng AppName\Model\ModelName
-     *
-     * @param string $model
-     * @return \Vhmis\Db\ModelInterface $model
+     * @return \Vhmis\Db\ModelInterface
      */
-    public function getModel($model)
+    public function getModel($app, $model = null)
     {
-        $modelPart = explode('\\', $model);
+        if ($model === null) {
+            $modelPart = explode('\\', $app);
+            $app = $modelPart[0];
+            $model = $modelPart[2];
+        }
 
         $this->di->setOne($model, array(
-            'class'  => '\\' . SYSTEM . '\\Apps\\' . $model,
+            'class'  => '\\' . SYSTEM . '\\Apps\\' . $app . '\\Model\\' . $model,
             'params' => array(
                 array(
                     'type'  => 'service',
-                    'value' => 'db' . $modelPart[0] . 'Connection'
+                    'value' => 'db' . $app . 'Connection'
                 )
             )
         ), true);
