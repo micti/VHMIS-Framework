@@ -376,12 +376,12 @@ class DateTime extends \DateTime
 
     /**
      * Thiết lập ngày cuối tháng
-     * 
+     *
      * @return \Vhmis\DateTime\DateTime
      */
     public function setLastDateOfMonth()
     {
-        $this->modify('last date of this month');
+        $this->modify('last day of this month');
 
         return $this;
     }
@@ -558,7 +558,7 @@ class DateTime extends \DateTime
      */
     public function getLastDateOfMonth()
     {
-        return $this->getModifiedDate('last day of month');
+        return $this->getModifiedDate('last day of this month');
     }
 
     /**
