@@ -90,4 +90,8 @@ class DateTime extends HelperAbstract
     public function fieldName($field, $format = 'displayName') {
         return $this->dt->dateFieldName($field, $format);
     }
+
+    public function unit($number, $filed) {
+        return $this->dt->unit($number, $filed);
+    }
 }

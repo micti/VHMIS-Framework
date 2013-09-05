@@ -431,6 +431,12 @@ class DateTime
         return implode(' ', $interval);
     }
 
+    public function unit($number, $field) {
+        $unitsPattern = I18nResource::units($field, $this->locale);
+        $type = I18nPlurals::type($number, $this->locale);
+        return str_replace('{0}', $number, $unitsPattern['unitPattern-count-' . $type]);
+    }
+
     public function ago($date, $rootDate = '')
     {
         $this->date1->modify($date);
