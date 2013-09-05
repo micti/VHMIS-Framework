@@ -297,7 +297,7 @@ class Route implements RouteInterface
 
         // Chuyển link pattern sang link regex
         $this->_regex = str_replace('/', '\\/', $this->_pattern);
-        $this->_regex = '/' . str_replace($params[0], $regex, $this->_regex) . '/';
+        $this->_regex = '/' . 'somethingispecial' . str_replace($params[0], $regex, $this->_regex) . 'somethingispecial' . '/';
         $this->_paramsInPattern = $param;
     }
 
@@ -334,18 +334,10 @@ class Route implements RouteInterface
         if (!is_string($value))
             return $result;
 
-        $match = preg_match_all($this->_regex, $value, $params, PREG_SET_ORDER);
+        $match = preg_match_all($this->_regex, 'somethingispecial' . $value . 'somethingispecial', $params, PREG_SET_ORDER);
 
         // Không hợp lệ
         if ($match !== 1) { // Chỉ match 1 và chỉ duy nhất 1 lần
-            return $result;
-        }
-
-        // Có một vài trường hợp regex là một phần nhỏ của $value, ví dụ regex là /log/ và value là fhdhfd/logdsddddf
-        // Thì kết quả vẫn đúng, vì vậy kiểm tra thêm số thành phần
-        $countReg = count(explode('/', $this->_regex));
-        $countVal = count(explode('/', '/' . $value . '/'));
-        if ($countReg !== $countVal) {
             return $result;
         }
 
