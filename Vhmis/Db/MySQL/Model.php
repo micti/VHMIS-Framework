@@ -190,6 +190,31 @@ class Model implements ModelInterface
         }
     }
 
+    /**
+     * Tìm theo các primany key
+     *
+     * @param array $ids
+     * @return \Vhmis\Db\MySQL\Entity[]
+     */
+    public function findByIds($ids)
+    {
+        if (!is_array($ids) || empty($array)) {
+            return array();
+        }
+
+        return $this->find(array(array($this->idKey, 'in', $ids)));
+    }
+
+    /**
+     * Tìm
+     *
+     * @param array $where Mảng chứa điều kiện tìm kiếm
+     * @param array $order Mảng chứa điều kiện sắp xếp
+     * @param int $skip Số row bỏ qua
+     * @param int $limit Số row lấy
+     * @return \Vhmis\Db\MySQL\Entity[]
+     * @throws \Exception
+     */
     public function find($where = array(), $order = array(), $skip = 0, $limit = 0)
     {
         $bindData = array();

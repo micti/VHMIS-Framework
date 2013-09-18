@@ -16,11 +16,20 @@ interface ModelInterface
     public function findAll();
 
     /**
+     * Tìm theo primany key
      *
-     * @param int|array $id
-     * @return \Vhmis\Db\EntityInterface|\Vhmis\Db\EntityInterface[]|array
+     * @param int $id
+     * @return \Vhmis\Db\EntityInterface
      */
     public function findById($id);
+
+    /**
+     * Tìm theo các primany key
+     *
+     * @param array $ids
+     * @return \Vhmis\Db\EntityInterface[]
+     */
+    public function findByIds($ids);
 
     /**
      *
