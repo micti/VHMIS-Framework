@@ -242,20 +242,20 @@ class Model implements ModelInterface
 
                     // Bind value
                     if ($operator == 'in') {
-                        if (is_array($value)) {
-                            $values = array();
-                            foreach ($value as $v) {
-                                if (is_numeric($v)) {
-                                    $values[] = $v;
-                                } else {
-                                    $values[] = $this->adapter->qoute($v);
-                                }
-                            }
-                            $sql_temp .= '(' . implode(', ', $values) . ')';
-                            $sql[] = $sql_temp;
-                        } else {
+                        if (!is_array($value) || empty($value)) {
                             throw new \Exception('Value for IN must be an array');
                         }
+
+                        $values = array();
+                        foreach ($value as $v) {
+                            if (is_numeric($v)) {
+                                $values[] = $v;
+                            } else {
+                                $values[] = $this->adapter->qoute($v);
+                            }
+                        }
+                        $sql_temp .= '(' . implode(', ', $values) . ')';
+                        $sql[] = $sql_temp;
                     } else {
                         $bindData[$pos] = $value;
                         // Count
@@ -348,20 +348,20 @@ class Model implements ModelInterface
 
                 // Bind value
                 if ($operator == 'in') {
-                    if (is_array($value)) {
-                        $values = array();
-                        foreach ($value as $v) {
-                            if (is_numeric($v)) {
-                                $values[] = $v;
-                            } else {
-                                $values[] = $this->adapter->qoute($v);
-                            }
-                        }
-                        $sql_temp .= '(' . implode(', ', $values) . ')';
-                        $sqlWhere[] = $sql_temp;
-                    } else {
+                    if (!is_array($value) || empty($value)) {
                         throw new \Exception('Value for IN must be an array');
                     }
+
+                    $values = array();
+                    foreach ($value as $v) {
+                        if (is_numeric($v)) {
+                            $values[] = $v;
+                        } else {
+                            $values[] = $this->adapter->qoute($v);
+                        }
+                    }
+                    $sql_temp .= '(' . implode(', ', $values) . ')';
+                    $sqlWhere[] = $sql_temp;
                 } else {
                     $bindData[$pos] = $value;
                     // Count
