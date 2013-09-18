@@ -198,7 +198,7 @@ class Model implements ModelInterface
      */
     public function findByIds($ids)
     {
-        if (!is_array($ids) || empty($array)) {
+        if (!is_array($ids) || empty($ids)) {
             return array();
         }
 
