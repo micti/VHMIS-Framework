@@ -68,10 +68,17 @@ class App
         // Thuc thi
         if ($this->request->responeCode === '200') {
 
-            //Load cac service vào Di
-            $services = Config\Config::system('Service');
-            foreach ($services as $name => $service) {
-                $sm->set($name, $service, true);
+            // Database connections if exist
+            if (isset($configGlobal['database']) && $configGlobal['database'] === true) {
+                $sm->setConnections();
+            }
+
+            // Services  if exist
+            if (isset($configGlobal['service']) && $configGlobal['service'] === true) {
+                $services = Config\Config::system('Service');
+                foreach ($services as $name => $service) {
+                    $sm->set($name, $service, true);
+                }
             }
 
             // Set default timezone
