@@ -41,9 +41,6 @@ class App
     {
         // Lấy config
         $configGlobal = Config\Config::system('Global');
-        $configApp = Config\Config::system('Applications');
-        Config\Configure::set('ConfigGlobal', $configGlobal);
-        Config\Configure::set('ConfigApplications', $configApp);
 
         // Các đối tượng trợ giúp
         $this->router = new Network\Router();
@@ -51,7 +48,7 @@ class App
         $this->response = new Network\Response();
 
         $this->router->setting($configGlobal['app']['multi'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['language']['default'], $configGlobal['app']['list'], $configGlobal['language']['accept']);
-        $this->router->homeRoute($configApp['indexAppInfo'])->webPath($configGlobal['site']['path']);
+        $this->router->homeRoute($configGlobal['app']['indexAppInfo'])->webPath($configGlobal['site']['path']);
 
         $this->request->setRouter($this->router);
         $this->request->process();
