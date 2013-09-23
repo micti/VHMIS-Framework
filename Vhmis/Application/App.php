@@ -87,7 +87,7 @@ class App
             Config\Configure::set('Locale', $locale);
             locale_set_default($locale);
 
-            $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
+            $controllerClass = '\\' . SYSTEM . '\\Apps\\' . $this->request->app['app'] . '\\Controller\\' . $this->request->app['controller'];
             $controller = new $controllerClass($this->request, $this->response);
             $controller->setServiceManager($sm);
             $controller->init();
