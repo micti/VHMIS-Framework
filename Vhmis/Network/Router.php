@@ -95,6 +95,13 @@ class Router
      */
     protected $_route;
 
+    /**
+     * Các ngôn ngữ được chấp nhận
+     * 
+     * @var array
+     */
+    protected $acceptLanguage = array();
+
     public function __construct()
     {
         $this->_route = new Route();
@@ -120,13 +127,14 @@ class Router
      * @param string $positionLang Vị trí của yếu tố
      * @return \Vhmis\Network\Router
      */
-    public function setting($useApp, $useLang, $positionLang, $defaultApp, $defaultLanguage)
+    public function setting($useApp, $useLang, $positionLang, $defaultApp, $defaultLanguage, $acceptLanguage)
     {
         $this->_useApp = $useApp;
         $this->_useLanguage = $useLang;
         $this->_positionLanguage = $positionLang;
         $this->_app = $defaultApp;
         $this->_language = $defaultLanguage;
+        $this->acceptLanguage = $acceptLanguage;
 
         return $this;
     }
@@ -223,7 +231,11 @@ class Router
             return $result;
         }
 
-        // TODO: Kiểm tra ngôn ngữ
+        // Kiểm tra ngôn ngữ
+        if(!isset($this->acceptLanguage[$this->_language])) {
+            return $result;
+        }
+
         // Load cấu hình route của ứng dụng
         $routes = Config::appRoutes($this->_app);
 

@@ -50,7 +50,7 @@ class App
         $this->request = new Network\Request();
         $this->response = new Network\Response();
 
-        $this->router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['locale']['lang']);
+        $this->router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['language']['default'], $configGlobal['language']['accept']);
         $this->router->homeRoute($configApp['indexAppInfo'])->webPath($configGlobal['site']['path']);
 
         $this->request->setRouter($this->router);
@@ -77,9 +77,10 @@ class App
             // Set default timezone
             date_default_timezone_set($configGlobal['timezone']['name']);
 
-            // Ngôn ngữ
-            Config\Configure::set('Locale', $configGlobal['locale']['lang'] . '_' . $configGlobal['locale']['region']);
-            locale_set_default($configGlobal['locale']['lang'] . '_' . $configGlobal['locale']['region']);
+            // Locale
+            $locale = $this->request->app['language'] . '_' . $configGlobal['language']['accept'][$this->request->app['language']];
+            Config\Configure::set('Locale', $locale);
+            locale_set_default($locale);
 
             $controllerClass = '\\' . SYSTEM . '\\Apps\\' . ucfirst($this->request->app['app']) . '\\Controller\\' . $this->request->app['controller'];
             $controller = new $controllerClass($this->request, $this->response);
