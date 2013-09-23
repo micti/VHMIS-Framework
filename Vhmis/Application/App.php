@@ -50,7 +50,7 @@ class App
         $this->request = new Network\Request();
         $this->response = new Network\Response();
 
-        $this->router->setting($configGlobal['app']['use'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['language']['default'], $configGlobal['language']['accept']);
+        $this->router->setting($configGlobal['app']['multi'], $configGlobal['language']['multi'], $configGlobal['language']['position'], $configGlobal['app']['default'], $configGlobal['language']['default'], $configGlobal['app']['list'], $configGlobal['language']['accept']);
         $this->router->homeRoute($configApp['indexAppInfo'])->webPath($configGlobal['site']['path']);
 
         $this->request->setRouter($this->router);

@@ -95,6 +95,13 @@ class Router
      */
     protected $acceptLanguage = array();
 
+    /**
+     * Danh sách các ứng dụng
+     *
+     * @var array
+     */
+    protected $appList = array();
+
     public function __construct()
     {
         $this->route = new Route();
@@ -120,7 +127,7 @@ class Router
      * @param string $positionLang Vị trí của yếu tố
      * @return \Vhmis\Network\Router
      */
-    public function setting($useApp, $useLang, $positionLang, $defaultApp, $defaultLanguage, $acceptLanguage)
+    public function setting($useApp, $useLang, $positionLang, $defaultApp, $defaultLanguage, $appList, $acceptLanguage)
     {
         $this->useApp = $useApp;
         $this->useLanguage = $useLang;
@@ -128,6 +135,7 @@ class Router
         $this->app = $defaultApp;
         $this->language = $defaultLanguage;
         $this->acceptLanguage = $acceptLanguage;
+        $this->appList = $appList;
 
         return $this;
     }
@@ -219,8 +227,7 @@ class Router
         }
 
         // Kiểm tra ứng dụng
-        $appConfig = Configure::get('ConfigApplications', array());
-        if (!isset($appConfig['list']['name'][$this->app])) {
+        if (!isset($this->appList[$this->app])) {
             return $result;
         }
 
@@ -232,9 +239,7 @@ class Router
         // Load cấu hình route của ứng dụng
         $routes = Config::appRoutes($this->app);
 
-        // Đối chiếu với các route, nếu khớp với route nào trước thì ứng với
-        // thông tin
-        // của route đó
+        // Đối chiếu với các route, nếu khớp với route nào trước thì ứng với thông tin của route đó
         foreach ($routes as $route) {
             $this->route->setPattern($route[0])
                 ->setController($route[1])
@@ -246,7 +251,7 @@ class Router
             $result = $this->route->check($uri);
 
             if ($result['match'] === true) {
-                $result['app'] = $appConfig['list']['cname'][$this->app];
+                $result['app'] = $this->appList[$this->app]['ns'];
                 $result['appUrl'] = $this->app;
                 $result['language'] = $this->language;
                 return $result;
