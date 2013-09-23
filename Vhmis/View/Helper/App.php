@@ -7,10 +7,10 @@ class App extends HelperAbstract
 
     public function __invoke($type = null)
     {
-        $app = \Vhmis\Config\Config::system('Applications', 'list');
+        $app = \Vhmis\Config\Config::system('Global', 'app/list');
 
         if ($type === null || $type === '' || $type === 'name') {
-            return $app['name'][$this->view->getAppUrl()];
+            return $app[$this->view->getAppUrl()]['name'];
         } else {
             return '';
         }

@@ -73,10 +73,10 @@ class Config
     public static function app($app, $part = '')
     {
         if (!isset(static::$data['app'][$app])) {
-            $applications = static::system('Applications', 'list');
+            $applications = static::system('Global', 'app/list');
 
-            if (isset($applications['cname'][$app])) {
-                $app = $applications['cname'][$app];
+            if (isset($applications[$app]['ns'])) {
+                $app = $applications[$app]['ns'];
             }
 
             $config = Load::filePhp(VHMIS_APPS_PATH . D_SPEC . $app . D_SPEC . 'Config' . D_SPEC . 'App.php');
