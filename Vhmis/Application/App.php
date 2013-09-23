@@ -56,17 +56,15 @@ class App
         $this->request->setRouter($this->router);
         $this->request->process();
 
-        // Khai báo autoload
-        $auto = new Autoload(SYSTEM, VHMIS_SYS2_PATH);
-        $auto->register();
-
-        // Khai báo di, service manager;
-        $di = new Di\Di();
-        $sm = $di->get('Vhmis\Di\ServiceManager');
-        $sm->setConnections();
-
         // Thuc thi
         if ($this->request->responeCode === '200') {
+            // Khai báo autoload
+            $auto = new Autoload(SYSTEM, VHMIS_SYS2_PATH);
+            $auto->register();
+
+            // Khai báo di, service manager;
+            $di = new Di\Di();
+            $sm = $di->get('Vhmis\Di\ServiceManager');
 
             // Database connections if exist
             if (isset($configGlobal['database']) && $configGlobal['database'] === true) {
