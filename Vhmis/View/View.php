@@ -276,6 +276,8 @@ class View
             include $this->getViewDirectory();
 
             $content = ob_get_clean();
+        } else {
+            $content = '';
         }
 
         // Render view vào layout nếu có
