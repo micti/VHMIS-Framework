@@ -445,7 +445,7 @@ class View
      */
     protected function getViewDirectory()
     {
-        $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
+        $dir = VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
             . $this->template . D_SPEC . $this->controller . D_SPEC . $this->method;
 
         if ($this->output === 'text') {
@@ -462,7 +462,7 @@ class View
      */
     protected function getViewBoot()
     {
-        $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
+        $dir = VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $this->app . D_SPEC . 'View' . D_SPEC
             . $this->template . D_SPEC . 'boot.php';
 
         return $dir;
@@ -477,7 +477,7 @@ class View
      */
     protected function getAppBlockDirectory($app, $name)
     {
-        $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $app . D_SPEC . 'View' . D_SPEC
+        $dir = VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps' . D_SPEC . $app . D_SPEC . 'View' . D_SPEC
             . $this->template . D_SPEC . 'Block' . D_SPEC . $name . '.php';
 
         return $dir;
@@ -491,7 +491,7 @@ class View
      */
     protected function getBlockDirectory($name)
     {
-        $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Template' . D_SPEC . $this->template . D_SPEC . 'Block' . D_SPEC
+        $dir = VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Template' . D_SPEC . $this->template . D_SPEC . 'Block' . D_SPEC
             . $name . '.php';
 
         return $dir;
@@ -504,7 +504,7 @@ class View
      */
     protected function getLayoutDirectory()
     {
-        $dir = VHMIS_SYS2_PATH . D_SPEC . SYSTEM . D_SPEC . 'Template' . D_SPEC . $this->template . D_SPEC . 'Layout' . D_SPEC
+        $dir = VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Template' . D_SPEC . $this->template . D_SPEC . 'Layout' . D_SPEC
             . $this->layout . '.php';
 
         return $dir;

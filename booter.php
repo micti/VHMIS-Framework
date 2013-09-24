@@ -48,7 +48,7 @@ function ___loadCoreClassWithNamespace($class)
             $path .= D_SPEC . $class[$i];
         }
 
-        ___loadFile($class[$count - 1] . '.php', VHMIS_CORE2_PATH . $path);
+        ___loadFile($class[$count - 1] . '.php', VHMIS_CORE_PATH . $path);
     }
 }
 

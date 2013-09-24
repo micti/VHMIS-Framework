@@ -26,16 +26,10 @@ error_reporting(E_ALL | E_NOTICE);
 define('D_SPEC', DIRECTORY_SEPARATOR);
 define('P_SPEC', PATH_SEPARATOR);
 
-define('VHMIS_PATH', dirname(__FILE__));
 define('VHMIS_LIBS_PATH', VHMIS_PATH . D_SPEC . 'Libs');
-define('VHMIS_CORE_PATH', VHMIS_PATH . D_SPEC . 'Core');
-define('VHMIS_CORE2_PATH', VHMIS_PATH . D_SPEC . 'Vhmis');
-define('VHMIS_VIEW_PATH', VHMIS_PATH . D_SPEC . 'View');
-define('VHMIS_COMP_PATH', VHMIS_PATH . D_SPEC . 'Components');
-define('VHMIS_SYS_PATH', VHMIS_PATH . D_SPEC . 'System' . D_SPEC . SYSTEM);
-define('VHMIS_SYS2_PATH', VHMIS_PATH . D_SPEC . 'System');
-define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . 'Apps');
-define('VHMIS_SYS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . 'Config');
+define('VHMIS_CORE_PATH', VHMIS_PATH . D_SPEC . 'Vhmis');
+define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps');
+define('VHMIS_SYS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Config');
 
 // Một số thư viện
 set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
