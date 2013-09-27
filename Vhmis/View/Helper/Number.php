@@ -25,7 +25,7 @@ class Number extends HelperAbstract
      */
     public function __invoke($number, $type, $locale = '')
     {
-        if($type === 'int')
+        if($type === 'int' || $type === 'integer')
         {
             return $this->dt->interger($number);
         }
@@ -33,6 +33,11 @@ class Number extends HelperAbstract
         if($type === 'float')
         {
             return $this->dt->float($number);
+        }
+
+        if($type === '%' || $type === 'percent')
+        {
+            return $this->dt->percent($number);
         }
 
         if($type === 'text')
