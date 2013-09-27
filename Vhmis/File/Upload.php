@@ -271,7 +271,7 @@ class Upload
             $type = $finfo->file($file['tmp_name']);
         }*/
 
-        //return mime_content_type($file['tmp_name']);
+        return mime_content_type($file['tmp_name']);
 
         return $file['type'];
     }
