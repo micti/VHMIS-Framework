@@ -136,10 +136,14 @@ class Upload
         // lấy ext của tên file từ client
         if (strpos($filename, '.') === false) {
             $fileext = $clientFileext;
+            $filenameNotExt = $filename;
             $filename .= '.' . $clientFileext;
         } else {
             $fileext = explode('.', $filename);
-            $fileext = end($fileext);
+            $ext = end($fileext);
+            array_pop($fileext);
+            $filenameNotExt = implode('.', $fileext);
+            $fileext = $ext;
         }
 
         $filesize = $file['size'];
