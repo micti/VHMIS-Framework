@@ -77,6 +77,22 @@ class Number
     }
 
     /**
+     * Định dạng phần trăm
+     *
+     * @param mixed $value Giá trị cần định dạng
+     * @return string
+     */
+    public function percent($value) {
+        $style = NumberFormatter::PERCENT;
+        $formatter = md5($this->locale . $style);
+
+        if (!isset($this->_formatters[$formatter]))
+            $this->_formatters[$formatter] = NumberFormatter::create($this->locale, $style);
+
+        return $this->_formatters[$formatter]->format($value);
+    }
+
+    /**
      * Định dạng tiền tệ
      *
      * @param mixed $value Giá trị cần định dạng
