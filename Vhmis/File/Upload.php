@@ -165,6 +165,7 @@ class Upload
 
         // Set thông tin
         $this->result['file_name'] = $filename;
+        $this->result['file_name_not_ext'] = $filenameNotExt;
         $this->result['file_path'] = $dir;
         $this->result['file_full_path'] = $dir . D_SPEC . $filename;
         $this->result['file_ext'] = $fileext;
