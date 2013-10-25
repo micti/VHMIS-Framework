@@ -37,9 +37,10 @@ class DateTime extends \DateTime
      *
      * @param type $format
      * @param type $time
+     * @param \DateTimeZone $timezone
      * @return DateTime
      */
-    static public function createFromFormat($format, $time)
+    static public function createFromFormat($format, $time, $timezone = null)
     {
         $ext_dt = new static();
         $dt = parent::createFromFormat($format, $time);
