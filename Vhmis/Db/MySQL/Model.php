@@ -7,6 +7,11 @@ use \Vhmis\Db\ModelInterface;
 
 class Model implements ModelInterface
 {
+    const FETCH_MOD_ROW_ENTITY = 0;
+    const FETCH_MOD_ROW_ARRAY = 1;
+    const FETCH_MOD_SET_ARRAY = 0;
+    const FETCH_MOD_SET_IDARRAY = 1;
+
     /**
      * Tên class Model (bắt đầu bằng \)
      *
@@ -95,6 +100,18 @@ class Model implements ModelInterface
     protected $entityHasDeleted = array();
 
     /**
+     *
+     * @var int
+     */
+    protected $fetchModRow = 0;
+
+    /**
+     *
+     * @var int
+     */
+    protected $fetchModSet = 0;
+
+    /**
      * Khởi tạo
      *
      * @param \Vhmis\Db\AdapterInterface $adapter
@@ -152,7 +169,7 @@ class Model implements ModelInterface
      * - Nếu bảng chưa có giá trị thì sẽ trả về mảng rỗng
      * - Nếu bảng đã có dữ liệu thì sẽ trả về mảng chứa các đối tượng Entity tương ứng với Model
      *
-     * @return array
+     * @return \Vhmis\Db\MySQL\Entity[]|array[]
      */
     public function findAll()
     {
@@ -164,7 +181,11 @@ class Model implements ModelInterface
         $data = array();
 
         while ($row = $result->next()) {
-            $data[] = $this->fillRowToEntityClass($row);
+            if ($this->fetchModSet === self::FETCH_MOD_SET_ARRAY) {
+                $data[] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
+            } else {
+                $data[$row[$this->idKey]] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
+            }
         }
 
         return $data;
@@ -174,7 +195,7 @@ class Model implements ModelInterface
      * Tìm theo primany key
      *
      * @param string $id
-     * @return null
+     * @return \Vhmis\Db\MySQL\Entity|array|null
      */
     public function findById($id)
     {
@@ -184,7 +205,7 @@ class Model implements ModelInterface
         $result = $statement->setAdapter($this->adapter)->setParameters(array(1 => $id))->setSql($sql)->execute();
 
         if ($row = $result->current()) {
-            return $this->fillRowToEntityClass($row);
+            return $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
         } else {
             return null;
         }
@@ -194,7 +215,7 @@ class Model implements ModelInterface
      * Tìm theo các primany key
      *
      * @param array $ids
-     * @return \Vhmis\Db\MySQL\Entity[]
+     * @return \Vhmis\Db\MySQL\Entity[]|array[]
      */
     public function findByIds($ids)
     {
@@ -212,7 +233,7 @@ class Model implements ModelInterface
      * @param array $order Mảng chứa điều kiện sắp xếp
      * @param int $skip Số row bỏ qua
      * @param int $limit Số row lấy
-     * @return \Vhmis\Db\MySQL\Entity[]
+     * @return \Vhmis\Db\MySQL\Entity[]|array[]
      * @throws \Exception
      */
     public function find($where = array(), $order = array(), $skip = 0, $limit = 0)
@@ -295,7 +316,11 @@ class Model implements ModelInterface
         $data = array();
 
         while ($row = $result->next()) {
-            $data[] = $this->fillRowToEntityClass($row);
+            if ($this->fetchModSet === self::FETCH_MOD_SET_ARRAY) {
+                $data[] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
+            } else {
+                $data[$row[$this->idKey]] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
+            }
         }
 
         return $data;
@@ -308,7 +333,7 @@ class Model implements ModelInterface
         if (count($result) === 0)
             return null;
         else
-            return $result[0];
+            return end($result);
     }
 
     /**
@@ -509,6 +534,22 @@ class Model implements ModelInterface
         }
     }
 
+    public function setFetchMod($rowMod, $setMod)
+    {
+        $this->fetchModRow = $rowMod;
+        $this->fetchModSet = $setMod;
+
+        return $this;
+    }
+
+    public function setDefaultFetchMod()
+    {
+        $this->fetchModRow = self::FETCH_MOD_ROW_ENTITY;
+        $this->fetchModSet = self::FETCH_MOD_SET_ARRAY;
+
+        return $this;
+    }
+
     /**
      * Thực hiện việc insert các entity vào CSDL
      */
@@ -608,7 +649,7 @@ class Model implements ModelInterface
     }
 
     /**
-     * Tạo một đối tượng Entity từ một kết quả trả về ở cơ sở dữ liệu
+     * Tạo một đối tượng class Entity từ một kết quả trả về ở cơ sở dữ liệu
      *
      * @param array $row
      * @return
@@ -616,6 +657,22 @@ class Model implements ModelInterface
     protected function fillRowToEntityClass($row)
     {
         $entity = new $this->entityClass($row);
+
+        return $entity;
+    }
+
+    /**
+     * Tạo một mảng Entity từ một kết quả trả về ở cơ sở dữ liệu
+     * @param array $row
+     * @return
+     */
+    protected function fillRowToEntityArray($row)
+    {
+        $entity = array();
+
+        foreach ($row as $key => $value) {
+            $entity[$this->underscoreToCamelCase($key)] = $value;
+        }
 
         return $entity;
     }

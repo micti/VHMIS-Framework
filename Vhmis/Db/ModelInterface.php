@@ -51,6 +51,20 @@ interface ModelInterface
 
     /**
      *
+     * @param int $rowMod
+     * @param int $setMod
+     * @return \Vhmis\Db\ModelInterface
+     */
+    public function setFetchMod($rowMod, $setMod);
+
+    /**
+     *
+     * @return \Vhmis\Db\ModelInterface
+     */
+    public function setDefaultFetchMod();
+
+    /**
+     *
      * @param \Vhmis\Db\EntityInterface $entity
      * @return \Vhmis\Db\ModelInterface
      */
