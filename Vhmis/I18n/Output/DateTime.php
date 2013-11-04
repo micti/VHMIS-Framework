@@ -124,6 +124,10 @@ class DateTime
      */
     public function date($value, $style)
     {
+        if($value === '0000-00-00' || $value === '') {
+            return '';
+        }
+
         return $this->dateTime($value, $style, IntlDateFormatter::NONE);
     }
 
@@ -136,6 +140,10 @@ class DateTime
      */
     public function time($value, $style)
     {
+        if($value === '') {
+            return '';
+        }
+
         return $this->dateTime($value, IntlDateFormatter::NONE, $style);
     }
 
@@ -176,6 +184,10 @@ class DateTime
      */
     public function customPattern($value, $pattern)
     {
+        if($value === '' || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
+            return '';
+        }
+
         $formatter = md5($this->locale . 'custom');
 
         // Is it pattern id
