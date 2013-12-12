@@ -141,16 +141,13 @@ class Image
         return $this->resize(array($width, $height));
     }
 
-    public function cropSquare($size, $axis = array(0, 0))
+    public function resizeAuto($size)
     {
-        return $this->crop(array($size, $size), $axis, array($size, $size));
-    }
+        if ($this->width >= $this->height) {
+            return $this->resizeY($size);
+        }
 
-    public function crop($size, $axis = array(0, 0))
-    {
-        $this->_copy($size, $axis, $size);
-
-        return $this;
+        return $this->resizeX($size);
     }
 
     public function resize($size)
@@ -160,9 +157,14 @@ class Image
         return $this;
     }
 
-    public function cropAndResize($size, $axis, $newSize)
+    public function cropSquare($size, $axis = array(0, 0))
     {
-        $this->_copy($newSize, $axis, $size);
+        return $this->crop(array($size, $size), $axis);
+    }
+
+    public function crop($size, $axis = array(0, 0))
+    {
+        $this->_copy($size, $axis, $size);
 
         return $this;
     }
