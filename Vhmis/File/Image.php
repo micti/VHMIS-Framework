@@ -252,7 +252,9 @@ class Image
      */
     public function clear()
     {
+        imagedestroy($this->newImgSource);
         $this->newImgSource = null;
+        $this->init();
 
         return $this;
     }
