@@ -130,7 +130,7 @@ class Upload
 
         // Lấy phần mở rộng của file
         $clientFileext = explode('.', $clientFilename);
-        $clientFileext = end($clientFileext);
+        $clientFileext = strtolower(end($clientFileext));
 
         // Lấy ext của file, trong trường hợp tên file đưa vào không có ext thì
         // lấy ext của tên file từ client
@@ -140,7 +140,7 @@ class Upload
             $filename .= '.' . $clientFileext;
         } else {
             $fileext = explode('.', $filename);
-            $ext = end($fileext);
+            $ext = strtolower(end($fileext));
             array_pop($fileext);
             $filenameNotExt = implode('.', $fileext);
             $fileext = $ext;
@@ -161,7 +161,9 @@ class Upload
 
         // Kiểm tra xem đã tồn tại file tại thư mục upload chưa
         if (file_exists($dir . D_SPEC . $filename)) {
-            $filename = time() . '_' . $filename;
+            $prefix = time() . '_' . rand();
+            $filename = $prefix . '_' . $filename;
+            $filenameNotExt = $prefix . '_' . $filenameNotExt;
         }
 
         // File type
