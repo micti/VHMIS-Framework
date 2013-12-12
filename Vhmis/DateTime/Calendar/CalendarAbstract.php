@@ -24,15 +24,29 @@ abstract class CalendarAbstract implements CalendarInterface
      */
     protected $startDateString;
 
+    /**
+     * Thiết lập ngày kết thúc
+     *
+     * @param string $date
+     * @return \Vhmis\DateTime\Calendar\CalendarAbstract
+     */
     public function setStartDate($date)
     {
         $this->startDate = DateTime::createFromFormat('Y-m-d H:i:s', $date . ' 00:00:00');
+
         return $this;
     }
 
+    /**
+     * Thiết lập ngày bắt đầu
+     *
+     * @param string $date
+     * @return \Vhmis\DateTime\Calendar\CalendarAbstract
+     */
     public function setEndDate($date)
     {
         $this->endDate = DateTime::createFromFormat('Y-m-d H:i:s', $date . ' 00:00:00');
+        
         return $this;
     }
 
@@ -43,16 +57,7 @@ abstract class CalendarAbstract implements CalendarInterface
      */
     public function getTotalMonth()
     {
-        if($this->startDate->getYear() !== $this->endDate->getYear())
-        {
-            $totalMonth = 12 - $this->startDate->getMonth() + 1; // Số tháng trong năm đầu tiên
-            $totalMonth += $this->endDate->getMonth(); // Số tháng trong năm cuối cùng
-            $totalMonth += ($this->endDate->getYear() - $this->startDate->getYear() - 1) * 12; // Số tháng trong các năm ở giữa
-
-            return $totalMonth;
-        }
-
-        return $this->endDate->getMonth() - $this->startDate->getMonth() + 1;
+        return $this->getMonth($this->endDate);
     }
 
     /**
@@ -62,21 +67,7 @@ abstract class CalendarAbstract implements CalendarInterface
      */
     public function getTotalWeek()
     {
-        // Trả về ngày đầu tuần trong tuần của ngày đầu tiên trong lịch
-        $start = $this->startDate->getTimestamp();
-        $this->startDate->modify('Monday this week');
-
-        // Trả về ngày đầu tuần trong tuần của ngày cuối cùng trong lịch
-        $end = $this->endDate->getTimestamp();
-        $this->endDate->modify('Monday this week');
-
-        $totalWeek = $this->getTotalDay() / 7; // Always int =)) trust me
-
-        // Rollback
-        $this->startDate->setTimestamp($start);
-        $this->endDate->setTimestamp($end);
-
-        return $totalWeek;
+        return $this->getWeek($this->endDate);
     }
 
     public function getTotalDay()
@@ -91,5 +82,39 @@ abstract class CalendarAbstract implements CalendarInterface
     public function getDateTimeInterval()
     {
         return $this->startDate->diff($this->endDate);
+    }
+
+    public function getWeek($date)
+    {
+        if(is_string($date)) {
+            $dateString = $date;
+            $date = new DateTime();
+            $date->modify($dateString);
+        }
+
+        if(!($date instanceof DateTime)) {
+            return null;
+        }
+
+        $diffWeek = $this->startDate->diffWeek($date);
+
+        return $diffWeek + 1;
+    }
+
+    public function getMonth($date)
+    {
+        if(is_string($date)) {
+            $dateString = $date;
+            $date = new DateTime();
+            $date->modify($dateString);
+        }
+
+        if(!($date instanceof DateTime)) {
+            return null;
+        }
+
+        $diffMonth = $this->startDate->diffMonth($date);
+
+        return $diffMonth + 1;
     }
 }
