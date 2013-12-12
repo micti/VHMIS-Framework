@@ -82,7 +82,7 @@ class App
             // Locale
             $locale = $this->request->app['language'] . '_' . $configGlobal['language']['accept'][$this->request->app['language']];
             Config\Configure::set('Locale', $locale);
-            locale_set_default($locale);
+            \Locale::setDefault($locale);
 
             $controllerClass = '\\' . SYSTEM . '\\Apps\\' . $this->request->app['app'] . '\\Controller\\' . $this->request->app['controller'];
             $controller = new $controllerClass($this->request, $this->response);
