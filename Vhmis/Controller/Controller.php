@@ -274,15 +274,17 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Xuất thông báo lỗi
+     * Gửi một thông điệp lại cho client
      *
-     * @param mixed $info
+     * Thường dùng để thông báo, báo lỗi, trả lại thông tin
+     *
+     * @param array $data Mảng, yêu có phần tử message là nội dung thông báo
      * @param string $layout
      */
-    public function error($data, $layout = '')
+    public function message($data, $layout = '')
     {
         if ($layout == '') {
-            $layout = 'Error';
+            $layout = 'Message';
         }
 
         $this->view->setNoView();
@@ -292,5 +294,16 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
         $this->response->body($content)->response();
 
         $this->afterInit();
+    }
+
+    /**
+     * Xuất thông báo lỗi
+     *
+     * @param mixed $info
+     * @param string $layout
+     */
+    public function error($data, $layout = 'Error')
+    {
+        $this->message($data, $layout);
     }
 }
