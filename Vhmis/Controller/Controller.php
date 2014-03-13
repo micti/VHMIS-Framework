@@ -204,7 +204,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
         $model = $this->sm->getModel($fullname);
 
         if ($model === null) {
-            throw new \Exception('Model ' . $fullname . 'not found');
+            throw new \Exception('Model ' . $fullname . ' not found');
         }
 
         return $model;
