@@ -305,6 +305,10 @@ class View
             // Chuyển $data sang dạng biến với tên ứng với key
             extract($this->data);
 
+            if (is_array($data)) {
+                extract($data);
+            }
+
             // Lấy view
             ob_start();
 
