@@ -121,7 +121,10 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 
         $action = 'action' . $this->action;
 
-        $this->view->setTemplate('Default')->setLayout('Default')->setAppUrl($this->appUrl)->setOutput($this->output);
+        $template = isset($this->template) ? $this->template : 'Default';
+        $layout = isset($this->layout) ? $this->layout : 'Default';
+
+        $this->view->setTemplate($template)->setLayout($layout)->setAppUrl($this->appUrl)->setOutput($this->output);
         $this->view->setApp($this->app)->setController($this->controller)->setMethod($this->action);
 
         if (method_exists($this, $action)) {
