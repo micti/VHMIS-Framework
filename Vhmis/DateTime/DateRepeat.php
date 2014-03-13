@@ -621,7 +621,7 @@ class DateRepeat
             $skip = ceil($diff / $this->freq) * $this->freq;
             $this->objDate->addMonth($skip);
         } else {
-            $this->objDateRangeBegin->modify($this->objDate->formatISO(1));
+            $this->objDateRangeBegin->modify($this->objDate->formatISO(0));
         }
 
         while (true) {
