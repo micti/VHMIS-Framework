@@ -586,4 +586,36 @@ class DateTime extends \DateTime
 
         return parent::modify($modify);
     }
+
+    /**
+     * So sánh 2 thời gian dạng hh:mm
+     *
+     * @param type $time1
+     * @param type $time2
+     * @return int
+     */
+    public static function compareTime($time1, $time2)
+    {
+        list($h1, $m1) = explode(':', $time1, 2);
+        $h1 = (int) $h1;
+        $m1 = (int) $m1;
+
+        list($h2, $m2) = explode(':', $time2, 2);
+        $h2 = (int) $h2;
+        $m2 = (int) $m2;
+
+        if ($h1 > $h2) {
+            return 1;
+        } else if ($h2 > $h1) {
+            return -1;
+        } else {
+            if ($m1 > $m2) {
+                return 1;
+            } else if ($m2 > $m1) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
 }
