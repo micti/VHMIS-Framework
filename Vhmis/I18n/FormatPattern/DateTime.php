@@ -66,4 +66,14 @@ class DateTime
 
         return $format;
     }
+
+    static public function dateFormat($locale, $type)
+    {
+        if($locale === 'ko_Kr') return 'y-MM-dd';
+
+        $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
+        $format = $formatter->getPattern();
+
+        return $format;
+    }
 }
