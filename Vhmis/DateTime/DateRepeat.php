@@ -663,6 +663,7 @@ class DateRepeat
 
                 // Bỏ qua nếu vẫn chưa vào range
                 if ($this->objDate < $this->objDateRangeBegin) {
+                    $this->objDate->addMonth($this->freq);
                     continue;
                 }
 
