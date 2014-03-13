@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -595,6 +596,16 @@ class DateTime extends \DateTime
      */
     public function modify($modify)
     {
+        if ($modify instanceof \MongoDate) {
+            $this->setTimestamp($modify->sec);
+
+            return $this;
+        } elseif ($modify instanceof \MongoId) {
+            $this->setTimestamp($modify->getTimestamp());
+
+            return $this;
+        }
+
         // Sunday, php default start day of week is sunday and if your calendar start day of week is monday
         if ($this->format('N') == 7 && $this->startOfWeek === 'monday') {
             $matches = array();

@@ -163,6 +163,12 @@ class DateTime
             $this->formatters[$formatter] = new IntlDateFormatter($this->locale, $dateStyle, $timeStyle);
         }
 
+        if($value instanceof \MongoDate) {
+            $value = '@' . $value->sec;
+        } elseif ($value instanceof \MongoId) {
+            $value = '@' . $value->getTimestamp();
+        }
+
         if (is_string($value)) {
             $value = strtotime($value);
             if ($value === false)
@@ -204,6 +210,10 @@ class DateTime
 
         if (!isset($this->formatters[$formatter])) {
             $this->formatters[$formatter] = new IntlDateFormatter($this->locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL);
+        }
+
+        if($value instanceof \MongoDate) {
+            $value = '@' . $value->sec;
         }
 
         if (is_string($value)) {
