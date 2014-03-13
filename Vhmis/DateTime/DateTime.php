@@ -486,6 +486,26 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Lấy ngày trong tuần
+     *
+     * Thứ 2 -> Thứ 7 trả về 2 - 7
+     * Chủ nhật -> 8 nếu chủ nhật là ngày cuối tuần
+     * Chủ nhật -> 1 nếu chủ nhật là ngày đầu tuần
+     *
+     * @return int
+     */
+    public function getWeekDay()
+    {
+        $wd = $this->format('N') + 1;
+
+        if ($this->startOfWeek === 'sunday' && $wd === 8) {
+            return 1;
+        }
+
+        return $wd;
+    }
+
+    /**
      * Lấy tháng của thời gian hiện tại (2 chữ số)
      *
      * @return string
