@@ -5,15 +5,18 @@ namespace Vhmis\View\Helper;
 class DateTime extends HelperAbstract
 {
     /**
-     * Đối tượng Escaper
+     * Đối tượng DateTime Output
      *
      * @var \Vhmis\I18n\Output\DateTime
      */
     protected $dt;
 
+    protected $locale;
+
     public function __construct()
     {
         $this->dt = new \Vhmis\I18n\Output\DateTime();
+        $this->locale = \Locale::getDefault();
     }
 
     public function format($date, $dateStyle = 3, $timeStyle = 3, $pattern = '')
@@ -23,6 +26,11 @@ class DateTime extends HelperAbstract
         }
 
         return $this->dt->customPattern($date, $pattern);
+    }
+
+    public function formatInput($date)
+    {
+        return $this->dt->customPattern($date, \Vhmis\I18n\FormatPattern\DateTime::dateFormat($this->locale, 3));
     }
 
     public function relative($relative, $date, $dateStyle = 3, $timeStyle = 3, $pattern = '')
@@ -56,7 +64,7 @@ class DateTime extends HelperAbstract
     }
 
     public function interval($date1, $date2, $pattern) {
-        return $this->dt->interval($date1, $date2, $pattern);
+        return $this->dt->range($date1, $date2, $pattern);
     }
 
     public function ago($date1, $date2 = '') {
