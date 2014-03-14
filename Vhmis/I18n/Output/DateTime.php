@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
  *
@@ -14,6 +15,7 @@ namespace Vhmis\I18n\Output;
 use \IntlDateFormatter;
 use \Vhmis\I18n\Resource\Resource as I18nResource;
 use \Vhmis\I18n\Plurals\Plurals as I18nPlurals;
+use \Vhmis\DateTime\DateTime as VhDateTime;
 
 /**
  * Xuất ngày giờ theo các định dạng
@@ -124,8 +126,12 @@ class DateTime
      */
     public function date($value, $style)
     {
-        if($value === '0000-00-00' || $value === '') {
+        if ($value === '0000-00-00' || $value === '') {
             return '';
+        }
+
+        if ($value === 'now') {
+            $value = strtotime('now');
         }
 
         return $this->dateTime($value, $style, IntlDateFormatter::NONE);
@@ -140,8 +146,12 @@ class DateTime
      */
     public function time($value, $style)
     {
-        if($value === '') {
+        if ($value === '') {
             return '';
+        }
+
+        if ($value === 'now') {
+            $value = strtotime('now');
         }
 
         return $this->dateTime($value, IntlDateFormatter::NONE, $style);
@@ -163,10 +173,14 @@ class DateTime
             $this->formatters[$formatter] = new IntlDateFormatter($this->locale, $dateStyle, $timeStyle);
         }
 
-        if($value instanceof \MongoDate) {
+        if ($value instanceof \MongoDate) {
             $value = '@' . $value->sec;
         } elseif ($value instanceof \MongoId) {
             $value = '@' . $value->getTimestamp();
+        }
+
+        if ($value instanceof VhDateTime) {
+            $value = $value->formatISO(1);
         }
 
         if (is_string($value)) {
@@ -190,8 +204,12 @@ class DateTime
      */
     public function customPattern($value, $pattern)
     {
-        if($value === '' || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
+        if ($value === '' || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
             return '';
+        }
+
+        if ($value === 'now') {
+            $value = strtotime('now');
         }
 
         $formatter = md5($this->locale . 'custom');
@@ -212,8 +230,12 @@ class DateTime
             $this->formatters[$formatter] = new IntlDateFormatter($this->locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL);
         }
 
-        if($value instanceof \MongoDate) {
+        if ($value instanceof \MongoDate) {
             $value = '@' . $value->sec;
+        }
+
+        if ($value instanceof VhDateTime) {
+            $value = $value->formatISO(1);
         }
 
         if (is_string($value)) {
@@ -384,7 +406,7 @@ class DateTime
         $value1 = $this->customPattern($this->date1->formatISO(1), $data['patternbegin']);
         $value2 = $this->customPattern($this->date2->formatISO(1), $data['patternend']);
 
-        if($value1 === $value2) {
+        if ($value1 === $value2) {
             return $value1;
         }
 
@@ -453,7 +475,8 @@ class DateTime
         return implode(' ', $interval);
     }
 
-    public function unit($number, $field) {
+    public function unit($number, $field)
+    {
         $unitsPattern = I18nResource::units($field, $this->locale);
         $type = I18nPlurals::type($number, $this->locale);
         return str_replace('{0}', $number, $unitsPattern['unitPattern-count-' . $type]);
