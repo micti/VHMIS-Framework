@@ -9,6 +9,7 @@
  * @package Vhmis_I18n
  * @since Vhmis v2.0
  */
+
 namespace Vhmis\I18n\FormatPattern;
 
 use \IntlDateFormatter;
@@ -21,6 +22,7 @@ use \IntlDateFormatter;
  */
 class DateTime
 {
+
     /**
      * Lấy format theo PHP date()
      * Dùng chủ yếu kiểm tra dữ liệu nhập vào
@@ -33,25 +35,26 @@ class DateTime
      */
     static public function dateNativeFormat($locale, $type)
     {
-        if($locale === 'ko_Kr') return 'Y-m-d';
+        if ($locale === 'ko_Kr')
+            return 'Y-m-d';
 
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
 
         $patterns = array(
-            'year' => array(
+            'year'  => array(
                 'YYYY' => 'o',
                 'yyyy' => 'Y',
-                'yy' => 'y',
-                'y' => 'Y'
+                'yy'   => 'y',
+                'y'    => 'Y'
             ),
-            'day' => array(
+            'day'   => array(
                 'dd' => 'd',
-                'd' => 'j'
+                'd'  => 'j'
             ),
             'month' => array(
                 'MM' => 'm',
-                'M' => 'n'
+                'M'  => 'n'
             )
         );
 
@@ -69,9 +72,26 @@ class DateTime
 
     static public function dateFormat($locale, $type)
     {
-        if($locale === 'ko_Kr') return 'y-MM-dd';
+        if ($locale === 'ko_Kr')
+            return 'y-MM-dd';
 
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
+        $format = $formatter->getPattern();
+
+        return $format;
+    }
+
+    static public function timeFormat($locale, $type)
+    {
+        $formatter = new IntlDateFormatter($locale, IntlDateFormatter::NONE, $type);
+        $format = $formatter->getPattern();
+
+        return $format;
+    }
+
+    static public function dateTimeFormat($locale, $dateType, $timeType)
+    {
+        $formatter = new IntlDateFormatter($locale, $dateType, $timeType);
         $format = $formatter->getPattern();
 
         return $format;
