@@ -10,7 +10,6 @@ class DateTime extends HelperAbstract
      * @var \Vhmis\I18n\Output\DateTime
      */
     protected $dt;
-
     protected $locale;
 
     public function __construct()
@@ -21,16 +20,29 @@ class DateTime extends HelperAbstract
 
     public function format($date, $dateStyle = 3, $timeStyle = 3, $pattern = '')
     {
-        if($pattern === '') {
+        if ($pattern === '') {
             return $this->dt->dateTime($date, $dateStyle, $timeStyle);
         }
 
         return $this->dt->customPattern($date, $pattern);
     }
 
-    public function formatInput($date)
+    /**
+     * Xuất định dạng ngày tháng cho ô input
+     * 
+     * @param mixed $date Thời gian
+     * @param string $type Loại xuất ra, 'date' => Chỉ ngày, 'time' => Chỉ giờ
+     * @return string
+     */
+    public function formatInput($date, $type = 'date')
     {
-        return $this->dt->customPattern($date, \Vhmis\I18n\FormatPattern\DateTime::dateFormat($this->locale, 3));
+        if ($type === 'date') {
+            return $this->dt->customPattern($date, \Vhmis\I18n\FormatPattern\DateTime::dateFormat($this->locale, 3));
+        } elseif ($type === 'time') {
+            return $this->dt->customPattern($date, \Vhmis\I18n\FormatPattern\DateTime::timeFormat($this->locale, 3));
+        } else {
+            return $this->dt->customPattern($date, \Vhmis\I18n\FormatPattern\DateTime::dateTimeFormat($this->locale, 3, 3));
+        }
     }
 
     public function relative($relative, $date, $dateStyle = 3, $timeStyle = 3, $pattern = '')
@@ -63,11 +75,13 @@ class DateTime extends HelperAbstract
         return date('o-\wW', strtotime($date));
     }
 
-    public function interval($date1, $date2, $pattern) {
+    public function interval($date1, $date2, $pattern)
+    {
         return $this->dt->range($date1, $date2, $pattern);
     }
 
-    public function ago($date1, $date2 = '') {
+    public function ago($date1, $date2 = '')
+    {
         return $this->dt->ago($date1, $date2);
     }
 
@@ -79,7 +93,8 @@ class DateTime extends HelperAbstract
      * @param string $type
      * @return string
      */
-    public function monthName($month, $type = 'stand-alone', $format = 'wide') {
+    public function monthName($month, $type = 'stand-alone', $format = 'wide')
+    {
         return $this->dt->calendarFieldName('months', $type, $format);
     }
 
@@ -91,15 +106,18 @@ class DateTime extends HelperAbstract
      * @param string $format
      * @return string
      */
-    public function dayName($day, $type = 'stand-alone', $format = 'wide') {
+    public function dayName($day, $type = 'stand-alone', $format = 'wide')
+    {
         return $this->dt->calendarFieldName($day, 'days', $type, $format);
     }
 
-    public function fieldName($field, $format = 'displayName') {
+    public function fieldName($field, $format = 'displayName')
+    {
         return $this->dt->dateFieldName($field, $format);
     }
 
-    public function unit($number, $filed) {
+    public function unit($number, $filed)
+    {
         return $this->dt->unit($number, $filed);
     }
 }
