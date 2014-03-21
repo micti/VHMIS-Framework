@@ -263,8 +263,12 @@ class Model implements ModelInterface
 
                     // Bind value
                     if ($operator == 'in') {
-                        if (!is_array($value) || empty($value)) {
+                        if (!is_array($value)) {
                             throw new \Exception('Value for IN must be an array');
+                        }
+
+                        if(empty($value)) {
+                            return [];
                         }
 
                         $values = array();
