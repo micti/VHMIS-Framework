@@ -117,15 +117,15 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
      */
     public function init()
     {
-        $this->beforeInit();
-
-        $action = 'action' . $this->action;
-
         $template = isset($this->template) ? $this->template : 'Default';
         $layout = isset($this->layout) ? $this->layout : 'Default';
 
         $this->view->setTemplate($template)->setLayout($layout)->setAppUrl($this->appUrl)->setOutput($this->output);
         $this->view->setApp($this->app)->setController($this->controller)->setMethod($this->action);
+        
+        $this->beforeInit();
+
+        $action = 'action' . $this->action;
 
         if (method_exists($this, $action)) {
             $this->$action();
