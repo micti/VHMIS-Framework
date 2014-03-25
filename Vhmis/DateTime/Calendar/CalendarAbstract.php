@@ -7,25 +7,21 @@ use \Vhmis\DateTime\DateTime;
 abstract class CalendarAbstract implements CalendarInterface
 {
     /**
+     * Ngày bắt đầu
      *
      * @var \Vhmis\DateTime\DateTime
      */
     protected $startDate;
 
     /**
+     * Ngày kết thúc
      *
      * @var \Vhmis\DateTime\DateTime
      */
     protected $endDate;
 
     /**
-     *
-     * @param string $date
-     */
-    protected $startDateString;
-
-    /**
-     * Thiết lập ngày kết thúc
+     * Thiết lập ngày bắt đầu
      *
      * @param string $date
      * @return \Vhmis\DateTime\Calendar\CalendarAbstract
@@ -38,7 +34,7 @@ abstract class CalendarAbstract implements CalendarInterface
     }
 
     /**
-     * Thiết lập ngày bắt đầu
+     * Thiết lập ngày kết thúc
      *
      * @param string $date
      * @return \Vhmis\DateTime\Calendar\CalendarAbstract
@@ -46,7 +42,7 @@ abstract class CalendarAbstract implements CalendarInterface
     public function setEndDate($date)
     {
         $this->endDate = DateTime::createFromFormat('Y-m-d H:i:s', $date . ' 00:00:00');
-        
+
         return $this;
     }
 
@@ -70,12 +66,18 @@ abstract class CalendarAbstract implements CalendarInterface
         return $this->getWeek($this->endDate);
     }
 
+    /**
+     * Lấy số ngày trải qua trong lịch thường giữa ngày bắt đầu và ngày kết thúc
+     *
+     * @return int
+     */
     public function getTotalDay()
     {
         return $this->startDate->diff($this->endDate)->days;
     }
 
     /**
+     * Lấy \DateInterval giữa ngày bắt đầu và ngày kết thúc
      *
      * @return \DateInterval
      */
@@ -84,15 +86,21 @@ abstract class CalendarAbstract implements CalendarInterface
         return $this->startDate->diff($this->endDate);
     }
 
+    /**
+     * Lấy tuần thứ theo lịch của 1 ngày
+     *
+     * @param \Vhmis\DateTime\DateTime|string $date Ngày
+     * @return int
+     */
     public function getWeek($date)
     {
-        if(is_string($date)) {
+        if (is_string($date)) {
             $dateString = $date;
             $date = new DateTime();
             $date->modify($dateString);
         }
 
-        if(!($date instanceof DateTime)) {
+        if (!($date instanceof DateTime)) {
             return null;
         }
 
@@ -101,15 +109,21 @@ abstract class CalendarAbstract implements CalendarInterface
         return $diffWeek + 1;
     }
 
+    /**
+     * Lấy tháng thứ theo lịch của 1 ngày
+     *
+     * @param \Vhmis\DateTime\DateTime|string $date
+     * @return int
+     */
     public function getMonth($date)
     {
-        if(is_string($date)) {
+        if (is_string($date)) {
             $dateString = $date;
             $date = new DateTime();
             $date->modify($dateString);
         }
 
-        if(!($date instanceof DateTime)) {
+        if (!($date instanceof DateTime)) {
             return null;
         }
 
