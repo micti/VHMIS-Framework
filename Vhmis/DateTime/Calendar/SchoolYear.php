@@ -108,11 +108,11 @@ class SchoolYear extends CalendarAbstract
 
         if ($startPeriod !== null && isset($this->timetable[($startPeriod - 1)])) {
             $startTime = $this->timetable[($startPeriod - 1)][0] . ':00';
-            $endTime = $this->timetable[($startPeriod - 1)][0] . ':00';
+            $endTime = $this->timetable[($startPeriod - 1)][1] . ':00';
         }
 
         if ($endPeriod !== null && isset($this->timetable[($endPeriod - 1)])) {
-            $endTime = $this->timetable[($endPeriod - 1)][0] . ':00';
+            $endTime = $this->timetable[($endPeriod - 1)][1] . ':00';
         }
 
         return [
