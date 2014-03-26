@@ -29,7 +29,7 @@ class DateTime extends HelperAbstract
 
     /**
      * Xuất định dạng ngày tháng cho ô input
-     * 
+     *
      * @param mixed $date Thời gian
      * @param string $type Loại xuất ra, 'date' => Chỉ ngày, 'time' => Chỉ giờ
      * @return string
@@ -75,7 +75,7 @@ class DateTime extends HelperAbstract
         return date('o-\wW', strtotime($date));
     }
 
-    public function interval($date1, $date2, $pattern)
+    public function range($date1, $date2, $pattern)
     {
         return $this->dt->range($date1, $date2, $pattern);
     }
