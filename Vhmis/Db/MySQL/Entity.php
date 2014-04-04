@@ -48,7 +48,7 @@ abstract class Entity
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
             // && $this->$fieldClass != $this->currentValue[$fieldSQL]
             if ($this->$fieldClass !== null && $fieldSQL != 'id') {
-                $field[] = $fieldSQL . ' = :' . $fieldClass;
+                $field[] = '`' . $fieldSQL . '`' . ' = :' . $fieldClass;
                 $param[':' . $fieldClass] = $this->$fieldClass;
             }
         }
