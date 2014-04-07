@@ -233,6 +233,51 @@ class DateTime extends \DateTime
     }
 
     /**
+     * Thêm / giảm giây, thay cho modify và add
+     *
+     * @param int $sec
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function addSecond($sec)
+    {
+        $a = $this->getTimestamp();
+        $a += $sec;
+        $this->setTimestamp($a);
+
+        return $this;
+    }
+
+    /**
+     * Thêm / giảm phút, thay cho modify và add
+     *
+     * @param int $min
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function addMinute($min)
+    {
+        $a = $this->getTimestamp();
+        $a += $min * 60;
+        $this->setTimestamp($a);
+
+        return $this;
+    }
+
+    /**
+     * Thêm / giảm giờ, thay cho modify và add
+     *
+     * @param int $hour
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function addHour($hour)
+    {
+        $a = $this->getTimestamp();
+        $a += $hour * 3600;
+        $this->setTimestamp($a);
+
+        return $this;
+    }
+
+    /**
      * Thêm / giảm ngày, thay cho modify và add
      *
      * @param int $day
