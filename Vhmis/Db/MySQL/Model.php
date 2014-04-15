@@ -199,7 +199,7 @@ class Model implements ModelInterface
      */
     public function findById($id)
     {
-        $sql = 'select * from `' . $this->table . '` where ' . $this->idKey . ' = ?';
+        $sql = 'select * from `' . $this->table . '` where `' . $this->idKey . '` = ?';
 
         $statement = new Statement;
         $result = $statement->setAdapter($this->adapter)->setParameters(array(1 => $id))->setSql($sql)->execute();
@@ -256,9 +256,9 @@ class Model implements ModelInterface
                     // Prepare query
                     $sql_temp = '';
                     if ($operator == 'in') {
-                        $sql_temp = $field . ' in ';
+                        $sql_temp = '`' . $field . '` in ';
                     } else {
-                        $sql[] = $field . ' ' . $operator . ' ?';
+                        $sql[] = '`' . $field . '` ' . $operator . ' ?';
                     }
 
                     // Bind value
@@ -302,7 +302,7 @@ class Model implements ModelInterface
             foreach ($order as $field => $or) {
                 $field = $this->camelCaseToUnderscore($field);
                 $or = $or === 'asc' ? 'asc' : 'desc';
-                $orderby[] = $field . ' ' . $or;
+                $orderby[] = '`' . $field . '` ' . $or;
             }
 
             if (count($orderby) > 0) {
@@ -354,7 +354,7 @@ class Model implements ModelInterface
             foreach ($data as $field => $value) {
                 $field = $this->camelCaseToUnderscore($field);
 
-                $update[] = $field . ' = ?';
+                $update[] = '`' . $field . '` = ?';
                 $bindData[$pos] = $value;
                 $pos++;
             }
@@ -370,9 +370,9 @@ class Model implements ModelInterface
                 // Prepare query
                 $sql_temp = '';
                 if ($operator == 'in') {
-                    $sql_temp = $field . ' in ';
+                    $sql_temp = '`' . $field . '` in ';
                 } else {
-                    $sqlWhere[] = $field . ' ' . $operator . ' ?';
+                    $sqlWhere[] = '`' . $field . '` ' . $operator . ' ?';
                 }
 
                 // Bind value
