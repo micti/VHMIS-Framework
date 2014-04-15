@@ -112,6 +112,20 @@ class Model implements ModelInterface
     protected $fetchModSet = 0;
 
     /**
+     * Thông tin id khác liên quan
+     *
+     * @var array
+     */
+    protected $otherIds = array();
+
+    /**
+     * Dữ liệu thông tin key khác sau một lần select
+     *
+     * @var array
+     */
+    protected $otherIdsData = array();
+
+    /**
      * Khởi tạo
      *
      * @param \Vhmis\Db\AdapterInterface $adapter
@@ -179,12 +193,17 @@ class Model implements ModelInterface
         $result = $statement->setAdapter($this->adapter)->setSql($sql)->execute();
 
         $data = array();
+        $this->otherIdsData = array();
 
         while ($row = $result->next()) {
             if ($this->fetchModSet === self::FETCH_MOD_SET_ARRAY) {
                 $data[] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
             } else {
                 $data[$row[$this->idKey]] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
+            }
+
+            foreach ($this->otherIds as $id) {
+                $this->otherIdsData[$this->underscoreToCamelCase($id)][] = $row[$id];
             }
         }
 
@@ -203,6 +222,8 @@ class Model implements ModelInterface
 
         $statement = new Statement;
         $result = $statement->setAdapter($this->adapter)->setParameters(array(1 => $id))->setSql($sql)->execute();
+
+        $this->otherIdsData = array();
 
         if ($row = $result->current()) {
             return $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
@@ -267,7 +288,7 @@ class Model implements ModelInterface
                             throw new \Exception('Value for IN must be an array');
                         }
 
-                        if(empty($value)) {
+                        if (empty($value)) {
                             return [];
                         }
 
@@ -318,12 +339,17 @@ class Model implements ModelInterface
         $result = $statement->setAdapter($this->adapter)->setParameters($bindData)->setSql($sql)->execute();
 
         $data = array();
+        $this->otherIdsData = array();
 
         while ($row = $result->next()) {
             if ($this->fetchModSet === self::FETCH_MOD_SET_ARRAY) {
                 $data[] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
             } else {
                 $data[$row[$this->idKey]] = $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
+            }
+
+            foreach ($this->otherIds as $id) {
+                $this->otherIdsData[$this->underscoreToCamelCase($id)][] = $row[$id];
             }
         }
 
@@ -338,6 +364,20 @@ class Model implements ModelInterface
             return null;
         else
             return end($result);
+    }
+
+    /**
+     * Lấy danh sách Ids liên quan
+     *
+     * @return array
+     */
+    public function getLastRelatedIds()
+    {
+        foreach ($this->otherIdsData as $id => $data) {
+            $this->otherIdsData[$id] = array_values($data);
+        }
+
+        return $this->otherIdsData;
     }
 
     /**

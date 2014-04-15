@@ -47,6 +47,13 @@ interface ModelInterface
      */
     public function findOne($where, $order);
 
+    /**
+     * Lấy danh sách Ids liên quan
+     *
+     * @return array
+     */
+    public function getLastRelatedIds();
+
     public function update($where, $data = null);
 
     /**

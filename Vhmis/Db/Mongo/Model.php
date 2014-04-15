@@ -256,6 +256,15 @@ class Model implements ModelInterface
     }
 
     /**
+     * Lấy danh sách Ids liên quan
+     *
+     * @return array
+     */
+    public function getLastRelatedIds() {
+        return array();
+    }
+
+    /**
      *
      * @param \Vhmis\Db\Mongo\Entity $entity
      */
