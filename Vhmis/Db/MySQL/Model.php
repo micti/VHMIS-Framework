@@ -377,6 +377,12 @@ class Model implements ModelInterface
             $this->otherIdsData[$id] = array_values($data);
         }
 
+        foreach ($this->otherIds as $id) {
+            if (!isset($this->otherIdsData[$this->underscoreToCamelCase($id)])) {
+                $this->otherIdsData[$this->underscoreToCamelCase($id)] = array();
+            }
+        }
+
         return $this->otherIdsData;
     }
 
