@@ -174,6 +174,8 @@ class Model implements ModelInterface
 
         $this->entityClass = implode('\\', $class);
 
+        $this->otherIds[] = $this->idKey;
+
         return $this;
     }
 
