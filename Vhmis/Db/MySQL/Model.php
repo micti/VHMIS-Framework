@@ -471,11 +471,6 @@ class Model implements ModelInterface
             return $this;
         }
 
-        $methodGetIdKey = $this->underscoreToCamelCase($this->idKey, false);
-        if ($entity->$methodGetIdKey != null) {
-            return $this;
-        }
-
         $id = spl_object_hash($entity);
 
         if (isset($this->entityKey[$id])) {
