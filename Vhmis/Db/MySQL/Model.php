@@ -667,8 +667,7 @@ class Model implements ModelInterface
     protected function rollbackInsert()
     {
         foreach ($this->entityHasInserted as $id => $entity) {
-            $setId = $this->underscoreToCamelCase($this->idKey);
-            $entity->rollback()->$setId = null;
+            $entity->rollback();
 
             unset($this->entityHasInserted[$id]);
         }

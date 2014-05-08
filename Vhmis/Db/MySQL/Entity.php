@@ -61,7 +61,7 @@ abstract class Entity
     public function insertSQL()
     {
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
-            if ($this->$fieldClass !== null && $fieldSQL != 'id') {
+            if ($this->$fieldClass !== null) {
                 $field[] = '`' . $fieldSQL . '`';
                 $value[] = ':' . $fieldClass;
                 $param[':' . $fieldClass] = $this->$fieldClass;
