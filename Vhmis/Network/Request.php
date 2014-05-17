@@ -275,7 +275,7 @@ class Request
 
         // Loại bỏ ký tự \
         if (ini_get('magic_quotes_gpc') === '1') {
-            $this->post = ___stripSlashes($this->post);
+            $this->post = $this->stripSlashes($this->post);
         }
     }
 
@@ -289,7 +289,7 @@ class Request
 
         // Loại bỏ ký tự \
         if (ini_get('magic_quotes_gpc') === '1') {
-            $this->get = ___stripSlashes($this->get);
+            $this->get = $this->stripSlashes($this->get);
         }
     }
 
@@ -327,5 +327,24 @@ class Request
         unset($_FILES);
         unset($_GET);
         unset($_REQUEST);
+    }
+
+    /**
+     * Strip slashes for array or string data
+     * 
+     * @param type $values
+     * @return type
+     */
+    protected function stripSlashes($values)
+    {
+        if (is_array($values)) {
+            foreach ($values as $key => $value) {
+                $values[$key] = $this->stripSlashes($value);
+            }
+        } else {
+            $values = stripslashes($values);
+        }
+
+        return $values;
     }
 }
