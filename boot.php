@@ -34,10 +34,16 @@ define('VHMIS_SYS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Confi
 // Một số thư viện
 set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
 
-/**
- * Gọi file booter.php chứa các hàm cơ bản
- */
-require VHMIS_PATH . D_SPEC . 'booter.php';
+// Autoload
+include 'autoload.php';
+
+// Thiết lập mã lỗi
+define('VHMIS_ERROR_DATABASE', '-99999999');
+define('VHMIS_ERROR_LOGINSESSION', '-99999998');
+define('VHMIS_ERROR_STOP', '-99999997');
+define('VHMIS_ERROR_PAGENOTFOUND', '-99999996');
+define('VHMIS_ERROR_NOTPERMISSION', '-99999995');
+define('VHMIS_ERROR_ACTIONMISSING', '-99999994');
 
 // Benchmark
 $benmark = new \Vhmis\Benchmark\Benchmark();

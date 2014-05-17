@@ -7,10 +7,10 @@ DEFINE('VHMIS_PATH', 'BUILD');
 DEFINE('SYSTEM', 'SNAME');
 
 // Khai đường dẫn hệ thống
-define('VHMIS_SYS_PATH', VHMIS_PATH . '/System');
+define('VHMIS_SYS_PATH', VHMIS_PATH . DIRECTORY_SEPARATOR . 'System');
 
 // Khai báo đường dẫn web
 DEFINE('PATH', __DIR__);
 
 // Gọi file boot.php của framework
-require VHMIS_PATH . 'boot.php';
+require VHMIS_PATH . DIRECTORY_SEPARATOR . 'boot.php';
