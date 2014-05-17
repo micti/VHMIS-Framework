@@ -18,10 +18,11 @@ class Component implements ServiceManagerAwareInterface
 
     /**
      * Thiết lập Service Manager
-     * 
+     *
      * @param \Vhmis\Di\ServiceManager $sm
      */
-    public function setServiceManager(ServiceManager $sm) {
+    public function setServiceManager(ServiceManager $sm)
+    {
         $this->sm = $sm;
     }
 }

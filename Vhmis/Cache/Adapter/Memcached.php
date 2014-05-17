@@ -10,7 +10,7 @@ class Memcached implements StorageInterface
      *
      * @var \Memcached
      */
-    protected $_memcached;
+    protected $memcached;
 
     /**
      * Khởi tạo
@@ -21,11 +21,11 @@ class Memcached implements StorageInterface
     {
         // Khởi tạo
         if (isset($options['persistent'])) {
-            $this->_memcached = $this->_getMemecached($options['persistent']);
+            $this->memcached = $this->getMemecached($options['persistent']);
         } else {
-            $this->_memcached = $this->_getMemecached();
+            $this->memcached = $this->getMemecached();
         }
-        
+
         // Thêm servers
         if (isset($options['servers'])) {
             foreach ($options['servers'] as $server) {
@@ -38,14 +38,15 @@ class Memcached implements StorageInterface
      * Thêm một server Memcached vào
      *
      * @param string $host
-     * @param int $port
-     * @param int $weight
+     * @param int    $port
+     * @param int    $weight
+     *
      * @return \Vhmis\Cache\Adapter\Memcached
      */
     public function addServer($host = 'localhost', $port = 11211, $weight = 0)
     {
-        $this->_memcached->addServer($host, $port, $weight);
-        
+        $this->memcached->addServer($host, $port, $weight);
+
         return $this;
     }
 
@@ -53,17 +54,17 @@ class Memcached implements StorageInterface
      */
     public function set($id, $value)
     {
-        $this->_memcached->add($id, $value);
+        $this->memcached->add($id, $value);
     }
 
     /**
      *
-     * @param type $id
+     * @param  type $id
      * @return type
      */
     public function get($id)
     {
-        return $this->_memcached->get($id);
+        return $this->memcached->get($id);
     }
 
     /**
@@ -72,7 +73,7 @@ class Memcached implements StorageInterface
      */
     public function remove($id)
     {
-        $this->_memcached->delete($id);
+        $this->memcached->delete($id);
     }
 
     /**
@@ -89,7 +90,7 @@ class Memcached implements StorageInterface
      *
      * @return \Memcached
      */
-    protected function _getMemecached()
+    protected function getMemecached()
     {
         return new \Memcached();
     }

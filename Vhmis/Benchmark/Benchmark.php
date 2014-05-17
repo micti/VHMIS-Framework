@@ -5,25 +5,25 @@ namespace Vhmis\Benchmark;
 class Benchmark
 {
 
-    protected $_timer = array();
+    protected $timer = array();
 
-    function timer($name)
+    public function timer($name)
     {
-        $this->_timer[$name] = microtime();
+        $this->timer[$name] = microtime();
     }
 
-    function time($start, $stop)
+    public function time($start, $stop)
     {
-        if (!isset($this->_timer[$start])) {
+        if (!isset($this->timer[$start])) {
             return '';
         }
 
-        if (!isset($this->_timer[$stop])) {
-            $this->_timer[$stop] = microtime();
+        if (!isset($this->timer[$stop])) {
+            $this->timer[$stop] = microtime();
         }
 
-        list ($s1m, $s1s) = explode(' ', $this->_timer[$start]);
-        list ($s2m, $s2s) = explode(' ', $this->_timer[$stop]);
+        list ($s1m, $s1s) = explode(' ', $this->timer[$start]);
+        list ($s2m, $s2s) = explode(' ', $this->timer[$stop]);
 
         return number_format(($s2m + $s2s) - ($s1m + $s1s), 4, '.', ',');
     }

@@ -30,8 +30,8 @@ interface StorageInterface
     /**
      * Thiết lập giá trị
      *
-     * @param string $id Tên giá trị
-     * @param mixed $value
+     * @param string $id    Tên giá trị
+     * @param mixed  $value
      */
     public function set($id, $value);
 

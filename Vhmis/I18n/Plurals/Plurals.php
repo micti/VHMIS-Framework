@@ -104,6 +104,7 @@ class Plurals
         list($math, $value) = explode(' is ', $syntax, 2);
         $math = str_replace(array('n', 'mod'), array('$number', '%'), $math);
 
+        $mathValue = 0.0;
         eval('$mathValue = ' . $math . ';');
 
         return ((double) $mathValue === (double) $value);
@@ -121,6 +122,7 @@ class Plurals
         list($math, $value) = explode(' is not ', $syntax, 2);
         $math = str_replace(array('n', 'mod'), array('$number', '%'), $math);
 
+        $mathValue = 0.0;
         eval('$mathValue = ' . $math . ';');
 
         return ((double) $mathValue !== (double) $value);
@@ -137,6 +139,8 @@ class Plurals
     {
         list($math, $list) = explode(' not in ', $syntax, 2);
         $math = str_replace(array('n', 'mod'), array('$number', '%'), $math);
+        
+        $mathValue = 0.0;
         eval('$mathValue = ' . $math . ';');
 
         if (ceil($number) != floor($number)) {
@@ -157,6 +161,8 @@ class Plurals
     {
         list($math, $list) = explode(' in ', $syntax, 2);
         $math = str_replace(array('n', 'mod'), array('$number', '%'), $math);
+        
+        $mathValue = 0.0;
         eval('$mathValue = ' . $math . ';');
 
         if (ceil($number) != floor($number)) {
@@ -178,6 +184,7 @@ class Plurals
         list($math, $list) = explode(' within ', $syntax, 2);
         $math = str_replace(array('n', 'mod'), array('$number', '%'), $math);
 
+        $mathValue = 0.0;
         eval('$mathValue = ' . $math . ';');
 
         return (static::isInList($mathValue, $list));

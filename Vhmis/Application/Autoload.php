@@ -34,7 +34,7 @@ class Autoload
      * @param string $namespace Tên chính của Namespace
      * @param string $path Đường dẫn tới thư mục chứa các file
      */
-    function __construct($namespace = null, $path = null)
+    public function __construct($namespace = null, $path = null)
     {
         $this->ns = $namespace;
         $this->path = $path;
@@ -45,10 +45,7 @@ class Autoload
      */
     public function register()
     {
-        spl_autoload_register(array(
-            $this,
-            'load'
-        ));
+        spl_autoload_register(array($this, 'load'));
     }
 
     /**
@@ -56,10 +53,7 @@ class Autoload
      */
     public function unregister()
     {
-        spl_autoload_unregister(array(
-            $this,
-            'load'
-        ));
+        spl_autoload_unregister(array($this, 'load'));
     }
 
     /**
@@ -67,7 +61,7 @@ class Autoload
      *
      * @param string $class
      */
-    function load($class)
+    public function load($class)
     {
         if ($this->ns === null || $this->ns . $this->nsSep === substr($class, 0, strlen($this->ns . $this->nsSep))) {
             $file = '';
@@ -80,14 +74,10 @@ class Autoload
             }
 
             $file .= D_SPEC . str_replace('_', D_SPEC, $class);
+
             $file = $this->path . D_SPEC . $file . '.php';
 
             include $file;
         }
-    }
-
-    public static function autoload($path)
-    {
-
     }
 }

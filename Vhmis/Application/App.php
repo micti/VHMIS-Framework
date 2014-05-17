@@ -80,11 +80,13 @@ class App
             date_default_timezone_set($configGlobal['timezone']['name']);
 
             // Locale
-            $locale = $this->request->app['language'] . '_' . $configGlobal['language']['accept'][$this->request->app['language']];
+            $locale = $this->request->app['language'] . '_' .
+                $configGlobal['language']['accept'][$this->request->app['language']];
             Config\Configure::set('Locale', $locale);
             \Locale::setDefault($locale);
 
-            $controllerClass = '\\' . SYSTEM . '\\Apps\\' . $this->request->app['app'] . '\\Controller\\' . $this->request->app['controller'];
+            $controllerClass = '\\' . SYSTEM . '\\Apps\\' . $this->request->app['app'] .
+                '\\Controller\\' . $this->request->app['controller'];
             $controller = new $controllerClass($this->request, $this->response);
             $controller->setServiceManager($sm);
             $controller->init();

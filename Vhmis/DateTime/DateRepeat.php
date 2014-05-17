@@ -193,7 +193,7 @@ class DateRepeat
     /**
      * Thiết lập ngày đầu tiên
      *
-     * @param type $dateBegin
+     * @param  type                       $dateBegin
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setDateBegin($dateBegin)
@@ -208,7 +208,7 @@ class DateRepeat
     /**
      * Thiết lập ngày kết thúc lặp lại (nếu có)
      *
-     * @param type $dateEnd
+     * @param  type                       $dateEnd
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setDateEnd($dateEnd)
@@ -224,6 +224,7 @@ class DateRepeat
      * Thiết lập số lần xảy ra lập lại để kết thúc (nếu có)
      *
      * @param int $dateEnd
+     *
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setTimesEnd($timesEnd)
@@ -237,6 +238,7 @@ class DateRepeat
      * Thiết lập ngày đi làm
      *
      * @param array|string $weekday
+     *
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setWeekday($weekday)
@@ -256,6 +258,7 @@ class DateRepeat
      * Thiết lập ngày nghỉ
      *
      * @param array|string $weekend
+     *
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setWeekend($weekend)
@@ -275,14 +278,14 @@ class DateRepeat
      * Thiết lập ngày đầu tuần, monday hoặc sunday
      *
      * @param string $day
+     *
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setStartDayOfWeek($day)
     {
+        $this->startDateOfWeek = 'monday';
         if ($day === 'sunday') {
             $this->startDateOfWeek = 'sunday';
-        } else {
-            $this->startDateOfWeek = 'monday';
         }
 
         $this->objDate->setStartDayOfWeek($this->startDateOfWeek);
@@ -293,7 +296,7 @@ class DateRepeat
     /**
      * Thiết lập kiểu lặp lại (theo ngày, theo tuần, theo tháng, theo năm)
      *
-     * @param int $type
+     * @param  int                        $type
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setRepeatType($type)
@@ -306,7 +309,7 @@ class DateRepeat
     /**
      * Thiết lập thông tin lặp lại
      *
-     * @param array $info
+     * @param  array                      $info
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setRepeatInfo($info)
@@ -337,6 +340,7 @@ class DateRepeat
      * 'freq' => Tần suất cho mỗi lần lặp lại (ví dụ freq = 3 -> 2 ngày 1 lần)
      *
      * @param array $info
+     *
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setDailyRepeatInfo($info)
@@ -353,7 +357,7 @@ class DateRepeat
      * 'freq' => Tần suất cho mỗi lần lặp lại (ví dụ freq = 2 -> 2 tuần 1 lần)
      * 'wday' => Các ngày trong tuần xảy ra lặp lại (1 là CN, 7 là thứ 7) Có thể là mảng hoặc chuỗi cách nhau bằng dấu ,
      *
-     * @param array $info
+     * @param  array                      $info
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setWeeklyRepeatInfo($info)
@@ -387,6 +391,7 @@ class DateRepeat
      * 'wday = 0' kết hợp với 'wday_position = 5' có nghĩa là ngày cuối cùng của tháng
      *
      * @param array $info
+     *
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setMonthlyRepeatInfo($info)
@@ -403,11 +408,10 @@ class DateRepeat
             }
 
             sort($this->day);
-        } else if ($this->base === 2) {
+        } elseif ($this->base === 2) {
             $this->wday = (int) $info['wday'];
             $this->wdayPosition = (int) $info['wday_position'];
         }
-
 
         return $this;
     }
@@ -426,6 +430,7 @@ class DateRepeat
      * 'wday = 0' kết hợp với 'wday_position = 5' có nghĩa là ngày cuối cùng của tháng
      *
      * @param array $info
+     *
      * @return \Vhmis\DateTime\DateRepeat
      */
     public function setYearlyRepeatInfo($info)
@@ -444,7 +449,7 @@ class DateRepeat
 
         if ($this->base === 1) {
             $this->day = (int) $info['day'];
-        } else if ($this->base === 2) {
+        } elseif ($this->base === 2) {
             $this->wday = (int) $info['wday'];
             $this->wdayPosition = (int) $info['wday_position'];
         }
@@ -478,6 +483,7 @@ class DateRepeat
                 $this->dateEnd = $this->dailyRepeatTimesToDateStop();
                 $this->objDateEnd->modify($this->dateEnd);
             }
+
             return $this->findDailyRepeat();
         }
 
@@ -487,6 +493,7 @@ class DateRepeat
                 $this->dateEnd = $this->weeklyRepeatTimesToDateStop();
                 $this->objDateEnd->modify($this->dateEnd);
             }
+
             return $this->findWeeklyRepeat();
         }
 
@@ -496,6 +503,7 @@ class DateRepeat
                 $this->dateEnd = $this->monthlyRepeatTimesToDateStop();
                 $this->objDateEnd->modify($this->dateEnd);
             }
+
             return $this->findMonthlyRepeat();
         }
 
@@ -505,6 +513,7 @@ class DateRepeat
                 $this->dateEnd = $this->yearlyRepeatTimesToDateStop();
                 $this->objDateEnd->modify($this->dateEnd);
             }
+
             return $this->findYearlyRepeat();
         }
 
@@ -519,7 +528,6 @@ class DateRepeat
     protected function findDailyRepeat()
     {
         $dates = array();
-        $times = 0;
 
         // Reset objDate, về lại mốc thời gian ngày bắt đầu
         $this->objDate->modify($this->dateBegin);
@@ -650,7 +658,7 @@ class DateRepeat
 
                 // Nhảy đến tháng tiếp theo
                 $this->objDate->addMonth($this->freq);
-            } else if ($this->base === static::REPEAT_BASED_ON_WDAY) {
+            } elseif ($this->base === static::REPEAT_BASED_ON_WDAY) {
                 $this->findDayByWeekday();
 
                 // Kết thúc nếu đã vượt quá 1 trong 2 giới hạn
@@ -703,10 +711,7 @@ class DateRepeat
                 // Lặp lại theo ngày trong tháng
                 if ($this->base === static::REPEAT_BASED_ON_DAY) {
                     $this->objDate->setDay($this->day);
-                }
-
-                // Lặp lại theo ngày trong tuần
-                else if ($this->base === static::REPEAT_BASED_ON_WDAY) {
+                } elseif ($this->base === static::REPEAT_BASED_ON_WDAY) { // Lặp lại theo ngày trong tuần
                     $this->findDayByWeekday();
                 } else {
                     return $dates;
@@ -981,13 +986,13 @@ class DateRepeat
     {
         if ($this->wday > 0 & $this->wday < 8) { // Thứ 2 đến Chủ nhật
             $this->objDate->modify($this->positions[$this->wdayPosition] . ' ' . $this->allday[$this->wday] . ' of this month');
-        } else if ($this->wday == 0) { // Một ngày bất kỳ
+        } elseif ($this->wday == 0) { // Một ngày bất kỳ
             if ($this->wdayPosition < 5) {
                 $this->objDate->setDay($this->wdayPosition);
             } else { // Ngay cuoi cung
                 $this->objDate->modify('last day of this month');
             }
-        } else if ($this->wday === 8) { // Cac ngay di lam
+        } elseif ($this->wday === 8) { // Cac ngay di lam
             if ($this->wdayPosition === 1) {
                 // Tìm ngày đi làm đầu tiên của tháng
                 $wk = 31;

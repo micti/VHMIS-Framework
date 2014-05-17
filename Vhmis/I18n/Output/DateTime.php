@@ -86,13 +86,13 @@ class DateTime
      *
      * @var \Vhmis\DateTime\DateTime;
      */
-    protected $date1;
+    protected $dateFirst;
 
     /**
      *
      * @var \Vhmis\DateTime\DateTime;
      */
-    protected $date2;
+    protected $dateSecond;
 
     /**
      * Khởi tạo
@@ -102,19 +102,24 @@ class DateTime
         // Locale mặc định
         $this->locale = locale_get_default();
 
-        $this->date1 = new \Vhmis\DateTime\DateTime;
-        $this->date2 = new \Vhmis\DateTime\DateTime;
+        $this->dateFirst = new VhDateTime;
+        $this->dateSecond = new VhDateTime;
     }
 
     /**
      * Thiết lập Locale
      *
      * @param string $locale Locale
+     *
+     * @return \Vhmis\I18n\Output\DateTime
      */
     public function setLocale($locale = null)
     {
-        if (null !== $locale)
+        if (null !== $locale) {
             $this->locale = $locale;
+        }
+
+        return $this;
     }
 
     /**
@@ -185,8 +190,9 @@ class DateTime
 
         if (is_string($value)) {
             $value = strtotime($value);
-            if ($value === false)
+            if ($value === false) {
                 return '';
+            }
         }
 
         //$this->_formatters[$formatter]->setPattern(null);
@@ -359,15 +365,15 @@ class DateTime
      */
     public function range($value1, $value2, $pattern)
     {
-        $this->date1->modify($value1);
-        $this->date2->modify($value2);
+        $this->dateFirst->modify($value1);
+        $this->dateSecond->modify($value2);
 
-        if ($this->date1 > $this->date2) {
-            $this->date1->modify($value2);
-            $this->date2->modify($value1);
+        if ($this->dateFirst > $this->dateSecond) {
+            $this->dateFirst->modify($value2);
+            $this->dateSecond->modify($value1);
         }
 
-        $interval = $this->date1->findInterval($this->date2);
+        $interval = $this->dateFirst->findInterval($this->dateSecond);
 
         // Tìm interval cho ngày
         $intervalField = '';
@@ -403,8 +409,8 @@ class DateTime
 
         $data = I18nResource::dateIntervalPattern($pattern, $intervalField, $this->locale);
 
-        $value1 = $this->customPattern($this->date1->formatISO(1), $data['patternbegin']);
-        $value2 = $this->customPattern($this->date2->formatISO(1), $data['patternend']);
+        $value1 = $this->customPattern($this->dateFirst->formatISO(1), $data['patternbegin']);
+        $value2 = $this->customPattern($this->dateSecond->formatISO(1), $data['patternend']);
 
         if ($value1 === $value2) {
             return $value1;
@@ -429,15 +435,15 @@ class DateTime
         if ($value1 instanceof \DateInterval) {
             $diff = $value1;
         } else {
-            $this->date1->modify($value1);
-            $this->date2->modify($value2);
+            $this->dateFirst->modify($value1);
+            $this->dateSecond->modify($value2);
 
-            if ($this->date1 > $this->date2) {
-                $this->date1->modify($value2);
-                $this->date2->modify($value1);
+            if ($this->dateFirst > $this->dateSecond) {
+                $this->dateFirst->modify($value2);
+                $this->dateSecond->modify($value1);
             }
 
-            $diff = $this->date1->diff($this->date2);
+            $diff = $this->dateFirst->diff($this->dateSecond);
         }
 
         $interval = array();
@@ -484,15 +490,15 @@ class DateTime
 
     public function ago($date, $rootDate = '')
     {
-        $this->date1->modify($date);
+        $this->dateFirst->modify($date);
 
         if ($rootDate === '') {
-            $this->date2->setNow();
+            $this->dateSecond->setNow();
         } else {
-            $this->date2->modify($rootDate);
+            $this->dateSecond->modify($rootDate);
         }
 
-        $diff = $this->date1->diff($this->date2);
+        $diff = $this->dateFirst->diff($this->dateSecond);
 
         if ($diff->invert === 1) {
             return '';
