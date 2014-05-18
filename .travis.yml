@@ -5,4 +5,4 @@ php:
   - 5.3
 before_script:
   - cd tests
-script: phpunit
+script: phpunit --bootstrap bootstrap.php VhmisTest
