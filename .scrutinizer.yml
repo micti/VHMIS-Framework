@@ -8,7 +8,6 @@ filter:
     paths: {  }
 tools:
     external_code_coverage: true
-        timeout: 300
     php_sim:
         enabled: true
         min_mass: 16
