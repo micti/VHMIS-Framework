@@ -81,7 +81,7 @@ class Day extends AbstractRepeat
         }
 
         $date = new DateTime;
-        $date->modify($this->startDate)->addDay($this->repeatedTimes * $this->freq);
+        $date->modify($this->startDate)->addDay(($this->repeatedTimes - 1) * $this->freq);
 
         $this->endDate = $date->formatISO(0);
 

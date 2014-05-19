@@ -28,11 +28,11 @@ class DayTest extends \PHPUnit_Framework_TestCase
         $this->dayRepeat->setEndDate('2013-02-02')->setRepeatTimes(0);
         $this->assertEquals('2013-02-02', $this->dayRepeat->endDate());
 
-        $this->dayRepeat->setEndDate(null)->setRepeatTimes(1)->setFreq(1);
+        $this->dayRepeat->setEndDate(null)->setRepeatTimes(2)->setFreq(1);
         $this->assertEquals('2013-01-02', $this->dayRepeat->endDate());
 
         $this->dayRepeat->setEndDate(null)->setRepeatTimes(7)->setFreq(2);
-        $this->assertEquals('2013-01-15', $this->dayRepeat->endDate());
+        $this->assertEquals('2013-01-13', $this->dayRepeat->endDate());
     }
 
     public function testRepeatedDates()
