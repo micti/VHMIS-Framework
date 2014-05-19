@@ -15,28 +15,12 @@ use \Vhmis\DateTime\DateTime;
 /**
  * Caculation repeated dates by day
  */
-class Day
+class Day extends AbstractRepeat
 {
     protected $startDate;
     protected $repeatedTimes;
     protected $freq;
     protected $endDate;
-
-    /**
-     * Construct
-     *
-     * @param string $startDate
-     * @param array  $endDate
-     * @param int    $times
-     * @param int    $freq
-     */
-    public function __construct($startDate, $endDate, $times, $freq)
-    {
-        $this->startDate = $startDate;
-        $this->freq = (int) $freq;
-        $this->repeatedTimes = (int) $times;
-        $this->endDate = $endDate;
-    }
 
     /**
      * Caculate all repeated dates
@@ -95,6 +79,10 @@ class Day
     {
         if ($this->endDate !== null) {
             return $this->endDate;
+        }
+
+        if ($this->repeatedTimes === 0) {
+            return '2100-31-21';
         }
 
         $date = new DateTime;
