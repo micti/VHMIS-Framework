@@ -5,7 +5,7 @@ php:
   - 5.3
 before_script:
   - cd tests
+  - wget https://scrutinizer-ci.com/ocular.phar 
 script: 
-  phpunit --bootstrap bootstrap.php --coverage-clover coverage.clover VhmisTest
-  wget https://scrutinizer-ci.com/ocular.phar
-  php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - phpunit --bootstrap bootstrap.php --coverage-clover coverage.clover VhmisTest
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
