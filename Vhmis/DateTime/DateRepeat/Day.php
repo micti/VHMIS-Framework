@@ -55,17 +55,12 @@ class Day extends AbstractRepeat
             $end = $to;
         }
 
-        if ($base >= $from && $base <= $end) {
-            $repeatedDate[] = $base->formatISO(0);
-        }
-
-        while ($base < $end) {
-            $base->addDay($this->freq);
-
+        do {
             if ($base >= $from && $base <= $end) {
                 $repeatedDate[] = $base->formatISO(0);
             }
-        }
+            $base->addDay($this->freq);
+        } while ($base <= $end);
 
         return $repeatedDate;
     }
