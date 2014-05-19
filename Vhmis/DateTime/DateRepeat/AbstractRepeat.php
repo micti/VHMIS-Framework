@@ -23,10 +23,10 @@ abstract class AbstractRepeat
     /**
      * Construct
      *
-     * @param string $startDate
-     * @param array  $endDate
-     * @param int    $times
-     * @param int    $freq
+     * @param string      $startDate
+     * @param string|null $endDate
+     * @param int         $times
+     * @param int         $freq
      */
     public function __construct($startDate, $endDate, $times, $freq)
     {
@@ -38,7 +38,7 @@ abstract class AbstractRepeat
 
     /**
      *
-     * @param type $startDate
+     * @param string $startDate
      *
      * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
      */
@@ -51,7 +51,7 @@ abstract class AbstractRepeat
 
     /**
      *
-     * @param type $endDate
+     * @param string|null $endDate
      *
      * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
      */
@@ -64,7 +64,7 @@ abstract class AbstractRepeat
 
     /**
      *
-     * @param type $times
+     * @param int $times
      *
      * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
      */
@@ -77,7 +77,7 @@ abstract class AbstractRepeat
 
     /**
      *
-     * @param type $freq
+     * @param int $freq
      *
      * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
      */
