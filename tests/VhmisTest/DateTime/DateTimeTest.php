@@ -27,6 +27,75 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test diffDate method
+     */
+    public function testDiffDay()
+    {
+        $this->date->modify('2014-05-20 23:11:34');
+
+        $date = new DateTime('2014-06-20 00:00:00');
+        $this->assertEquals(31, $this->date->diffDay($date));
+
+        $date->modify('2014-05-20');
+        $this->assertEquals(0, $this->date->diffDay($date));
+
+        $date->modify('2014-01-01');
+        $this->assertEquals(0 - $this->date->format('z'), $this->date->diffDay($date));
+    }
+
+    /**
+     * Test diffWeek method
+     */
+    public function testDiffWeek()
+    {
+        $this->date->setStartDayOfWeek('sunday')->modify('2014-05-19 00:52:34');
+        $date = new DateTime('2014-05-18 23:11:34');
+
+        $this->assertEquals(0, $this->date->diffWeek($date));
+
+        $this->date->setStartDayOfWeek('monday');
+        $this->assertEquals(-1, $this->date->diffWeek($date));
+
+        $date->modify('2014-06-29');
+        $this->assertEquals(5, $this->date->diffWeek($date));
+    }
+
+    /**
+     * Test diffMonth method
+     */
+    public function testDiffMonth()
+    {
+        $this->date->modify('2014-05-19 00:52:34');
+        $date = new DateTime('2014-05-18 23:11:34');
+
+        $this->assertEquals(0, $this->date->diffMonth($date));
+
+        $date->modify('2015-12-29');
+        $this->assertEquals(19, $this->date->diffMonth($date));
+
+        $date->modify('2014-02-28');
+        $this->assertEquals(-3, $this->date->diffMonth($date));
+    }
+
+    /**
+     * Test diffYear method
+     */
+    public function testDiffYear()
+    {
+        $this->date->modify('0000-01-12 00:52:34');
+        echo $this->date->formatISO(0);
+        $date = new DateTime('2014-05-18 23:11:34');
+
+        $this->assertEquals(2014, $this->date->diffYear($date));
+
+        $this->date->modify('2010-12-29');
+        $this->assertEquals(4, $this->date->diffYear($date));
+
+        $date->modify('2010-02-28');
+        $this->assertEquals(0, $this->date->diffYear($date));
+    }
+
+    /**
      * Test modifyThisWeek method
      */
     public function testModifyThisWeek()

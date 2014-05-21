@@ -15,6 +15,7 @@ namespace Vhmis\DateTime;
  */
 class DateTime extends \DateTime
 {
+
     const TIME_COMPARE_GREATER = 1;
     const TIME_COMPARE_EQUAL = 0;
     const TIME_COMPARE_LESS_THAN = -1;
@@ -99,6 +100,16 @@ class DateTime extends \DateTime
         }
 
         return $this;
+    }
+
+    /**
+     * Get start day of week
+     *
+     * @return string
+     */
+    public function getStartDayOfWeek()
+    {
+        return $this->startOfWeek;
     }
 
     /**
@@ -188,10 +199,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Tính số ngày khác nhau (không quan tâm đến đến thời gian)
-     * Giá trị âm nghĩa là ngày được so sánh bé hơn
-     *
-     * Ví dụ 2013-12-30 00:00:00 với 2013-12-31 11:59:59 khác nhau 1 ngày
+     * Find different in day between 2 dates (not effect by time)
      *
      * @param \Vhmis\DateTime\DateTime $date
      *
@@ -212,11 +220,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Tính số tuần khác nhau (không quan tâm đến đến ngày nào trong tuần)
-     * Giá trị âm nghĩa là ngày được so sánh bé hơn
-     *
-     * Ví dụ Chủ Nhật 2013-06-29 23:59:59 với Thứ 2 2013-06-30 08:12:12 khác nhau 1 tuần nếu thứ 2 là ngày đầu tuần
-     * và khác nhau 0 tuần nếu chủ nhật là ngày đầu tuần
+     * Find different in week between 2 dates (based on week)
      *
      * @param \Vhmis\DateTime\DateTime $date
      *
@@ -226,21 +230,21 @@ class DateTime extends \DateTime
     {
         $origin1 = $this->getTimestamp();
         $origin2 = $date->getTimestamp();
+        $startDayOfWeek = $date->getStartDayOfWeek();
+        $date->setStartDayOfWeek($this->startOfWeek);
 
         // Use monday this week
-        $wek1 = floor($this->modify('monday this week')->getTimestamp() / 86400 / 7);
-        $wek2 = floor($date->modify('monday this week')->getTimestamp() / 86400 / 7);
+        $wek1 = floor($this->modifyThisWeek('first day')->getTimestamp() / 86400 / 7);
+        $wek2 = floor($date->modifyThisWeek('first day')->getTimestamp() / 86400 / 7);
 
         $this->setTimestamp($origin1);
-        $date->setTimestamp($origin2);
+        $date->setStartDayOfWeek($startDayOfWeek)->setTimestamp($origin2);
 
         return (int) ($wek2 - $wek1);
     }
 
     /**
-     * Tính số tháng khác nhau (không quan tâm đến đến ngày giờ ... nào trong tháng)
-     *
-     * Ví dụ 2016-04-30 08:12:12 với 2013-06-01 23:59:59 khác nhau -34 tháng
+     * Find different in month between 2 dates (based on month)
      *
      * @param \Vhmis\DateTime\DateTime $date
      *
@@ -254,19 +258,11 @@ class DateTime extends \DateTime
         $month2 = (int) $date->format('m');
         $year2 = (int) $date->format('Y');
 
-        if ($year1 === $year2) {
-            return $month2 - $month1;
-        }
-
-        if ($year1 < $year2) {
-            return ($year2 - $year1 - 1) * 12 + $month2 + (12 - $month1);
-        }
-
-        return (($year1 - $year2 - 1) * 12 + $month1 + (12 - $month2)) * -1;
+        return ($year2 * 12 + $month2) - ($year1 * 12 + $month1);
     }
 
     /**
-     * Tính số năm khác nhau, không quan tâm đến tháng ngày giờ ...
+     * Find different in year between 2 dates (based on year)
      *
      * @param \Vhmis\DateTime\DateTime $date
      *
@@ -281,7 +277,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thêm / giảm giây, thay cho modify và add
+     * Add / sub second
      *
      * @param int $sec
      *
@@ -297,7 +293,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thêm / giảm phút, thay cho modify và add
+     * Add / sub minute
      *
      * @param int $min
      *
@@ -321,7 +317,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thêm / giảm ngày, thay cho modify và add
+     * Add / sub day
      *
      * @param int $day
      *
@@ -333,7 +329,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thêm / giảm tuần, thay cho modify và add
+     * Add / sub week
      *
      * @param int $week
      *
@@ -345,30 +341,27 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thêm / giảm số tháng vào ngày hiện tại chỉ dựa vào tháng hiện tại
+     * Add / sub month and don't care about total days of month
      *
-     * @param int $month Số lượng tháng cần thêm vào (sử dụng số âm nếu muốn giảm đi)
+     * @param int $month
      *
      * @return \Vhmis\DateTime\DateTime
      */
     public function addMonth($month)
     {
-        $nowmonth = (int) $this->format('m');
-        $nowyear = (int) $this->format('Y');
-        $nowday = (int) $this->format('d');
+        $month = (int) $this->format('m');
+        $year = (int) $this->format('Y');
+        $day = (int) $this->format('d');
 
-        // Sử dụng 0-11 để biểu diễn tháng
-        $nowmonth--;
+        $month--;
+        $totalMonth = $month + $year * 12 + $month;
+        $month = $totalMonth % 12 + 1;
+        $year = $totalMonth / 12;
+        $lastday = date('j', strtotime('last day of ' . $year . '-' . $month));
 
-        // Tính toán tháng mới, năm mới
-        $totalmonth = $nowmonth + $nowyear * 12 + $month;
-        $nowmonth = $totalmonth % 12 + 1; // + 1 để trả lại tháng 1-12
-        $nowyear = $totalmonth / 12; // Số nguyên
-        $lastday = date('j', strtotime('last day of ' . $nowyear . '-' . $nowmonth));
-
-        $this->setDate($nowyear, $nowmonth, $lastday);
-        if ($nowday < $lastday) {
-            $this->setDate($nowyear, $nowmonth, $nowday);
+        $this->setDate($year, $month, $lastday);
+        if ($day < $lastday) {
+            $this->setDate($year, $month, $day);
         }
 
         return $this;
@@ -386,23 +379,24 @@ class DateTime extends \DateTime
         return $this->modify($month . ' months');
     }
 
-    public function addYear($year, $fix = true)
+    /**
+     * Add / sub year and don't care about total days of month
+     *
+     * @param int $year
+     *
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function addYear($year)
     {
         $nowmonth = (int) $this->format('m');
         $nowyear = (int) $this->format('Y');
         $nowday = (int) $this->format('d');
 
         $year = $nowyear + $year;
+        $lastday = date('j', strtotime('last day of ' . $year . '-' . $nowmonth));
 
-        if ($fix === true) {
-
-            $lastday = date('j', strtotime('last day of ' . $year . '-' . $nowmonth));
-            if ($nowday < $lastday) {
-                $this->setDate($year, $nowmonth, $nowday);
-            } else {
-                $this->setDate($year, $nowmonth, $lastday);
-            }
-        } else {
+        $this->setDate($year, $nowmonth, $lastday);
+        if ($nowday < $lastday) {
             $this->setDate($year, $nowmonth, $nowday);
         }
 
@@ -410,7 +404,19 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thiết lập ngày
+     * Add (or sub) year
+     *
+     * @param int $year
+     *
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function addYearWithoutFix($year)
+    {
+        return $this->modify($year . ' years');
+    }
+
+    /**
+     * Set day of month
      *
      * @param int $day
      *
@@ -418,16 +424,16 @@ class DateTime extends \DateTime
      */
     public function setDay($day)
     {
-        $nowmonth = (int) $this->format('m');
-        $nowyear = (int) $this->format('Y');
+        $month = (int) $this->format('m');
+        $year = (int) $this->format('Y');
 
-        $this->setDate($nowyear, $nowmonth, $day);
+        $this->setDate($year, $month, $day);
 
         return $this;
     }
 
     /**
-     * Thiết lập tháng
+     * Set month
      *
      * @param int $month
      *
@@ -435,20 +441,41 @@ class DateTime extends \DateTime
      */
     public function setMonth($month)
     {
-        $nowday = (int) $this->format('j');
-        $nowyear = (int) $this->format('Y');
-        $lastday = (int) date('j', strtotime('last date of ' . $nowyear . '-' . $month));
+        $day = (int) $this->format('j');
+        $year = (int) $this->format('Y');
+        $lastday = (int) date('j', strtotime('last date of ' . $year . '-' . $month));
 
-        $this->setDate($nowyear, $month, $lastday);
-        if ($nowday <= $lastday) {
-            $this->setDate($nowyear, $month, $nowday);
+        $this->setDate($year, $month, $lastday);
+        if ($day <= $lastday) {
+            $this->setDate($year, $month, $day);
         }
 
         return $this;
     }
 
     /**
-     * Thiết lập lại ngày giờ hiện tại
+     * Set year
+     *
+     * @param int $year
+     *
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function setYear($year)
+    {
+        $day = (int) $this->format('j');
+        $month = (int) $this->format('m');
+        $lastday = (int) date('j', strtotime('last date of ' . $nowyear . '-' . $month));
+
+        $this->setDate($year, $month, $lastday);
+        if ($day <= $lastday) {
+            $this->setDate($year, $month, $day);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set current time
      *
      * @return \Vhmis\DateTime\DateTime
      */
@@ -613,9 +640,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Viết lại phương thức getTimestamp
-     * Trong một số trường hợp phương thức getTimestamp trả về false thay vì số
-     * âm
+     * getTimestamp method return value of format('U')
      *
      * @return int
      */
