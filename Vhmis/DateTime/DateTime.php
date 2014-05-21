@@ -1,23 +1,17 @@
 <?php
 
 /**
- * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ * Vhmis Framework
  *
- * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package Vhmis_DateTime
- * @since Vhmis v2.0
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Vhmis\DateTime;
 
 /**
- * Class để xử lý ngày giờ, được mở rộng từ class DateTime của PHP
- *
- * @category Vhmis
- * @package Vhmis_DateTime
- * @subpackage DateTime
+ * Datetime class, extends from PHP Datetime class
  */
 class DateTime extends \DateTime
 {
@@ -28,11 +22,34 @@ class DateTime extends \DateTime
     private $timeCompareGreater = self::TIME_COMPARE_GREATER;
 
     /**
-     * Ngày bắt đầu trong tuần
+     * Day of week array, index same date('w')
+     * 0 to 6 : Sunday to Monday
+     *
+     * @var array
+     */
+    protected $weekday = array(
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday'
+    );
+
+    /**
+     * Start day of week
      *
      * @var string
      */
     protected $startOfWeek = 'monday';
+
+    /**
+     * Weekday order based on start day of week
+     *
+     * @var array
+     */
+    protected $weekdayOrder = array(1, 2, 3, 4, 5, 6, 0);
 
     /**
      * Các class static trả về DateTime cần viết lại để trả về đúng class mới
@@ -59,18 +76,26 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thiết lập ngày đầu tuần, monday hoặc sunday
+     * Set start day of week (sunday, monday ... or 0, 1, .. 6)
      *
-     * @param string $day
+     * @param string|int $day
      *
      * @return \Vhmis\DateTime\DateTime
      */
     public function setStartDayOfWeek($day)
     {
-        $this->startOfWeek = 'monday';
-        
-        if ($day === 'sunday') {
-            $this->startOfWeek = 'sunday';
+        if (array_search($day, $this->weekday) !== false) {
+            $this->startOfWeek = $day;
+            $this->weekdayOrder = $this->sortWeekday();
+
+            return $this;
+        }
+
+        if (isset($this->weekday[$day])) {
+            $this->startOfWeek = $this->weekday[$day];
+            $this->weekdayOrder = $this->sortWeekday();
+
+            return $this;
         }
 
         return $this;
@@ -718,5 +743,59 @@ class DateTime extends \DateTime
         }
 
         return 0;
+    }
+
+    /**
+     * Modify date in this week
+     *
+     * Modify string can be 'first day', 'last day' or name of weekday
+     *
+     * @param string $modify
+     *
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function modifyThisWeek($modify)
+    {
+        $position = false;
+
+        if ($modify === 'first day') {
+            $position = 0;
+        } elseif ($modify === 'last day') {
+            $position = 6;
+        } else {
+            $weekday = array_search($modify, $this->weekday);
+            if ($weekday === false) {
+                return $this;
+            }
+
+            $position = array_search($weekday, $this->weekdayOrder);
+        }
+
+        $currentPosition = array_search($this->format('w'), $this->weekdayOrder);
+
+        return $this->addDay($position - $currentPosition);
+    }
+
+    /**
+     * Sort weekday based on start day of week
+     *
+     * For example: if monday is start day of week, the return will be [1,2,3,4,5,6,0]
+     *
+     * @return array
+     */
+    protected function sortWeekday()
+    {
+        $position = array_search($this->startOfWeek, $this->weekday);
+        $weekdayOrder = array();
+
+        for ($i = 0; $i < 7; $i++) {
+            if ($i >= $position) {
+                $weekdayOrder[$i - $position] = $i;
+            } else {
+                $weekdayOrder[7 - $position + $i] = $i;
+            }
+        }
+
+        return $weekdayOrder;
     }
 }
