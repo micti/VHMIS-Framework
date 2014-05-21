@@ -67,11 +67,11 @@ class DateTime extends \DateTime
      */
     public function setStartDayOfWeek($day)
     {
+        $this->startOfWeek = 'monday';
+        
         if ($day === 'sunday') {
             $this->startOfWeek = 'sunday';
         }
-
-        $this->startOfWeek = 'monday';
 
         return $this;
     }
