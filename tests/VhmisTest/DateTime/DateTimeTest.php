@@ -27,6 +27,23 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test addMonth method
+     */
+    public function testAddMonth()
+    {
+        $this->date->modify('2014-05-20');
+        $this->assertEquals('2014-06-20', $this->date->addMonth(1)->formatISO(0));
+        $this->date->modify('2014-05-31');
+        $this->assertEquals('2014-06-30', $this->date->addMonth(1)->formatISO(0));
+        $this->date->modify('2014-05-31');
+        $this->assertEquals('2014-02-28', $this->date->addMonth(-3)->formatISO(0));
+        $this->date->modify('2014-05-31');
+        $this->assertEquals('2015-05-31', $this->date->addMonth(12)->formatISO(0));
+        $this->date->modify('2014-05-31');
+        $this->assertEquals('2012-12-31', $this->date->addMonth(-17)->formatISO(0));
+    }
+
+    /**
      * Test diffDate method
      */
     public function testDiffDay()

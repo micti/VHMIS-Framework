@@ -349,19 +349,19 @@ class DateTime extends \DateTime
      */
     public function addMonth($month)
     {
-        $month = (int) $this->format('m');
+        $nowmonth = (int) $this->format('m');
         $year = (int) $this->format('Y');
-        $day = (int) $this->format('d');
+        $day = (int) $this->format('j');
 
-        $month--;
-        $totalMonth = $month + $year * 12 + $month;
+        $nowmonth--;
+        $totalMonth = $nowmonth + $year * 12 + $month;
         $month = $totalMonth % 12 + 1;
-        $year = $totalMonth / 12;
+        $year = floor($totalMonth / 12);
         $lastday = date('j', strtotime('last day of ' . $year . '-' . $month));
 
-        $this->setDate($year, $month, $lastday);
-        if ($day < $lastday) {
-            $this->setDate($year, $month, $day);
+        $this->setDate($year, $month, $day);
+        if ($day > $lastday) {
+            $this->setDate($year, $month, $lastday);
         }
 
         return $this;
