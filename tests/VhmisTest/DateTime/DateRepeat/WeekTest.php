@@ -29,9 +29,6 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         $this->weekRepeat = new Week('2011-01-01', null, 0, 1);
     }
 
-    /**
-     * @covers VhmisTest\DateTime\DateRepeat\Week::endDate
-     */
     public function testEndDate()
     {
         // 2013-01-01 is tuesday / 2
@@ -80,9 +77,6 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2014-05-11', $this->weekRepeat->endDate());
     }
 
-    /**
-     *
-     */
     public function testRepeatedDates()
     {
         $this->weekRepeat->setStartDate('2014-05-03');
