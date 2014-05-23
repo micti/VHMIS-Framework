@@ -100,9 +100,8 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testDiffYear()
     {
         $this->date->modify('0000-01-12 00:52:34');
-        echo $this->date->formatISO(0);
-        $date = new DateTime('2014-05-18 23:11:34');
 
+        $date = new DateTime('2014-05-18 23:11:34');
         $this->assertEquals(2014, $this->date->diffYear($date));
 
         $this->date->modify('2010-12-29');
