@@ -17,50 +17,32 @@ use \Vhmis\DateTime\DateTime;
  */
 class Day extends AbstractRepeat
 {
-    protected $startDate;
-    protected $repeatedTimes;
-    protected $freq;
-    protected $endDate;
-
     /**
-     * Caculate all repeated dates
+     * Caculate all repeated dates in range
      *
-     * @param string|null $fromDate
-     * @param string|null $toDate
+     * @param string $fromDate
+     * @param string $toDate
      *
      * @return array
      */
-    public function repeatedDates($fromDate = null, $toDate = null)
+    public function repeatedDates($fromDate, $toDate)
     {
         $repeatedDate = array();
 
-        $base = new DateTime;
-        $base->modify($this->startDate);
-
-        $from = clone $base;
-        if ($fromDate !== null) {
-            $from->modify($fromDate);
+        if ($this->checkRange($fromDate, $toDate) === false) {
+            return $repeatedDate;
         }
 
-        $endDate = $this->endDate();
-        $end = new DateTime;
-        $end->modify($endDate);
+        $run = clone $this->begin;
 
-        $to = clone $end;
-        if ($toDate !== null) {
-            $to->modify($toDate);
+        if ($this->begin < $this->from) {
+            $run->addDay(ceil($run->diffDay($this->from) / $this->freq) * $this->freq);
         }
 
-        if ($end > $to) {
-            $end = $to;
+        while ($run <= $this->to) {
+            $repeatedDate[] = $run->formatISO(0);
+            $run->addDay($this->freq);
         }
-
-        do {
-            if ($base >= $from && $base <= $end) {
-                $repeatedDate[] = $base->formatISO(0);
-            }
-            $base->addDay($this->freq);
-        } while ($base <= $end);
 
         return $repeatedDate;
     }

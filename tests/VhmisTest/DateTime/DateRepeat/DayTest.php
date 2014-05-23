@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace VhmisTest\DateTime\DateRepeat;
 
 use Vhmis\DateTime\DateRepeat\Day;
@@ -38,7 +46,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
     public function testRepeatedDates()
     {
         $this->dayRepeat->setStartDate('2013-01-01')->setEndDate('2013-02-01')->setFreq(2);
-        $repeatedDates = $this->dayRepeat->repeatedDates();
+        $repeatedDates = $this->dayRepeat->repeatedDates('2013-01-01', '2013-02-01');
         $result = array(
             '2013-01-01',
             '2013-01-03',
@@ -59,7 +67,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $repeatedDates);
 
-        $repeatedDates = $this->dayRepeat->repeatedDates('2013-01-10', null);
+        $repeatedDates = $this->dayRepeat->repeatedDates('2013-01-10', '2013-02-01');
         $result = array(
             '2013-01-11',
             '2013-01-13',
@@ -75,15 +83,8 @@ class DayTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $repeatedDates);
 
-        $repeatedDates = $this->dayRepeat->repeatedDates(null, '2013-01-10');
-        $result = array(
-            '2013-01-01',
-            '2013-01-03',
-            '2013-01-05',
-            '2013-01-07',
-            '2013-01-09'
-        );
-        $this->assertEquals($result, $repeatedDates);
+        $repeatedDates = $this->dayRepeat->repeatedDates('2013-01-10', '2013-01-10');
+        $this->assertEquals(array(), $repeatedDates);
 
         $repeatedDates = $this->dayRepeat->repeatedDates('2013-01-05', '2013-01-12');
         $result = array(
@@ -112,11 +113,11 @@ class DayTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $repeatedDates);
 
-        $repeatedDates = $this->dayRepeat->repeatedDates(null, '2012-12-31');
+        $repeatedDates = $this->dayRepeat->repeatedDates('2012-12-01', '2012-12-31');
         $result = array();
         $this->assertEquals($result, $repeatedDates);
 
-        $repeatedDates = $this->dayRepeat->repeatedDates('2013-02-02', null);
+        $repeatedDates = $this->dayRepeat->repeatedDates('2013-02-02', '2013-02-27');
         $result = array();
         $this->assertEquals($result, $repeatedDates);
     }
