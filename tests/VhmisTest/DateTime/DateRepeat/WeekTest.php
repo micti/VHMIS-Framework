@@ -15,7 +15,7 @@ use Vhmis\DateTime\DateRepeat\Week;
 class WeekTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Day Repeat object
+     * Week Repeat object
      *
      * @var Vhmis\DateTime\DateRepeat\Week
      */
@@ -122,6 +122,5 @@ class WeekTest extends \PHPUnit_Framework_TestCase
             '2014-05-11'
         );
         $this->assertEquals($result, $this->weekRepeat->repeatedDates('2014-05-11', '2014-05-11'));
-
     }
 }
