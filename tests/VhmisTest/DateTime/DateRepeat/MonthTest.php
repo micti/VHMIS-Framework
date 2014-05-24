@@ -38,17 +38,17 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2014-07-09', $this->monthRepeat->endDate());
 
         $this->monthRepeat->setStartDate('2014-05-17')->setEndDate(null)
-            ->setType('day')->setRepeatDays(array(12, 17, 20))
+            ->setType('day')->setRepeatedDays(array(12, 17, 20))
             ->setRepeatTimes(6)->setFreq(2);
         $this->assertEquals('2014-09-12', $this->monthRepeat->endDate());
 
         $this->monthRepeat->setStartDate('2014-05-12')->setEndDate(null)
-            ->setType('day')->setRepeatDays(array(12, 17, 20))
+            ->setType('day')->setRepeatedDays(array(12, 17, 20))
             ->setRepeatTimes(6)->setFreq(2);
         $this->assertEquals('2014-07-20', $this->monthRepeat->endDate());
 
         $this->monthRepeat->setStartDate('2014-01-29')->setEndDate(null)
-            ->setType('day')->setRepeatDays(array(29, 30, 31))
+            ->setType('day')->setRepeatedDays(array(29, 30, 31))
             ->setRepeatTimes(6)->setFreq(1);
         $this->assertEquals('2014-03-03', $this->monthRepeat->endDate());
 
@@ -56,8 +56,8 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             ->setStartDate('2014-01-31') // last day of month
             ->setEndDate(null)
             ->setType('relative_day')
-            ->setReaptedDayPosition(4)
-            ->setReaptedDay(7)
+            ->setRepeatedDayPosition(4)
+            ->setRepeatedDay(7)
             ->setRepeatTimes(7)
             ->setFreq(1);
         $this->assertEquals('2014-07-31', $this->monthRepeat->endDate());
@@ -66,8 +66,8 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             ->setStartDate('2014-05-24') // fourth saturday of month
             ->setEndDate(null)
             ->setType('relative_day')
-            ->setReaptedDayPosition('fourth')
-            ->setReaptedDay('saturday')
+            ->setRepeatedDayPosition('fourth')
+            ->setRepeatedDay('saturday')
             ->setRepeatTimes(2)
             ->setFreq(2);
         $this->assertEquals('2014-07-26', $this->monthRepeat->endDate());
@@ -79,7 +79,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             ->setStartDate('2014-05-12')
             ->setEndDate(null)
             ->setType('day')
-            ->setRepeatDays(array(12, 17, 20))
+            ->setRepeatedDays(array(12, 17, 20))
             ->setRepeatTimes(6)
             ->setFreq(1);
 
@@ -110,7 +110,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             ->setStartDate('2014-05-31')
             ->setEndDate(null)
             ->setType('day')
-            ->setRepeatDays(array(29, 30, 31))
+            ->setRepeatedDays(array(29, 30, 31))
             ->setRepeatTimes(7)
             ->setFreq(1);
         $result = array(
@@ -128,7 +128,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             ->setStartDate('2014-02-28')
             ->setEndDate(null)
             ->setType('day')
-            ->setRepeatDays(array(1, 28, 29))
+            ->setRepeatedDays(array(1, 28, 29))
             ->setRepeatTimes(9)
             ->setFreq(1);
         $result = array(
@@ -148,8 +148,8 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             ->setStartDate('2014-01-31') // last day of month
             ->setEndDate(null)
             ->setType('relative_day')
-            ->setReaptedDayPosition(4)
-            ->setReaptedDay(7)
+            ->setRepeatedDayPosition(4)
+            ->setRepeatedDay(7)
             ->setRepeatTimes(7)
             ->setFreq(1);
         $result = array(
@@ -167,8 +167,8 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             ->setStartDate('2014-05-24') // fourth saturday of month
             ->setEndDate(null)
             ->setType('relative_day')
-            ->setReaptedDayPosition('fourth')
-            ->setReaptedDay('saturday')
+            ->setRepeatedDayPosition('fourth')
+            ->setRepeatedDay('saturday')
             ->setRepeatTimes(2)
             ->setFreq(2);
         $result = array(

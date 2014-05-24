@@ -19,14 +19,14 @@ class Month extends AbstractRepeat
 {
     /**
      * Repeat type
-     * 
+     *
      * @var string
      */
     protected $type = 'day';
 
     /**
      * Position of day in month
-     * 
+     *
      * @var array
      */
     protected $dayPositions = array(
@@ -55,7 +55,7 @@ class Month extends AbstractRepeat
 
     /**
      * Position of day of repeated date
-     * 
+     *
      * @var int
      */
     protected $repeatedDayPosition;
@@ -97,7 +97,7 @@ class Month extends AbstractRepeat
      *
      * @param int position
      */
-    public function setReaptedDay($day)
+    public function setRepeatedDay($day)
     {
         if (is_numeric($day) && $day <= 7 && $day >= 0) {
             $this->repeatedDay = $day;
@@ -121,7 +121,7 @@ class Month extends AbstractRepeat
      *
      * @param string|int position
      */
-    public function setReaptedDayPosition($position)
+    public function setRepeatedDayPosition($position)
     {
         if (is_numeric($position) && $position <= 4 && $position >= 0) {
             $this->repeatedDayPosition = $position;
@@ -149,7 +149,7 @@ class Month extends AbstractRepeat
      *
      * @throws \InvalidArgumentException
      */
-    public function setRepeatDays($days)
+    public function setRepeatedDays($days)
     {
         $days = is_string($days) ? explode(',', $days) : $days;
 
@@ -353,7 +353,7 @@ class Month extends AbstractRepeat
 
     /**
      * Fixing same repeated dates in some special cases
-     * 
+     *
      * @param array $repeatedDates
      *
      * @return array
