@@ -164,4 +164,26 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-30');
         $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISO(0));
     }
+
+    public function testSetMonth()
+    {
+        $this->date->modify('2014-05-19');
+        $this->date->setMonth(4);
+        $this->assertEquals('2014-04-19', $this->date->formatISO(0));
+
+        $this->date->modify('2014-03-31');
+        $this->date->setMonth(2);
+        $this->assertEquals('2014-02-28', $this->date->formatISO(0));
+    }
+
+    public function testSetYear()
+    {
+        $this->date->modify('2014-05-19');
+        $this->date->setYear(2078);
+        $this->assertEquals('2078-05-19', $this->date->formatISO(0));
+
+        $this->date->modify('2016-02-29');
+        $this->date->setYear(2015);
+        $this->assertEquals('2015-02-28', $this->date->formatISO(0));
+    }
 }

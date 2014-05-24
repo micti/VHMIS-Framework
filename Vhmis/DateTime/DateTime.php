@@ -443,11 +443,11 @@ class DateTime extends \DateTime
     {
         $day = (int) $this->format('j');
         $year = (int) $this->format('Y');
-        $lastday = (int) date('j', strtotime('last date of ' . $year . '-' . $month));
+        $lastday = (int) date('j', strtotime('last day of ' . $year . '-' . $month));
 
-        $this->setDate($year, $month, $lastday);
-        if ($day <= $lastday) {
-            $this->setDate($year, $month, $day);
+        $this->setDate($year, $month, $day);
+        if ($day > $lastday) {
+            $this->setDate($year, $month, $lastday);
         }
 
         return $this;
@@ -464,11 +464,11 @@ class DateTime extends \DateTime
     {
         $day = (int) $this->format('j');
         $month = (int) $this->format('m');
-        $lastday = (int) date('j', strtotime('last date of ' . $nowyear . '-' . $month));
+        $lastday = (int) date('j', strtotime('last day of ' . $year . '-' . $month));
 
-        $this->setDate($year, $month, $lastday);
-        if ($day <= $lastday) {
-            $this->setDate($year, $month, $day);
+        $this->setDate($year, $month, $day);
+        if ($day > $lastday) {
+            $this->setDate($year, $month, $lastday);
         }
 
         return $this;
@@ -650,7 +650,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Tương tự như phương thức modify nhưng trả về đối tượng DateTime mới
+     * Same as modify() method but return new DateTime object
      *
      * @param string $modify
      *
