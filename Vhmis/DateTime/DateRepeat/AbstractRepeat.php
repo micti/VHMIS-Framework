@@ -58,6 +58,13 @@ abstract class AbstractRepeat
     protected $startWeekday;
 
     /**
+     * Day of start day (1 - 31)
+     *
+     * @var int
+     */
+    protected $startDay;
+
+    /**
      * Start day of week
      *
      * @var string
@@ -116,6 +123,7 @@ abstract class AbstractRepeat
         $this->startDate = $startDate;
         $this->begin->modify($startDate);
         $this->startWeekday = (int) $this->begin->format('w');
+        $this->startDay = (int) $this->begin->format('j');
 
         return $this;
     }
