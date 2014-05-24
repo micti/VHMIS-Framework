@@ -50,15 +50,15 @@ class YearTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2016-01-16', $this->yearRepeat->endDate());
 
         $this->yearRepeat->setStartDate('2014-05-10')->setEndDate(null)
-            ->setReaptedDayPosition('second');
+            ->setRepeatedDayPosition('second');
         $this->assertEquals('2016-01-09', $this->yearRepeat->endDate());
 
         $this->yearRepeat->setStartDate('2014-05-03')->setEndDate(null)
-            ->setReaptedDayPosition('first');
+            ->setRepeatedDayPosition('first');
         $this->assertEquals('2016-01-02', $this->yearRepeat->endDate());
 
         $this->yearRepeat->setStartDate('2014-05-31')->setEndDate(null)
-            ->setReaptedDayPosition('last');
+            ->setRepeatedDayPosition('last');
         $this->assertEquals('2016-01-30', $this->yearRepeat->endDate());
     }
 
