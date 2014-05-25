@@ -104,11 +104,7 @@ class Upload
 
         // Kiểm tra thư mục upload
         if (!$this->checkDir($dir)) {
-            $this->result['uploaded'] = false;
-            $this->result['code'] = 12;
-            $this->result['message'] = 'Không thể upload vào thư mục ' . $dir;
-
-            return $this->result;
+            return $this->uploadError(12, 'Không thể upload vào thư mục ' . $dir);
         }
 
         // Không thể upload
@@ -116,11 +112,7 @@ class Upload
             $error = (!isset($file['error'])) ? 4 : $file['error'];
 
             // To do : cần ghi cụ thể message lỗi dựa vào $error
-            $this->result['uploaded'] = false;
-            $this->result['code'] = $error;
-            $this->result['message'] = 'Không thể upload file';
-
-            return $this->result;
+            return $this->uploadError($error, 'Không thể upload file');
         }
 
         // Fileinfo
@@ -131,11 +123,7 @@ class Upload
         // Kiểm tra kích thước file
         if ($this->maxSize != 0) {
             if ($filesize > $this->maxSize) {
-                $this->result['uploaded'] = false;
-                $this->result['code'] = 2;
-                $this->result['message'] = 'Kích thước file không được vượt quá ' . $this->maxSize;
-
-                return $this->result;
+                return $this->uploadError(2, 'Kích thước file không được vượt quá ' . $this->maxSize);
             }
         }
 
@@ -160,20 +148,12 @@ class Upload
 
         // Kiểm tra ext của mine của file
         if (!$this->checkFiletype($clientFileext, $filetype)) {
-            $this->result['uploaded'] = false;
-            $this->result['code'] = 8;
-            $this->result['message'] = 'File type không hợp lệ';
-
-            return $this->result;
+            return $this->uploadError(8, 'File type không hợp lệ');
         }
 
         // Không upload được
         if (!@move_uploaded_file($file['tmp_name'], $this->result['file_full_path'])) {
-            $this->result['uploaded'] = false;
-            $this->result['code'] = 20;
-            $this->result['message'] = 'Upload không thành công';
-
-            return $this->result;
+            return $this->uploadError(20, 'Upload không thành công');
         }
 
         // Image file?
@@ -182,6 +162,23 @@ class Upload
         $this->result['uploaded'] = true;
         $this->result['code'] = 0;
         $this->result['message'] = 'Upload thành công';
+
+        return $this->result;
+    }
+
+    /**
+     * Set upload error info
+     *
+     * @param int    $code
+     * @param string $message
+     *
+     * @return array
+     */
+    protected function uploadError($code, $message)
+    {
+        $this->result['uploaded'] = false;
+        $this->result['code'] = $code;
+        $this->result['message'] = $message;
 
         return $this->result;
     }
