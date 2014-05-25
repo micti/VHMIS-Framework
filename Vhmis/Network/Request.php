@@ -64,8 +64,9 @@ class Request
      */
     public function __construct(Router $router = null)
     {
-        if ($router != null)
+        if ($router != null) {
             $this->router = $router;
+        }
     }
 
     /**
@@ -93,8 +94,9 @@ class Request
 
         $this->uri = new Uri($url);
 
-        if ($this->uri->valid() == false) {
+        if ($this->uri->isValid() == false) {
             $this->responeCode = '403';
+
             return;
         }
 
@@ -102,6 +104,7 @@ class Request
 
         if ($result['match'] == false) {
             $this->responeCode = '404';
+
             return;
         }
 
@@ -161,6 +164,7 @@ class Request
         if ($forward) {
             return $forward;
         }
+
         return $referrer;
     }
 
@@ -168,6 +172,7 @@ class Request
      * Lấy giá trị post
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getPost($name = null)
@@ -187,6 +192,7 @@ class Request
      * Lấy giá trị get
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getGet($name = null)
@@ -331,8 +337,9 @@ class Request
 
     /**
      * Strip slashes for array or string data
-     * 
+     *
      * @param type $values
+     *
      * @return type
      */
     protected function stripSlashes($values)
