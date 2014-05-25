@@ -56,7 +56,7 @@ class Upload
     /**
      * Thiết lập kích thước tối đa cho phép của file
      *
-     * @param int $byte
+     * @param  int                $byte
      * @return \Vhmis\File\Upload
      */
     public function setMaxSize($byte)
@@ -78,7 +78,7 @@ class Upload
      * Kiểm tra cả phần mở rộng và mine type
      * array('pdf' => 'application/pdf application/x-download', 'doc' => 'application/msword')
      *
-     * @param array $types
+     * @param  array              $types
      * @return \Vhmis\File\Upload
      */
     public function setAllowTypes($types)
@@ -107,6 +107,7 @@ class Upload
             $this->result['uploaded'] = false;
             $this->result['code'] = 12;
             $this->result['message'] = 'Không thể upload vào thư mục ' . $dir;
+
             return $this->result;
         }
 
@@ -122,29 +123,8 @@ class Upload
             return $this->result;
         }
 
-        // Lấy tên file
-        $clientFilename = $this->cleanFilename($file['name']);
-        if ($filename == '') {
-            $filename = $clientFilename;
-        }
-
-        // Lấy phần mở rộng của file
-        $clientFileext = explode('.', $clientFilename);
-        $clientFileext = strtolower(end($clientFileext));
-
-        // Lấy ext của file, trong trường hợp tên file đưa vào không có ext thì
-        // lấy ext của tên file từ client
-        if (strpos($filename, '.') === false) {
-            $fileext = $clientFileext;
-            $filenameNotExt = $filename;
-            $filename .= '.' . $clientFileext;
-        } else {
-            $fileext = explode('.', $filename);
-            $ext = strtolower(end($fileext));
-            array_pop($fileext);
-            $filenameNotExt = implode('.', $fileext);
-            $fileext = $ext;
-        }
+        // Fileinfo
+        list($filename, $filenameNotExt, $fileext, $clientFileext) = $this->getFileInfo($file['name'], $filename);
 
         $filesize = $file['size'];
 
@@ -183,6 +163,7 @@ class Upload
             $this->result['uploaded'] = false;
             $this->result['code'] = 8;
             $this->result['message'] = 'File type không hợp lệ';
+
             return $this->result;
         }
 
@@ -191,11 +172,51 @@ class Upload
             $this->result['uploaded'] = false;
             $this->result['code'] = 20;
             $this->result['message'] = 'Upload không thành công';
+
             return $this->result;
         }
 
-        // Kiểm tra file ảnh
-        if (in_array($filetype, array(
+        // Image file?
+        $this->result['file_image'] = $this->checkImageFile($filetype, $this->result['file_full_path']);
+
+        $this->result['uploaded'] = true;
+        $this->result['code'] = 0;
+        $this->result['message'] = 'Upload thành công';
+
+        return $this->result;
+    }
+
+    protected function getFileInfo($clientFilename, $filename)
+    {
+        $clientFilename = $this->cleanFilename($clientFilename);
+        if ($filename == '') {
+            $filename = $clientFilename;
+        }
+
+        // Lấy phần mở rộng của file
+        $clientFileext = explode('.', $clientFilename);
+        $clientFileext = strtolower(end($clientFileext));
+
+        // Lấy ext của file, trong trường hợp tên file đưa vào không có ext thì
+        // lấy ext của tên file từ client
+        if (strpos($filename, '.') === false) {
+            $fileext = $clientFileext;
+            $filenameNotExt = $filename;
+            $filename .= '.' . $clientFileext;
+        } else {
+            $fileext = explode('.', $filename);
+            $ext = strtolower(end($fileext));
+            array_pop($fileext);
+            $filenameNotExt = implode('.', $fileext);
+            $fileext = $ext;
+        }
+
+        return array($filename, $filenameNotExt, $fileext, $clientFileext);
+    }
+
+    protected function checkImageFile($fileType, $filePath)
+    {
+        $type = array(
                 'image/gif',
                 'image/jpeg',
                 'image/png',
@@ -203,19 +224,19 @@ class Upload
                 'image/jpe',
                 'image/pjpeg',
                 'img/x-png'
-            ))) {
-            if ($size = getimagesize($this->result['file_full_path'])) {
-                $this->result['file_image'] = array(
+            );
+
+        if (in_array($fileType, $type)) {
+            $size = getimagesize($filePath);
+            if ($size !== false) {
+                return array(
                     'w' => $size[0],
                     'h' => $size[1]
                 );
             }
         }
 
-        $this->result['uploaded'] = true;
-        $this->result['code'] = 0;
-        $this->result['message'] = 'Upload thành công';
-        return $this->result;
+        return false;
     }
 
     protected function checkDir($filedir)
@@ -244,8 +265,9 @@ class Upload
         $type = strtolower($type);
 
         // Chấp nhận tất cả
-        if (isset($this->allowTypes['*']))
+        if (isset($this->allowTypes['*'])) {
             return true;
+        }
 
         // Nếu không có ext
         if (!isset($this->allowTypes[$ext])) {
@@ -273,7 +295,7 @@ class Upload
      */
     protected function getFiletype($file)
     {
-        /*if($finfo = new \finfo(FILEINFO_MIME_TYPE)) {
+        /*if ($finfo = new \finfo(FILEINFO_MIME_TYPE)) {
             $type = $finfo->file($file['tmp_name']);
         }*/
 
