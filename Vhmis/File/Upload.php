@@ -5,7 +5,7 @@ namespace Vhmis\File;
 class Upload
 {
     /**
-     * Loại file (phần mở rộng và mine type) được chấp nhận
+     * Allowed file extensions
      *
      * @var array
      */
@@ -34,15 +34,15 @@ class Upload
     );
 
     /**
-     * Kích thước tối đa của file (byte)
-     * 0 tương ứng với không giới hạn
+     * Max size of file (in byte)
+     * 0 : No limit
      *
      * @var int
      */
     protected $maxSize = 0;
 
     /**
-     * Kết quả upload
+     * Upload result
      *
      * @var array
      */
@@ -54,9 +54,10 @@ class Upload
     }
 
     /**
-     * Thiết lập kích thước tối đa cho phép của file
+     * Set max size of file
      *
-     * @param  int                $byte
+     * @param int $byte
+     *
      * @return \Vhmis\File\Upload
      */
     public function setMaxSize($byte)
@@ -67,18 +68,10 @@ class Upload
     }
 
     /**
-     * Thiết lập các dạng file được phép upload
+     * Set allowed file extensions
      *
-     * Thiết lập chấp nhận tất cả các loại file
-     * array('*' => '*')
+     * @param array $types
      *
-     * Thiết lập chỉ kiểm tra phần mở rộng, bỏ qua mine type
-     * array('pdf' => '*', 'doc' => '*')
-     *
-     * Kiểm tra cả phần mở rộng và mine type
-     * array('pdf' => 'application/pdf application/x-download', 'doc' => 'application/msword')
-     *
-     * @param  array              $types
      * @return \Vhmis\File\Upload
      */
     public function setAllowTypes($types)
@@ -91,60 +84,44 @@ class Upload
     }
 
     /**
-     * Thực hiện việc upload
+     * Do upload
      *
-     * @var array $file Đối tượng file được up lên
-     * @var string $dir Thư mục up lên
-     * @var string $filename Tên file sau khi up, nếu để trống thì sẽ sử dụng tên mặc định của file được up
+     * @param array  $file     HTTP POST file
+     * @param string $dir      Directory
+     * @param string $filename Filename
+     *
+     * @return array
      */
     public function upload($file, $dir, $filename = '')
     {
-        // Reset lại thuộc tính chứa kết quả
         $this->result = array();
 
-        // Kiểm tra thư mục upload
-        if (!$this->checkDir($dir)) {
-            return $this->uploadError(12, 'Không thể upload vào thư mục ' . $dir);
-        }
-
-        // Không thể upload
-        if (!is_uploaded_file($file['tmp_name'])) {
-            $error = (!isset($file['error'])) ? 4 : $file['error'];
-
-            // To do : cần ghi cụ thể message lỗi dựa vào $error
-            return $this->uploadError($error, 'Không thể upload file');
+        // Check upload
+        if (!$this->checkUpload($dir, $file)) {
+            return $this->getCurrentUploadResult();
         }
 
         // Fileinfo
         list($filename, $filenameNotExt, $fileext, $clientFileext) = $this->getFileInfo($file['name'], $filename);
 
+        // Check file size
         $filesize = $file['size'];
-
-        // Kiểm tra kích thước file
         if ($this->maxSize != 0) {
             if ($filesize > $this->maxSize) {
                 return $this->uploadError(2, 'Kích thước file không được vượt quá ' . $this->maxSize);
             }
         }
 
-        // Kiểm tra xem đã tồn tại file tại thư mục upload chưa
+        // Exist filename in upload dir
         if (file_exists($dir . D_SPEC . $filename)) {
             $prefix = time() . '_' . rand();
             $filename = $prefix . '_' . $filename;
             $filenameNotExt = $prefix . '_' . $filenameNotExt;
         }
+        $fullpath = $dir . D_SPEC . $filename;
 
         // File type
         $filetype = $this->getFiletype($file);
-
-        // Set thông tin
-        $this->result['file_name'] = $filename;
-        $this->result['file_name_not_ext'] = $filenameNotExt;
-        $this->result['file_path'] = $dir;
-        $this->result['file_full_path'] = $dir . D_SPEC . $filename;
-        $this->result['file_ext'] = $fileext;
-        $this->result['file_type'] = $filetype;
-        $this->result['file_size'] = $filesize;
 
         // Kiểm tra ext của mine của file
         if (!$this->checkFiletype($clientFileext, $filetype)) {
@@ -152,18 +129,64 @@ class Upload
         }
 
         // Không upload được
-        if (!@move_uploaded_file($file['tmp_name'], $this->result['file_full_path'])) {
+        if (!@move_uploaded_file($file['tmp_name'], $fullpath)) {
             return $this->uploadError(20, 'Upload không thành công');
         }
 
         // Image file?
-        $this->result['file_image'] = $this->checkImageFile($filetype, $this->result['file_full_path']);
+        $this->result['file_image'] = $this->checkImageFile($filetype, $fullpath);
 
+        // Successful result
+        $this->result['file_name'] = $filename;
+        $this->result['file_name_not_ext'] = $filenameNotExt;
+        $this->result['file_path'] = $dir;
+        $this->result['file_full_path'] = $fullpath;
+        $this->result['file_ext'] = $fileext;
+        $this->result['file_type'] = $filetype;
+        $this->result['file_size'] = $filesize;
         $this->result['uploaded'] = true;
         $this->result['code'] = 0;
         $this->result['message'] = 'Upload thành công';
 
         return $this->result;
+    }
+
+    /**
+     * Get current upload result
+     *
+     * @return array
+     */
+    public function getCurrentUploadResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * Check upload
+     *
+     * @param string $dir
+     * @param array  $file HTTP POST file
+     *
+     * @return array
+     */
+    protected function checkUpload($dir, $file)
+    {
+        // Check dir
+        if (!$this->checkDir($dir)) {
+            $this->uploadError(12, 'Không thể upload vào thư mục ' . $dir);
+
+            return false;
+        }
+
+        // Check upload result
+        if (!is_uploaded_file($file['tmp_name'])) {
+            $error = (!isset($file['error'])) ? 4 : $file['error'];
+            $this->uploadError($error, 'Không thể upload file');
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -214,14 +237,14 @@ class Upload
     protected function checkImageFile($fileType, $filePath)
     {
         $type = array(
-                'image/gif',
-                'image/jpeg',
-                'image/png',
-                'image/jpg',
-                'image/jpe',
-                'image/pjpeg',
-                'img/x-png'
-            );
+            'image/gif',
+            'image/jpeg',
+            'image/png',
+            'image/jpg',
+            'image/jpe',
+            'image/pjpeg',
+            'img/x-png'
+        );
 
         if (in_array($fileType, $type)) {
             $size = getimagesize($filePath);
