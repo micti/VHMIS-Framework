@@ -29,8 +29,8 @@ class Upload
         'png'  => 'image/png image/x-png',
         'gif'  => 'image/gif',
         // Zip, rar
-        'zip' => 'application/x-zip application/zip application/x-zip-compressed',
-        'rar' => 'application/x-rar application/rar application/x-rar-compressed',
+        'zip'  => 'application/x-zip application/zip application/x-zip-compressed',
+        'rar'  => 'application/x-rar application/rar application/x-rar-compressed',
     );
 
     /**
@@ -273,16 +273,17 @@ class Upload
     }
 
     /**
-     * Kiểm tra filetype
+     * Check filetype
      *
-     * @var string $ext Phần mở rộng của file
-     * @var string $type Mine type của file (ex image/png ...)
-     * @return Filetype có hợp lệ hay không
+     * @param string $ext
+     * @param string $mine
+     *
+     * @return boolean
      */
-    protected function checkFiletype($ext, $type)
+    protected function checkFiletype($ext, $mine)
     {
         $ext = strtolower($ext);
-        $type = strtolower($type);
+        $mine = strtolower($mine);
 
         // Chấp nhận tất cả
         if (isset($this->allowTypes['*'])) {
@@ -300,7 +301,7 @@ class Upload
         }
 
         // Nếu không có mine
-        if (strpos($this->allowTypes[$ext], $type) === false) {
+        if (strpos($this->allowTypes[$ext], $mine) === false) {
             return false;
         }
 
@@ -308,32 +309,29 @@ class Upload
     }
 
     /**
-     * Lấy file type
+     * Get file type
      *
-     * @var array $file
+     * @param array $file HTTP POST file
+     *
      * @return string
      */
     protected function getFiletype($file)
     {
-        /*if ($finfo = new \finfo(FILEINFO_MIME_TYPE)) {
-            $type = $finfo->file($file['tmp_name']);
-        }*/
-
         return mime_content_type($file['tmp_name']);
 
-        return $file['type'];
+        //return $file['type'];
     }
 
     /**
-     * Xóa các ký tự không đẹp ở tên file
+     * Clean filename
      *
-     * @var string $filename Tên file
-     * @var bool $removesapce Có xóa khoảng trắng thành _ không
-     * @return string Tên file đã được xử lý
+     * @param string $filename
+     *
+     * @return string
      */
-    protected function cleanFilename($filename, $removespace = true)
+    protected function cleanFilename($filename)
     {
-        // Ký tự không nên có trong filename
+        // Bad characters
         $bad = array(
             "<!--",
             "-->",
@@ -362,17 +360,12 @@ class Upload
             "%3d"
         );
 
-        // Mã khoảng trắng
-        $space = array(
-            "%20"
-        );
+        // Spaces
+        $space = array("%20");
 
         $filename = str_replace($bad, '', $filename);
         $filename = str_replace($space, ' ', $filename);
-
-        if ($removespace) {
-            $filename = preg_replace('/\s+/u', '_', $filename);
-        }
+        $filename = preg_replace('/\s+/u', '_', $filename);
 
         return $filename;
     }
