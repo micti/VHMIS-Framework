@@ -318,8 +318,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->rule->setBaseDate('2014-05-28');
         $this->rule->setEndDate('2014-06-01');
         $this->rule->setFrequency(1);
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setRepeatWeekdays(array(1, 5));
         $this->assertEquals(false, $this->rule->isValid());
 
@@ -337,11 +335,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->rule->setBaseDate('2014-05-28');
         $this->rule->setEndDate('2016-06-01');
         $this->rule->setFrequency(1);
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setType('day');
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setRepeatedDays(array(1, 4));
         $this->assertEquals(false, $this->rule->isValid());
 
@@ -353,8 +347,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->rule->setBaseDate('2014-05-28');
         $this->rule->setEndDate('2016-06-01');
         $this->rule->setFrequency(1);
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setType('relative_day');
         $this->rule->setRepeatedDay(2);
         $this->rule->setRepeatedDayPosition(4);
@@ -393,8 +385,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->rule->setBaseDate('2014-05-28');
         $this->rule->setEndDate('2016-06-01');
         $this->rule->setFrequency(1);
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setRepeatedMonths(array(3, 4));
         $this->assertEquals(false, $this->rule->isValid());
 
@@ -407,8 +397,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->rule->setBaseDate('2014-05-28');
         $this->rule->setEndDate('2016-06-01');
         $this->rule->setFrequency(1);
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setRepeatedMonths(array(3, 4));
         $this->assertEquals(false, $this->rule->isValid());
 

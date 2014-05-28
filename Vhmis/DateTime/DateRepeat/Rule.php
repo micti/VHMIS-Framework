@@ -136,6 +136,9 @@ class Rule
         // auto
         $this->repeatedDay = $this->baseWeekday;
         $this->repeatedDayPosition = ceil($this->baseDay / 7);
+        $this->repeatedDays = array($this->baseDay);
+        $this->repeatedMonths = array($this->baseMonth);
+        $this->repeatedWeekdays = array($this->baseWeekday);
 
         return $this;
     }
@@ -349,10 +352,6 @@ class Rule
 
     protected function isValidRepeatByWeek()
     {
-        if ($this->repeatedWeekdays === null) {
-            return false;
-        }
-
         if (array_search($this->baseWeekday, $this->repeatedWeekdays) === false) {
             return false;
         }
@@ -363,11 +362,6 @@ class Rule
     protected function isValidRepeatByMonth()
     {
         if ($this->type === 'day') {
-
-            if ($this->repeatedDays === null) {
-                return false;
-            }
-
             if (array_search($this->baseDay, $this->repeatedDays) === false) {
                 return false;
             }
@@ -380,10 +374,6 @@ class Rule
 
     protected function isValidRepeatByYear()
     {
-        if ($this->repeatedMonths === null) {
-            return false;
-        }
-
         if (array_search($this->baseMonth, $this->repeatedMonths) === false) {
             return false;
         }
