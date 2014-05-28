@@ -356,14 +356,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $this->rule->isValid());
 
         $this->rule->setType('relative_day');
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setRepeatedDay(2);
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setRepeatedDay(3);
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setRepeatedDay(2);
         $this->rule->setRepeatedDayPosition(4);
         $this->assertEquals(false, $this->rule->isValid());
@@ -422,13 +414,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
 
         $this->rule->setRepeatedMonths(array(5));
         $this->rule->setType('relative_day');
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setRepeatedDay(2);
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setRepeatedDay(3);
-        $this->assertEquals(false, $this->rule->isValid());
 
         $this->rule->setRepeatedDay(2);
         $this->rule->setRepeatedDayPosition(4);

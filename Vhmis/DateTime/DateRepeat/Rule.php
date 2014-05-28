@@ -133,6 +133,10 @@ class Rule
         $this->baseDay = (int) $this->date->modify($date)->format('d');
         $this->baseMonth = (int) $this->date->modify($date)->format('m');
 
+        // auto
+        $this->repeatedDay = $this->baseWeekday;
+        $this->repeatedDayPosition = ceil($this->baseDay / 7);
+
         return $this;
     }
 
@@ -393,18 +397,11 @@ class Rule
 
     protected function isValidRelativeDay()
     {
-        if ($this->repeatedDay === null || $this->repeatedDayPosition === null) {
-            return false;
-        }
-
         $allDays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'day');
         $allPositions = array('first', 'second', 'third', 'fourth', 'last');
 
         $this->date->modify($this->baseDate)->modify(
-            $allPositions[$this->repeatedDayPosition] .
-            ' ' .
-            $allDays[$this->repeatedDay] .
-            ' of this month'
+            $allPositions[$this->repeatedDayPosition] . ' ' . $allDays[$this->repeatedDay] . ' of this month'
         );
 
         if ($this->baseDate !== $this->date->formatISO(0)) {
