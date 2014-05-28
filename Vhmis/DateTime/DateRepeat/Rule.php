@@ -21,11 +21,11 @@ class Rule
 
     /**
      * Times of repeat (including base date)
-     * Default is 2
+     * Default is 0 (no end)
      *
      * @var int
      */
-    protected $times = 2;
+    protected $times = 0;
 
     /**
      * Frequency of repeat
@@ -197,8 +197,8 @@ class Rule
     {
         $this->times = (int) $times;
 
-        if ($this->times < 2) {
-            throw new \InvalidArgumentException('Must be int and greater than 1');
+        if ($this->times < 0) {
+            throw new \InvalidArgumentException('Must be int and greater than -1');
         }
 
         return $this;
@@ -373,7 +373,7 @@ class Rule
         $this->baseDate = $this->endDate = null;
         $this->repeatedDay = $this->repeatedDayPosition = null;
         $this->by = 4;
-        $this->times = 2;
+        $this->times = 0;
         $this->freq = 1;
         $this->type = 'day';
         $this->repeatedMonths = $this->repeatedWeekdays = $this->repeatedDays = array();
@@ -503,9 +503,7 @@ class Rule
         $data = is_string($data) ? explode(',', $data) : $data;
 
         if (!is_array($data)) {
-            throw new \InvalidArgumentException(
-                'Only int array or int string spec by `,`. From ' . $min . ' - ' . $max
-            );
+            throw new \InvalidArgumentException('Only int array or string spec by `,`. From ' . $min . ' - ' . $max);
         }
 
         // Check
