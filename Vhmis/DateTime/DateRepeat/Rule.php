@@ -10,7 +10,6 @@ class Rule
      * Repeate by, 4-7 for day, week, month, year
      * Default is 4 (repeat by day)
      *
-     *
      * @var int
      */
     protected $by = 4;
@@ -80,11 +79,19 @@ class Rule
      */
     protected $date;
 
+    /**
+     * Contruct
+     */
     public function __construct()
     {
         $this->date = new DateTime;
     }
 
+    /**
+     * Set repeat by day
+     *
+     * @return \Vhmis\DateTime\DateRepeat\Rule
+     */
     public function setRepeatByDay()
     {
         $this->by = 4;
@@ -92,6 +99,11 @@ class Rule
         return $this;
     }
 
+    /**
+     * Set repeat by week
+     *
+     * @return \Vhmis\DateTime\DateRepeat\Rule
+     */
     public function setRepeatByWeek()
     {
         $this->by = 5;
@@ -99,6 +111,11 @@ class Rule
         return $this;
     }
 
+    /**
+     * Set repeat by month
+     *
+     * @return \Vhmis\DateTime\DateRepeat\Rule
+     */
     public function setRepeatByMonth()
     {
         $this->by = 6;
@@ -106,6 +123,11 @@ class Rule
         return $this;
     }
 
+    /**
+     * Set repeat by year
+     *
+     * @return \Vhmis\DateTime\DateRepeat\Rule
+     */
     public function setRepeatByYear()
     {
         $this->by = 7;
@@ -123,7 +145,7 @@ class Rule
      */
     public function setBaseDate($date)
     {
-        if ($this->validateISODate($date) === false) {
+        if ($this->checkISODate($date) === false) {
             throw new \InvalidArgumentException('Date is not valid');
         }
 
@@ -153,7 +175,7 @@ class Rule
      */
     public function setEndDate($date)
     {
-        if ($this->validateISODate($date) === false) {
+        if ($this->checkISODate($date) === false) {
             throw new \InvalidArgumentException('Date is not valid');
         }
 
@@ -221,7 +243,7 @@ class Rule
     }
 
     /**
-     * Set type of repeat
+     * Set type of date repeat
      *
      * - Repeat by day in month: 2nd, 3rd ....
      * - Repeat by relative day in month: first Monday, second Tuesday, last day ...
@@ -319,6 +341,11 @@ class Rule
         }
     }
 
+    /**
+     * Get value of rule
+     *
+     * @return array
+     */
     public function getInfo()
     {
         return array(
@@ -354,6 +381,11 @@ class Rule
         return $this;
     }
 
+    /**
+     * Check valid of repeat by week
+     *
+     * @return boolean
+     */
     protected function isValidRepeatByWeek()
     {
         if (array_search($this->baseWeekday, $this->repeatedWeekdays) === false) {
@@ -363,6 +395,11 @@ class Rule
         return true;
     }
 
+    /**
+     * Check valid of repeat by month
+     *
+     * @return boolean
+     */
     protected function isValidRepeatByMonth()
     {
         if ($this->type === 'day') {
@@ -376,6 +413,11 @@ class Rule
         return $this->isValidRelativeDay();
     }
 
+    /**
+     * Check valid of repeat by year
+     *
+     * @return boolean
+     */
     protected function isValidRepeatByYear()
     {
         if (array_search($this->baseMonth, $this->repeatedMonths) === false) {
@@ -389,6 +431,11 @@ class Rule
         return $this->isValidRelativeDay();
     }
 
+    /**
+     * Check relative day
+     *
+     * @return boolean
+     */
     protected function isValidRelativeDay()
     {
         $allDays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'day');
@@ -405,7 +452,14 @@ class Rule
         return true;
     }
 
-    protected function validateISODate($date)
+    /**
+     * Check ISO Date
+     *
+     * @param string $date
+     *
+     * @return boolean
+     */
+    protected function checkISODate($date)
     {
         $dtObj = DateTime::createFromFormat('Y-m-d', $date);
 
