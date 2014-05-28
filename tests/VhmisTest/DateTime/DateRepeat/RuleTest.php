@@ -34,9 +34,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'times'    => 2,
             'freq'     => 1,
             'type'     => 'day',
-            'days'     => null,
-            'weekdays' => null,
-            'months'   => null,
+            'days'     => array(),
+            'weekdays' => array(),
+            'months'   => array(),
             'day'      => null,
             'position' => null
         );
@@ -188,9 +188,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'times'    => 2,
             'freq'     => 1,
             'type'     => 'day',
-            'days'     => null,
-            'weekdays' => null,
-            'months'   => null,
+            'days'     => array(),
+            'weekdays' => array(),
+            'months'   => array(),
             'day'      => null,
             'position' => null
         );
@@ -204,9 +204,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'times'    => 2,
             'freq'     => 1,
             'type'     => 'day',
-            'days'     => null,
-            'weekdays' => null,
-            'months'   => null,
+            'days'     => array(),
+            'weekdays' => array(),
+            'months'   => array(),
             'day'      => null,
             'position' => null
         );
@@ -220,9 +220,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'times'    => 2,
             'freq'     => 1,
             'type'     => 'day',
-            'days'     => null,
-            'weekdays' => null,
-            'months'   => null,
+            'days'     => array(),
+            'weekdays' => array(),
+            'months'   => array(),
             'day'      => null,
             'position' => null
         );
@@ -236,9 +236,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'times'    => 2,
             'freq'     => 1,
             'type'     => 'day',
-            'days'     => null,
-            'weekdays' => null,
-            'months'   => null,
+            'days'     => array(),
+            'weekdays' => array(),
+            'months'   => array(),
             'day'      => null,
             'position' => null
         );

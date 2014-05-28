@@ -47,7 +47,7 @@ class Rule
      *
      * @var int[]
      */
-    protected $repeatedWeekdays;
+    protected $repeatedWeekdays = array();
 
     /**
      *
@@ -65,13 +65,13 @@ class Rule
      *
      * @var int[]
      */
-    protected $repeatedDays;
+    protected $repeatedDays = array();
 
     /**
      *
      * @var int[]
      */
-    protected $repeatedMonths;
+    protected $repeatedMonths = array();
 
     /**
      * DateTime helper object
@@ -336,16 +336,20 @@ class Rule
         );
     }
 
+    /**
+     * Reset rule
+     *
+     * @return \Vhmis\DateTime\DateRepeat\Rule
+     */
     public function reset()
     {
         $this->baseDate = $this->endDate = null;
-        $this->repeatedDay = $this->repeatedDayPosition = $this->repeatedDays = null;
-        $this->repeatedMonths = $this->repeatedWeekdays = null;
-
+        $this->repeatedDay = $this->repeatedDayPosition = null;
         $this->by = 4;
         $this->times = 2;
         $this->freq = 1;
         $this->type = 'day';
+        $this->repeatedMonths = $this->repeatedWeekdays = $this->repeatedDays = array();
 
         return $this;
     }
