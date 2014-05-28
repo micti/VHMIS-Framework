@@ -34,7 +34,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'baseWeekday' => null,
             'baseMonth'   => null,
             'end'         => null,
-            'times'       => 2,
+            'times'       => 0,
             'freq'        => 1,
             'type'        => 'day',
             'days'        => array(),
@@ -71,7 +71,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetRepeatTimesException()
     {
-        $this->rule->reset()->setRepeatTimes(1);
+        $this->rule->reset()->setRepeatTimes(-1);
     }
 
     /**
@@ -191,7 +191,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'baseWeekday' => null,
             'baseMonth'   => null,
             'end'         => null,
-            'times'       => 2,
+            'times'       => 0,
             'freq'        => 1,
             'type'        => 'day',
             'days'        => array(),
@@ -210,7 +210,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'baseWeekday' => null,
             'baseMonth'   => null,
             'end'         => null,
-            'times'       => 2,
+            'times'       => 0,
             'freq'        => 1,
             'type'        => 'day',
             'days'        => array(),
@@ -229,7 +229,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'baseWeekday' => null,
             'baseMonth'   => null,
             'end'         => null,
-            'times'       => 2,
+            'times'       => 0,
             'freq'        => 1,
             'type'        => 'day',
             'days'        => array(),
@@ -248,7 +248,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'baseWeekday' => null,
             'baseMonth'   => null,
             'end'         => null,
-            'times'       => 2,
+            'times'       => 0,
             'freq'        => 1,
             'type'        => 'day',
             'days'        => array(),
