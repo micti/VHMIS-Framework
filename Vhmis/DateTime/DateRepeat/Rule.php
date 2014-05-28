@@ -349,17 +349,20 @@ class Rule
     public function getInfo()
     {
         return array(
-            'by'       => $this->by,
-            'base'     => $this->baseDate,
-            'end'      => $this->endDate,
-            'times'    => $this->times,
-            'freq'     => $this->freq,
-            'type'     => $this->type,
-            'days'     => $this->repeatedDays,
-            'weekdays' => $this->repeatedWeekdays,
-            'months'   => $this->repeatedMonths,
-            'day'      => $this->repeatedDay,
-            'position' => $this->repeatedDayPosition
+            'by'          => $this->by,
+            'base'        => $this->baseDate,
+            'baseDay'     => $this->baseDay,
+            'baseWeekday' => $this->baseWeekday,
+            'baseMonth'   => $this->baseMonth,
+            'end'         => $this->endDate,
+            'times'       => $this->times,
+            'freq'        => $this->freq,
+            'type'        => $this->type,
+            'days'        => $this->repeatedDays,
+            'weekdays'    => $this->repeatedWeekdays,
+            'months'      => $this->repeatedMonths,
+            'day'         => $this->repeatedDay,
+            'position'    => $this->repeatedDayPosition
         );
     }
 
@@ -371,6 +374,7 @@ class Rule
     public function reset()
     {
         $this->baseDate = $this->endDate = null;
+        $this->baseDay = $this->baseMonth = $this->baseWeekday = null;
         $this->repeatedDay = $this->repeatedDayPosition = null;
         $this->by = 4;
         $this->times = 0;

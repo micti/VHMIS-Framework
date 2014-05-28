@@ -28,17 +28,20 @@ class RuleTest extends \PHPUnit_Framework_TestCase
     public function testReset()
     {
         $result = array(
-            'by'       => 4,
-            'base'     => null,
-            'end'      => null,
-            'times'    => 2,
-            'freq'     => 1,
-            'type'     => 'day',
-            'days'     => array(),
-            'weekdays' => array(),
-            'months'   => array(),
-            'day'      => null,
-            'position' => null
+            'by'          => 4,
+            'base'        => null,
+            'baseDay'     => null,
+            'baseWeekday' => null,
+            'baseMonth'   => null,
+            'end'         => null,
+            'times'       => 2,
+            'freq'        => 1,
+            'type'        => 'day',
+            'days'        => array(),
+            'weekdays'    => array(),
+            'months'      => array(),
+            'day'         => null,
+            'position'    => null
         );
 
         $this->assertEquals($result, $this->rule->reset()->getInfo());
@@ -182,65 +185,77 @@ class RuleTest extends \PHPUnit_Framework_TestCase
     public function testSetRepeatedBy()
     {
         $result = array(
-            'by'       => 4,
-            'base'     => null,
-            'end'      => null,
-            'times'    => 2,
-            'freq'     => 1,
-            'type'     => 'day',
-            'days'     => array(),
-            'weekdays' => array(),
-            'months'   => array(),
-            'day'      => null,
-            'position' => null
+            'by'          => 4,
+            'base'        => null,
+            'baseDay'     => null,
+            'baseWeekday' => null,
+            'baseMonth'   => null,
+            'end'         => null,
+            'times'       => 2,
+            'freq'        => 1,
+            'type'        => 'day',
+            'days'        => array(),
+            'weekdays'    => array(),
+            'months'      => array(),
+            'day'         => null,
+            'position'    => null
         );
         $this->rule->reset()->setRepeatByDay();
         $this->assertEquals($result, $this->rule->getInfo());
 
         $result = array(
-            'by'       => 5,
-            'base'     => null,
-            'end'      => null,
-            'times'    => 2,
-            'freq'     => 1,
-            'type'     => 'day',
-            'days'     => array(),
-            'weekdays' => array(),
-            'months'   => array(),
-            'day'      => null,
-            'position' => null
+            'by'          => 5,
+            'base'        => null,
+            'baseDay'     => null,
+            'baseWeekday' => null,
+            'baseMonth'   => null,
+            'end'         => null,
+            'times'       => 2,
+            'freq'        => 1,
+            'type'        => 'day',
+            'days'        => array(),
+            'weekdays'    => array(),
+            'months'      => array(),
+            'day'         => null,
+            'position'    => null
         );
         $this->rule->reset()->setRepeatByWeek();
         $this->assertEquals($result, $this->rule->getInfo());
 
         $result = array(
-            'by'       => 6,
-            'base'     => null,
-            'end'      => null,
-            'times'    => 2,
-            'freq'     => 1,
-            'type'     => 'day',
-            'days'     => array(),
-            'weekdays' => array(),
-            'months'   => array(),
-            'day'      => null,
-            'position' => null
+            'by'          => 6,
+            'base'        => null,
+            'baseDay'     => null,
+            'baseWeekday' => null,
+            'baseMonth'   => null,
+            'end'         => null,
+            'times'       => 2,
+            'freq'        => 1,
+            'type'        => 'day',
+            'days'        => array(),
+            'weekdays'    => array(),
+            'months'      => array(),
+            'day'         => null,
+            'position'    => null
         );
         $this->rule->reset()->setRepeatByMonth();
         $this->assertEquals($result, $this->rule->getInfo());
 
         $result = array(
-            'by'       => 7,
-            'base'     => null,
-            'end'      => null,
-            'times'    => 2,
-            'freq'     => 1,
-            'type'     => 'day',
-            'days'     => array(),
-            'weekdays' => array(),
-            'months'   => array(),
-            'day'      => null,
-            'position' => null
+            'by'          => 7,
+            'base'        => null,
+            'baseDay'     => null,
+            'baseWeekday' => null,
+            'baseMonth'   => null,
+            'end'         => null,
+            'times'       => 2,
+            'freq'        => 1,
+            'type'        => 'day',
+            'days'        => array(),
+            'weekdays'    => array(),
+            'months'      => array(),
+            'day'         => null,
+            'position'    => null
         );
         $this->rule->reset()->setRepeatByYear();
         $this->assertEquals($result, $this->rule->getInfo());
@@ -263,17 +278,20 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         );
 
         $result = array(
-            'by'       => 4,
-            'base'     => '2011-02-04',
-            'end'      => '2011-05-07',
-            'times'    => 7,
-            'freq'     => 2,
-            'type'     => 'day',
-            'days'     => array(4, 6, 8, 15),
-            'weekdays' => array(0, 3, 4, 5),
-            'months'   => array(2, 4, 11, 12),
-            'day'      => 7,
-            'position' => 4
+            'by'          => 4,
+            'base'        => '2011-02-04',
+            'baseDay'     => 4,
+            'baseWeekday' => 5,
+            'baseMonth'   => 2,
+            'end'         => '2011-05-07',
+            'times'       => 7,
+            'freq'        => 2,
+            'type'        => 'day',
+            'days'        => array(4, 6, 8, 15),
+            'weekdays'    => array(0, 3, 4, 5),
+            'months'      => array(2, 4, 11, 12),
+            'day'         => 7,
+            'position'    => 4
         );
 
         $this->rule->reset()->setRepeatByDay()->setBaseDate($value['base'])->setEndDate($value['end'])
