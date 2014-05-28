@@ -358,10 +358,6 @@ class Rule
 
     protected function isValidRepeatByMonth()
     {
-        if ($this->type === null) {
-            return false;
-        }
-
         if ($this->type === 'day') {
 
             if ($this->repeatedDays === null) {
@@ -385,10 +381,6 @@ class Rule
         }
 
         if (array_search($this->baseMonth, $this->repeatedMonths) === false) {
-            return false;
-        }
-
-        if ($this->type === null) {
             return false;
         }
 
