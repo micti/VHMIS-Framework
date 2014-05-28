@@ -28,12 +28,12 @@ class RuleTest extends \PHPUnit_Framework_TestCase
     public function testReset()
     {
         $result = array(
-            'by'       => null,
+            'by'       => 4,
             'base'     => null,
             'end'      => null,
-            'times'    => null,
-            'freq'     => null,
-            'type'     => null,
+            'times'    => 2,
+            'freq'     => 1,
+            'type'     => 'day',
             'days'     => null,
             'weekdays' => null,
             'months'   => null,
@@ -185,9 +185,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'by'       => 4,
             'base'     => null,
             'end'      => null,
-            'times'    => null,
-            'freq'     => null,
-            'type'     => null,
+            'times'    => 2,
+            'freq'     => 1,
+            'type'     => 'day',
             'days'     => null,
             'weekdays' => null,
             'months'   => null,
@@ -201,9 +201,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'by'       => 5,
             'base'     => null,
             'end'      => null,
-            'times'    => null,
-            'freq'     => null,
-            'type'     => null,
+            'times'    => 2,
+            'freq'     => 1,
+            'type'     => 'day',
             'days'     => null,
             'weekdays' => null,
             'months'   => null,
@@ -217,9 +217,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'by'       => 6,
             'base'     => null,
             'end'      => null,
-            'times'    => null,
-            'freq'     => null,
-            'type'     => null,
+            'times'    => 2,
+            'freq'     => 1,
+            'type'     => 'day',
             'days'     => null,
             'weekdays' => null,
             'months'   => null,
@@ -233,9 +233,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             'by'       => 7,
             'base'     => null,
             'end'      => null,
-            'times'    => null,
-            'freq'     => null,
-            'type'     => null,
+            'times'    => 2,
+            'freq'     => 1,
+            'type'     => 'day',
             'days'     => null,
             'weekdays' => null,
             'months'   => null,
@@ -291,25 +291,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $this->rule->isValid());
 
         $this->rule->setRepeatByDay();
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setBaseDate('2014-05-28');
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setEndDate('2014-05-30');
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->reset();
-
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setRepeatByDay();
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setBaseDate('2014-05-28');
-        $this->assertEquals(false, $this->rule->isValid());
-
-        $this->rule->setRepeatTimes(2);
         $this->assertEquals(false, $this->rule->isValid());
     }
 
@@ -425,10 +406,8 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->rule->setRepeatedMonths(array(3, 4));
         $this->assertEquals(false, $this->rule->isValid());
 
-        $this->rule->setRepeatedMonths(array(5));
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setType('day');
+        $this->rule->setRepeatedMonths(array(5));
         $this->assertEquals(true, $this->rule->isValid());
 
         $this->rule->reset();
@@ -442,8 +421,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $this->rule->isValid());
 
         $this->rule->setRepeatedMonths(array(5));
-        $this->assertEquals(false, $this->rule->isValid());
-
         $this->rule->setType('relative_day');
         $this->assertEquals(false, $this->rule->isValid());
 

@@ -6,19 +6,71 @@ use Vhmis\DateTime\DateTime;
 
 class Rule
 {
-    protected $by;
+    /**
+     * Repeate by, 4-7 for day, week, month, year
+     * Default is 4 (repeat by day)
+     *
+     *
+     * @var int
+     */
+    protected $by = 4;
     protected $baseDate;
     protected $baseDay;
     protected $baseWeekday;
     protected $baseMonth;
     protected $endDate;
-    protected $times;
-    protected $freq;
-    protected $type;
+
+    /**
+     * Times of repeat (including base date)
+     * Default is 2
+     *
+     * @var int
+     */
+    protected $times = 2;
+
+    /**
+     * Frequency of repeat
+     * Default is 1
+     *
+     * @var int
+     */
+    protected $freq = 1;
+
+    /**
+     * Type of repeated date in month
+     *
+     * @var string
+     */
+    protected $type = 'day';
+
+    /**
+     *
+     * @var int[]
+     */
     protected $repeatedWeekdays;
+
+    /**
+     *
+     * @var int
+     */
     protected $repeatedDay;
+
+    /**
+     *
+     * @var int
+     */
     protected $repeatedDayPosition;
+
+    /**
+     *
+     * @var int[]
+     */
     protected $repeatedDays;
+
+    /**
+     *
+     * @var int[]
+     */
     protected $repeatedMonths;
 
     /**
@@ -244,7 +296,7 @@ class Rule
      */
     public function isValid()
     {
-        if ($this->checkCommon() === false) {
+        if ($this->baseDate === null) {
             return false;
         }
 
@@ -279,32 +331,16 @@ class Rule
 
     public function reset()
     {
-        $this->baseDate = $this->endDate = $this->freq = $this->by = null;
+        $this->baseDate = $this->endDate = null;
         $this->repeatedDay = $this->repeatedDayPosition = $this->repeatedDays = null;
-        $this->repeatedMonths = $this->times = $this->type = $this->repeatedWeekdays = null;
+        $this->repeatedMonths = $this->repeatedWeekdays = null;
+
+        $this->by = 4;
+        $this->times = 2;
+        $this->freq = 1;
+        $this->type = 'day';
 
         return $this;
-    }
-
-    protected function checkCommon()
-    {
-        if ($this->by === null) {
-            return false;
-        }
-
-        if ($this->baseDate === null) {
-            return false;
-        }
-
-        if ($this->endDate === null && $this->times === null) {
-            return false;
-        }
-
-        if ($this->freq === null) {
-            return false;
-        }
-
-        return true;
     }
 
     protected function isValidRepeatByWeek()
@@ -369,24 +405,8 @@ class Rule
             return false;
         }
 
-        $allDays = array(
-            'sunday',
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday',
-            'sunday',
-            'day'
-        );
-        $allPositions = array(
-            'first',
-            'second',
-            'third',
-            'fourth',
-            'last'
-        );
+        $allDays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'day');
+        $allPositions = array('first', 'second', 'third', 'fourth', 'last');
 
         $this->date->modify($this->baseDate)->modify(
             $allPositions[$this->repeatedDayPosition] .
@@ -453,12 +473,7 @@ class Rule
 
         // Check
         foreach ($data as &$number) {
-            $number = (int) $number;
-            if ($number < $min || $number > $max) {
-                throw new \InvalidArgumentException(
-                    'Only int array or int string spec by `,`. From ' . $min . ' - ' . $max
-                );
-            }
+            $number = $this->fixInt($number, $min, $max);
         }
 
         $data = array_unique($data);
