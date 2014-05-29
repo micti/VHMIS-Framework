@@ -297,7 +297,7 @@ class Rule
      */
     public function setRepeatedDays($days)
     {
-        $this->repeatedDays = $this->fixIntArray($days, 0, 31);
+        $this->repeatedDays = $this->fixIntArray($days, 1, 31);
 
         return $this;
     }

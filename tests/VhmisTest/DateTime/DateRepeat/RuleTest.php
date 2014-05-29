@@ -152,7 +152,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetRepeatedDaysException()
     {
-        $this->rule->reset()->setRepeatedDays(array(-1));
+        $this->rule->reset()->setRepeatedDays(array(0));
     }
 
     /**
