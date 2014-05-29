@@ -94,6 +94,10 @@ class WeekTest extends \PHPUnit_Framework_TestCase
 
     public function testRepeatedDates()
     {
+        $this->repeatRule->reset();
+        $this->weekRepeat->setRule($this->repeatRule);
+        $this->assertEquals(array(), $this->weekRepeat->repeatedDates('2013-01-01', '2013-02-01'));
+        
         $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-03')->setEndDate('2014-05-11')
             ->setFrequency(1)->setRepeatWeekdays('1, 2, 6, 0');
         $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);

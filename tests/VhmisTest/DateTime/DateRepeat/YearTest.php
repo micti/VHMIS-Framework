@@ -90,6 +90,10 @@ class YearTest extends \PHPUnit_Framework_TestCase
 
     public function testRepeatedDates()
     {
+        $this->repeatRule->reset();
+        $this->yearRepeat->setRule($this->repeatRule);
+        $this->assertEquals(array(), $this->yearRepeat->repeatedDates('2013-01-01', '2013-02-01'));
+        
         $this->repeatRule->reset()->setRepeatByYear()->setBaseDate('2014-05-12')
             ->setType('day')->setRepeatedMonths(array(1, 5, 12))
             ->setRepeatTimes(6)->setFrequency(1);

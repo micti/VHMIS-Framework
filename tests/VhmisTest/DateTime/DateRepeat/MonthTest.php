@@ -89,6 +89,10 @@ class MonthTest extends \PHPUnit_Framework_TestCase
 
     public function testRepeatedDates()
     {
+        $this->repeatRule->reset();
+        $this->monthRepeat->setRule($this->repeatRule);
+        $this->assertEquals(array(), $this->monthRepeat->repeatedDates('2013-01-01', '2013-02-01'));
+        
         $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-12')
             ->setType('day')->setRepeatedDays(array(12, 17, 20))
             ->setRepeatTimes(6)->setFrequency(1);
@@ -172,5 +176,10 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             '2014-05-24'
         );
         $this->assertEquals($result, $this->monthRepeat->repeatedDates('2014-05-24', '2014-05-24'));
+
+        $result = array(
+            '2014-07-26'
+        );
+        $this->assertEquals($result, $this->monthRepeat->repeatedDates('2014-06-23', '2014-07-28'));
     }
 }
