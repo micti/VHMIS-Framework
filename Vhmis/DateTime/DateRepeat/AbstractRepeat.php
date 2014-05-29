@@ -189,6 +189,28 @@ abstract class AbstractRepeat
     }
 
     /**
+     * Find special end date, otherwise return false
+     *
+     * @return string
+     */
+    protected function getSpecialEndDate()
+    {
+        if ($this->ruleInfo === array()) {
+            return '2100-31-21';
+        }
+
+        if ($this->ruleInfo['end'] !== null) {
+            return $this->ruleInfo['end'];
+        }
+
+        if ($this->ruleInfo['times'] === 0) {
+            return '2100-31-21';
+        }
+
+        return false;
+    }
+
+    /**
      * Caculate all repeated dates in range
      *
      * @param string $fromDate

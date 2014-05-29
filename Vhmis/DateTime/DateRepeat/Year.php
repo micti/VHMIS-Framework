@@ -108,16 +108,9 @@ class Year extends AbstractRepeat
      */
     public function endDate()
     {
-        if ($this->ruleInfo === array()) {
-            return '2100-31-21';
-        }
-
-        if ($this->ruleInfo['end'] !== null) {
-            return $this->ruleInfo['end'];
-        }
-
-        if ($this->ruleInfo['times'] === 0) {
-            return '2100-31-21';
+        $specialEndDate = $this->getSpecialEndDate();
+        if ($specialEndDate !== false) {
+            return $specialEndDate;
         }
 
         $date = new DateTime;
