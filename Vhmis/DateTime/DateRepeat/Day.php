@@ -29,14 +29,14 @@ class Day extends AbstractRepeat
      */
     public function repeatedDates($fromDate, $toDate)
     {
-        $repeatedDate = array();
+        $repeatedDates = array();
 
         if ($this->ruleInfo === array()) {
-            return $repeatedDate;
+            return $repeatedDates;
         }
 
         if ($this->checkRange($fromDate, $toDate) === false) {
-            return $repeatedDate;
+            return $repeatedDates;
         }
 
         $run = clone $this->begin;
@@ -46,11 +46,11 @@ class Day extends AbstractRepeat
         }
 
         while ($run <= $this->to) {
-            $repeatedDate[] = $run->formatISO(0);
+            $repeatedDates[] = $run->formatISO(0);
             $run->addDay($this->ruleInfo['freq']);
         }
 
-        return $repeatedDate;
+        return $repeatedDates;
     }
 
     /**

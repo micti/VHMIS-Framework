@@ -58,14 +58,14 @@ class Year extends AbstractRepeat
      */
     public function repeatedDates($fromDate, $toDate)
     {
-        $repeatedDate = array();
+        $repeatedDates = array();
 
         if ($this->ruleInfo === array()) {
-            return $repeatedDate;
+            return $repeatedDates;
         }
 
         if ($this->checkRange($fromDate, $toDate) === false) {
-            return $repeatedDate;
+            return $repeatedDates;
         }
 
         $run = clone $this->begin;

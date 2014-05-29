@@ -47,14 +47,14 @@ class Week extends AbstractRepeat
      */
     public function repeatedDates($fromDate, $toDate)
     {
-        $repeatedDate = array();
+        $repeatedDates = array();
 
         if ($this->ruleInfo === array()) {
-            return $repeatedDate;
+            return $repeatedDates;
         }
 
         if ($this->checkRange($fromDate, $toDate) === false) {
-            return $repeatedDate;
+            return $repeatedDates;
         }
 
         $run = clone $this->begin;
@@ -69,7 +69,7 @@ class Week extends AbstractRepeat
         $total = count($this->ruleInfo['weekdays']);
         while ($run <= $this->to) {
             if ($run >= $this->begin && $run >= $this->from) {
-                $repeatedDate[] = $run->formatISO(0);
+                $repeatedDates[] = $run->formatISO(0);
             }
 
             $day = array_search($run->format('w'), $this->ruleInfo['weekdays']);
@@ -82,7 +82,7 @@ class Week extends AbstractRepeat
             }
         }
 
-        return $repeatedDate;
+        return $repeatedDates;
     }
 
     /**
