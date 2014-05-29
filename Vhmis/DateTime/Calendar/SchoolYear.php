@@ -63,7 +63,7 @@ class SchoolYear extends CalendarAbstract
     /**
      * Lấy tiết học ứng với thời gian
      *
-     * @param  string $time
+     * @param  string $time hh:mm
      * @return int
      */
     public function getPeriod($time)
@@ -71,11 +71,11 @@ class SchoolYear extends CalendarAbstract
         $current = 1;
 
         foreach ($this->timetable as $times) {
-            if (Helper::compareTime($times[0], $time) === 1) {
+            if ($times[0] > $time) {
                 return $current;
             }
 
-            if (Helper::compareTime($times[1], $time) === -1) {
+            if ($times[1] < $time) {
                 $current++;
                 continue;
             }
