@@ -11,6 +11,7 @@
 namespace VhmisTest\DateTime\DateRepeat;
 
 use Vhmis\DateTime\DateRepeat\Day;
+use Vhmis\DateTime\DateRepeat\Rule;
 
 class DayTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,31 +22,59 @@ class DayTest extends \PHPUnit_Framework_TestCase
      */
     protected $dayRepeat;
 
+    /**
+     * Rule object
+     *
+     * @var Vhmis\DateTime\DateRepeat\Rule
+     */
+    protected $repeatRule;
+
     public function setUp()
     {
         $this->dayRepeat = new Day('2011-01-01', null, 0, 1);
+        $this->repeatRule = new Rule();
     }
 
     public function testEndDate()
     {
-        $this->dayRepeat->setStartDate('2013-01-01');
-
-        $this->dayRepeat->setEndDate(null)->setRepeatTimes(0);
+        $this->repeatRule->reset();
+        $this->dayRepeat->setRule($this->repeatRule);
         $this->assertEquals('2100-31-21', $this->dayRepeat->endDate());
 
-        $this->dayRepeat->setEndDate('2013-02-02')->setRepeatTimes(0);
+        $this->repeatRule->reset()->setBaseDate('2013-01-01')->setRepeatByMonth();
+        $this->dayRepeat->setRule($this->repeatRule);
+        $this->assertEquals('2100-31-21', $this->dayRepeat->endDate());
+
+        $this->repeatRule->reset()->setBaseDate('2013-01-01');
+        $this->dayRepeat->setRule($this->repeatRule);
+        $this->assertEquals('2100-31-21', $this->dayRepeat->endDate());
+
+        $this->repeatRule->setEndDate('2013-02-02');
+        $this->dayRepeat->setRule($this->repeatRule);
         $this->assertEquals('2013-02-02', $this->dayRepeat->endDate());
 
-        $this->dayRepeat->setEndDate(null)->setRepeatTimes(2)->setFreq(1);
+        $this->repeatRule->reset();
+        $this->repeatRule->setBaseDate('2013-01-01')->setRepeatTimes(2)->setFrequency(1);
+        $this->dayRepeat->setRule($this->repeatRule);
         $this->assertEquals('2013-01-02', $this->dayRepeat->endDate());
 
-        $this->dayRepeat->setEndDate(null)->setRepeatTimes(7)->setFreq(2);
+        $this->repeatRule->setRepeatTimes(7)->setFrequency(2);
+        $this->dayRepeat->setRule($this->repeatRule);
         $this->assertEquals('2013-01-13', $this->dayRepeat->endDate());
     }
 
     public function testRepeatedDates()
     {
-        $this->dayRepeat->setStartDate('2013-01-01')->setEndDate('2013-02-01')->setFreq(2);
+        $this->repeatRule->reset();
+        $this->dayRepeat->setRule($this->repeatRule);
+        $this->assertEquals(array(), $this->dayRepeat->repeatedDates('2013-01-01', '2013-02-01'));
+
+        $this->repeatRule->reset()->setBaseDate('2013-01-01')->setRepeatByYear();
+        $this->dayRepeat->setRule($this->repeatRule);
+        $this->assertEquals(array(), $this->dayRepeat->repeatedDates('2013-01-01', '2013-02-01'));
+
+        $this->repeatRule->reset()->setBaseDate('2013-01-01')->setEndDate('2013-02-01')->setFrequency(2);
+        $this->dayRepeat->setRule($this->repeatRule);
         $repeatedDates = $this->dayRepeat->repeatedDates('2013-01-01', '2013-02-01');
         $result = array(
             '2013-01-01',

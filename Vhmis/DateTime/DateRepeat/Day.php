@@ -17,6 +17,8 @@ use \Vhmis\DateTime\DateTime;
  */
 class Day extends AbstractRepeat
 {
+    protected $repeatBy = 4;
+
     /**
      * Caculate all repeated dates in range
      *
@@ -29,6 +31,10 @@ class Day extends AbstractRepeat
     {
         $repeatedDate = array();
 
+        if ($this->ruleInfo === array()) {
+            return $repeatedDate;
+        }
+
         if ($this->checkRange($fromDate, $toDate) === false) {
             return $repeatedDate;
         }
@@ -36,12 +42,12 @@ class Day extends AbstractRepeat
         $run = clone $this->begin;
 
         if ($this->begin < $this->from) {
-            $run->addDay(ceil($run->diffDay($this->from) / $this->freq) * $this->freq);
+            $run->addDay(ceil($run->diffDay($this->from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
         }
 
         while ($run <= $this->to) {
             $repeatedDate[] = $run->formatISO(0);
-            $run->addDay($this->freq);
+            $run->addDay($this->ruleInfo['freq']);
         }
 
         return $repeatedDate;
@@ -54,19 +60,23 @@ class Day extends AbstractRepeat
      */
     public function endDate()
     {
-        if ($this->endDate !== null) {
-            return $this->endDate;
+        if ($this->ruleInfo === array()) {
+            return '2100-31-21';
         }
 
-        if ($this->repeatedTimes === 0) {
+        if ($this->ruleInfo['end'] !== null) {
+            return $this->ruleInfo['end'];
+        }
+
+        if ($this->ruleInfo['times'] === 0) {
             return '2100-31-21';
         }
 
         $date = new DateTime;
-        $date->modify($this->startDate)->addDay(($this->repeatedTimes - 1) * $this->freq);
+        $date->modify($this->ruleInfo['base'])->addDay(($this->ruleInfo['times'] - 1) * $this->ruleInfo['freq']);
 
-        $this->endDate = $date->formatISO(0);
+        $this->ruleInfo['end'] = $date->formatISO(0);
 
-        return $this->endDate;
+        return $this->ruleInfo['end'];
     }
 }

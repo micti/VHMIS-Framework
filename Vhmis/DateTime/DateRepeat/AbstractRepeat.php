@@ -17,10 +17,14 @@ use Vhmis\DateTime\DateTime;
  */
 abstract class AbstractRepeat
 {
-    protected $startDate;
-    protected $repeatedTimes;
-    protected $freq;
-    protected $endDate;
+    protected $repeatBy;
+
+    /**
+     * Rule info
+     *
+     * @var array
+     */
+    protected $ruleInfo = array();
 
     /**
      * Datetime object helpers
@@ -49,27 +53,6 @@ abstract class AbstractRepeat
      * @var DateTime
      */
     protected $end;
-
-    /**
-     * Weekday of start date (0 - 6)
-     *
-     * @var int
-     */
-    protected $startWeekday;
-
-    /**
-     * Day of start day (1 - 31)
-     *
-     * @var int
-     */
-    protected $startDay;
-
-    /**
-     * Month of start day (1 - 31)
-     *
-     * @var int
-     */
-    protected $startMonth;
 
     /**
      * Start day of week
@@ -101,7 +84,7 @@ abstract class AbstractRepeat
      * @param int         $times
      * @param int         $freq
      */
-    public function __construct($startDate, $endDate, $times, $freq)
+    public function __construct()
     {
         $this->to = new DateTime;
         $this->from = new DateTime;
@@ -112,69 +95,32 @@ abstract class AbstractRepeat
         $this->from->setTime(0, 0, 0);
         $this->begin->setTime(0, 0, 0);
         $this->end->setTime(0, 0, 0);
-
-        $this->setStartDate($startDate)
-            ->setEndDate($endDate)
-            ->setFreq($freq)
-            ->setRepeatTimes($times);
     }
 
     /**
+     * Set rule of repeat
      *
-     * @param string $startDate
-     *
-     * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
-     */
-    public function setStartDate($startDate)
-    {
-        $this->startDate = $startDate;
-        $this->begin->modify($startDate);
-        $this->startWeekday = (int) $this->begin->format('w');
-        $this->startDay = (int) $this->begin->format('j');
-        $this->startMonth = (int) $this->begin->format('m');
-
-        return $this;
-    }
-
-    /**
-     *
-     * @param string|null $endDate
+     * @param \Vhmis\DateTime\DateRepeat\Rule $rule
      *
      * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
      */
-    public function setEndDate($endDate)
+    public function setRule(Rule $rule)
     {
-        $this->endDate = $endDate;
+        if (!$rule->isValid()) {
+            $this->ruleInfo = array();
 
-        if ($this->endDate !== null) {
-            $this->end->modify($endDate);
+            return $this;
         }
 
-        return $this;
-    }
+        $info = $rule->getInfo();
+        if ($info['by'] !== $this->repeatBy) {
+            $this->ruleInfo = array();
 
-    /**
-     *
-     * @param int $times
-     *
-     * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
-     */
-    public function setRepeatTimes($times)
-    {
-        $this->repeatedTimes = (int) $times;
+            return $this;
+        }
 
-        return $this;
-    }
-
-    /**
-     *
-     * @param int $freq
-     *
-     * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
-     */
-    public function setFreq($freq)
-    {
-        $this->freq = (int) $freq;
+        $this->ruleInfo = $info;
+        $this->begin->modify($this->ruleInfo['base']);
 
         return $this;
     }
@@ -223,7 +169,6 @@ abstract class AbstractRepeat
      */
     protected function checkRange($fromDate, $toDate)
     {
-        $this->begin->modify($this->startDate);
         $this->from->modify($fromDate);
         $this->end->modify($this->endDate());
         $this->to->modify($toDate);

@@ -17,12 +17,7 @@ use \Vhmis\DateTime\DateTime;
  */
 class Month extends AbstractRepeat
 {
-    /**
-     * Repeat type
-     *
-     * @var string
-     */
-    protected $type = 'day';
+    protected $repeatBy = 6;
 
     /**
      * Position of day in month
@@ -54,121 +49,6 @@ class Month extends AbstractRepeat
     );
 
     /**
-     * Position of day of repeated date
-     *
-     * @var int
-     */
-    protected $repeatedDayPosition;
-
-    /**
-     * Days in month for repeat
-     *
-     * @var int[]
-     */
-    protected $repeatedDays;
-
-    /**
-     * Day of repeated day
-     *
-     * @var int
-     */
-    protected $repeatedDay;
-
-    /**
-     * Set type of repeat
-     *
-     * - Repeat by day in month: 2nd, 3rd ....
-     * - Repeat by relative day in month: first Monday, second Tuesday, last day ...
-     */
-    public function setType($type)
-    {
-        $this->type = 'day';
-
-        if ($type === 'relative_day') {
-            $this->type = 'relative_day';
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set day of repeated day in month
-     * 0 - 6 for sunday to saturday, 7 for a common day in month
-     *
-     * @param int position
-     */
-    public function setRepeatedDay($day)
-    {
-        if (is_numeric($day) && $day <= 7 && $day >= 0) {
-            $this->repeatedDay = $day;
-
-            return $this;
-        }
-
-        $day = array_search($day, $this->days);
-        if ($day !== false) {
-            $this->repeatedDay = $day;
-
-            return $this;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set position of day of repeated day in month
-     * (for type = relative_day)
-     *
-     * @param string|int position
-     */
-    public function setRepeatedDayPosition($position)
-    {
-        if (is_numeric($position) && $position <= 4 && $position >= 0) {
-            $this->repeatedDayPosition = $position;
-
-            return $this;
-        }
-
-        $position = array_search($position, $this->dayPositions);
-        if ($position !== false) {
-            $this->repeatedDayPosition = $position;
-
-            return $this;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set repeated days, use 1-31, accept int array or int string spec by ','
-     * (for type = month)
-     *
-     * @param int[]|string $days
-     *
-     * @return \Vhmis\DateTime\DateRepeat\Week
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function setRepeatedDays($days)
-    {
-        $days = is_string($days) ? explode(',', $days) : $days;
-
-        // Check
-        foreach ($days as &$day) {
-            $day = (int) $day;
-            if ($day < 0 || $day > 31) {
-                throw new \InvalidArgumentException('Only int array or int string spec by `,`. From 1 - 31');
-            }
-        }
-
-        $days = array_unique($days);
-        sort($days);
-        $this->repeatedDays = $days;
-
-        return $this;
-    }
-
-    /**
      * Caculate all repeated dates in range
      *
      * @param string $fromDate
@@ -180,11 +60,15 @@ class Month extends AbstractRepeat
     {
         $repeatedDate = array();
 
+        if ($this->ruleInfo === array()) {
+            return $repeatedDate;
+        }
+
         if ($this->checkRange($fromDate, $toDate) === false) {
             return $repeatedDate;
         }
 
-        if ($this->type === 'day') {
+        if ($this->ruleInfo['type'] === 'day') {
             return $this->repeatedDatesByDayType();
         }
 
@@ -198,15 +82,19 @@ class Month extends AbstractRepeat
      */
     public function endDate()
     {
-        if ($this->endDate !== null) {
-            return $this->endDate;
-        }
-
-        if ($this->repeatedTimes === 0) {
+        if ($this->ruleInfo === array()) {
             return '2100-31-21';
         }
 
-        if ($this->type === 'day') {
+        if ($this->ruleInfo['end'] !== null) {
+            return $this->ruleInfo['end'];
+        }
+
+        if ($this->ruleInfo['times'] === 0) {
+            return '2100-31-21';
+        }
+
+        if ($this->ruleInfo['type'] === 'day') {
             return $this->endDateByDayType();
         }
 
@@ -227,28 +115,28 @@ class Month extends AbstractRepeat
 
         // Skip some months
         if ($this->begin < $this->from) {
-            $run->addMonth(ceil($run->diffMonth($this->from) / $this->freq) * $this->freq);
+            $run->addMonth(ceil($run->diffMonth($this->from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
         }
 
         $month = (int) $run->getMonth();
-        $day = $this->repeatedDays[0];
+        $day = $this->ruleInfo['days'][0];
         $run->setDay($day);
-        $total = count($this->repeatedDays);
+        $total = count($this->ruleInfo['days']);
         while ($run <= $this->to) {
             if ($run >= $this->begin && $run >= $this->from) {
                 $repeatedDates[] = $run->formatISO(0);
             }
 
             // Prevent run date goes to next month
-            $dayPosition = array_search($day, $this->repeatedDays);
+            $dayPosition = array_search($day, $this->ruleInfo['days']);
             $run->setMonth($month)->setDay(1);
 
             if ($dayPosition === $total - 1) {
-                $run->addMonth($this->freq);
+                $run->addMonth($this->ruleInfo['freq']);
                 $month = (int) $run->getMonth();
-                $day = $this->repeatedDays[0];
+                $day = $this->ruleInfo['days'][0];
             } else {
-                $day = $this->repeatedDays[($dayPosition + 1)];
+                $day = $this->ruleInfo['days'][($dayPosition + 1)];
             }
             $run->setDay($day);
         }
@@ -270,11 +158,11 @@ class Month extends AbstractRepeat
         // Skip some months
         if ($this->begin < $this->from) {
             $run->setDay(1);
-            $run->addMonth(ceil($run->diffMonth($this->from) / $this->freq) * $this->freq);
+            $run->addMonth(ceil($run->diffMonth($this->from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
             $run->modify(
-                $this->dayPositions[$this->repeatedDayPosition]
+                $this->dayPositions[$this->ruleInfo['position']]
                 . ' '
-                . $this->days[$this->repeatedDay]
+                . $this->days[$this->ruleInfo['day']]
                 . ' of this month'
             );
         }
@@ -285,11 +173,11 @@ class Month extends AbstractRepeat
             }
 
             // Prevent run date goes to next month
-            $run->setDay(1)->addMonth($this->freq);
+            $run->setDay(1)->addMonth($this->ruleInfo['freq']);
             $run->modify(
-                $this->dayPositions[$this->repeatedDayPosition]
+                $this->dayPositions[$this->ruleInfo['position']]
                 . ' '
-                . $this->days[$this->repeatedDay]
+                . $this->days[$this->ruleInfo['day']]
                 . ' of this month'
             );
         }
@@ -305,29 +193,28 @@ class Month extends AbstractRepeat
     protected function endDateByDayType()
     {
         $date = new DateTime;
-        $date->modify($this->startDate);
+        $date->modify($this->ruleInfo['base']);
 
-        $position = array_search($this->startDay, $this->repeatedDays);
-
+        $position = array_search($this->ruleInfo['baseDay'], $this->ruleInfo['days']);
         if ($position !== 0) {
-            $date->setDay($this->repeatedDays[0]);
+            $date->setDay($this->ruleInfo['days'][0]);
         }
 
-        $repeatedMonth = ceil(($this->repeatedTimes + $position) / count($this->repeatedDays)) - 1;
-        $mod = ($this->repeatedTimes + $position) % count($this->repeatedDays);
-        $endDayPosition = $mod === 0 ? count($this->repeatedDays) - 1 : $mod - 1;
-        $date->addMonth($repeatedMonth * $this->freq);
+        $repeatedMonth = ceil(($this->ruleInfo['times'] + $position) / count($this->ruleInfo['days'])) - 1;
+        $mod = ($this->ruleInfo['times'] + $position) % count($this->ruleInfo['days']);
+        $endDayPosition = $mod === 0 ? count($this->ruleInfo['days']) - 1 : $mod - 1;
+        $date->addMonth($repeatedMonth * $this->ruleInfo['freq']);
 
         if ($endDayPosition === 0) {
-            $this->endDate = $date->formatISO(0);
+            $this->ruleInfo['end'] = $date->formatISO(0);
 
-            return $this->endDate;
+            return $this->ruleInfo['end'];
         }
 
-        $date->setDay($this->repeatedDays[$endDayPosition]);
-        $this->endDate = $date->formatISO(0);
+        $date->setDay($this->ruleInfo['days'][$endDayPosition]);
+        $this->ruleInfo['end'] = $date->formatISO(0);
 
-        return $this->endDate;
+        return $this->ruleInfo['end'];
     }
 
     /**
@@ -338,13 +225,13 @@ class Month extends AbstractRepeat
     protected function endDateByRelativeDayType()
     {
         $date = new DateTime;
-        $date->modify($this->startDate)->setDay(1);
+        $date->modify($this->ruleInfo['base'])->setDay(1);
 
-        $date->addMonth(($this->repeatedTimes - 1) * $this->freq);
+        $date->addMonth(($this->ruleInfo['times'] - 1) * $this->ruleInfo['freq']);
         $date->modify(
-            $this->dayPositions[$this->repeatedDayPosition]
+            $this->dayPositions[$this->ruleInfo['position']]
             . ' '
-            . $this->days[$this->repeatedDay]
+            . $this->days[$this->ruleInfo['day']]
             . ' of this month'
         );
 

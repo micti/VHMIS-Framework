@@ -11,6 +11,7 @@
 namespace VhmisTest\DateTime\DateRepeat;
 
 use Vhmis\DateTime\DateRepeat\Month;
+use Vhmis\DateTime\DateRepeat\Rule;
 
 class MonthTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,66 +23,76 @@ class MonthTest extends \PHPUnit_Framework_TestCase
     protected $monthRepeat;
 
     /**
+     * Rule object
+     *
+     * @var Vhmis\DateTime\DateRepeat\Rule
+     */
+    protected $repeatRule;
+
+    /**
      * Setup
      */
     public function setUp()
     {
         $this->monthRepeat = new Month('2014-05-12', null, 0, 1);
+        $this->repeatRule = new Rule();
     }
 
     public function testEndDate()
     {
-        $this->monthRepeat->setStartDate('2014-05-17')->setEndDate(null)->setRepeatTimes(0);
+        $this->repeatRule->reset();
+        $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2100-31-21', $this->monthRepeat->endDate());
 
-        $this->monthRepeat->setStartDate('2014-05-17')->setEndDate('2014-07-09');
+        $this->repeatRule->reset()->setBaseDate('2013-01-01');
+        $this->monthRepeat->setRule($this->repeatRule);
+        $this->assertEquals('2100-31-21', $this->monthRepeat->endDate());
+
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2013-01-01');
+        $this->monthRepeat->setRule($this->repeatRule);
+        $this->assertEquals('2100-31-21', $this->monthRepeat->endDate());
+
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-17')->setEndDate('2014-07-09');
+        $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2014-07-09', $this->monthRepeat->endDate());
 
-        $this->monthRepeat->setStartDate('2014-05-17')->setEndDate(null)
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-17')
             ->setType('day')->setRepeatedDays(array(12, 17, 20))
-            ->setRepeatTimes(6)->setFreq(2);
+            ->setRepeatTimes(6)->setFrequency(2);
+        $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2014-09-12', $this->monthRepeat->endDate());
 
-        $this->monthRepeat->setStartDate('2014-05-12')->setEndDate(null)
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-12')
             ->setType('day')->setRepeatedDays(array(12, 17, 20))
-            ->setRepeatTimes(6)->setFreq(2);
+            ->setRepeatTimes(6)->setFrequency(2);
+        $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2014-07-20', $this->monthRepeat->endDate());
 
-        $this->monthRepeat->setStartDate('2014-01-29')->setEndDate(null)
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-01-29')
             ->setType('day')->setRepeatedDays(array(29, 30, 31))
-            ->setRepeatTimes(6)->setFreq(1);
+            ->setRepeatTimes(6)->setFrequency(1);
+        $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2014-03-03', $this->monthRepeat->endDate());
 
-        $this->monthRepeat
-            ->setStartDate('2014-01-31') // last day of month
-            ->setEndDate(null)
-            ->setType('relative_day')
-            ->setRepeatedDayPosition(4)
-            ->setRepeatedDay(7)
-            ->setRepeatTimes(7)
-            ->setFreq(1);
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-01-31')
+            ->setType('relative_day')->setRepeatedDay(7)->setRepeatedDayPosition(4)
+            ->setRepeatTimes(7)->setFrequency(1);
+        $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2014-07-31', $this->monthRepeat->endDate());
 
-        $this->monthRepeat
-            ->setStartDate('2014-05-24') // fourth saturday of month
-            ->setEndDate(null)
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-24')
             ->setType('relative_day')
-            ->setRepeatedDayPosition('fourth')
-            ->setRepeatedDay('saturday')
-            ->setRepeatTimes(2)
-            ->setFreq(2);
+            ->setRepeatTimes(2)->setFrequency(2);
+        $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2014-07-26', $this->monthRepeat->endDate());
     }
 
     public function testRepeatedDates()
     {
-        $this->monthRepeat
-            ->setStartDate('2014-05-12')
-            ->setEndDate(null)
-            ->setType('day')
-            ->setRepeatedDays(array(12, 17, 20))
-            ->setRepeatTimes(6)
-            ->setFreq(1);
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-12')
+            ->setType('day')->setRepeatedDays(array(12, 17, 20))
+            ->setRepeatTimes(6)->setFrequency(1);
+        $this->monthRepeat->setRule($this->repeatRule);
 
         $result = array(
             '2014-05-12',
@@ -106,13 +117,10 @@ class MonthTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $this->monthRepeat->repeatedDates('2014-05-18', '2014-06-16'));
 
-        $this->monthRepeat
-            ->setStartDate('2014-05-31')
-            ->setEndDate(null)
-            ->setType('day')
-            ->setRepeatedDays(array(29, 30, 31))
-            ->setRepeatTimes(7)
-            ->setFreq(1);
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-31')
+            ->setType('day')->setRepeatedDays(array(29, 30, 31))
+            ->setRepeatTimes(7)->setFrequency(1);
+        $this->monthRepeat->setRule($this->repeatRule);
         $result = array(
             '2014-05-31',
             '2014-06-29',
@@ -124,13 +132,10 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $this->monthRepeat->repeatedDates('2014-04-20', '2014-09-12'));
 
-        $this->monthRepeat
-            ->setStartDate('2014-02-28')
-            ->setEndDate(null)
-            ->setType('day')
-            ->setRepeatedDays(array(1, 28, 29))
-            ->setRepeatTimes(9)
-            ->setFreq(1);
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-02-28')
+            ->setType('day')->setRepeatedDays(array(1, 28, 29))
+            ->setRepeatTimes(9)->setFrequency(1);
+        $this->monthRepeat->setRule($this->repeatRule);
         $result = array(
             '2014-02-28',
             '2014-03-01',
@@ -144,14 +149,10 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $this->monthRepeat->repeatedDates('2014-02-20', '2014-09-12'));
 
-        $this->monthRepeat
-            ->setStartDate('2014-01-31') // last day of month
-            ->setEndDate(null)
-            ->setType('relative_day')
-            ->setRepeatedDayPosition(4)
-            ->setRepeatedDay(7)
-            ->setRepeatTimes(7)
-            ->setFreq(1);
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-01-31')
+            ->setType('relative_day')->setRepeatedDayPosition(4)->setRepeatedDay(7)
+            ->setRepeatTimes(7)->setFrequency(1);
+        $this->monthRepeat->setRule($this->repeatRule);
         $result = array(
             '2014-01-31',
             '2014-02-28',
@@ -163,16 +164,12 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $this->monthRepeat->repeatedDates('2014-01-31', '2014-07-31'));
 
-        $this->monthRepeat
-            ->setStartDate('2014-05-24') // fourth saturday of month
-            ->setEndDate(null)
-            ->setType('relative_day')
-            ->setRepeatedDayPosition('fourth')
-            ->setRepeatedDay('saturday')
-            ->setRepeatTimes(2)
-            ->setFreq(2);
+        $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-24')
+            ->setType('relative_day')->setRepeatedDayPosition(3)->setRepeatedDay(6)
+            ->setRepeatTimes(2)->setFrequency(2);
+        $this->monthRepeat->setRule($this->repeatRule);
         $result = array(
-            '2014-05-24',
+            '2014-05-24'
         );
         $this->assertEquals($result, $this->monthRepeat->repeatedDates('2014-05-24', '2014-05-24'));
     }

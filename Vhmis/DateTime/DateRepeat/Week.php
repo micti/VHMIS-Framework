@@ -17,37 +17,22 @@ use \Vhmis\DateTime\DateTime;
  */
 class Week extends AbstractRepeat
 {
-    /**
-     * Days in week for repeat
-     *
-     * @var int[]
-     */
-    protected $repeatedWeekdays;
+    protected $repeatBy = 5;
 
     /**
-     * Set repeated weekdays
-     * Use 0-6 for sunday to staturday
-     * Accept int array or int string spec by ','
+     * Set rule
      *
-     * @param int[]|string $weekdays
+     * @param \Vhmis\DateTime\DateRepeat\Rule $rule
      *
      * @return \Vhmis\DateTime\DateRepeat\Week
-     *
-     * @throws \InvalidArgumentException
      */
-    public function setRepeatWeekdays($weekdays)
+    public function setRule(Rule $rule)
     {
-        $weekdays = is_string($weekdays) ? explode(',', $weekdays) : $weekdays;
+        parent::setRule($rule);
 
-        // Check
-        foreach ($weekdays as &$weekday) {
-            $weekday = (int) $weekday;
-            if ($weekday < 0 || $weekday > 6) {
-                throw new \InvalidArgumentException('Only int array or int string spec by `,`. From 0 - 6');
-            }
+        if ($this->ruleInfo !== array()) {
+            $this->ruleInfo['weekdays'] = $this->sortRepeatedWeekday($this->ruleInfo['weekdays']);
         }
-
-        $this->sortRepeatedWeekday($weekdays);
 
         return $this;
     }
@@ -64,6 +49,10 @@ class Week extends AbstractRepeat
     {
         $repeatedDate = array();
 
+        if ($this->ruleInfo === array()) {
+            return $repeatedDate;
+        }
+
         if ($this->checkRange($fromDate, $toDate) === false) {
             return $repeatedDate;
         }
@@ -72,24 +61,24 @@ class Week extends AbstractRepeat
 
         // Skip some weeks
         if ($this->begin < $this->from) {
-            $run->addWeek(ceil($run->diffWeek($this->from) / $this->freq) * $this->freq);
+            $run->addWeek(ceil($run->diffWeek($this->from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
         }
 
-        $run->modifyThisWeek($this->weekday[$this->repeatedWeekdays[0]]);
+        $run->modifyThisWeek($this->weekday[$this->ruleInfo['weekdays'][0]]);
 
-        $total = count($this->repeatedWeekdays);
+        $total = count($this->ruleInfo['weekdays']);
         while ($run <= $this->to) {
             if ($run >= $this->begin && $run >= $this->from) {
                 $repeatedDate[] = $run->formatISO(0);
             }
 
-            $day = array_search($run->format('w'), $this->repeatedWeekdays);
+            $day = array_search($run->format('w'), $this->ruleInfo['weekdays']);
 
             if ($day === $total - 1) {
-                $run->addWeek($this->freq);
-                $run->modifyThisWeek($this->weekday[$this->repeatedWeekdays[0]]);
+                $run->addWeek($this->ruleInfo['freq']);
+                $run->modifyThisWeek($this->weekday[$this->ruleInfo['weekdays'][0]]);
             } else {
-                $run->modifyThisWeek($this->weekday[$this->repeatedWeekdays[($day + 1)]]);
+                $run->modifyThisWeek($this->weekday[$this->ruleInfo['weekdays'][($day + 1)]]);
             }
         }
 
@@ -103,38 +92,42 @@ class Week extends AbstractRepeat
      */
     public function endDate()
     {
-        if ($this->endDate !== null) {
-            return $this->endDate;
+        if ($this->ruleInfo === array()) {
+            return '2100-31-21';
         }
 
-        if ($this->repeatedTimes === 0) {
+        if ($this->ruleInfo['end'] !== null) {
+            return $this->ruleInfo['end'];
+        }
+
+        if ($this->ruleInfo['times'] === 0) {
             return '2100-31-21';
         }
 
         $date = new DateTime;
-        $date->modify($this->startDate);
+        $date->modify($this->ruleInfo['base']);
 
-        $position = array_search($this->startWeekday, $this->repeatedWeekdays);
+        $position = array_search($this->ruleInfo['baseWeekday'], $this->ruleInfo['weekdays']);
 
         if ($position !== 0) {
-            $date->modify('previous ' . $this->weekday[$this->repeatedWeekdays[0]]);
+            $date->modify('previous ' . $this->weekday[$this->ruleInfo['weekdays'][0]]);
         }
 
-        $repeatedWeek = ceil(($this->repeatedTimes + $position) / count($this->repeatedWeekdays)) - 1;
-        $mod = ($this->repeatedTimes + $position) % count($this->repeatedWeekdays);
-        $endDayPosition = $mod === 0 ? count($this->repeatedWeekdays) - 1 : $mod - 1;
-        $date->addWeek($repeatedWeek * $this->freq);
+        $repeatedWeek = ceil(($this->ruleInfo['times'] + $position) / count($this->ruleInfo['weekdays'])) - 1;
+        $mod = ($this->ruleInfo['times'] + $position) % count($this->ruleInfo['weekdays']);
+        $endDayPosition = $mod === 0 ? count($this->ruleInfo['weekdays']) - 1 : $mod - 1;
+        $date->addWeek($repeatedWeek * $this->ruleInfo['freq']);
 
         if ($endDayPosition === 0) {
-            $this->endDate = $date->formatISO(0);
+            $this->ruleInfo['end'] = $date->formatISO(0);
 
-            return $this->endDate;
+            return $this->ruleInfo['end'];
         }
 
-        $date->modify('next ' . $this->weekday[$this->repeatedWeekdays[$endDayPosition]]);
-        $this->endDate = $date->formatISO(0);
+        $date->modify('next ' . $this->weekday[$this->ruleInfo['weekdays'][$endDayPosition]]);
+        $this->ruleInfo['end'] = $date->formatISO(0);
 
-        return $this->endDate;
+        return $this->ruleInfo['end'];
     }
 
     /**
@@ -142,13 +135,10 @@ class Week extends AbstractRepeat
      *
      * @param array $weekdays
      *
-     * @return \Vhmis\DateTime\DateRepeat\Week
+     * @return array
      */
     protected function sortRepeatedWeekday($weekdays)
     {
-        $weekdays = array_unique($weekdays);
-        sort($weekdays);
-
         $position = array_search($this->startDayOfWeek, $this->weekday);
 
         $before = array();
@@ -162,8 +152,6 @@ class Week extends AbstractRepeat
             }
         }
 
-        $this->repeatedWeekdays = array_unique(array_merge($before, $after));
-
-        return $this;
+        return array_unique(array_merge($before, $after));
     }
 }

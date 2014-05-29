@@ -11,6 +11,7 @@
 namespace VhmisTest\DateTime\DateRepeat;
 
 use Vhmis\DateTime\DateRepeat\Week;
+use Vhmis\DateTime\DateRepeat\Rule;
 
 class WeekTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,67 +23,80 @@ class WeekTest extends \PHPUnit_Framework_TestCase
     protected $weekRepeat;
 
     /**
+     * Rule object
+     *
+     * @var Vhmis\DateTime\DateRepeat\Rule
+     */
+    protected $repeatRule;
+
+    /**
      * Setup
      */
     public function setUp()
     {
         $this->weekRepeat = new Week('2011-01-01', null, 0, 1);
+        $this->repeatRule = new Rule();
     }
 
     public function testEndDate()
     {
-        // 2013-01-01 is tuesday / 2
-        $this->weekRepeat->setStartDate('2013-01-01');
-
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(0);
+        $this->repeatRule->reset();
+        $this->weekRepeat->setRule($this->repeatRule);
         $this->assertEquals('2100-31-21', $this->weekRepeat->endDate());
 
-        $this->weekRepeat->setEndDate('2013-02-02')->setRepeatTimes(0);
+        $this->repeatRule->reset()->setBaseDate('2013-01-01');
+        $this->weekRepeat->setRule($this->repeatRule);
+        $this->assertEquals('2100-31-21', $this->weekRepeat->endDate());
+
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2013-01-01');
+        $this->weekRepeat->setRule($this->repeatRule);
+        $this->assertEquals('2100-31-21', $this->weekRepeat->endDate());
+
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2013-01-01')->setEndDate('2013-02-02');
+        $this->weekRepeat->setRule($this->repeatRule);
         $this->assertEquals('2013-02-02', $this->weekRepeat->endDate());
 
-        // 2014-05-03 is saturday / 6
-        $this->weekRepeat->setStartDate('2014-05-03');
-        $this->weekRepeat->setStartDayOfWeek('friday');
-
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(6)->setFreq(1);
-        $this->weekRepeat->setRepeatWeekdays(array(1, 2, 6, 0));
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-03')->setRepeatTimes(6)->setFrequency(1)
+            ->setRepeatWeekdays('1, 2, 6, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $this->assertEquals('2014-05-11', $this->weekRepeat->endDate());
 
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(6)->setFreq(3);
-        $this->weekRepeat->setRepeatWeekdays(array(1, 2, 6, 0));
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-03')->setRepeatTimes(6)->setFrequency(3)
+            ->setRepeatWeekdays('1, 2, 6, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $this->assertEquals('2014-05-25', $this->weekRepeat->endDate());
 
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(4)->setFreq(1);
-        $this->weekRepeat->setRepeatWeekdays(array(1, 2, 6, 0));
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-03')->setRepeatTimes(4)->setFrequency(1)
+            ->setRepeatWeekdays('1, 2, 6, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $this->assertEquals('2014-05-06', $this->weekRepeat->endDate());
 
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(8)->setFreq(2);
-        $this->weekRepeat->setRepeatWeekdays(array(1, 2, 6, 0));
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-03')->setRepeatTimes(8)->setFrequency(2)
+            ->setRepeatWeekdays('1, 2, 6, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $this->assertEquals('2014-05-20', $this->weekRepeat->endDate());
 
-        // 2014-05-05 is monday / 1
-        $this->weekRepeat->setStartDate('2014-05-05');
-        $this->weekRepeat->setStartDayOfWeek('friday');
-
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(7)->setFreq(1);
-        $this->weekRepeat->setRepeatWeekdays(array(1, 2, 6, 0));
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-05')->setRepeatTimes(7)->setFrequency(1)
+            ->setRepeatWeekdays('1, 2, 6, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $this->assertEquals('2014-05-17', $this->weekRepeat->endDate());
 
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(2)->setFreq(2);
-        $this->weekRepeat->setRepeatWeekdays(array(1));
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-05')->setRepeatTimes(2)->setFrequency(2)
+            ->setRepeatWeekdays('1');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $this->assertEquals('2014-05-19', $this->weekRepeat->endDate());
 
-        $this->weekRepeat->setEndDate(null)->setRepeatTimes(2)->setFreq(1);
-        $this->weekRepeat->setRepeatWeekdays(array(0, 1));
-        $this->assertEquals('2014-05-11', $this->weekRepeat->endDate());
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-05')->setRepeatTimes(2)->setFrequency(2)
+            ->setRepeatWeekdays('1, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
+        $this->assertEquals('2014-05-18', $this->weekRepeat->endDate());
     }
 
     public function testRepeatedDates()
     {
-        $this->weekRepeat->setStartDate('2014-05-03');
-        $this->weekRepeat->setStartDayOfWeek('friday');
-        $this->weekRepeat->setEndDate('2014-05-11')->setFreq(1)->setRepeatWeekdays(array(1, 2, 6, 0));
-
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-03')->setEndDate('2014-05-11')
+            ->setFrequency(1)->setRepeatWeekdays('1, 2, 6, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $result = array(
             '2014-05-03',
             '2014-05-04',
@@ -111,7 +125,9 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $this->weekRepeat->repeatedDates('2014-05-04', '2014-05-05'));
 
-        $this->weekRepeat->setStartDate('2014-05-04');
+        $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-04')->setEndDate('2014-05-11')
+            ->setFrequency(1)->setRepeatWeekdays('1, 2, 6, 0');
+        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
         $result = array(
             '2014-05-10',
             '2014-05-11'
