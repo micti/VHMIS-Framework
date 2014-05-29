@@ -696,44 +696,6 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Viết lại phương thức modify
-     *
-     * Mặc định PHP thiết lập ngày chủ nhật là ngày đầu tuần do đó một số chuỗi để hiệu chỉnh thời gian liên quan đến
-     * tuần có thể trả về ngày không chính xác nếu ta xem ngày thứ hai là ngày đầu tuần.
-     *
-     * Phương thức này được viết lại để xét các trường hợp này, còn lại sử dụng mặc định
-     *
-     * @param mixed $modify
-     *
-     * @return \Vhmis\DateTime\DateTime
-     */
-    public function modify($modify)
-    {
-        if ($modify instanceof \MongoDate) {
-            $this->setTimestamp($modify->sec);
-
-            return $this;
-        }
-
-        if ($modify instanceof \MongoId) {
-            $this->setTimestamp($modify->getTimestamp());
-
-            return $this;
-        }
-
-        // Sunday, php default start day of week is sunday and if your calendar start day of week is monday
-        if ($this->format('N') == 7 && $this->startOfWeek === 'monday') {
-            $matches = array();
-            $pattern = '/this week|next week|previous week|last week/i';
-            if (preg_match($pattern, $modify, $matches)) {
-                $modify = str_replace($matches[0], '-7 days ' . $matches[0], $modify);
-            }
-        }
-
-        return parent::modify($modify);
-    }
-
-    /**
      * So sánh 2 thời gian dạng hh:mm
      *
      * @param type $time1
