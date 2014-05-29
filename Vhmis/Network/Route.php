@@ -1,109 +1,96 @@
 <?php
 
 /**
- * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ * Vhmis Framework
  *
- * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package Vhmis_Network
- * @since Vhmis v2.0
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
  */
+
 namespace Vhmis\Network;
 
 /**
- * Lớp định nghĩa 1 route (định tuyến)
- *
- * @category Vhmis
- * @package Vhmis_Network
- * @subpackage Router
+ * Route definition
  */
 class Route implements RouteInterface
 {
 
     /**
-     * Các thành phần hay gặp trong 1 uri
+     * Regex of some common parts in URI
      */
     const YEAR = '[12][0-9]{3}';
-
     const MONTH = '0[1-9]|1[012]';
-
     const DAY = '0[1-9]|[12][0-9]|3[01]';
-
     const ID = '[0-9]+';
-
     const MONGOID = '[0-9a-f]{24}';
-
     const SLUG = '[a-z0-9-]+';
-
     const YEARMONTH = '[12][0-9]{3}-(0[1-9]|1[012])';
-
     const YEARWEEK = '[12][0-9]{3}-w(0[1-9]|[1-4][0-9]|5[0-2])';
-
     const DATE = '[12][0-9]{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])';
 
     /**
-     * Link pattern
+     * URI pattern
      *
      * @var string
      */
-    protected $_pattern = '';
+    protected $pattern = '';
 
     /**
-     * Link regex
+     * URI regex
      *
      * @var string
      */
-    protected $_regex = '';
+    protected $regex = '';
 
     /**
      * Controller
      *
      * @var string
      */
-    protected $_controller = '';
+    protected $controller = '';
 
     /**
      * Action
      *
      * @var string
      */
-    protected $_action = '';
+    protected $action = '';
 
     /**
-     * Thông số
+     * Params
      *
      * @var array
      */
-    protected $_params = array();
+    protected $params = array();
 
     /**
-     * Thông số đi kèm trong pattern
+     * Params in pattern
      *
      * @var array
      */
-    protected $_paramsInPattern = array();
+    protected $paramsInPattern = array();
 
     /**
-     * Thông số
+     * Redirect
      *
      * @var string
      */
-    protected $_redirect = '';
+    protected $redirect = '';
 
     /**
-     * Dạng trả về
+     * Output
      *
      * @var string
      */
-    protected $_output = 'html';
+    protected $output = 'auto';
 
     /**
-     * Mảng khai báo các kiểu dữ liệu hay dùng trong uri
+     * Data types
      *
      * @var array
      */
-    protected $_dataTypes = array(
+    protected $dataTypes = array(
         'year' => self::YEAR,
         'month' => self::MONTH,
         'day' => self::DAY,
@@ -116,106 +103,87 @@ class Route implements RouteInterface
     );
 
     /**
-     * Khởi tạo một đối tượng mới
+     * Construct
      *
-     * @param array $params Thông số khởi tạo
-     *
+     * @param array $options
      */
-    public function __construct($params = null)
+    public function __construct($options = null)
     {
-        if (!is_array($params)) {
+        if (!is_array($options)) {
             return;
         }
 
-        if (isset($params['pattern'])) {
-            $this->setPattern($params['pattern']);
-        }
+        $properties = array('pattern', 'controller', 'action', 'params', 'redirect', 'output');
 
-        if (isset($params['controller'])) {
-            $this->setController($params['controller']);
-        }
-
-        if (isset($params['action'])) {
-            $this->setAction($params['action']);
-        }
-
-        if (isset($params['params'])) {
-            $this->setParams($params['params']);
-        }
-
-        if (isset($params['redirect'])) {
-            $this->setRedirect($params['redirect']);
-        }
-
-        if (isset($params['output'])) {
-            $this->setOutput($params['output']);
+        foreach ($properties as $property) {
+            if (isset($options[$property])) {
+                $method = 'set' . ucfirst($property);
+                $this->$method($options[$property]);
+            }
         }
     }
 
     /**
-     * Thiết lập uri pattern
+     * Set URI pattern
      *
      * @param string $pattern
+     *
      * @return \Vhmis\Network\Route
      */
     public function setPattern($pattern)
     {
-        $this->_pattern = $pattern;
+        $this->pattern = $pattern;
 
         // Escape các ký tự đặt biệt
-        $special = array(
-            '.'
-        );
+        $special = array('.');
+        $escape = array('\\.');
+        $this->pattern = str_replace($special, $escape, $this->pattern);
 
-        $escape = array(
-            '\\.'
-        );
-
-        $this->_pattern = str_replace($special, $escape, $this->_pattern);
-
-        // Tạo link regex khi có pattern
         $this->patternToRegex();
 
         return $this;
     }
 
     /**
-     * Thiết lập controller
+     * Set controller
      *
      * @param string $controller
+     *
      * @return \Vhmis\Network\Route
      */
     public function setController($controller)
     {
-        $this->_controller = $controller;
+        $this->controller = $controller;
 
         return $this;
     }
 
     /**
-     * Thiết lập action
+     * Set action
      *
      * @param string $action
+     *
      * @return \Vhmis\Network\Route
      */
     public function setAction($action)
     {
-        $this->_action = $action;
+        $this->action = $action;
 
         return $this;
     }
 
     /**
-     * Thiết lập thông số
+     * Set params
      *
      * @param array $params
+     *
      * @return \Vhmis\Network\Route
      */
     public function setParams($params)
     {
         if (is_array($params)) {
             foreach ($params as $key => $value) {
-                $this->_params[$key] = $value;
+                $this->params[$key] = $value;
             }
         }
 
@@ -223,109 +191,91 @@ class Route implements RouteInterface
     }
 
     /**
-     * Thiết lập chuyển hướng
+     * Set redirect
      *
      * @param string $redirect
+     *
      * @return \Vhmis\Network\Route
      */
     public function setRedirect($redirect)
     {
-        $this->_redirect = $redirect;
+        $this->redirect = $redirect;
 
         return $this;
     }
 
     /**
-     * Thiết lập dạng trả về
+     * Set output
      *
      * @param string $output
+     *
      * @return \Vhmis\Network\Route
      */
     public function setOutput($output)
     {
-        $this->_output = $output;
+        $this->output = $output;
 
         return $this;
     }
 
     /**
-     * Xóa hết các thuộc tính của 1 route
+     * Clear route properties
      *
      * @return \Vhmis\Network\Route
      */
     public function clear()
     {
-        $this->_pattern = '';
-        $this->_regex = '';
-        $this->_controller = '';
-        $this->_action = '';
-        $this->_output = 'html';
-        $this->_redirect = '';
-        $this->_params = array();
-        $this->_paramsInPattern = array();
+        $this->pattern = '';
+        $this->regex = '';
+        $this->controller = '';
+        $this->action = '';
+        $this->output = 'html';
+        $this->redirect = '';
+        $this->params = array();
+        $this->paramsInPattern = array();
 
         return $this;
     }
 
     /**
-     * Chuyển link pattern sang dạng link regex để kiểm tra tính hợp lệ
+     * Convert pattern to regex format
      */
     public function patternToRegex()
     {
-        // Lấy thông tin các tham số trong pattern
-        // Tham số trong link pattern có dạng [kieuthamso:tenthamso]
-        // Nếu kieuthamso để trống [:tenthamso] thì được xem là kiểu slug
-        // Nếu kieuthamso không chưa được định nghĩa thì được xem là kiểu slug
-        $match = preg_match_all('/\[(.*?)\]/', $this->_pattern, $params);
+        // Find all params in patterns
+        // Param [paramType:paramName]
+        $match = preg_match_all('/\[(.*?)\]/', $this->pattern, $params);
 
-        $regex = array(); // Mảng chứa regex của tham số
-        $param = array(); // Mảng chứa tên của tham số
+        // Regex and name of params
+        $regexParams = array();
+        $nameParams = array();
 
-        if ($match >= 1) { // Có tham số
+        if ($match >= 1) {
             foreach ($params[1] as $value) {
                 $value = explode(':', $value, 2);
                 if (count($value) == 2) {
-                    if ($value[0] === '') {
-                        $regex[] = '(?<' . $value[1] . '>' . $this->_dataTypes['slug'] . ')';
-                    } elseif (isset($this->_dataTypes[$value[0]])) {
-                        $regex[] = '(?<' . $value[1] . '>' . $this->_dataTypes[$value[0]] . ')';
+                    if (isset($this->dataTypes[$value[0]])) {
+                        $regexParams[] = '(?<' . $value[1] . '>' . $this->dataTypes[$value[0]] . ')';
                     } else {
-                        $regex[] = '(?<' . $value[1] . '>' . $this->_dataTypes['slug'] . ')';
+                        $regexParams[] = '(?<' . $value[1] . '>' . $this->dataTypes['slug'] . ')';
                     }
 
-                    $param[] = $value[1];
+                    $nameParams[] = $value[1];
                 }
             }
         }
 
         // Chuyển link pattern sang link regex
-        $this->_regex = str_replace('/', '\\/', $this->_pattern);
-        $this->_regex = '/' . 'somethingispecial' . str_replace($params[0], $regex, $this->_regex) . 'somethingispecial' . '/';
-        $this->_paramsInPattern = $param;
+        $this->regex = str_replace('/', '\\/', $this->pattern);
+        $this->regex = '/' . 'so324pecial' . str_replace($params[0], $regexParams, $this->regex) . 'so324pecial' . '/';
+        $this->paramsInPattern = $nameParams;
     }
 
     /**
-     * Chuyển link redirect sang dạng chính thức
-     * Sau khi thay thế giá trị param vào nếu có
-     *
-     * @param array $params Thông số
-     * @return string
-     */
-    public function makeRedirect($params)
-    {
-        $redirect = '';
-
-        foreach ($params as $name => $value) {
-            $redirect = str_replace('[' . $name . ']', $value, $this->_redirect);
-        }
-
-        return $redirect;
-    }
-
-    /**
-     * Kiểm tra 1 link có hợp lệ với route không
+     * Check valid of URI
      *
      * @param string $value
+     *
      * @return array
      */
     public function check($value)
@@ -334,31 +284,50 @@ class Route implements RouteInterface
             'match' => false
         );
 
-        if (!is_string($value))
-            return $result;
-
-        $match = preg_match_all($this->_regex, 'somethingispecial' . $value . 'somethingispecial', $params, PREG_SET_ORDER);
-
-        // Không hợp lệ
-        if ($match !== 1) { // Chỉ match 1 và chỉ duy nhất 1 lần
+        if (!is_string($value)) {
             return $result;
         }
 
-        // Hợp lệ
-        $result['match'] = true;
-        $result['controller'] = $this->_controller;
-        $result['output'] = $this->_output;
-        $result['action'] = $this->_action;
-        $result['params'] = $this->_params;
+        $match = preg_match_all($this->regex, 'so324pecial' . $value . 'so324pecial', $params, PREG_SET_ORDER);
 
-        // Thiết lập giá trị cho params
-        foreach ($this->_paramsInPattern as $key => $name) {
+        // Only match one
+        if ($match !== 1) {
+            return $result;
+        }
+
+        // Matched
+        $result['match'] = true;
+        $result['controller'] = $this->controller;
+        $result['output'] = $this->output;
+        $result['action'] = $this->action;
+        $result['params'] = $this->params;
+
+        // Add value of paramsInPattern to params
+        foreach ($this->paramsInPattern as $name) {
             $result['params'][$name] = $params[0][$name];
         }
 
-        // Lấy chính xác link redirect
-        $result['redirect'] = $this->_redirect === '' ? '' : $this->makeRedirect($result['params']);
+        // Redirect
+        $result['redirect'] = $this->redirect === '' ? '' : $this->makeRedirect($result['params']);
 
         return $result;
+    }
+
+    /**
+     * Get full redirect
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public function makeRedirect($params)
+    {
+        $redirect = '';
+
+        foreach ($params as $name => $value) {
+            $redirect = str_replace('[' . $name . ']', $value, $this->redirect);
+        }
+
+        return $redirect;
     }
 }
