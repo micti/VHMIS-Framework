@@ -78,11 +78,6 @@ abstract class AbstractRepeat
 
     /**
      * Construct
-     *
-     * @param string      $startDate
-     * @param string|null $endDate
-     * @param int         $times
-     * @param int         $freq
      */
     public function __construct()
     {
