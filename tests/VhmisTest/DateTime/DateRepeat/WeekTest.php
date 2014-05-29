@@ -78,17 +78,17 @@ class WeekTest extends \PHPUnit_Framework_TestCase
 
         $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-05')->setRepeatTimes(7)->setFrequency(1)
             ->setRepeatWeekdays('1, 2, 6, 0');
-        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
+        $this->weekRepeat->setStartDayOfWeek(5)->setRule($this->repeatRule);
         $this->assertEquals('2014-05-17', $this->weekRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-05')->setRepeatTimes(2)->setFrequency(2)
             ->setRepeatWeekdays('1');
-        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
+        $this->weekRepeat->setStartDayOfWeek(5)->setRule($this->repeatRule);
         $this->assertEquals('2014-05-19', $this->weekRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2014-05-05')->setRepeatTimes(2)->setFrequency(2)
             ->setRepeatWeekdays('1, 0');
-        $this->weekRepeat->setStartDayOfWeek('friday')->setRule($this->repeatRule);
+        $this->weekRepeat->setStartDayOfWeek(5)->setRule($this->repeatRule);
         $this->assertEquals('2014-05-18', $this->weekRepeat->endDate());
     }
 
