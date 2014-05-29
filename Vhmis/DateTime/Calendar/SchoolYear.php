@@ -3,7 +3,6 @@
 namespace Vhmis\DateTime\Calendar;
 
 use \Vhmis\DateTime\DateTime;
-use \Vhmis\DateTime\Helper;
 
 class SchoolYear extends CalendarAbstract
 {
