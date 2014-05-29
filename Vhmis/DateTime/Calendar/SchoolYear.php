@@ -3,6 +3,7 @@
 namespace Vhmis\DateTime\Calendar;
 
 use \Vhmis\DateTime\DateTime;
+use \Vhmis\DateTime\Helper;
 
 class SchoolYear extends CalendarAbstract
 {
@@ -23,6 +24,7 @@ class SchoolYear extends CalendarAbstract
      * Thiết lập thời gian biểu
      *
      * @param array $timetable
+     *
      * @return \Vhmis\DateTime\Calendar\SchoolYear
      */
     public function setTimetable($timetable)
@@ -35,7 +37,7 @@ class SchoolYear extends CalendarAbstract
     /**
      * Lấy thông tin về ngày theo lịch năm học
      *
-     * @param string|\Vhmis\DateTime\DateTime $date
+     * @param  string|\Vhmis\DateTime\DateTime $date
      * @return array
      */
     public function getDateInfo($date)
@@ -61,7 +63,7 @@ class SchoolYear extends CalendarAbstract
     /**
      * Lấy tiết học ứng với thời gian
      *
-     * @param string $time
+     * @param  string $time
      * @return int
      */
     public function getPeriod($time)
@@ -69,11 +71,11 @@ class SchoolYear extends CalendarAbstract
         $current = 1;
 
         foreach ($this->timetable as $times) {
-            if (DateTime::compareTime($times[0], $time) === 1) {
+            if (Helper::compareTime($times[0], $time) === 1) {
                 return $current;
             }
 
-            if (DateTime::compareTime($times[1], $time) === -1) {
+            if (Helper::compareTime($times[1], $time) === -1) {
                 $current++;
                 continue;
             }
@@ -87,10 +89,11 @@ class SchoolYear extends CalendarAbstract
     /**
      * Lấy ngày thực theo tuần thứ và ngày thứ trong tuần, tiết bắt đầu và tiết kết thúc
      *
-     * @param int $week Tuần thứ
-     * @param int $weekday Ngày thứ (2-8 monday - sunday)
+     * @param int $week        Tuần thứ
+     * @param int $weekday     Ngày thứ (2-8 monday - sunday)
      * @param int $startPeriod Tiết bắt đầu
-     * @param int $endPeriod Tiết kết thúc
+     * @param int $endPeriod   Tiết kết thúc
+     *
      * @return array
      */
     public function getOriginalDate($week, $weekday, $startPeriod = null, $endPeriod = null)

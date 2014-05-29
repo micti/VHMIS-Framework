@@ -696,43 +696,6 @@ class DateTime extends \DateTime
     }
 
     /**
-     * So sánh 2 thời gian dạng hh:mm
-     *
-     * @param type $time1
-     * @param type $time2
-     *
-     * @return int
-     */
-    public static function compareTime($time1, $time2)
-    {
-        list($hour1, $min1) = explode(':', $time1, 2);
-        $hour1 = (int) $hour1;
-        $min1 = (int) $min1;
-
-        list($hour2, $min2) = explode(':', $time2, 2);
-        $hour2 = (int) $hour2;
-        $min2 = (int) $min2;
-
-        if ($hour1 > $hour2) {
-            return 1;
-        }
-
-        if ($hour2 > $hour1) {
-            return -1;
-        }
-
-        if ($min1 > $min2) {
-            return 1;
-        }
-
-        if ($min2 > $min1) {
-            return -1;
-        }
-
-        return 0;
-    }
-
-    /**
      * Modify date in this week
      *
      * Modify string can be 'first day', 'last day' or name of weekday
