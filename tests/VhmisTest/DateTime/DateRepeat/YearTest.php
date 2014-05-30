@@ -42,15 +42,15 @@ class YearTest extends \PHPUnit_Framework_TestCase
     {
         $this->repeatRule->reset();
         $this->yearRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->yearRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->yearRepeat->endDate());
 
         $this->repeatRule->reset()->setBaseDate('2013-01-01');
         $this->yearRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->yearRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->yearRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByYear()->setBaseDate('2013-01-01');
         $this->yearRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->yearRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->yearRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByYear()->setBaseDate('2014-05-17')->setEndDate('2014-07-09');
         $this->yearRepeat->setRule($this->repeatRule);

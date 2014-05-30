@@ -42,15 +42,15 @@ class MonthTest extends \PHPUnit_Framework_TestCase
     {
         $this->repeatRule->reset();
         $this->monthRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->monthRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->monthRepeat->endDate());
 
         $this->repeatRule->reset()->setBaseDate('2013-01-01');
         $this->monthRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->monthRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->monthRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2013-01-01');
         $this->monthRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->monthRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->monthRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByMonth()->setBaseDate('2014-05-17')->setEndDate('2014-07-09');
         $this->monthRepeat->setRule($this->repeatRule);

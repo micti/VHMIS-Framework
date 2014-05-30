@@ -42,15 +42,15 @@ class WeekTest extends \PHPUnit_Framework_TestCase
     {
         $this->repeatRule->reset();
         $this->weekRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->weekRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->weekRepeat->endDate());
 
         $this->repeatRule->reset()->setBaseDate('2013-01-01');
         $this->weekRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->weekRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->weekRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2013-01-01');
         $this->weekRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->weekRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->weekRepeat->endDate());
 
         $this->repeatRule->reset()->setRepeatByWeek()->setBaseDate('2013-01-01')->setEndDate('2013-02-02');
         $this->weekRepeat->setRule($this->repeatRule);

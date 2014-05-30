@@ -191,7 +191,7 @@ abstract class AbstractRepeat
     protected function getSpecialEndDate()
     {
         if ($this->ruleInfo === array()) {
-            return '2100-31-21';
+            return '2100-12-31';
         }
 
         if ($this->ruleInfo['end'] !== null) {
@@ -199,7 +199,7 @@ abstract class AbstractRepeat
         }
 
         if ($this->ruleInfo['times'] === 0) {
-            return '2100-31-21';
+            return '2100-12-31';
         }
 
         return false;

@@ -39,15 +39,15 @@ class DayTest extends \PHPUnit_Framework_TestCase
     {
         $this->repeatRule->reset();
         $this->dayRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->dayRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->dayRepeat->endDate());
 
         $this->repeatRule->reset()->setBaseDate('2013-01-01')->setRepeatByMonth();
         $this->dayRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->dayRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->dayRepeat->endDate());
 
         $this->repeatRule->reset()->setBaseDate('2013-01-01');
         $this->dayRepeat->setRule($this->repeatRule);
-        $this->assertEquals('2100-31-21', $this->dayRepeat->endDate());
+        $this->assertEquals('2100-12-31', $this->dayRepeat->endDate());
 
         $this->repeatRule->setEndDate('2013-02-02');
         $this->dayRepeat->setRule($this->repeatRule);
