@@ -147,8 +147,6 @@ abstract class AbstractRepeat
             $this->end->setStartDayOfWeek($this->weekday[$day]);
             $this->from->setStartDayOfWeek($this->weekday[$day]);
             $this->to->setStartDayOfWeek($this->weekday[$day]);
-
-            return $this;
         }
 
         return $this;
