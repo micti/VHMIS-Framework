@@ -117,11 +117,13 @@ class Model implements ModelInterface
      * Thiết lập adapter
      *
      * @param \Vhmis\Db\MySQL\Adapter $adapter
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function setAdapter(AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
+
         return $this->init();
     }
 
@@ -129,6 +131,7 @@ class Model implements ModelInterface
      * Khởi tạo model sau khi thiết lập adapter thành công
      *
      * @return \Vhmis\Db\MySQL\Model
+     *
      * @throws \Exception
      */
     public function init()
@@ -167,6 +170,8 @@ class Model implements ModelInterface
     {
         $cursor = $this->mongoCollection->find();
 
+        $data = array();
+
         foreach ($cursor as $document) {
             $data[] = $this->fillRowToEntityClass($document);
         }
@@ -178,6 +183,7 @@ class Model implements ModelInterface
      * Tìm theo primany key
      *
      * @param string $id
+     *
      * @return null
      */
     public function findById($id)
@@ -195,6 +201,7 @@ class Model implements ModelInterface
      * Tìm theo các primany key
      *
      * @param array $ids
+     *
      * @return \Vhmis\Db\MySQL\Entity[]
      */
     public function findByIds($ids)
@@ -210,9 +217,11 @@ class Model implements ModelInterface
      *
      * @param array $where Mảng chứa điều kiện tìm kiếm
      * @param array $order Mảng chứa điều kiện sắp xếp
-     * @param int $skip Số row bỏ qua
-     * @param int $limit Số row lấy
+     * @param int   $skip  Số row bỏ qua
+     * @param int   $limit Số row lấy
+     *
      * @return \Vhmis\Db\MySQL\Entity[]
+     *
      * @throws \Exception
      */
     public function find($where = array(), $order = array(), $skip = 0, $limit = 0)
@@ -260,7 +269,8 @@ class Model implements ModelInterface
      *
      * @return array
      */
-    public function getLastRelatedIds() {
+    public function getLastRelatedIds()
+    {
         return array();
     }
 
@@ -281,6 +291,7 @@ class Model implements ModelInterface
         if ($result['ok'] == 1) {
             $entity->_id = $data['_id'];
             $entity->setNewValue();
+
             return true;
         }
 
@@ -307,6 +318,7 @@ class Model implements ModelInterface
 
         if ($result['ok'] == 1) {
             $entity->setNewValue();
+
             return true;
         }
 
@@ -317,6 +329,7 @@ class Model implements ModelInterface
      * Thêm vào danh sách đợi 1 Entity cần insert vào CSDL
      *
      * @param \Vhmis\Db\MySQL\Entity $entity
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function insertQueue($entity)
@@ -328,6 +341,7 @@ class Model implements ModelInterface
      * Thêm vào danh sách đợi 1 Entity cần update lên CSDL
      *
      * @param \Vhmis\Db\MySQL\Entity $entity
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function updateQueue($entity)
@@ -339,6 +353,7 @@ class Model implements ModelInterface
      * Thêm vào danh sách đợi 1 Entity cần delete khỏi CSDL
      *
      * @param \Vhmis\Db\MySQL\Entity $entity
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function deleteQueue($entity)
@@ -418,6 +433,7 @@ class Model implements ModelInterface
      * Tạo một đối tượng Entity từ một kết quả trả về ở cơ sở dữ liệu
      *
      * @param array $row
+     *
      * @return
      */
     protected function fillRowToEntityClass($row)

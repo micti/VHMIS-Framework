@@ -26,7 +26,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
             $this->connect();
         }
 
-        if($this->dns === null || $this->user === null || $this->pass === null) {
+        if ($this->dns === null || $this->user === null || $this->pass === null) {
             echo 'DbError - Config';
             exit();
         }
@@ -94,6 +94,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      * Quote 1 chuỗi giá trị
      *
      * @param string $value
+     *
      * @return string
      */
     public function qoute($value)
@@ -105,11 +106,13 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      * Thực hiện một query
      *
      * @param string $sql
+     *
      * @return int Số bảng ghi bị ảnh hưởng
      */
     public function query($sql)
     {
         $result = $this->resource->exec($sql);
+
         return $result;
     }
 
@@ -117,7 +120,8 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      * Tạo một statement mới
      *
      * @param string $sql
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @return \Vhmis\Db\MySQL\Statement
      */
     public function createStatement($sql = null, $parameters = null)
@@ -145,6 +149,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      * Lấy giá trị mới (id) tạo ra
      *
      * @param string $name
+     *
      * @return int|boolean
      */
     public function lastValue($name = null)
@@ -152,7 +157,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
         try {
             return $this->resource->lastInsertId($name);
         } catch (\Exception $e) {
-            //
+            return false;
         }
 
         return false;

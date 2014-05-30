@@ -11,8 +11,7 @@ abstract class Entity
 
     public function __construct($data = null)
     {
-        if(is_array($data))
-        {
+        if (is_array($data)) {
             $this->setDataFromArray($data);
         }
     }
@@ -45,6 +44,8 @@ abstract class Entity
 
     public function updateSQL()
     {
+        $field = $param = array();
+
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
             // && $this->$fieldClass != $this->currentValue[$fieldSQL]
             if ($this->$fieldClass !== null && $fieldSQL != 'id') {
@@ -60,6 +61,8 @@ abstract class Entity
 
     public function insertSQL()
     {
+        $field = $value = $param = array();
+
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
             if ($this->$fieldClass !== null) {
                 $field[] = '`' . $fieldSQL . '`';
@@ -76,10 +79,10 @@ abstract class Entity
     public function setDataFromArray($data)
     {
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
+            $this->$fieldClass = $this->currentValue[$fieldSQL] = null;
+
             if (array_key_exists($fieldSQL, $data)) {
                 $this->$fieldClass = $this->currentValue[$fieldSQL] = $data[$fieldSQL];
-            } else {
-                $this->$fieldClass = $this->currentValue[$fieldSQL] = null;
             }
         }
 

@@ -20,7 +20,7 @@ class SchoolYear extends CalendarAbstract
     );
 
     /**
-     * Thiết lập thời gian biểu
+     * Set time table
      *
      * @param array $timetable
      *
@@ -34,9 +34,10 @@ class SchoolYear extends CalendarAbstract
     }
 
     /**
-     * Lấy thông tin về ngày theo lịch năm học
+     * Get calendar date info
      *
-     * @param  string|\Vhmis\DateTime\DateTime $date
+     * @param string|\Vhmis\DateTime\DateTime $date
+     *
      * @return array
      */
     public function getDateInfo($date)
@@ -51,6 +52,8 @@ class SchoolYear extends CalendarAbstract
             return null;
         }
 
+        $info = array();
+
         $info['week'] = $this->getWeek($date);
         $info['month'] = $this->getMonth($date);
         $info['weekday'] = $date->getWeekDay();
@@ -60,9 +63,10 @@ class SchoolYear extends CalendarAbstract
     }
 
     /**
-     * Lấy tiết học ứng với thời gian
+     * Get period
      *
      * @param  string $time hh:mm
+     *
      * @return int
      */
     public function getPeriod($time)
@@ -86,7 +90,7 @@ class SchoolYear extends CalendarAbstract
     }
 
     /**
-     * Lấy ngày thực theo tuần thứ và ngày thứ trong tuần, tiết bắt đầu và tiết kết thúc
+     * Get original date
      *
      * @param int $week        Tuần thứ
      * @param int $weekday     Ngày thứ (2-8 monday - sunday)
@@ -117,10 +121,10 @@ class SchoolYear extends CalendarAbstract
             $endTime = $this->timetable[($endPeriod - 1)][1] . ':00';
         }
 
-        return [
+        return array(
             'date'      => $date->formatISO(0),
             'startTime' => $startTime,
             'endTime'   => $endTime
-        ];
+        );
     }
 }
