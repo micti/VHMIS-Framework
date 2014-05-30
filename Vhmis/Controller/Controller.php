@@ -1,10 +1,11 @@
 <?php
+
 /**
- * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ * Vhmis Framework
  *
- * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Vhmis\Controller;
@@ -15,44 +16,69 @@ use \Vhmis\View\View;
 
 /**
  * Controller
- *
- * @category Vhmis
- * @package Vhmis_Controller
  */
 class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
 {
     /**
-     * Thông tin Apps và Request (chủ yếu dùng khi chuyển qua đối tượng khác).
+     * App info and request info
+     *
+     * @var array
      */
     public $appInfo;
 
     /**
-     * Tên App
+     * App name
+     *
+     * @var string
      */
     public $app;
 
     /**
-     * Tên url cua app (dung de lam dia chi, dat ten bien).
+     * App url
+     *
+     * @var string
      */
     public $appUrl;
 
     /**
-     * Tên controller
+     * Controller
+     *
+     * @var string
      */
     public $controller;
 
     /**
-     * Tên Action
+     * Action
+     *
+     * @var string
      */
     public $action;
 
     /**
-     * Các thông số đi kèm
+     * Params
+     *
+     * @var array
      */
     public $params;
 
     /**
-     * Kiểu xuất ra
+     * Layout
+     *
+     * @var string
+     */
+    public $layout = 'Default';
+
+    /**
+     * Template
+     *
+     * @var string
+     */
+    public $template = 'Default';
+
+    /**
+     * Output
+     *
+     * @var string
      */
     public $output;
 
@@ -81,9 +107,9 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     public $request;
 
     /**
-     * Khởi tạo
+     * Construct
      *
-     * @param \Vhmis\Network\Request $request
+     * @param \Vhmis\Network\Request  $request
      * @param \Vhmis\Network\Response $response
      */
     public function __construct(Network\Request $request = null, Network\Response $response = null)
@@ -103,7 +129,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Thiết lập Service Manager
+     * Set service manager
      *
      * @param \Vhmis\Di\ServiceManager $sm
      */
@@ -113,7 +139,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Thực thi request
+     * Do request
      */
     public function init()
     {
@@ -121,8 +147,8 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
         $layout = isset($this->layout) ? $this->layout : 'Default';
 
         $this->view->setTemplate($template)->setLayout($layout)->setAppUrl($this->appUrl)->setOutput($this->output);
-        $this->view->setApp($this->app)->setController($this->controller)->setMethod($this->action);
-        
+        $this->view->setApp($this->app)->setController($this->controller)->setView($this->action);
+
         $this->beforeInit();
 
         $action = 'action' . $this->action;
@@ -130,7 +156,6 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
         if (method_exists($this, $action)) {
             $this->$action();
         } else {
-            // throw new \Exception('Not found ' . $this->action . ' action. Create new method : ' . $action);
             echo 'Not found ' . $this->action . ' action. Create new method : ' . $action;
             exit();
         }
@@ -143,9 +168,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     public function beforeInit()
-    {
-
-    }
+    {}
 
     public function afterInit()
     {
@@ -153,11 +176,12 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Tìm kiểu trả về
+     * Find output type
      *
      * html|json|xml|text
      *
      * @param string $output
+     *
      * @return string
      */
     protected function findOutputType($output)
@@ -174,50 +198,27 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Lấy model, sử dụng tên class (bắt đầu từ tên App)
-     *
-     * Ví dụ \YourSystem\Apps\App1\Model\Model1 thì tên model là App1\Model\Model1
-     *
-     * @param string $model Tên Model
-     * @return \Vhmis\Db\ModelInterface
-     * @throws \Exception
-     */
-    protected function getModel($model)
-    {
-        $model = $this->sm->getModel($model);
-
-        if ($model === null) {
-            throw new \Exception('Model ' . $model . ' not found');
-        }
-
-        return $model;
-    }
-
-    /**
-     * Lấy model của app hiện hành
+     * Get model of current app
      *
      * @param string $model
+     *
      * @return \Vhmis\Db\ModelInterface
+     *
      * @throws \Exception
      */
     protected function model($model)
     {
-        $fullname = $this->appInfo['app'] . '\Model\\' . $model;
-
-        $model = $this->sm->getModel($fullname);
-
-        if ($model === null) {
-            throw new \Exception('Model ' . $fullname . ' not found');
-        }
-
-        return $model;
+        return $this->appModel($this->appInfo['app'], $model);
     }
 
     /**
-     * Lấy model của một app nào đó
+     * Get model of app
      *
+     * @param string $app
      * @param string $model
+     *
      * @return \Vhmis\Db\ModelInterface
+     *
      * @throws \Exception
      */
     protected function appModel($app, $model)
@@ -234,10 +235,11 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Thiết lập dữ liệu cho view
+     * Set data for view
      *
-     * @param type $key
-     * @param type $data
+     * @param string $key
+     * @param mixed  $data
+     *
      * @return \Vhmis\Controller\Controller
      */
     public function set($key, $data)
@@ -250,7 +252,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     /**
      * Gọi view
      *
-     * @param mixed $info
+     * @param mixed  $data
      * @param string $view
      * @param string $layout
      * @param string $template
@@ -258,7 +260,7 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     public function end($data, $view = '', $layout = '', $template = '')
     {
         if ($view !== '') {
-            $this->view->setMethod($view);
+            $this->view->setView($view);
         }
 
         if ($layout !== '') {
@@ -277,11 +279,9 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Gửi một thông điệp lại cho client
+     * Display message
      *
-     * Thường dùng để thông báo, báo lỗi, trả lại thông tin
-     *
-     * @param array $data Mảng, yêu có phần tử message là nội dung thông báo
+     * @param array  $data
      * @param string $layout
      */
     public function message($data, $layout = '')
@@ -300,9 +300,9 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
     }
 
     /**
-     * Xuất thông báo lỗi
+     * Display error
      *
-     * @param mixed $info
+     * @param array  $data
      * @param string $layout
      */
     public function error($data, $layout = 'Error')

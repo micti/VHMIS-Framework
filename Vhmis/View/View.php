@@ -1,83 +1,96 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace Vhmis\View;
 
+/**
+ * View
+ */
 class View
 {
     /**
-     * Mảng chứa dữ liệu từ Controller truyền sang View
+     * Data from controller
      *
      * @var array
      */
     protected $data = array();
 
     /**
-     * Tên template
+     * Template
      *
      * @var string
      */
     protected $template;
 
     /**
-     * Tên layout
+     * Layout
      *
      * @var string
      */
     protected $layout;
 
     /**
-     * Tên view/method
+     * View/method
      *
      * @var string
      */
     protected $method;
 
     /**
-     * Dạng trả về
+     * Output
      *
      * @var string
      */
     protected $output = 'html';
 
     /**
-     * Tên app
+     * App
      *
      * @var string
      */
     protected $app;
 
     /**
-     * Tên url của app
+     * App url
      *
      * @var string
      */
     protected $appUrl;
 
     /**
-     * Tên controller
+     * Controller
      *
      * @var string
      */
     protected $controller;
 
     /**
-     * Thông tin người dùng / người đăng nhập
+     * User info
      *
      * @var array
      */
     protected $user;
 
     /**
-     * Không sử dụng view của controller/method
+     * No view
+     *
+     * @var boolean
      */
     protected $noView = false;
 
     /**
-     * Danh sách các helper
+     * Helpers class
      *
      * @var array
      */
-    protected $helperList = array(
+    protected $helperClass = array(
         'path'     => 'Path',
         'appInfo'  => 'App',
         'dateTime' => 'DateTime',
@@ -86,62 +99,70 @@ class View
     );
 
     /**
-     * Các đối tượng Helper đã được tạo
+     * Helper object
      *
      * @var array
      */
     protected $helpers = array();
 
     /**
-     * Thiết lập template
+     * Set template
      *
      * @param string $name
+     *
      * @return \Vhmis\View\View
      */
     public function setTemplate($name)
     {
         $this->template = $name;
+        
         return $this;
     }
 
     /**
-     * Thiết lập layout, nếu không sử dụng layout, vui lòng để trống hoặc không thiết lập
+     * Set laypout
      *
-     * @param string $layout
+     * @param string $name
+     *
      * @return \Vhmis\View\View
      */
     public function setLayout($name)
     {
         $this->layout = $name;
+
         return $this;
     }
 
     /**
-     * Thiết lập tên App
+     * Set app
      *
      * @param string $name
+     *
      * @return \Vhmis\View\View
      */
     public function setApp($name)
     {
         $this->app = $name;
+
         return $this;
     }
 
     /**
-     * Thiết lập url của App
+     * Set app url
      *
      * @param string $url
+     * 
      * @return \Vhmis\View\View
      */
     public function setAppUrl($url)
     {
         $this->appUrl = $url;
+        
         return $this;
     }
 
     /**
-     * Lấy url của app
+     * Get app url
      *
      * @return string
      */
@@ -151,70 +172,67 @@ class View
     }
 
     /**
-     * Thiết lập tên Controller
+     * Set controller
      *
-     * @param type $name
+     * @param string $name
+     * 
      * @return \Vhmis\View\View
      */
     public function setController($name)
     {
         $this->controller = $name;
+        
         return $this;
     }
 
     /**
-     * Thiết lập method, hay chính là view
+     * Set method/view
      *
-     * @param type $name
-     * @return \Vhmis\View\View
-     */
-    public function setMethod($name)
-    {
-        $this->method = $name;
-        return $this;
-    }
-
-    /**
-     * Thiết lập view
+     * @param string $name
      *
-     * @param type $name
      * @return \Vhmis\View\View
      */
     public function setView($name)
     {
         $this->method = $name;
+        
         return $this;
     }
 
     /**
-     * Thiết lập dạng trả về
+     * Set output
      *
-     * @param type $name
+     * @param string $name
+     * 
      * @return \Vhmis\View\View
      */
     public function setOutput($name)
     {
         $this->output = $name;
+
         return $this;
     }
 
     /**
-     * Thiết lập thông tin user
+     * Set user info
      *
-     * @param type $user
+     * @param array $user
+     * 
      * @return \Vhmis\View\View
      */
     public function setUser($user)
     {
         $this->user = $user;
+        
         return $this;
     }
 
     /**
-     * Thiết lập 1 dữ liệu mới cho view
+     * Set data for view
      *
      * @param string $key
      * @param mixed $data
+     * 
      * @return \Vhmis\View\View
      */
     public function setData($key, $data)
@@ -225,7 +243,7 @@ class View
     }
 
     /**
-     * Thiết lập không sử dụng view, gọi thẳng layout
+     * Set noview, skip view, call layout
      *
      * @return \Vhmis\View\View
      */
@@ -255,7 +273,7 @@ class View
     }
 
     /**
-     * Render dạng html đầy đủ
+     * Render view as full html page
      *
      * @return string
      */
@@ -295,7 +313,7 @@ class View
     }
 
     /**
-     * Render dạng text
+     * Render view as text
      *
      * @param mixed $data
      * @return string
@@ -335,7 +353,7 @@ class View
     }
 
     /**
-     * Render dạng json
+     * Render view as json
      *
      * @param array $data
      * @return string
@@ -350,14 +368,10 @@ class View
     }
 
     /**
-     * Sử dụng để gọi các helper
-     *
-     * Mỗi helper có 1 tên, tên của helper và tên class của helper được cấu hình trong property $helperName;
-     *
-     * Nếu class helper có khai báo phương __invoke, thì helper sẽ được gọi như function
-     * Nếu không, đối tượng được tạo ra từ helper sẽ được trả về
+     * Magic __call method to call helper as function or get helper object
      *
      * @param string $name
+     *
      * @param array $arguments
      */
     public function __call($name, $arguments)
@@ -373,13 +387,22 @@ class View
         return $this->helpers[$name];
     }
 
+    /**
+     * Get helper
+     *
+     * @param string $name
+     *
+     * @return object
+     *
+     * @throws \Exception
+     */
     protected function getHelper($name)
     {
-        if (!isset($this->helperList[$name])) {
+        if (!isset($this->helperClass[$name])) {
             throw new \Exception('Helper ' . $name . ' is not found.');
         }
 
-        $class = '\Vhmis\View\Helper\\' . $this->helperList[$name];
+        $class = '\Vhmis\View\Helper\\' . $this->helperClass[$name];
 
         $helper = new $class;
         $helper->setView($this);
@@ -388,13 +411,12 @@ class View
     }
 
     /**
-     * Lấy các block nhỏ của app đặt vào view
-     *
-     * Ở file view, gọi block bằng cách $this->getAppBlock(...);
+     * Render small block of app
      *
      * @param string $app
      * @param string $name
      * @param array $data
+     * 
      * @return string
      */
     protected function appBlock($app, $name, $data = array())
@@ -416,13 +438,11 @@ class View
     }
 
     /**
-     * Lấy các block nhỏ của hệ thống đặt vào view
+     * Render small block of system
      *
-     * Ở file view, gọi block bằng cách $this->getBlock(...);
-     *
-     * @param string $app
      * @param string $name
      * @param array $data
+     *
      * @return string
      */
     protected function block($name, $data = array())
