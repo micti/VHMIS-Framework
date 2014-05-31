@@ -12,6 +12,10 @@ namespace Vhmis\DateTime;
 
 /**
  * Datetime class, extends from PHP Datetime class
+ *
+ * @method string getMonth()
+ * @method string getYear()
+ * @method string getDay()
  */
 class DateTime extends \DateTime
 {
