@@ -439,7 +439,12 @@ class DateTime extends \DateTime
      */
     public function setDay($day)
     {
-        return $this->setNewDate(null, null, $day);
+        $month = (int) $this->format('m');
+        $year = (int) $this->format('Y');
+
+        $this->setDate($year, $month, $day);
+
+        return $this;
     }
 
     /**
@@ -699,8 +704,8 @@ class DateTime extends \DateTime
     /**
      * Set date
      *
-     * If given day greater than last day of month, set last day of month
-     * If given day smaller than first day of month, set first day of month
+     * Instead of adjust day, month, year if day is out range
+     * this method will use first and last day of month if it happens
      *
      * @param int $year
      * @param int $month
@@ -708,7 +713,7 @@ class DateTime extends \DateTime
      *
      * @return \Vhmis\DateTime\DateTime
      */
-    public function setNewDate($year = null, $month = null, $day = null)
+    public function setNewDate($year, $month, $day)
     {
         if ($year === null) {
             $year = (int) $this->format('Y');
@@ -725,6 +730,7 @@ class DateTime extends \DateTime
         $lastday = (int) date('d', strtotime('last day of ' . $year . '-' . $month));
 
         $this->setDate($year, $month, $day);
+
         if ($day > $lastday) {
             $this->setDate($year, $month, $lastday);
         }

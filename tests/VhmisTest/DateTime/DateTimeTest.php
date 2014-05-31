@@ -171,9 +171,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setDay(1);
         $this->assertEquals('2014-05-01', $this->date->formatISO(0));
         $this->date->setDay(0);
-        $this->assertEquals('2014-05-01', $this->date->formatISO(0));
+        $this->assertEquals('2014-04-30', $this->date->formatISO(0));
         $this->date->setDay(32);
-        $this->assertEquals('2014-05-31', $this->date->formatISO(0));
+        $this->assertEquals('2014-05-02', $this->date->formatISO(0));
     }
 
     public function testSetMonth()
