@@ -431,7 +431,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Set day of month
+     * Set day
      *
      * @param int $day
      *
@@ -439,12 +439,7 @@ class DateTime extends \DateTime
      */
     public function setDay($day)
     {
-        $month = (int) $this->format('m');
-        $year = (int) $this->format('Y');
-
-        $this->setDate($year, $month, $day);
-
-        return $this;
+        return $this->setNewDate(null, null, $day);
     }
 
     /**
@@ -456,16 +451,7 @@ class DateTime extends \DateTime
      */
     public function setMonth($month)
     {
-        $day = (int) $this->format('j');
-        $year = (int) $this->format('Y');
-        $lastday = (int) date('j', strtotime('last day of ' . $year . '-' . $month));
-
-        $this->setDate($year, $month, $day);
-        if ($day > $lastday) {
-            $this->setDate($year, $month, $lastday);
-        }
-
-        return $this;
+        return $this->setNewDate(null, $month, null);
     }
 
     /**
@@ -477,16 +463,7 @@ class DateTime extends \DateTime
      */
     public function setYear($year)
     {
-        $day = (int) $this->format('j');
-        $month = (int) $this->format('m');
-        $lastday = (int) date('j', strtotime('last day of ' . $year . '-' . $month));
-
-        $this->setDate($year, $month, $day);
-        if ($day > $lastday) {
-            $this->setDate($year, $month, $lastday);
-        }
-
-        return $this;
+        return $this->setNewDate($year, null, null);
     }
 
     /**
@@ -503,17 +480,18 @@ class DateTime extends \DateTime
 
     /**
      * Magic for set/get method
-     * 
+     *
      * @param string $name
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return mixed
      */
     public function __call($name, $arguments = null)
     {
-        if(isset($this->methods[$name])) {
+        if (isset($this->methods[$name])) {
             $method = $this->methods[$name][0];
             $arguments = $this->methods[$name][1];
+
             return $this->$method($arguments);
         }
 
@@ -716,6 +694,46 @@ class DateTime extends \DateTime
         $currentPosition = array_search($this->format('w'), $this->weekdayOrder);
 
         return $this->addDay($position - $currentPosition);
+    }
+
+    /**
+     * Set date
+     *
+     * If given day greater than last day of month, set last day of month
+     * If given day smaller than first day of month, set first day of month
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     *
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function setNewDate($year = null, $month = null, $day = null)
+    {
+        if ($year === null) {
+            $year = (int) $this->format('Y');
+        }
+
+        if ($month === null) {
+            $month = (int) $this->format('m');
+        }
+
+        if ($day === null) {
+            $day = (int) $this->format('d');
+        }
+
+        $lastday = (int) date('d', strtotime('last day of ' . $year . '-' . $month));
+
+        $this->setDate($year, $month, $day);
+        if ($day > $lastday) {
+            $this->setDate($year, $month, $lastday);
+        }
+
+        if ($day < 1) {
+            $this->setDate($year, $month, 1);
+        }
+
+        return $this;
     }
 
     /**

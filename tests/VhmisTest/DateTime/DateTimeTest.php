@@ -165,6 +165,17 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISO(0));
     }
 
+    public function testSetDay()
+    {
+        $this->date->modify('2014-05-19');
+        $this->date->setDay(1);
+        $this->assertEquals('2014-05-01', $this->date->formatISO(0));
+        $this->date->setDay(0);
+        $this->assertEquals('2014-05-01', $this->date->formatISO(0));
+        $this->date->setDay(32);
+        $this->assertEquals('2014-05-31', $this->date->formatISO(0));
+    }
+
     public function testSetMonth()
     {
         $this->date->modify('2014-05-19');
@@ -211,5 +222,8 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $date4 = $this->date->getLastDayOfMonth();
         $this->assertNotSame($date4, $this->date);
         $this->assertEquals('2014-05-31', $date4->formatISO(0));
+
+        $date5 = $this->date->wrongMethod();
+        $this->assertSame($date5, $this->date);
     }
 }
