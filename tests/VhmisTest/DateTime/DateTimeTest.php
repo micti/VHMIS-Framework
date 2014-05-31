@@ -256,4 +256,20 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-02');
         $this->assertEquals('02', $this->date->getDay());
     }
+
+    public function testGetFirstDayOfWeek()
+    {
+        $this->date->modify('2014-05-31');
+        $date = $this->date->getFirstDayOfWeek();
+        $this->assertNotSame($date, $this->date);
+        $this->assertEquals('2014-05-26', $date->formatISO(0));
+    }
+
+    public function testGetLastDayOfWeek()
+    {
+        $this->date->modify('2014-05-31');
+        $date = $this->date->getLastDayOfWeek();
+        $this->assertNotSame($date, $this->date);
+        $this->assertEquals('2014-06-01', $date->formatISO(0));
+    }
 }

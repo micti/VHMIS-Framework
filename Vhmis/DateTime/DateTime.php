@@ -18,6 +18,8 @@ namespace Vhmis\DateTime;
  * @method string getDay() Get day of date (2 characters)
  * @method string formatSQLDate() Format date as SQL date format
  * @method string formatSQLDateTime() Format date as SQL datetime format
+ * @method DateTime getFirstDayOfWeek() Return new DateTime object with date is first day of week
+ * @method DateTime getLastDayOfWeek() Return new DateTime object with date is last day of week
  */
 class DateTime extends \DateTime
 {
@@ -69,8 +71,8 @@ class DateTime extends \DateTime
         'getTomorrow' => array('getModifiedDate', 'tomorrow'),
         'getFirstDayOfMonth' => array('getModifiedDate', 'first day of this month'),
         'getLastDayOfMonth' => array('getModifiedDate', 'last day of this month'),
-        //'getFirstDayOfWeek' => array('modifyThisWeek', 'first day'),
-        //'getLastDayOfWeek' => array('modifyThisWeek', 'last day')
+        'getFirstDayOfWeek' => array('getModifiedDateThisWeek', 'first day'),
+        'getLastDayOfWeek' => array('getModifiedDateThisWeek', 'last day'),
         'getDay' => array('format', 'd'),
         'getMonth' => array('format', 'm'),
         'getYear' => array('format', 'Y'),
@@ -618,7 +620,7 @@ class DateTime extends \DateTime
      */
     public function modifyThisWeek($modify)
     {
-        $position = false;
+        $position = 0;
 
         if ($modify === 'first day') {
             $position = 0;
@@ -636,6 +638,22 @@ class DateTime extends \DateTime
         $currentPosition = array_search($this->format('w'), $this->weekdayOrder);
 
         return $this->addDay($position - $currentPosition);
+    }
+
+    /**
+     * Same as modifyThisWeek() method but return new DateTime object
+     *
+     * @param string $modify
+     *
+     * @return \Vhmis\DateTime\DateTime
+     */
+    public function getModifiedDateThisWeek($modify)
+    {
+        $new = clone $this;
+
+        $new->modifyThisWeek($modify);
+
+        return $new;
     }
 
     /**
