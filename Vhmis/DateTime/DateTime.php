@@ -531,33 +531,25 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Tìm xem có quan hệ với một ngày nào đó không
+     * Find relative
      *
-     * Các giá trị năm tháng tuần ngày không hơn nhau quá 1 đơn vị
+     * @param DateTime $date
+     * 
+     * @return array
      */
     public function findRelative($date)
     {
-        $diffDay = $date->diffDay($this);
-        $diffWeek = $date->diffWeek($this);
-        $diffMonth = $date->diffMonth($this);
-        $diffYear = $date->diffYear($this);
+        $diff['d'] = $date->diffDay($this);
+        $diff['w'] = $date->diffWeek($this);
+        $diff['m'] = $date->diffMonth($this);
+        $diff['y'] = $date->diffYear($this);
 
         $relative = array();
 
-        if ($diffDay >= -1 && $diffDay <= 1) {
-            $relative['d'] = $diffDay;
-        }
-
-        if ($diffWeek >= -1 && $diffWeek <= 1) {
-            $relative['w'] = $diffWeek;
-        }
-
-        if ($diffMonth >= -1 && $diffMonth <= 1) {
-            $relative['m'] = $diffMonth;
-        }
-
-        if ($diffYear >= -1 && $diffYear <= 1) {
-            $relative['y'] = $diffYear;
+        foreach($diff as $field => $value) {
+            if(abs($value) <=1 ) {
+                $relative[$field] = $value;
+            }
         }
 
         return $relative;

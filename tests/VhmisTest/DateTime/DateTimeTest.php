@@ -77,12 +77,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testDiffWeek()
     {
-        $this->date->setStartDayOfWeek('sunday')->modify('2014-05-19 00:52:34');
+        $this->date->setStartOfWeek('sunday')->modify('2014-05-19 00:52:34');
         $date = new DateTime('2014-05-18 23:11:34');
 
         $this->assertEquals(0, $this->date->diffWeek($date));
 
-        $this->date->setStartDayOfWeek('monday');
+        $this->date->setStartOfWeek('monday');
         $this->assertEquals(-1, $this->date->diffWeek($date));
 
         $date->modify('2014-06-29');
@@ -128,7 +128,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testModifyThisWeek()
     {
-        $this->date->setStartDayOfWeek('monday');
+        $this->date->setStartOfWeek('monday');
 
         $this->date->modify('2014-05-19');
         $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('first day')->formatISO(0));
@@ -148,7 +148,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-25');
         $this->assertEquals('2014-05-25', $this->date->modifyThisWeek('last day')->formatISO(0));
 
-        $this->date->setStartDayOfWeek('sunday');
+        $this->date->setStartOfWeek('sunday');
 
         $this->date->modify('2014-05-24');
         $this->assertEquals('2014-05-18', $this->date->modifyThisWeek('first day')->formatISO(0));
@@ -169,12 +169,41 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-19');
         $this->assertEquals('2014-05-24', $this->date->modifyThisWeek('last day')->formatISO(0));
 
-        $this->date->setStartDayOfWeek('saturday');
+        $this->date->setStartOfWeek('saturday');
 
         $this->date->modify('2014-05-24');
         $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISO(0));
         $this->date->modify('2014-05-30');
         $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISO(0));
+    }
+
+    public function testFindRelative()
+    {
+        $date = new DateTime;
+        $this->date->setStartOfWeek(1)->modify('2015-05-06');
+        $date->setStartOfWeek(1)->modify('2017-05-06');
+        $relative = $this->date->findRelative($date);
+        $this->assertEquals(array(), $relative);
+
+        $this->date->modify('2015-05-06');
+        $date->modify('2016-05-06');
+        $relative = $this->date->findRelative($date);
+        $this->assertEquals(array('y' => -1), $relative);
+
+        $this->date->modify('2014-06-01');
+        $date->modify('2014-05-31');
+        $relative = $this->date->findRelative($date);
+        $this->assertEquals(array('d' => 1, 'w' => 0, 'm' => 1, 'y' => 0), $relative);
+
+        $this->date->modify('2014-06-05');
+        $date->modify('2014-06-13');
+        $relative = $this->date->findRelative($date);
+        $this->assertEquals(array('w' => -1, 'm' => 0, 'y' => 0), $relative);
+
+        $this->date->modify('2014-06-05');
+        $date->modify('2014-05-13');
+        $relative = $this->date->findRelative($date);
+        $this->assertEquals(array('m' => 1, 'y' => 0), $relative);
     }
 
     public function testSetDay()
