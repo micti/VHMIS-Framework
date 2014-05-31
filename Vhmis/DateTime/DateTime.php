@@ -23,13 +23,6 @@ namespace Vhmis\DateTime;
  */
 class DateTime extends \DateTime
 {
-
-    const TIME_COMPARE_GREATER = 1;
-    const TIME_COMPARE_EQUAL = 0;
-    const TIME_COMPARE_LESS_THAN = -1;
-
-    private $timeCompareGreater = self::TIME_COMPARE_GREATER;
-
     /**
      * Day of week array, index same date('w')
      * 0 to 6 : Sunday to Monday
@@ -166,44 +159,6 @@ class DateTime extends \DateTime
         }
 
         return $this->format(DateTime::ISO8601);
-    }
-
-    /**
-     * So sánh với một ngày bất kỳ
-     *
-     * @param \Vhmis\DateTime\DateTime|string $date Ngày ở dạng str hoặc DateTime
-     *
-     * @return int|null
-     */
-    public function compare($date)
-    {
-        if (is_string($date)) {
-            $time = strtotime($date);
-
-            if ($this->getTimestamp() > $time) {
-                return $this->timeCompareGreater;
-            }
-
-            if ($this->getTimestamp() === $time) {
-                return static::TIME_COMPARE_EQUAL;
-            }
-
-            return static::TIME_COMPARE_LESS_THAN;
-        }
-
-        if ($date instanceof \DateTime) {
-            if ($this > $date) {
-                return static::TIME_COMPARE_GREATER;
-            }
-
-            if ($this === $date) {
-                return static::TIME_COMPARE_EQUAL;
-            }
-
-            return static::TIME_COMPARE_LESS_THAN;
-        }
-
-        return null;
     }
 
     /**
@@ -534,11 +489,13 @@ class DateTime extends \DateTime
      * Find relative
      *
      * @param DateTime $date
-     * 
+     *
      * @return array
      */
     public function findRelative($date)
     {
+        $diff = array();
+
         $diff['d'] = $date->diffDay($this);
         $diff['w'] = $date->diffWeek($this);
         $diff['m'] = $date->diffMonth($this);
@@ -546,8 +503,8 @@ class DateTime extends \DateTime
 
         $relative = array();
 
-        foreach($diff as $field => $value) {
-            if(abs($value) <=1 ) {
+        foreach ($diff as $field => $value) {
+            if (abs($value) <=1) {
                 $relative[$field] = $value;
             }
         }
