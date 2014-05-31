@@ -111,7 +111,7 @@ class DateTime extends \DateTime
      *
      * @return \Vhmis\DateTime\DateTime
      */
-    public function setStartDayOfWeek($day)
+    public function setStartOfWeek($day)
     {
         if (array_search($day, $this->weekday) !== false) {
             $this->startOfWeek = $day;
@@ -135,7 +135,7 @@ class DateTime extends \DateTime
      *
      * @return string
      */
-    public function getStartDayOfWeek()
+    public function getStartOfWeek()
     {
         return $this->startOfWeek;
     }
@@ -238,17 +238,17 @@ class DateTime extends \DateTime
     {
         $origin1 = $this->getTimestamp();
         $origin2 = $date->getTimestamp();
-        $startDayOfWeek = $date->getStartDayOfWeek();
-        $date->setStartDayOfWeek($this->startOfWeek);
+        $startOfWeek = $date->getStartOfWeek();
+        $date->setStartOfWeek($this->startOfWeek);
 
-        // Use monday this week
-        $wek1 = floor($this->modifyThisWeek('first day')->getTimestamp() / 86400 / 7);
-        $wek2 = floor($date->modifyThisWeek('first day')->getTimestamp() / 86400 / 7);
+        $this->modifyThisWeek('first day');
+        $date->modifyThisWeek('first day');
+        $diffDay = $this->diffDay($date);
 
         $this->setTimestamp($origin1);
-        $date->setStartDayOfWeek($startDayOfWeek)->setTimestamp($origin2);
+        $date->setStartOfWeek($startOfWeek)->setTimestamp($origin2);
 
-        return (int) ($wek2 - $wek1);
+        return (int) ($diffDay / 7);
     }
 
     /**

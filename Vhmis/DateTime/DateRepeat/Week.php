@@ -132,7 +132,7 @@ class Week extends AbstractRepeat
      */
     protected function sortRepeatedWeekday($weekdays)
     {
-        $position = array_search($this->startDayOfWeek, $this->weekday);
+        $position = array_search($this->startOfWeek, $this->weekday);
 
         $before = array();
         $after = array();

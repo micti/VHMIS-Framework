@@ -57,12 +57,12 @@ class DateRepeatTest extends \PHPUnit_Framework_TestCase
     public function testSetStartDateOfWeek()
     {
         $repeat = new DateRepeat;
-        $repeat->setStartDayOfWeek(4);
+        $repeat->setDayOfWeek(4);
         $repeat->getRule()->setRepeatByWeek()->setBaseDate('2014-05-28')->setRepeatWeekdays(array(3, 5))
             ->setRepeatTimes(2)->setFrequency(2);
         $this->assertEquals('2014-06-06', $repeat->endDate());
 
-        $repeat->setStartDayOfWeek(1);
+        $repeat->setDayOfWeek(1);
         $this->assertEquals('2014-05-30', $repeat->endDate());
     }
 }

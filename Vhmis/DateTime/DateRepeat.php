@@ -44,7 +44,7 @@ class DateRepeat
      * 
      * @var int
      */
-    protected $startDayOfWeek = 1;
+    protected $startOfWeek = 1;
 
     /**
      * Construct
@@ -89,7 +89,7 @@ class DateRepeat
             $this->repeats[$info['by']] = new $this->repeatClass[$info['by']];
 
             if($info['by'] === 5) {
-                $this->repeats[$info['by']]->setStartDayOfWeek($this->startDayOfWeek);
+                $this->repeats[$info['by']]->setStartDayOfWeek($this->startOfWeek);
             }
         }
 
@@ -113,9 +113,9 @@ class DateRepeat
      *
      * @return \Vhmis\DateTime\DateRepeat
      */
-    public function setStartDayOfWeek($day)
+    public function setDayOfWeek($day)
     {
-        $this->startDayOfWeek = (int) $day;
+        $this->startOfWeek = (int) $day;
 
         if(isset($this->repeats['5'])) {
             $this->repeats['5']->setStartDayOfWeek($day);
