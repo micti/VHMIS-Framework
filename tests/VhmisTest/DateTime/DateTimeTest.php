@@ -186,4 +186,30 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setYear(2015);
         $this->assertEquals('2015-02-28', $this->date->formatISO(0));
     }
+
+    public function testMagicMethod()
+    {
+        $this->date->modify('2014-05-19');
+        $this->assertEquals('2014-05-18', $this->date->setYesterday()->formatISO(0));
+        $this->assertEquals('2014-05-19', $this->date->setTomorrow()->formatISO(0));
+        $this->assertEquals('2014-05-01', $this->date->setFirstDayOfMonth()->formatISO(0));
+        $this->assertEquals('2014-05-31', $this->date->setLastDayOfMonth()->formatISO(0));
+        $this->date->modify('2014-05-31');
+        $this->assertEquals('2014-05-26', $this->date->setFirstDayOfWeek()->formatISO(0));
+        $this->assertEquals('2014-06-01', $this->date->setLastDayOfWeek()->formatISO(0));
+
+        $this->date->modify('2014-05-19');
+        $date1 = $this->date->getYesterday();
+        $this->assertNotSame($date1, $this->date);
+        $this->assertEquals('2014-05-18', $date1->formatISO(0));
+        $date2 = $this->date->getTomorrow();
+        $this->assertNotSame($date2, $this->date);
+        $this->assertEquals('2014-05-20', $date2->formatISO(0));
+        $date3 = $this->date->getFirstDayOfMonth();
+        $this->assertNotSame($date3, $this->date);
+        $this->assertEquals('2014-05-01', $date3->formatISO(0));
+        $date4 = $this->date->getLastDayOfMonth();
+        $this->assertNotSame($date4, $this->date);
+        $this->assertEquals('2014-05-31', $date4->formatISO(0));
+    }
 }

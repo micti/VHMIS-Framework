@@ -52,13 +52,28 @@ class DateTime extends \DateTime
      */
     protected $weekdayOrder = array(1, 2, 3, 4, 5, 6, 0);
 
+    protected $methods = array(
+        'setYesterday' => array('modify', 'yesterday'),
+        'setTomorrow' => array('modify', 'tomorrow'),
+        'setFirstDayOfMonth' => array('modify', 'first day of this month'),
+        'setLastDayOfMonth' => array('modify', 'last day of this month'),
+        'setFirstDayOfWeek' => array('modifyThisWeek', 'first day'),
+        'setLastDayOfWeek' => array('modifyThisWeek', 'last day'),
+        'getYesterday' => array('getModifiedDate', 'yesterday'),
+        'getTomorrow' => array('getModifiedDate', 'tomorrow'),
+        'getFirstDayOfMonth' => array('getModifiedDate', 'first day of this month'),
+        'getLastDayOfMonth' => array('getModifiedDate', 'last day of this month'),
+        //'getFirstDayOfWeek' => array('modifyThisWeek', 'first day'),
+        //'getLastDayOfWeek' => array('modifyThisWeek', 'last day')
+    );
+
     /**
      * Các class static trả về DateTime cần viết lại để trả về đúng class mới
      * sử dụng new static() để tránh luôn chuyện này xảy ra nếu tiếp tục extends
      * từ class mới
      *
-     * @param type          $format
-     * @param type          $time
+     * @param string        $format
+     * @param string        $time
      * @param \DateTimeZone $timezone
      *
      * @return DateTime
@@ -487,13 +502,20 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Thiết lập ngày cuối tháng
+     * Magic for set/get method
+     * 
+     * @param string $name
+     * @param array $arguments
      *
-     * @return \Vhmis\DateTime\DateTime
+     * @return mixed
      */
-    public function setLastDateOfMonth()
+    public function __call($name, $arguments = null)
     {
-        $this->modify('last day of this month');
+        if(isset($this->methods[$name])) {
+            $method = $this->methods[$name][0];
+            $arguments = $this->methods[$name][1];
+            return $this->$method($arguments);
+        }
 
         return $this;
     }
@@ -663,36 +685,6 @@ class DateTime extends \DateTime
         $new->modify($modify);
 
         return $new;
-    }
-
-    /**
-     * Lấy ngày hôm qua
-     *
-     * @return \Vhmis\DateTime\DateTime
-     */
-    public function getYesterday()
-    {
-        return $this->getModifiedDate('- 1 days');
-    }
-
-    /**
-     * Lấy ngày ngày mai
-     *
-     * @return \Vhmis\DateTime\DateTime
-     */
-    public function getTomorrow()
-    {
-        return $this->getModifiedDate('+ 1 days');
-    }
-
-    /**
-     * Lấy ngày cuối cùng của tháng
-     *
-     * @return \Vhmis\DateTime\DateTime
-     */
-    public function getLastDateOfMonth()
-    {
-        return $this->getModifiedDate('last day of this month');
     }
 
     /**
