@@ -105,7 +105,7 @@ class SchoolYear extends CalendarAbstract
             $weekday = 8;
         }
 
-        $date = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->formatISO(1));
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->formatISODateTime());
         $date->addWeek($week - 1);
         $date->modify('monday this week')->addDay($weekday - 2);
 
@@ -122,7 +122,7 @@ class SchoolYear extends CalendarAbstract
         }
 
         return array(
-            'date'      => $date->formatISO(0),
+            'date'      => $date->formatISODate(),
             'startTime' => $startTime,
             'endTime'   => $endTime
         );

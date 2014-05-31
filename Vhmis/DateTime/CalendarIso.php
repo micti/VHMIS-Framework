@@ -59,7 +59,7 @@ class CalendarIso
 
         for ($i = 0; $i < $datesOfLastMonth + $daysInMonth + $datesOfNextMonth; $i++) {
             $week = $oDate->format('W');
-            $date = $oDate->formatISO(0);
+            $date = $oDate->formatISODate();
             $data[$monthyear][$week][$date] = array(
                 'date' => $date,
                 'diff' => array(
@@ -122,7 +122,7 @@ class CalendarIso
         $data = array();
 
         for ($i = 0; $i < 7; $i++) {
-            $date = $oDate->formatISO(0);
+            $date = $oDate->formatISODate();
             $data[$yearweek][$date] = array(
                 'date' => $date,
                 'diff' => array(

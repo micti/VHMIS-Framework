@@ -17,6 +17,9 @@ namespace Vhmis\DateTime;
  * @method string getYear() Get year of date (4 characters)
  * @method string getDay() Get day of date (2 characters)
  * @method string getWeekday() Get ISO-8601 numeric representation of the day of the week
+ * @method string formatISODate() Format date as ISO date format (Y-m-d)
+ * @method string formatISODateTime() Format date as ISO datetime format (Y-m-d H:i:s)
+ * @method string formatISOYearMonth() Format date as ISO year and month format (Y-m),
  * @method string formatSQLDate() Format date as SQL date format
  * @method string formatSQLDateTime() Format date as SQL datetime format
  * @method DateTime getFirstDayOfWeek() Get new DateTime object with date is first day of week
@@ -71,8 +74,11 @@ class DateTime extends \DateTime
         'getMonth' => array('format', 'm'),
         'getYear' => array('format', 'Y'),
         'getWeekday' => array('format', 'N'),
-        'formatSQLDate' => array('formatISO', 0),
-        'formatSQLDateTime' => array('formatISO', 1),
+        'formatISODate' => array('format', 'Y-m-d'),
+        'formatISODateTime' => array('format', 'Y-m-d H:i:s'),
+        'formatISOYearMonth' => array('format', 'Y-m'),
+        'formatSQLDate' => array('formatISODate'),
+        'formatSQLDateTime' => array('formatISODateTime'),
     );
 
     /**
@@ -133,34 +139,6 @@ class DateTime extends \DateTime
     public function getStartOfWeek()
     {
         return $this->startOfWeek;
-    }
-
-    /**
-     * Trả thời gian về định dạng ISO, sử dụng trong MYSQL
-     *
-     * @param int $type Kiểu tra về
-     *                  2 Đúng nguyên định dạng ISO8601
-     *                  1 Dạng yyyy-mm-dd hh:mm:ss
-     *                  0 Dạng yyyy-mm-dd
-     *                  3 Dạng yyyy-mm
-     *
-     * @return string
-     */
-    public function formatISO($type = 2)
-    {
-        if ($type == 0) {
-            return $this->format('Y-m-d');
-        }
-
-        if ($type == 1) {
-            return $this->format('Y-m-d H:i:s');
-        }
-
-        if ($type == 3) {
-            return $this->format('Y-m');
-        }
-
-        return $this->format(DateTime::ISO8601);
     }
 
     /**

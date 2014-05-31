@@ -69,7 +69,7 @@ class Week extends AbstractRepeat
         $total = count($this->ruleInfo['weekdays']);
         while ($run <= $this->to) {
             if ($run >= $this->begin && $run >= $this->from) {
-                $repeatedDates[] = $run->formatISO(0);
+                $repeatedDates[] = $run->formatISODate();
             }
 
             $day = array_search($run->format('w'), $this->ruleInfo['weekdays']);
@@ -112,13 +112,13 @@ class Week extends AbstractRepeat
         $date->addWeek($repeatedWeek * $this->ruleInfo['freq']);
 
         if ($endDayPosition === 0) {
-            $this->ruleInfo['end'] = $date->formatISO(0);
+            $this->ruleInfo['end'] = $date->formatISODate();
 
             return $this->ruleInfo['end'];
         }
 
         $date->modify('next ' . $this->weekday[$this->ruleInfo['weekdays'][$endDayPosition]]);
-        $this->ruleInfo['end'] = $date->formatISO(0);
+        $this->ruleInfo['end'] = $date->formatISODate();
 
         return $this->ruleInfo['end'];
     }

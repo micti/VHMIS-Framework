@@ -185,7 +185,7 @@ class DateTime
         }
 
         if ($value instanceof VhDateTime) {
-            $value = $value->formatISO(1);
+            $value = $value->formatISODateTime();
         }
 
         if (is_string($value)) {
@@ -241,7 +241,7 @@ class DateTime
         }
 
         if ($value instanceof VhDateTime) {
-            $value = $value->formatISO(1);
+            $value = $value->formatISODateTime();
         }
 
         if (is_string($value)) {
@@ -409,8 +409,8 @@ class DateTime
 
         $data = I18nResource::dateIntervalPattern($pattern, $intervalField, $this->locale);
 
-        $value1 = $this->customPattern($this->dateFirst->formatISO(1), $data['patternbegin']);
-        $value2 = $this->customPattern($this->dateSecond->formatISO(1), $data['patternend']);
+        $value1 = $this->customPattern($this->dateFirst->formatISODateTime(), $data['patternbegin']);
+        $value2 = $this->customPattern($this->dateSecond->formatISODateTime(), $data['patternend']);
 
         if ($value1 === $value2) {
             return $value1;

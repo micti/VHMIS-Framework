@@ -175,7 +175,7 @@ abstract class AbstractRepeat
         }
 
         if ($this->to > $this->end) {
-            $this->to->modify($this->end->formatISO(0));
+            $this->to->modify($this->end->formatISODate());
         }
 
         return true;

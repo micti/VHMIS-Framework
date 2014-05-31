@@ -81,7 +81,7 @@ class Year extends AbstractRepeat
         $total = count($this->ruleInfo['months']);
         while ($run <= $this->to) {
             if ($run >= $this->begin && $run >= $this->from) {
-                $repeatedDates[] = $run->formatISO(0);
+                $repeatedDates[] = $run->formatISODate();
             }
 
             // Prevent run date goes to next month
@@ -129,14 +129,14 @@ class Year extends AbstractRepeat
 
         if ($endMonthPosition === 0) {
             $this->setDayForMonth($date);
-            $this->ruleInfo['end'] = $date->formatISO(0);
+            $this->ruleInfo['end'] = $date->formatISODate();
 
             return $this->ruleInfo['end'];
         }
 
         $date->setMonth($this->ruleInfo['months'][$endMonthPosition]);
         $this->setDayForMonth($date);
-        $this->ruleInfo['end'] = $date->formatISO(0);
+        $this->ruleInfo['end'] = $date->formatISODate();
 
         return $this->ruleInfo['end'];
     }

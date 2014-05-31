@@ -117,7 +117,7 @@ class Month extends AbstractRepeat
         $total = count($this->ruleInfo['days']);
         while ($run <= $this->to) {
             if ($run >= $this->begin && $run >= $this->from) {
-                $repeatedDates[] = $run->formatISO(0);
+                $repeatedDates[] = $run->formatISODate();
             }
 
             // Prevent run date goes to next month
@@ -162,7 +162,7 @@ class Month extends AbstractRepeat
 
         while ($run <= $this->to) {
             if ($run >= $this->begin && $run >= $this->from) {
-                $repeatedDates[] = $run->formatISO(0);
+                $repeatedDates[] = $run->formatISODate();
             }
 
             // Prevent run date goes to next month
@@ -199,13 +199,13 @@ class Month extends AbstractRepeat
         $date->addMonth($repeatedMonth * $this->ruleInfo['freq']);
 
         if ($endDayPosition === 0) {
-            $this->ruleInfo['end'] = $date->formatISO(0);
+            $this->ruleInfo['end'] = $date->formatISODate();
 
             return $this->ruleInfo['end'];
         }
 
         $date->setDay($this->ruleInfo['days'][$endDayPosition]);
-        $this->ruleInfo['end'] = $date->formatISO(0);
+        $this->ruleInfo['end'] = $date->formatISODate();
 
         return $this->ruleInfo['end'];
     }
@@ -228,7 +228,7 @@ class Month extends AbstractRepeat
             . ' of this month'
         );
 
-        return $date->formatISO(0);
+        return $date->formatISODate();
     }
 
     /**
@@ -246,7 +246,7 @@ class Month extends AbstractRepeat
         for ($i = 0; $i < $total; $i++) {
             if (isset($fixDates[$repeatedDates[$i]])) {
                 $date->modify(end($fixDates))->addDay(1);
-                $repeatedDates[$i] = $date->formatISO(0);
+                $repeatedDates[$i] = $date->formatISODate();
             }
 
             $fixDates[$repeatedDates[$i]] = $repeatedDates[$i];

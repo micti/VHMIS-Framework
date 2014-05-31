@@ -449,7 +449,7 @@ class Rule
             $allPositions[$this->repeatedDayPosition] . ' ' . $allDays[$this->repeatedDay] . ' of this month'
         );
 
-        if ($this->baseDate !== $this->date->formatISO(0)) {
+        if ($this->baseDate !== $this->date->formatISODate()) {
             return false;
         }
 
@@ -467,7 +467,7 @@ class Rule
     {
         $dtObj = DateTime::createFromFormat('Y-m-d', $date);
 
-        return ($dtObj && $dtObj->formatISO(0) == $date);
+        return ($dtObj && $dtObj->formatISODate() == $date);
     }
 
     /**

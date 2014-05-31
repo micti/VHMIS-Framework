@@ -46,7 +46,7 @@ class Day extends AbstractRepeat
         }
 
         while ($run <= $this->to) {
-            $repeatedDates[] = $run->formatISO(0);
+            $repeatedDates[] = $run->formatISODate();
             $run->addDay($this->ruleInfo['freq']);
         }
 
@@ -68,7 +68,7 @@ class Day extends AbstractRepeat
         $date = new DateTime;
         $date->modify($this->ruleInfo['base'])->addDay(($this->ruleInfo['times'] - 1) * $this->ruleInfo['freq']);
 
-        $this->ruleInfo['end'] = $date->formatISO(0);
+        $this->ruleInfo['end'] = $date->formatISODate();
 
         return $this->ruleInfo['end'];
     }

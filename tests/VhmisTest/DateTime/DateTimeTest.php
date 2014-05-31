@@ -30,9 +30,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $this->date->modify('2014-05-02 12:12:14');
 
-        $this->assertEquals('2014-05-02 12:12:14', $this->date->formatISO(1));
-        $this->assertEquals('2014-05-02', $this->date->formatISO(0));
-        $this->assertEquals('2014-05', $this->date->formatISO(3));
+        $this->assertEquals('2014-05-02 12:12:14', $this->date->formatISODateTime());
+        $this->assertEquals('2014-05-02', $this->date->formatISODate());
+        $this->assertEquals('2014-05', $this->date->formatISOYearMonth());
 
         $this->assertEquals('2014-05-02 12:12:14', $this->date->formatSQLDateTime());
         $this->assertEquals('2014-05-02', $this->date->formatSQLDate());
@@ -44,15 +44,15 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testAddMonth()
     {
         $this->date->modify('2014-05-20');
-        $this->assertEquals('2014-06-20', $this->date->addMonth(1)->formatISO(0));
+        $this->assertEquals('2014-06-20', $this->date->addMonth(1)->formatISODate());
         $this->date->modify('2014-05-31');
-        $this->assertEquals('2014-06-30', $this->date->addMonth(1)->formatISO(0));
+        $this->assertEquals('2014-06-30', $this->date->addMonth(1)->formatISODate());
         $this->date->modify('2014-05-31');
-        $this->assertEquals('2014-02-28', $this->date->addMonth(-3)->formatISO(0));
+        $this->assertEquals('2014-02-28', $this->date->addMonth(-3)->formatISODate());
         $this->date->modify('2014-05-31');
-        $this->assertEquals('2015-05-31', $this->date->addMonth(12)->formatISO(0));
+        $this->assertEquals('2015-05-31', $this->date->addMonth(12)->formatISODate());
         $this->date->modify('2014-05-31');
-        $this->assertEquals('2012-12-31', $this->date->addMonth(-17)->formatISO(0));
+        $this->assertEquals('2012-12-31', $this->date->addMonth(-17)->formatISODate());
     }
 
     /**
@@ -131,50 +131,50 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setStartOfWeek('monday');
 
         $this->date->modify('2014-05-19');
-        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('first day')->formatISO(0));
+        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('first day')->formatISODate());
         $this->date->modify('2014-05-19');
-        $this->assertEquals('2014-05-20', $this->date->modifyThisWeek('tuesday')->formatISO(0));
+        $this->assertEquals('2014-05-20', $this->date->modifyThisWeek('tuesday')->formatISODate());
         $this->date->modify('2014-05-19');
-        $this->assertEquals('2014-05-21', $this->date->modifyThisWeek('wednesday')->formatISO(0));
+        $this->assertEquals('2014-05-21', $this->date->modifyThisWeek('wednesday')->formatISODate());
         $this->date->modify('2014-05-19');
-        $this->assertEquals('2014-05-25', $this->date->modifyThisWeek('last day')->formatISO(0));
+        $this->assertEquals('2014-05-25', $this->date->modifyThisWeek('last day')->formatISODate());
 
         $this->date->modify('2014-05-25');
-        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('first day')->formatISO(0));
+        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('first day')->formatISODate());
         $this->date->modify('2014-05-25');
-        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('monday')->formatISO(0));
+        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('monday')->formatISODate());
         $this->date->modify('2014-05-25');
-        $this->assertEquals('2014-05-22', $this->date->modifyThisWeek('thursday')->formatISO(0));
+        $this->assertEquals('2014-05-22', $this->date->modifyThisWeek('thursday')->formatISODate());
         $this->date->modify('2014-05-25');
-        $this->assertEquals('2014-05-25', $this->date->modifyThisWeek('last day')->formatISO(0));
+        $this->assertEquals('2014-05-25', $this->date->modifyThisWeek('last day')->formatISODate());
 
         $this->date->setStartOfWeek('sunday');
 
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-18', $this->date->modifyThisWeek('first day')->formatISO(0));
+        $this->assertEquals('2014-05-18', $this->date->modifyThisWeek('first day')->formatISODate());
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('monday')->formatISO(0));
+        $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('monday')->formatISODate());
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-20', $this->date->modifyThisWeek('tuesday')->formatISO(0));
+        $this->assertEquals('2014-05-20', $this->date->modifyThisWeek('tuesday')->formatISODate());
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-21', $this->date->modifyThisWeek('wednesday')->formatISO(0));
+        $this->assertEquals('2014-05-21', $this->date->modifyThisWeek('wednesday')->formatISODate());
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-22', $this->date->modifyThisWeek('thursday')->formatISO(0));
+        $this->assertEquals('2014-05-22', $this->date->modifyThisWeek('thursday')->formatISODate());
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-23', $this->date->modifyThisWeek('friday')->formatISO(0));
+        $this->assertEquals('2014-05-23', $this->date->modifyThisWeek('friday')->formatISODate());
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-24', $this->date->modifyThisWeek('saturday')->formatISO(0));
+        $this->assertEquals('2014-05-24', $this->date->modifyThisWeek('saturday')->formatISODate());
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-18', $this->date->modifyThisWeek('sunday')->formatISO(0));
+        $this->assertEquals('2014-05-18', $this->date->modifyThisWeek('sunday')->formatISODate());
         $this->date->modify('2014-05-19');
-        $this->assertEquals('2014-05-24', $this->date->modifyThisWeek('last day')->formatISO(0));
+        $this->assertEquals('2014-05-24', $this->date->modifyThisWeek('last day')->formatISODate());
 
         $this->date->setStartOfWeek('saturday');
 
         $this->date->modify('2014-05-24');
-        $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISO(0));
+        $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISODate());
         $this->date->modify('2014-05-30');
-        $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISO(0));
+        $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISODate());
     }
 
     public function testFindRelative()
@@ -210,59 +210,59 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $this->date->modify('2014-05-19');
         $this->date->setDay(1);
-        $this->assertEquals('2014-05-01', $this->date->formatISO(0));
+        $this->assertEquals('2014-05-01', $this->date->formatISODate());
         $this->date->setDay(0);
-        $this->assertEquals('2014-04-30', $this->date->formatISO(0));
+        $this->assertEquals('2014-04-30', $this->date->formatISODate());
         $this->date->setDay(32);
-        $this->assertEquals('2014-05-02', $this->date->formatISO(0));
+        $this->assertEquals('2014-05-02', $this->date->formatISODate());
     }
 
     public function testSetMonth()
     {
         $this->date->modify('2014-05-19');
         $this->date->setMonth(4);
-        $this->assertEquals('2014-04-19', $this->date->formatISO(0));
+        $this->assertEquals('2014-04-19', $this->date->formatISODate());
 
         $this->date->modify('2014-03-31');
         $this->date->setMonth(2);
-        $this->assertEquals('2014-02-28', $this->date->formatISO(0));
+        $this->assertEquals('2014-02-28', $this->date->formatISODate());
     }
 
     public function testSetYear()
     {
         $this->date->modify('2014-05-19');
         $this->date->setYear(2078);
-        $this->assertEquals('2078-05-19', $this->date->formatISO(0));
+        $this->assertEquals('2078-05-19', $this->date->formatISODate());
 
         $this->date->modify('2016-02-29');
         $this->date->setYear(2015);
-        $this->assertEquals('2015-02-28', $this->date->formatISO(0));
+        $this->assertEquals('2015-02-28', $this->date->formatISODate());
     }
 
     public function testMagicMethod()
     {
         $this->date->modify('2014-05-19');
-        $this->assertEquals('2014-05-18', $this->date->setYesterday()->formatISO(0));
-        $this->assertEquals('2014-05-19', $this->date->setTomorrow()->formatISO(0));
-        $this->assertEquals('2014-05-01', $this->date->setFirstDayOfMonth()->formatISO(0));
-        $this->assertEquals('2014-05-31', $this->date->setLastDayOfMonth()->formatISO(0));
+        $this->assertEquals('2014-05-18', $this->date->setYesterday()->formatISODate());
+        $this->assertEquals('2014-05-19', $this->date->setTomorrow()->formatISODate());
+        $this->assertEquals('2014-05-01', $this->date->setFirstDayOfMonth()->formatISODate());
+        $this->assertEquals('2014-05-31', $this->date->setLastDayOfMonth()->formatISODate());
         $this->date->modify('2014-05-31');
-        $this->assertEquals('2014-05-26', $this->date->setFirstDayOfWeek()->formatISO(0));
-        $this->assertEquals('2014-06-01', $this->date->setLastDayOfWeek()->formatISO(0));
+        $this->assertEquals('2014-05-26', $this->date->setFirstDayOfWeek()->formatISODate());
+        $this->assertEquals('2014-06-01', $this->date->setLastDayOfWeek()->formatISODate());
 
         $this->date->modify('2014-05-19');
         $date1 = $this->date->getYesterday();
         $this->assertNotSame($date1, $this->date);
-        $this->assertEquals('2014-05-18', $date1->formatISO(0));
+        $this->assertEquals('2014-05-18', $date1->formatISODate());
         $date2 = $this->date->getTomorrow();
         $this->assertNotSame($date2, $this->date);
-        $this->assertEquals('2014-05-20', $date2->formatISO(0));
+        $this->assertEquals('2014-05-20', $date2->formatISODate());
         $date3 = $this->date->getFirstDayOfMonth();
         $this->assertNotSame($date3, $this->date);
-        $this->assertEquals('2014-05-01', $date3->formatISO(0));
+        $this->assertEquals('2014-05-01', $date3->formatISODate());
         $date4 = $this->date->getLastDayOfMonth();
         $this->assertNotSame($date4, $this->date);
-        $this->assertEquals('2014-05-31', $date4->formatISO(0));
+        $this->assertEquals('2014-05-31', $date4->formatISODate());
 
         $date5 = $this->date->wrongMethod();
         $this->assertSame($date5, $this->date);
@@ -300,7 +300,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-31');
         $date = $this->date->getFirstDayOfWeek();
         $this->assertNotSame($date, $this->date);
-        $this->assertEquals('2014-05-26', $date->formatISO(0));
+        $this->assertEquals('2014-05-26', $date->formatISODate());
     }
 
     public function testGetLastDayOfWeek()
@@ -308,6 +308,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-31');
         $date = $this->date->getLastDayOfWeek();
         $this->assertNotSame($date, $this->date);
-        $this->assertEquals('2014-06-01', $date->formatISO(0));
+        $this->assertEquals('2014-06-01', $date->formatISODate());
     }
 }
