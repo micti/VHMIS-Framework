@@ -65,6 +65,9 @@ class DateTime extends \DateTime
         'getLastDayOfMonth' => array('getModifiedDate', 'last day of this month'),
         //'getFirstDayOfWeek' => array('modifyThisWeek', 'first day'),
         //'getLastDayOfWeek' => array('modifyThisWeek', 'last day')
+        'getDay' => array('format', 'd'),
+        'getMonth' => array('format', 'm'),
+        'getYear' => array('format', 'Y'),
     );
 
     /**
@@ -595,16 +598,6 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Lấy ngày của thời gian hiện tại (2 chữ số)
-     *
-     * @return string
-     */
-    public function getDay()
-    {
-        return $this->format('d');
-    }
-
-    /**
      * Lấy ngày trong tuần
      *
      * Thứ 2 -> Thứ 7 trả về 2 - 7
@@ -622,26 +615,6 @@ class DateTime extends \DateTime
         }
 
         return $weekday;
-    }
-
-    /**
-     * Lấy tháng của thời gian hiện tại (2 chữ số)
-     *
-     * @return string
-     */
-    public function getMonth()
-    {
-        return $this->format('m');
-    }
-
-    /**
-     * Lấy năm của thời gian hiện tại (4 chữ số)
-     *
-     * @return string
-     */
-    public function getYear()
-    {
-        return $this->format('Y');
     }
 
     /**

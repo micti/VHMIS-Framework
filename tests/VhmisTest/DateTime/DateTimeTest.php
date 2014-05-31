@@ -226,4 +226,22 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $date5 = $this->date->wrongMethod();
         $this->assertSame($date5, $this->date);
     }
+
+    public function getMonth()
+    {
+        $this->date->modify('2014-05-19');
+        $this->assertEquals('05', $this->date->getMonth());
+    }
+
+    public function getYear()
+    {
+        $this->date->modify('2014-05-19');
+        $this->assertEquals('2014', $this->date->getYear());
+    }
+
+    public function getDay()
+    {
+        $this->date->modify('2014-05-02');
+        $this->assertEquals('02', $this->date->getDay());
+    }
 }
