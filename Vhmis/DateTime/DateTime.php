@@ -16,10 +16,11 @@ namespace Vhmis\DateTime;
  * @method string getMonth() Get month of date (2 characters)
  * @method string getYear() Get year of date (4 characters)
  * @method string getDay() Get day of date (2 characters)
+ * @method string getWeekday() Get ISO-8601 numeric representation of the day of the week
  * @method string formatSQLDate() Format date as SQL date format
  * @method string formatSQLDateTime() Format date as SQL datetime format
- * @method DateTime getFirstDayOfWeek() Return new DateTime object with date is first day of week
- * @method DateTime getLastDayOfWeek() Return new DateTime object with date is last day of week
+ * @method DateTime getFirstDayOfWeek() Get new DateTime object with date is first day of week
+ * @method DateTime getLastDayOfWeek() Get new DateTime object with date is last day of week
  */
 class DateTime extends \DateTime
 {
@@ -69,6 +70,7 @@ class DateTime extends \DateTime
         'getDay' => array('format', 'd'),
         'getMonth' => array('format', 'm'),
         'getYear' => array('format', 'Y'),
+        'getWeekday' => array('format', 'N'),
         'formatSQLDate' => array('formatISO', 0),
         'formatSQLDateTime' => array('formatISO', 1),
     );
@@ -408,7 +410,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Magic for set/get method
+     * Magic for set/get/format method
      *
      * @param string $name
      * @param array  $arguments
@@ -510,26 +512,6 @@ class DateTime extends \DateTime
         }
 
         return $relative;
-    }
-
-    /**
-     * Lấy ngày trong tuần
-     *
-     * Thứ 2 -> Thứ 7 trả về 2 - 7
-     * Chủ nhật -> 8 nếu chủ nhật là ngày cuối tuần
-     * Chủ nhật -> 1 nếu chủ nhật là ngày đầu tuần
-     *
-     * @return int
-     */
-    public function getWeekDay()
-    {
-        $weekday = $this->format('N') + 1;
-
-        if ($this->startOfWeek === 'sunday' && $weekday === 8) {
-            return 1;
-        }
-
-        return $weekday;
     }
 
     /**

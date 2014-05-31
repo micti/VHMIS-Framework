@@ -56,7 +56,7 @@ class SchoolYear extends CalendarAbstract
 
         $info['week'] = $this->getWeek($date);
         $info['month'] = $this->getMonth($date);
-        $info['weekday'] = $date->getWeekDay();
+        $info['weekday'] = $date->getWeekday();
         $info['period'] = $this->getPeriod($date->format('H:i'));
 
         return $info;
