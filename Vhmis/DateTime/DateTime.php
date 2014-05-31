@@ -386,18 +386,6 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Add (or sub) months
-     *
-     * @param int $month
-     *
-     * @return \Vhmis\DateTime\DateTime
-     */
-    public function addMonthWithoutFix($month)
-    {
-        return $this->modify($month . ' months');
-    }
-
-    /**
      * Add / sub year and don't care about total days of month
      *
      * @param int $year
@@ -419,18 +407,6 @@ class DateTime extends \DateTime
         }
 
         return $this;
-    }
-
-    /**
-     * Add (or sub) year
-     *
-     * @param int $year
-     *
-     * @return \Vhmis\DateTime\DateTime
-     */
-    public function addYearWithoutFix($year)
-    {
-        return $this->modify($year . ' years');
     }
 
     /**
