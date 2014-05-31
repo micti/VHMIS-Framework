@@ -13,9 +13,11 @@ namespace Vhmis\DateTime;
 /**
  * Datetime class, extends from PHP Datetime class
  *
- * @method string getMonth()
- * @method string getYear()
- * @method string getDay()
+ * @method string getMonth() Get month of date (2 characters)
+ * @method string getYear() Get year of date (4 characters)
+ * @method string getDay() Get day of date (2 characters)
+ * @method string formatSQLDate() Format date as SQL date format
+ * @method string formatSQLDateTime() Format date as SQL datetime format
  */
 class DateTime extends \DateTime
 {
@@ -72,6 +74,8 @@ class DateTime extends \DateTime
         'getDay' => array('format', 'd'),
         'getMonth' => array('format', 'm'),
         'getYear' => array('format', 'Y'),
+        'formatSQLDate' => array('formatISO', 0),
+        'formatSQLDateTime' => array('formatISO', 1),
     );
 
     /**
@@ -160,26 +164,6 @@ class DateTime extends \DateTime
         }
 
         return $this->format(DateTime::ISO8601);
-    }
-
-    /**
-     * Định dang cho SQL Datetime
-     *
-     * @return string
-     */
-    public function formatSQLDateTime()
-    {
-        return $this->formatISO(1);
-    }
-
-    /**
-     * Định dang cho SQL Date
-     *
-     * @return string
-     */
-    public function formatSQLDate()
-    {
-        return $this->formatISO(0);
     }
 
     /**
@@ -478,7 +462,7 @@ class DateTime extends \DateTime
     {
         if (isset($this->methods[$name])) {
             $method = $this->methods[$name][0];
-            $arguments = $this->methods[$name][1];
+            $arguments = isset($this->methods[$name][1]) ? $this->methods[$name][1] : $arguments;
 
             return $this->$method($arguments);
         }

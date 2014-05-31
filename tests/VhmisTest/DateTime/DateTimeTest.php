@@ -26,6 +26,18 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date = new DateTime;
     }
 
+    public function testFormat()
+    {
+        $this->date->modify('2014-05-02 12:12:14');
+
+        $this->assertEquals('2014-05-02 12:12:14', $this->date->formatISO(1));
+        $this->assertEquals('2014-05-02', $this->date->formatISO(0));
+        $this->assertEquals('2014-05', $this->date->formatISO(3));
+
+        $this->assertEquals('2014-05-02 12:12:14', $this->date->formatSQLDateTime());
+        $this->assertEquals('2014-05-02', $this->date->formatSQLDate());
+    }
+
     /**
      * Test addMonth method
      */
@@ -227,19 +239,19 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($date5, $this->date);
     }
 
-    public function getMonth()
+    public function testGetMonth()
     {
         $this->date->modify('2014-05-19');
         $this->assertEquals('05', $this->date->getMonth());
     }
 
-    public function getYear()
+    public function testGetYear()
     {
         $this->date->modify('2014-05-19');
         $this->assertEquals('2014', $this->date->getYear());
     }
 
-    public function getDay()
+    public function testGetDay()
     {
         $this->date->modify('2014-05-02');
         $this->assertEquals('02', $this->date->getDay());
