@@ -37,14 +37,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testStartOfWeek()
     {
-        $this->date->setStartOfWeek('thursday');
-        $this->assertEquals('thursday', $this->date->getStartOfWeek());
+        $this->date->setStartOfWeek(4);
+        $this->assertEquals(4, $this->date->getStartOfWeek());
 
         $this->date->setStartOfWeek(0);
-        $this->assertEquals('sunday', $this->date->getStartOfWeek());
+        $this->assertEquals(0, $this->date->getStartOfWeek());
 
         $this->date->setStartOfWeek(9);
-        $this->assertEquals('sunday', $this->date->getStartOfWeek());
+        $this->assertEquals(0, $this->date->getStartOfWeek());
     }
 
     public function testFormat()
@@ -98,12 +98,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testDiffWeek()
     {
-        $this->date->setStartOfWeek('sunday')->modify('2014-05-19 00:52:34');
+        $this->date->setStartOfWeek(0)->modify('2014-05-19 00:52:34');
         $date = new DateTime('2014-05-18 23:11:34');
 
         $this->assertEquals(0, $this->date->diffWeek($date));
 
-        $this->date->setStartOfWeek('monday');
+        $this->date->setStartOfWeek(1);
         $this->assertEquals(-1, $this->date->diffWeek($date));
 
         $date->modify('2014-06-29');
@@ -149,7 +149,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testModifyThisWeek()
     {
-        $this->date->setStartOfWeek('monday');
+        $this->date->setStartOfWeek(1);
 
         $this->date->modify('2014-05-19');
         $this->assertEquals('2014-05-19', $this->date->modifyThisWeek('first day')->formatISODate());
@@ -169,7 +169,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-25');
         $this->assertEquals('2014-05-25', $this->date->modifyThisWeek('last day')->formatISODate());
 
-        $this->date->setStartOfWeek('sunday');
+        $this->date->setStartOfWeek(0);
 
         $this->date->modify('2014-05-24');
         $this->assertEquals('2014-05-18', $this->date->modifyThisWeek('first day')->formatISODate());
@@ -190,7 +190,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->modify('2014-05-19');
         $this->assertEquals('2014-05-24', $this->date->modifyThisWeek('last day')->formatISODate());
 
-        $this->date->setStartOfWeek('saturday');
+        $this->date->setStartOfWeek(6);
 
         $this->date->modify('2014-05-24');
         $this->assertEquals('2014-05-26', $this->date->modifyThisWeek('monday')->formatISODate());

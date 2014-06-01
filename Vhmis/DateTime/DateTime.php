@@ -48,7 +48,7 @@ class DateTime extends \DateTime
      *
      * @var string
      */
-    protected $startOfWeek = 'monday';
+    protected $startOfWeek = 1;
 
     /**
      * Weekday order based on start day of week
@@ -112,23 +112,17 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Set start day of week (sunday, monday ... or 0, 1, .. 6)
+     * Set start day of week
+     * 0 - 6 (sunday, monday, ..., saturday)
      *
-     * @param string|int $day
+     * @param int $day
      *
      * @return \Vhmis\DateTime\DateTime
      */
     public function setStartOfWeek($day)
     {
-        if (array_search($day, $this->weekday, true) !== false) {
-            $this->startOfWeek = $day;
-            $this->weekdayOrder = $this->sortWeekday();
-
-            return $this;
-        }
-
         if (isset($this->weekday[$day])) {
-            $this->startOfWeek = $this->weekday[$day];
+            $this->startOfWeek = $day;
             $this->weekdayOrder = $this->sortWeekday();
 
             return $this;
@@ -617,7 +611,7 @@ class DateTime extends \DateTime
      */
     protected function sortWeekday()
     {
-        $position = array_search($this->startOfWeek, $this->weekday);
+        $position = $this->startOfWeek;
         $weekdayOrder = array();
 
         for ($i = 0; $i < 7; $i++) {

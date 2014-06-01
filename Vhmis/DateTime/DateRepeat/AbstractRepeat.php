@@ -59,7 +59,7 @@ abstract class AbstractRepeat
      *
      * @var string
      */
-    protected $startOfWeek = 'monday';
+    protected $startOfWeek = 1;
 
     /**
      * Weekday in english
@@ -129,25 +129,11 @@ abstract class AbstractRepeat
      */
     public function setStartDayOfWeek($day)
     {
-        if (array_search($day, $this->weekday, true) !== false) {
-            $this->startOfWeek = $day;
-
-            $this->begin->setStartOfWeek($day);
-            $this->end->setStartOfWeek($day);
-            $this->from->setStartOfWeek($day);
-            $this->to->setStartOfWeek($day);
-
-            return $this;
-        }
-
-        if (isset($this->weekday[$day])) {
-            $this->startOfWeek = $this->weekday[$day];
-
-            $this->begin->setStartOfWeek($this->weekday[$day]);
-            $this->end->setStartOfWeek($this->weekday[$day]);
-            $this->from->setStartOfWeek($this->weekday[$day]);
-            $this->to->setStartOfWeek($this->weekday[$day]);
-        }
+        $this->begin->setStartOfWeek($day);
+        $this->end->setStartOfWeek($day);
+        $this->from->setStartOfWeek($day);
+        $this->to->setStartOfWeek($day);
+        $this->startOfWeek = $this->begin->getStartOfWeek();
 
         return $this;
     }
