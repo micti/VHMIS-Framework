@@ -94,13 +94,19 @@ class DateTime extends \DateTime
      */
     public static function createFromFormat($format, $time, $timezone = null)
     {
+        if ($timezone === null) {
+            $timezone = new \DateTimeZone(date_default_timezone_get());
+        }
+
         $extDate = new static();
-        $date = parent::createFromFormat($format, $time);
+        $date = parent::createFromFormat($format, $time, $timezone);
+
         if ($date === false) {
             return false;
         }
 
         $extDate->setTimestamp($date->getTimestamp());
+        $extDate->setTimezone($timezone);
 
         return $extDate;
     }
