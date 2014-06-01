@@ -122,7 +122,6 @@ class DateTime extends \DateTime
         }
 
         if (isset($this->weekday[$day])) {
-            echo $this->weekday[$day];
             $this->startOfWeek = $this->weekday[$day];
             $this->weekdayOrder = $this->sortWeekday();
 
