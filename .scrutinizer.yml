@@ -8,7 +8,7 @@ filter:
     paths: {  }
 tools:
     external_code_coverage:
-        enabled: true
+        enabled: false
         timeout: 300
         runs: 1
         filter:
