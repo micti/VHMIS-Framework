@@ -121,6 +121,7 @@ class DateTime extends \DateTime
      */
     public function setStartOfWeek($day)
     {
+        $day = (int) $day;
         if (isset($this->weekday[$day])) {
             $this->startOfWeek = $day;
             $this->weekdayOrder = $this->sortWeekday();
@@ -488,16 +489,6 @@ class DateTime extends \DateTime
         }
 
         return $relative;
-    }
-
-    /**
-     * getTimestamp method return value of format('U')
-     *
-     * @return int
-     */
-    public function getTimestamp()
-    {
-        return $this->format('U');
     }
 
     /**
