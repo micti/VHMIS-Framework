@@ -129,7 +129,7 @@ abstract class AbstractRepeat
      */
     public function setStartDayOfWeek($day)
     {
-        if (array_search($day, $this->weekday) !== false) {
+        if (array_search($day, $this->weekday, true) !== false) {
             $this->startOfWeek = $day;
 
             $this->begin->setStartOfWeek($day);

@@ -114,7 +114,7 @@ class DateTime extends \DateTime
      */
     public function setStartOfWeek($day)
     {
-        if (array_search($day, $this->weekday) !== false) {
+        if (array_search($day, $this->weekday, true) !== false) {
             $this->startOfWeek = $day;
             $this->weekdayOrder = $this->sortWeekday();
 
@@ -122,6 +122,7 @@ class DateTime extends \DateTime
         }
 
         if (isset($this->weekday[$day])) {
+            echo $this->weekday[$day];
             $this->startOfWeek = $this->weekday[$day];
             $this->weekdayOrder = $this->sortWeekday();
 
@@ -529,8 +530,6 @@ class DateTime extends \DateTime
      */
     public function modifyThisWeek($modify)
     {
-        $position = 0;
-
         if ($modify === 'first day') {
             $position = 0;
         } elseif ($modify === 'last day') {

@@ -26,6 +26,27 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date = new DateTime;
     }
 
+    public function testCreateFromFormat()
+    {
+        $date = DateTime::createFromFormat('Y-m-d', '2005-12-12');
+        $this->assertInstanceOf('DateTime', $date);
+
+        $false = DateTime::createFromFormat('Y-m-d', '2005-a-12');
+        $this->assertEquals(false, $false);
+    }
+
+    public function testStartOfWeek()
+    {
+        $this->date->setStartOfWeek('thursday');
+        $this->assertEquals('thursday', $this->date->getStartOfWeek());
+
+        $this->date->setStartOfWeek(0);
+        $this->assertEquals('sunday', $this->date->getStartOfWeek());
+
+        $this->date->setStartOfWeek(9);
+        $this->assertEquals('sunday', $this->date->getStartOfWeek());
+    }
+
     public function testFormat()
     {
         $this->date->modify('2014-05-02 12:12:14');
