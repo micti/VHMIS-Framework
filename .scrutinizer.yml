@@ -7,7 +7,18 @@ filter:
         - 'library/*'
     paths: {  }
 tools:
-    external_code_coverage: true
+    external_code_coverage:
+        enabled: false
+        timeout: 300
+        runs: 1
+        filter:
+            excluded_paths:
+                - 'vendor/*'
+                - 'tests/*'
+                - 'app/*'
+                - 'bin/*'
+                - 'library/*'
+            paths: {  }
     php_sim:
         enabled: true
         min_mass: 16
