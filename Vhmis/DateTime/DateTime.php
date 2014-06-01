@@ -300,7 +300,7 @@ class DateTime extends \DateTime
         $totalMonth = $nowmonth + $year * 12 + $month;
         $month = $totalMonth % 12 + 1;
         $year = floor($totalMonth / 12);
-        
+
         $this->setNewDate($year, $month, $day);
 
         return $this;
@@ -315,9 +315,9 @@ class DateTime extends \DateTime
      */
     public function addYear($year)
     {
-        $nowmonth = (int) $this->format('m');
+        $month = (int) $this->format('m');
         $nowyear = (int) $this->format('Y');
-        $nowday = (int) $this->format('d');
+        $day = (int) $this->format('d');
 
         $year = $nowyear + $year;
 
@@ -338,6 +338,8 @@ class DateTime extends \DateTime
         $month = (int) $this->format('m');
         $year = (int) $this->format('Y');
 
+        $day = abs($day);
+
         $this->setDate($year, $month, $day);
 
         return $this;
@@ -352,6 +354,8 @@ class DateTime extends \DateTime
      */
     public function setMonth($month)
     {
+        $month = abs($month);
+
         return $this->setNewDate(null, $month, null);
     }
 
@@ -364,6 +368,8 @@ class DateTime extends \DateTime
      */
     public function setYear($year)
     {
+        $year = abs($year);
+
         return $this->setNewDate($year, null, null);
     }
 
