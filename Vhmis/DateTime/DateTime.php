@@ -300,12 +300,8 @@ class DateTime extends \DateTime
         $totalMonth = $nowmonth + $year * 12 + $month;
         $month = $totalMonth % 12 + 1;
         $year = floor($totalMonth / 12);
-        $lastday = date('j', strtotime('last day of ' . $year . '-' . $month));
-
-        $this->setDate($year, $month, $day);
-        if ($day > $lastday) {
-            $this->setDate($year, $month, $lastday);
-        }
+        
+        $this->setNewDate($year, $month, $day);
 
         return $this;
     }
@@ -324,12 +320,8 @@ class DateTime extends \DateTime
         $nowday = (int) $this->format('d');
 
         $year = $nowyear + $year;
-        $lastday = date('j', strtotime('last day of ' . $year . '-' . $nowmonth));
 
-        $this->setDate($year, $nowmonth, $lastday);
-        if ($nowday < $lastday) {
-            $this->setDate($year, $nowmonth, $nowday);
-        }
+        $this->setNewDate($year, $month, $day);
 
         return $this;
     }
@@ -575,7 +567,7 @@ class DateTime extends \DateTime
      *
      * @return \Vhmis\DateTime\DateTime
      */
-    public function setNewDate($year, $month, $day)
+    private function setNewDate($year, $month, $day)
     {
         if ($year === null) {
             $year = (int) $this->format('Y');
