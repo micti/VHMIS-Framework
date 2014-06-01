@@ -338,8 +338,7 @@ class DateTime extends \DateTime
     {
         $month = (int) $this->format('m');
         $year = (int) $this->format('Y');
-
-        $day = abs($day);
+        $day = (int) $day;
 
         $this->setDate($year, $month, $day);
 
@@ -347,7 +346,7 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Set month
+     * Set month (1-12)
      *
      * @param int $month
      *
@@ -355,9 +354,15 @@ class DateTime extends \DateTime
      */
     public function setMonth($month)
     {
-        $month = abs($month);
+        $month = (int) $month;
+        if ($month < 1 || $month > 12) {
+            return $this;
+        }
 
-        return $this->setNewDate(null, $month, null);
+        $year = $this->format('Y');
+        $day = $this->format('d');
+
+        return $this->setNewDate($year, $month, $day);
     }
 
     /**
@@ -369,9 +374,11 @@ class DateTime extends \DateTime
      */
     public function setYear($year)
     {
-        $year = abs($year);
+        $year = (int) $year;
+        $month = (int) $this->format('m');
+        $day = (int) $this->format('d');
 
-        return $this->setNewDate($year, null, null);
+        return $this->setNewDate($year, $month, $day);
     }
 
     /**
@@ -564,19 +571,11 @@ class DateTime extends \DateTime
      *
      * @return \Vhmis\DateTime\DateTime
      */
-    private function setNewDate($year, $month, $day)
+    protected function setNewDate($year, $month, $day)
     {
-        if ($year === null) {
-            $year = (int) $this->format('Y');
-        }
-
-        if ($month === null) {
-            $month = (int) $this->format('m');
-        }
-
-        if ($day === null) {
-            $day = (int) $this->format('d');
-        }
+        $year = (int) $year;
+        $month = (int) $month;
+        $day = (int) $day;
 
         $lastday = (int) date('d', strtotime('last day of ' . $year . '-' . $month));
 
@@ -584,10 +583,6 @@ class DateTime extends \DateTime
 
         if ($day > $lastday) {
             $this->setDate($year, $month, $lastday);
-        }
-
-        if ($day < 1) {
-            $this->setDate($year, $month, 1);
         }
 
         return $this;
