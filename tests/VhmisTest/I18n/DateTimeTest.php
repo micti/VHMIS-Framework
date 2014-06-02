@@ -18,7 +18,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->date = new DateTime('GMT+07:00');
+        $this->date = new DateTime('Asia/Ho_Chi_Minh');
     }
 
     public function testFormatISO()

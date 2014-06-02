@@ -28,32 +28,33 @@ class DateTime
 
     public function __construct($timezone = null, $calendar = null, $locale = null)
     {
-        if($timezone === null) {
+        if ($timezone === null) {
             $timezone = date_default_timezone_get();
         }
+        $timezone = new \DateTimeZone($timezone);
 
-        if($calendar === null) {
+        if ($calendar === null) {
             $calendar = 'gregorian';
         }
 
-        if($locale === null) {
+        if ($locale === null) {
             $locale = Locale::getDefault();
         }
-        
+
         $calendarLocale = $locale . '@calendar=' . $calendar;
         $this->calendar = IntlCalendar::createInstance($timezone, $calendarLocale);
 
-        if($this->calendar === null) {
+        if ($this->calendar === null) {
             return null;
         }
     }
 
-    public function set($time) {
-        if(!($time instanceof \DateTime)) {
-            $time = new \DateTime($time);
-        }
+    public function set($time)
+    {
+        $timezone = $this->calendar->getTimeZone()->toDateTimeZone();
+        $time = new \DateTime($time, $timezone);
 
-        if($time === false) {
+        if ($time === false) {
             return $this;
         }
 
@@ -63,21 +64,24 @@ class DateTime
         return $this;
     }
 
-    public function formatISODate() {
+    public function formatISODate()
+    {
         return IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
     }
 
-    public function formatISODateTime() {
+    public function formatISODateTime()
+    {
         return IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd HH:mm:ss');
     }
 
     /**
      *
      * @param string $format
-     * 
+     *
      * @return string
      */
-    public function format($format) {
+    public function format($format)
+    {
         $formatMap = array(
             'd' => 'dd',
             'Y' => 'yyyy',
@@ -87,7 +91,7 @@ class DateTime
             's' => 'ss'
         );
 
-        if(isset($formatMap[$format])) {
+        if (isset($formatMap[$format])) {
             return IntlDateFormatter::formatObject($this->calendar, $formatMap[$format]);
         }
 
@@ -98,7 +102,8 @@ class DateTime
      *
      * @return string
      */
-    public function getDay() {
+    public function getDay()
+    {
         return $this->format('d');
     }
 
@@ -106,7 +111,8 @@ class DateTime
      *
      * @return string
      */
-    public function getMonth() {
+    public function getMonth()
+    {
         return $this->format('d');
     }
 
@@ -114,17 +120,19 @@ class DateTime
      *
      * @return string
      */
-    public function getYear() {
+    public function getYear()
+    {
         return $this->format('Y');
     }
 
     /**
      *
      * @param int $amount
-     * 
+     *
      * @return \Vhmis\I18n\DateTime
      */
-    public function addSecond($amount) {
+    public function addSecond($amount)
+    {
         $this->calendar->add(IntlCalendar::FIELD_SECOND, $amount);
 
         return $this;
@@ -136,7 +144,8 @@ class DateTime
      *
      * @return \Vhmis\I18n\DateTime
      */
-    public function addMinute($amount) {
+    public function addMinute($amount)
+    {
         $this->calendar->add(IntlCalendar::FIELD_MINUTE, $amount);
 
         return $this;
@@ -148,7 +157,8 @@ class DateTime
      *
      * @return \Vhmis\I18n\DateTime
      */
-    public function addHour($amount) {
+    public function addHour($amount)
+    {
         $this->calendar->add(IntlCalendar::FIELD_HOUR, $amount);
 
         return $this;
@@ -160,7 +170,8 @@ class DateTime
      *
      * @return \Vhmis\I18n\DateTime
      */
-    public function addDay($amount) {
+    public function addDay($amount)
+    {
         $this->calendar->add(IntlCalendar::FIELD_DAY_OF_MONTH, $amount);
 
         return $this;
@@ -172,7 +183,8 @@ class DateTime
      *
      * @return \Vhmis\I18n\DateTime
      */
-    public function addMonth($amount) {
+    public function addMonth($amount)
+    {
         $this->calendar->add(IntlCalendar::FIELD_MONTH, $amount);
 
         return $this;
@@ -184,7 +196,8 @@ class DateTime
      *
      * @return \Vhmis\I18n\DateTime
      */
-    public function addYear($amount) {
+    public function addYear($amount)
+    {
         $this->calendar->add(IntlCalendar::FIELD_YEAR, $amount);
 
         return $this;
