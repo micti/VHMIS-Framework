@@ -4,7 +4,6 @@ php:
   - 5.4
   - 5.3
 before_script:
-  - (php -m | grep intl &> /dev/null) || pecl install pecl/intl
   - composer self-update -n
   - cd tests
   - wget https://scrutinizer-ci.com/ocular.phar 
