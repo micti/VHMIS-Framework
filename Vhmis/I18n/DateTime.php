@@ -10,49 +10,64 @@
 
 namespace Vhmis\I18n;
 
-use \IntlCalendar;
-use \IntlDateFormatter;
-use \Locale;
-
 /**
  * DateTime
  */
 class DateTime
 {
     /**
+     * Cache object for convert ...
+     *
+     * @var \IntlCalendar[]
+     */
+    protected static $cacheCalendars = array();
+
+    /**
      * IntlCalendar object
      *
-     * @var IntlCalendar
+     * @var \IntlCalendar
      */
     protected $calendar;
+
+    /**
+     *
+     * @var \DateTimeZone
+     */
+    protected $phpTimeZone;
 
     public function __construct($timezone = null, $calendar = null, $locale = null)
     {
         if ($timezone === null) {
             $timezone = date_default_timezone_get();
         }
-        $timezone = new \DateTimeZone($timezone);
+        $this->phpTimeZone = new \DateTimeZone($timezone);
 
         if ($calendar === null) {
             $calendar = 'gregorian';
         }
 
         if ($locale === null) {
-            $locale = Locale::getDefault();
+            $locale = \Locale::getDefault();
         }
 
         $calendarLocale = $locale . '@calendar=' . $calendar;
-        $this->calendar = IntlCalendar::createInstance($timezone, $calendarLocale);
+        $this->calendar = \IntlCalendar::createInstance($this->phpTimeZone, $calendarLocale);
 
         if ($this->calendar === null) {
             return null;
         }
     }
 
+    public function setDate($year, $month, $day)
+    {
+        $this->calendar->set($year, $month, $day);
+
+        return $this;
+    }
+
     public function set($time)
     {
-        $timezone = $this->calendar->getTimeZone()->toDateTimeZone();
-        $time = new \DateTime($time, $timezone);
+        $time = new \DateTime($time, $this->phpTimeZone);
 
         if ($time === false) {
             return $this;
@@ -62,16 +77,6 @@ class DateTime
         $this->calendar->setTime($mili);
 
         return $this;
-    }
-
-    public function formatISODate()
-    {
-        return IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
-    }
-
-    public function formatISODateTime()
-    {
-        return IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd HH:mm:ss');
     }
 
     /**
@@ -92,10 +97,47 @@ class DateTime
         );
 
         if (isset($formatMap[$format])) {
-            return IntlDateFormatter::formatObject($this->calendar, $formatMap[$format]);
+            return \IntlDateFormatter::formatObject($this->calendar, $formatMap[$format]);
         }
 
         return '';
+    }
+
+    public function formatISODate()
+    {
+        return \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
+    }
+
+    public function formatISODateTime()
+    {
+        return \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd HH:mm:ss');
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getSecond()
+    {
+        return $this->format('s');
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getMinute()
+    {
+        return $this->format('i');
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getHour()
+    {
+        return $this->format('h');
     }
 
     /**
@@ -113,7 +155,7 @@ class DateTime
      */
     public function getMonth()
     {
-        return $this->format('d');
+        return $this->format('m');
     }
 
     /**
@@ -133,7 +175,7 @@ class DateTime
      */
     public function addSecond($amount)
     {
-        $this->calendar->add(IntlCalendar::FIELD_SECOND, $amount);
+        $this->calendar->add(\IntlCalendar::FIELD_SECOND, $amount);
 
         return $this;
     }
@@ -146,7 +188,7 @@ class DateTime
      */
     public function addMinute($amount)
     {
-        $this->calendar->add(IntlCalendar::FIELD_MINUTE, $amount);
+        $this->calendar->add(\IntlCalendar::FIELD_MINUTE, $amount);
 
         return $this;
     }
@@ -159,7 +201,7 @@ class DateTime
      */
     public function addHour($amount)
     {
-        $this->calendar->add(IntlCalendar::FIELD_HOUR, $amount);
+        $this->calendar->add(\IntlCalendar::FIELD_HOUR, $amount);
 
         return $this;
     }
@@ -172,7 +214,7 @@ class DateTime
      */
     public function addDay($amount)
     {
-        $this->calendar->add(IntlCalendar::FIELD_DAY_OF_MONTH, $amount);
+        $this->calendar->add(\IntlCalendar::FIELD_DAY_OF_MONTH, $amount);
 
         return $this;
     }
@@ -185,7 +227,7 @@ class DateTime
      */
     public function addMonth($amount)
     {
-        $this->calendar->add(IntlCalendar::FIELD_MONTH, $amount);
+        $this->calendar->add(\IntlCalendar::FIELD_MONTH, $amount);
 
         return $this;
     }
@@ -198,8 +240,31 @@ class DateTime
      */
     public function addYear($amount)
     {
-        $this->calendar->add(IntlCalendar::FIELD_YEAR, $amount);
+        $this->calendar->add(\IntlCalendar::FIELD_YEAR, $amount);
 
         return $this;
+    }
+
+    public function convertTo($calendar)
+    {
+        $calendar = static::getCacheCalendar($calendar);
+        $time = $this->calendar->getTime();
+        $calendar->setTimeZone($this->phpTimeZone);
+        $calendar->setTime($time);
+
+        return \IntlDateFormatter::formatObject($calendar, 'yyyy-MM-dd');
+    }
+
+    protected static function getCacheCalendar($calendar)
+    {
+        if (isset(static::$cacheCalendars[$calendar])) {
+            return static::$cacheCalendars[$calendar];
+        }
+
+        $locale = \Locale::getDefault() . '@calendar=' . $calendar;
+
+        static::$cacheCalendars[$calendar] = \IntlCalendar::createInstance(null, $locale);
+
+        return static::$cacheCalendars[$calendar];
     }
 }

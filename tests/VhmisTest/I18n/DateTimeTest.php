@@ -20,7 +20,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\IntlCalendar')) {
             $this->markTestSkipped(
-              'Intl version 3.0.0 is not available.'
+                'Intl version 3.0.0 is not available.'
             );
         }
         
@@ -79,5 +79,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2015-02-28', $this->date->formatISODate());
         $this->date->addYear(1);
         $this->assertEquals('2016-02-28', $this->date->formatISODate());
+    }
+
+    public function testConvert()
+    {
+        $this->date->set('2014-06-02');
+        $this->assertEquals('0031-05-05', $this->date->convertTo('chinese'));
+        $this->assertEquals('0026-06-02', $this->date->convertTo('japanese'));
     }
 }
