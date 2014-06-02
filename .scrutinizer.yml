@@ -8,9 +8,9 @@ filter:
     paths: {  }
 tools:
     external_code_coverage:
-        enabled: false
+        enabled: true
         timeout: 300
-        runs: 1
+        runs: 3
         filter:
             excluded_paths:
                 - 'vendor/*'
