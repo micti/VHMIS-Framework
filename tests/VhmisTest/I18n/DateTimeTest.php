@@ -18,6 +18,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!class_exists('\IntlCalendar')) {
+            $this->markTestSkipped(
+              'Intl version 3.0.0 is not available.'
+            );
+        }
+        
         $this->date = new DateTime('Asia/Ho_Chi_Minh');
     }
 
