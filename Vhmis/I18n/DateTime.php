@@ -16,11 +16,43 @@ namespace Vhmis\I18n;
 class DateTime
 {
     /**
-     * Cache object for convert ...
+     * Start year, to caculate related year
+     *
+     * @see http://cldr.unicode.org/development/development-process/design-proposals/pattern-character-for-related-year
+     *
+     * @var array
+     */
+    public static $startYear = array(
+        'chinese' => -2636,
+        'dangi'   => -2332
+    );
+
+    /**
+     * List supported calendars
+     *
+     * @var array
+     */
+    public static $calendars = array(
+        'gregorian'     => 'gregorian',
+        'chinese'       => 'chinese',
+        'coptic'        => 'coptic',
+        'ethiopic'      => 'ethiopic',
+        'hebrew'        => 'hebrew',
+        'indian'        => 'indian',
+        'islamic-civil' => 'islamic-civil',
+        'islamic'       => 'islamic',
+        'japanese'      => 'japanese',
+        'persian'       => 'persian',
+        'taiwan'        => 'taiwan',
+        'buddhist'      => 'buddhist'
+    );
+
+    /**
+     * Cache objects for convert ...
      *
      * @var \IntlCalendar[]
      */
-    protected static $cacheCalendars = array();
+    protected static $cachedCalendars = array();
 
     /**
      * IntlCalendar object
@@ -35,6 +67,13 @@ class DateTime
      */
     protected $phpTimeZone;
 
+    /**
+     * Construct
+     *
+     * @param mixed  $timezone
+     * @param string $calendar
+     * @param string $locale
+     */
     public function __construct($timezone = null, $calendar = null, $locale = null)
     {
         if ($timezone === null) {
@@ -42,7 +81,7 @@ class DateTime
         }
         $this->phpTimeZone = new \DateTimeZone($timezone);
 
-        if ($calendar === null) {
+        if (!isset(static::$calendars[$calendar])) {
             $calendar = 'gregorian';
         }
 
@@ -58,6 +97,15 @@ class DateTime
         }
     }
 
+    /**
+     * Set date
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     *
+     * @return \Vhmis\I18n\DateTime
+     */
     public function setDate($year, $month, $day)
     {
         $this->calendar->set($year, $month, $day);
@@ -65,16 +113,45 @@ class DateTime
         return $this;
     }
 
-    public function set($time)
+    /**
+     * Set time
+     *
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     *
+     * @return \Vhmis\I18n\DateTime
+     */
+    public function setTime($hour, $minute, $second)
     {
-        $time = new \DateTime($time, $this->phpTimeZone);
+        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
+        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, $minute);
+        $this->calendar->set(\IntlCalendar::FIELD_SECOND, $second);
 
-        if ($time === false) {
-            return $this;
-        }
+        return $this;
+    }
 
-        $mili = $time->getTimestamp() * 1000;
-        $this->calendar->setTime($mili);
+    /**
+     * Get unix timestamp
+     *
+     * @return int
+     */
+    public function getTimestamp()
+    {
+        return (int) $this->calendar->getTime() / 1000;
+    }
+
+    /**
+     * Set unix timestamp
+     *
+     * @param int $time
+     *
+     * @return \Vhmis\I18n\DateTime
+     */
+    public function setTimestamp($time)
+    {
+        $time = (int) $time * 1000;
+        $this->calendar->setTime($time);
 
         return $this;
     }
@@ -245,26 +322,55 @@ class DateTime
         return $this;
     }
 
+    /**
+     * Convert date to others calendar
+     *
+     * @param string $calendar
+     *
+     * @return array
+     */
     public function convertTo($calendar)
     {
-        $calendar = static::getCacheCalendar($calendar);
-        $time = $this->calendar->getTime();
-        $calendar->setTimeZone($this->phpTimeZone);
-        $calendar->setTime($time);
+        $result = array();
 
-        return \IntlDateFormatter::formatObject($calendar, 'yyyy-MM-dd');
+        if (!isset(static::$calendars[$calendar])) {
+            return $result;
+        }
+
+        $calendarObject = static::getCachedCalendar($calendar);
+        $calendarObject->setTimeZone($this->phpTimeZone);
+        $calendarObject->setTime($this->calendar->getTime());
+
+        $result['origin'] = \IntlDateFormatter::formatObject($calendarObject, 'yyyy-MM-dd');
+        $result['extend'] = \IntlDateFormatter::formatObject($calendarObject, 'YYYY-MM-dd');
+        $result['relate'] = $result['origin'];
+
+        if (isset(static::$startYear[$calendar])) {
+            $relatedGregorianYear = $calendarObject->get(\IntlCalendar::FIELD_EXTENDED_YEAR);
+            $relatedGregorianYear = static::$startYear[$calendar] - 1 + $relatedGregorianYear;
+            $result['relate'] = $relatedGregorianYear . \IntlDateFormatter::formatObject($calendarObject, '-MM-dd');
+        }
+
+        return $result;
     }
 
-    protected static function getCacheCalendar($calendar)
+    /**
+     * Get cached calendar
+     *
+     * @param string $calendar
+     *
+     * @return \IntlCalendar
+     */
+    protected static function getCachedCalendar($calendar)
     {
-        if (isset(static::$cacheCalendars[$calendar])) {
-            return static::$cacheCalendars[$calendar];
+        if (isset(static::$cachedCalendars[$calendar])) {
+            return static::$cachedCalendars[$calendar];
         }
 
         $locale = \Locale::getDefault() . '@calendar=' . $calendar;
 
-        static::$cacheCalendars[$calendar] = \IntlCalendar::createInstance(null, $locale);
+        static::$cachedCalendars[$calendar] = \IntlCalendar::createInstance(null, $locale);
 
-        return static::$cacheCalendars[$calendar];
+        return static::$cachedCalendars[$calendar];
     }
 }
