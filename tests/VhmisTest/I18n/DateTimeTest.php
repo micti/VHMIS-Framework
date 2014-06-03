@@ -51,6 +51,18 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2014-05-31 00:12:34', $this->date->formatISODateTime());
     }
 
+    public function testTimestamp()
+    {
+        $this->date->setTimestamp(0);
+        $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
+        $b = new DateTime('Asia/Ho_Chi_Minh', 'hebrew');
+        $a->setTimestamp($this->date->getTimestamp());
+        $b->setTimestamp($this->date->getTimestamp());
+
+        $this->assertEquals(0, $a->getTimestamp());
+        $this->assertEquals(0, $b->getTimestamp());
+    }
+
     public function testAddSecond()
     {
         $this->date->setDate(2014, 0, 31)->setTime(0, 12, 34)->addSecond(31);
@@ -102,6 +114,18 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             'relate' => '2014-05-06',
         );
         $this->assertEquals($result, $this->date->convertTo('chinese'));
-        
+        $this->assertEquals(array(), $this->date->convertTo('vietnames'));
+        $result = array(
+            'origin' => '0026-06-03',
+            'extend' => '2014-06-03',
+            'relate' => '0026-06-03',
+        );
+        $this->assertEquals($result, $this->date->convertTo('japanese'));
+        $result = array(
+            'origin' => '0031-05-06',
+            'extend' => '4347-05-06',
+            'relate' => '2014-05-06',
+        );
+        $this->assertEquals($result, $this->date->convertTo('dangi'));
     }
 }
