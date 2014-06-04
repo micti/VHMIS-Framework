@@ -131,5 +131,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             'relate' => '2014-05-06',
         );
         $this->assertEquals($result, $this->date->convertTo('dangi'));
+        $this->date->setDate(1964, 8, 6);
+        $result = array(
+            'origin' => '0041-08-01',
+            'extend' => '4297-08-01',
+            'relate' => '1964-08-01',
+        );
+        $this->assertEquals($result, $this->date->convertTo('dangi'));
     }
 }
