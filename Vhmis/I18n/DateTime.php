@@ -11,7 +11,19 @@
 namespace Vhmis\I18n;
 
 /**
- * DateTime
+ * I18n dateTime class
+ *
+ * @method string getMonth() Get month of date (2 characters)
+ * @method string getYear() Get year of date (4 characters)
+ * @method string getDay() Get day of date (2 characters)
+ * @method string getHour() Get month of date (2 characters)
+ * @method string getMinute() Get year of date (2 characters)
+ * @method string getSecond() Get day of date (2 characters)
+ * @method string formatISODate() Format date as ISO date format (Y-m-d)
+ * @method string formatISODateTime() Format date as ISO datetime format (Y-m-d H:i:s)
+ * @method string formatISOYearMonth() Format date as ISO year and month format (Y-m),
+ * @method string formatSQLDate() Format date as SQL date format
+ * @method string formatSQLDateTime() Format date as SQL datetime format
  */
 class DateTime
 {
@@ -68,6 +80,20 @@ class DateTime
      */
     protected $phpTimeZone;
 
+    protected $methods = array(
+        'getDay' => array('format', 'd'),
+        'getMonth' => array('format', 'm'),
+        'getYear' => array('format', 'Y'),
+        'getSecond' =>  array('format', 's'),
+        'getMinute' =>  array('format', 'i'),
+        'getHour' =>  array('format', 'h'),
+        'formatISODate' => array('format', 'isodate'),
+        'formatISODateTime' => array('format', 'isodatetime'),
+        'formatISOYearMonth' => array('format', 'isoyearmonth'),
+        'formatSQLDate' => array('formatISODate'),
+        'formatSQLDateTime' => array('formatISODateTime'),
+    );
+
     /**
      * Construct
      *
@@ -96,6 +122,26 @@ class DateTime
         if ($this->calendar === null) {
             return null;
         }
+    }
+
+    /**
+     * Magic for set/get/format method
+     *
+     * @param string $name
+     * @param mixed  $arguments
+     *
+     * @return \Vhmis\I18n\DateTime
+     */
+    public function __call($name, $arguments)
+    {
+        if (isset($this->methods[$name])) {
+            $method = $this->methods[$name][0];
+            $arguments = isset($this->methods[$name][1]) ? $this->methods[$name][1] : $arguments;
+
+            return $this->$method($arguments);
+        }
+
+        return $this;
     }
 
     /**
@@ -171,7 +217,10 @@ class DateTime
             'm' => 'MM',
             'h' => 'HH',
             'i' => 'mm',
-            's' => 'ss'
+            's' => 'ss',
+            'isodate' => 'yyyy-MM-dd',
+            'isoyearmonth' => 'yyyy-MM',
+            'isodatetime' => 'yyyy-MM-dd HH:mm:ss'
         );
 
         if (isset($formatMap[$format])) {
@@ -179,70 +228,6 @@ class DateTime
         }
 
         return '';
-    }
-
-    public function formatISODate()
-    {
-        return \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
-    }
-
-    public function formatISODateTime()
-    {
-        return \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd HH:mm:ss');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getSecond()
-    {
-        return $this->format('s');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getMinute()
-    {
-        return $this->format('i');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getHour()
-    {
-        return $this->format('h');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getDay()
-    {
-        return $this->format('d');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getMonth()
-    {
-        return $this->format('m');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getYear()
-    {
-        return $this->format('Y');
     }
 
     /**

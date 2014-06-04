@@ -23,7 +23,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
                 'Intl version 3.0.0 is not available.'
             );
         }
-        
+
         $this->date = new DateTime('Asia/Ho_Chi_Minh');
     }
 
@@ -31,6 +31,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $this->date->setDate(2014, 4, 6)->setTime(0, 12, 34);
 
+        $this->assertEquals('', $this->date->format('sfdsfd'));
         $this->assertEquals('2014', $this->date->getYear());
         $this->assertEquals('05', $this->date->getMonth());
         $this->assertEquals('06', $this->date->getDay());
@@ -49,6 +50,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
         $this->date->setDate(2014, 4, 31)->setTime(0, 12, 34);
         $this->assertEquals('2014-05-31 00:12:34', $this->date->formatISODateTime());
+        $this->assertEquals('2014-05', $this->date->formatISOYearMonth());
+        $this->assertEquals('2014-05-31 00:12:34', $this->date->formatSQLDateTime());
+        $this->assertEquals('2014-05-31', $this->date->formatSQLDate());
     }
 
     public function testTimestamp()
