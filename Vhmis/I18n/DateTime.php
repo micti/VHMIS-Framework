@@ -36,6 +36,7 @@ class DateTime
         'gregorian'     => 'gregorian',
         'chinese'       => 'chinese',
         'coptic'        => 'coptic',
+        'dangi'         => 'dangi',
         'ethiopic'      => 'ethiopic',
         'hebrew'        => 'hebrew',
         'indian'        => 'indian',
