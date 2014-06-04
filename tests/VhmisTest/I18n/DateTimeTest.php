@@ -18,7 +18,24 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!extension_loaded('intl')) {
+            $this->markTestSkipped(
+                'Intl ext is not available.'
+            );
+        }
+
         if (!class_exists('\IntlCalendar')) {
+            $this->markTestSkipped(
+                'Intl version 3.0.0 is not available.'
+            );
+        }
+
+        $reflector = new \ReflectionExtension('intl');
+        ob_start();
+        $reflector->info();
+        $output = ob_get_clean();
+        preg_match('/^ICU version => (.*)$/m', $output, $matches);
+        if ($matches[1] < '5') {
             $this->markTestSkipped(
                 'Intl version 3.0.0 is not available.'
             );
