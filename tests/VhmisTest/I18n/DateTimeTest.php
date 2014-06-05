@@ -156,4 +156,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($result, $this->date->convertTo('dangi'));
     }
+
+    public function testMonthBis()
+    {
+        $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese', 'zh_CN');
+        $a->setDate(31, 4, 8);
+        $a->addYear(1);
+        $this->assertEquals('0032-05-08', $a->formatISODate());
+        $a->addMonth(8);
+        $this->assertEquals('0033-01-08', $a->formatISODate());
+    }
 }
