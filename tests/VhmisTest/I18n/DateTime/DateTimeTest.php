@@ -99,26 +99,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $d->setTimestamp($i);
         $this->assertEquals('2014-06-06 03:54:02', $d->getDateTime());
         $this->assertEquals(1402023242, $d->getTimestamp());
-        var_dump($this->date);
-    }
 
-    /*public function testFormatISO()
-    {
-        $this->date->setDate(2014, 4, 6);
-        $this->assertEquals('2014-05-06', $this->date->formatISODate());
-
-        $this->date->setDate(2014, 4, 6)->setTime(0, 12, 34);
-        $this->assertEquals('2014-05-06 00:12:34', $this->date->formatISODateTime());
-
-        $this->date->setDate(2014, 4, 31)->setTime(0, 12, 34);
-        $this->assertEquals('2014-05-31 00:12:34', $this->date->formatISODateTime());
-        $this->assertEquals('2014-05', $this->date->formatISOYearMonth());
-        $this->assertEquals('2014-05-31 00:12:34', $this->date->formatSQLDateTime());
-        $this->assertEquals('2014-05-31', $this->date->formatSQLDate());
-    }
-
-    public function testTimestamp()
-    {
         $this->date->setTimestamp(0);
         $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
         $b = new DateTime('Asia/Ho_Chi_Minh', 'hebrew');
@@ -129,49 +110,61 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $b->getTimestamp());
     }
 
-    /*public function testAddSecond()
+    public function testAddSecond()
     {
         $this->date->setDate(2014, 0, 31)->setTime(0, 12, 34)->addSecond(31);
-        $this->assertEquals('2014-01-31 00:13:05', $this->date->formatISODateTime());
+        $this->assertEquals('2014-01-31 00:13:05', $this->date->getDateTime());
+        $this->date->addSecond(-61);
+        $this->assertEquals('2014-01-31 00:12:04', $this->date->getDateTime());
     }
 
     public function testAddMinute()
     {
         $this->date->setDate(2014, 0, 31)->setTime(0, 12, 34)->addMinute(60);
-        $this->assertEquals('2014-01-31 01:12:34', $this->date->formatISODateTime());
+        $this->assertEquals('2014-01-31 01:12:34', $this->date->getDateTime());
+        $this->date->addMinute(-23);
+        $this->assertEquals('2014-01-31 00:49:34', $this->date->getDateTime());
     }
 
     public function testAddHour()
     {
         $this->date->setDate(2014, 0, 31)->setTime(0, 12, 34)->addHour(25);
-        $this->assertEquals('2014-02-01 01:12:34', $this->date->formatISODateTime());
+        $this->assertEquals('2014-02-01 01:12:34', $this->date->getDateTime());
+        $this->date->addHour(-2);
+        $this->assertEquals('2014-01-31 23:12:34', $this->date->getDateTime());
     }
 
     public function testAddDay()
     {
         $this->date->setDate(2014, 0, 31)->addDay(31);
-        $this->assertEquals('2014-03-03', $this->date->formatISODate());
+        $this->assertEquals('2014-03-03', $this->date->getDate());
         $this->date->addDay(365);
-        $this->assertEquals('2015-03-03', $this->date->formatISODate());
+        $this->assertEquals('2015-03-03', $this->date->getDate());
+        $this->date->addDay(-3);
+        $this->assertEquals('2015-02-28', $this->date->getDate());
     }
 
     public function testAddMonth()
     {
         $this->date->setDate(2014, 0, 31)->addMonth(1);
-        $this->assertEquals('2014-02-28', $this->date->formatISODate());
+        $this->assertEquals('2014-02-28', $this->date->getDate());
         $this->date->addMonth(1);
-        $this->assertEquals('2014-03-28', $this->date->formatISODate());
+        $this->assertEquals('2014-03-28', $this->date->getDate());
+        $this->date->addMonth(-14);
+        $this->assertEquals('2013-01-28', $this->date->getDate());
     }
 
     public function testAddYear()
     {
         $this->date->setDate(2012, 1, 29)->addYear(3);
-        $this->assertEquals('2015-02-28', $this->date->formatISODate());
+        $this->assertEquals('2015-02-28', $this->date->getDate());
         $this->date->addYear(1);
-        $this->assertEquals('2016-02-28', $this->date->formatISODate());
+        $this->assertEquals('2016-02-28', $this->date->getDate());
+        $this->date->addYear(-6);
+        $this->assertEquals('2010-02-28', $this->date->getDate());
     }
 
-    public function testSetMonth()
+    /*public function testSetMonth()
     {
         $this->date->setDate(2014, 0, 31);
         $this->date->setMonth(1);
