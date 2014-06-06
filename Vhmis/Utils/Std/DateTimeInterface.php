@@ -74,6 +74,13 @@ interface DateTimeInterface
      */
     public function getTimestamp();
 
+    /**
+     * Object to string
+     *
+     * @return string
+     */
+    public function __toString();
+
     public function addSecond($amount);
 
     public function addMinute($amount);
@@ -87,4 +94,17 @@ interface DateTimeInterface
     public function addMonth($amount);
 
     public function addYear($amount);
+
+    public function setSecond($second);
+
+    public function setMinute($minute);
+
+    public function setHour($hour);
+
+    public function setDay($day);
+
+    public function setMonth($month);
+
+    public function setYear($year);
+
 }

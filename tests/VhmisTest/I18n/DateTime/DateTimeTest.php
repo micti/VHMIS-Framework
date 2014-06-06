@@ -31,7 +31,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        $reflector = new \ReflectionExtension('intl');
+        /*$reflector = new \ReflectionExtension('intl');
         ob_start();
         $reflector->info();
         $output = ob_get_clean();
@@ -40,7 +40,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped(
                 'ICU version > 5 is not available.'
             );
-        }
+        }*/
 
         $this->date = new DateTime('Asia/Ho_Chi_Minh');
     }
@@ -164,16 +164,49 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2010-02-28', $this->date->getDate());
     }
 
+    public function testSetSecond()
+    {
+        $this->date->setTime(0, 12, 34);
+        $this->date->setSecond(45);
+        $this->assertEquals('00:12:45', $this->date->getTime());
+        $this->date->setSecond(60); //out, nothing change
+        $this->assertEquals('00:12:45', $this->date->getTime());
+        $this->date->setSecond(-1); //out, nothing change
+        $this->assertEquals('00:12:45', $this->date->getTime());
+    }
+
+    public function testSetMinute()
+    {
+        $this->date->setTime(0, 12, 34);
+        $this->date->setMinute(20);
+        $this->assertEquals('00:20:34', $this->date->getTime());
+        $this->date->setMinute(60); //out, nothing change
+        $this->assertEquals('00:20:34', $this->date->getTime());
+        $this->date->setMinute(-1); //out, nothing change
+        $this->assertEquals('00:20:34', $this->date->getTime());
+    }
+
+    public function testSetHour()
+    {
+        $this->date->setTime(0, 12, 34);
+        $this->date->setHour(7);
+        $this->assertEquals('07:12:34', $this->date->getTime());
+        $this->date->setHour(24); //out, nothing change
+        $this->assertEquals('07:12:34', $this->date->getTime());
+        $this->date->setHour(-1); //out, nothing change
+        $this->assertEquals('07:12:34', $this->date->getTime());
+    }
+
     /*public function testSetMonth()
     {
         $this->date->setDate(2014, 0, 31);
         $this->date->setMonth(1);
-        $this->assertEquals('2014-02-28', $this->date->formatISODate());
+        $this->assertEquals('2014-02-28', $this->date->getDate());
         $this->date->setMonth(11);
-        $this->assertEquals('2014-12-28', $this->date->formatISODate());
-    }
+        $this->assertEquals('2014-12-28', $this->date->getDate());
+    }*/
 
-    public function testConvert()
+    /*public function testConvert()
     {
         $this->date->setDate(2014, 5, 3);
         $result = array(

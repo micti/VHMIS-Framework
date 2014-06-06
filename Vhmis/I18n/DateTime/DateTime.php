@@ -11,6 +11,7 @@
 namespace Vhmis\I18n\DateTime;
 
 use \Vhmis\Utils\Std\DateTimeInterface;
+use \Vhmis\Utils\Std\AbstractDateTime;
 use \Vhmis\Utils\Exception\InvalidArgumentException;
 
 /**
@@ -18,7 +19,7 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  *
  * Support many calendars with locale info
  */
-class DateTime implements DateTimeInterface
+class DateTime extends AbstractDateTime implements DateTimeInterface
 {
     /**
      * List supported calendars
@@ -184,6 +185,16 @@ class DateTime implements DateTimeInterface
     }
 
     /**
+     * Object to string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getDateTime();
+    }
+
+    /**
      * Add second
      *
      * @param int $amount
@@ -284,6 +295,112 @@ class DateTime implements DateTimeInterface
     {
         $amount = (int) $amount;
         $this->calendar->add(\IntlCalendar::FIELD_YEAR, $amount);
+
+        return $this;
+    }
+
+    /**
+     * Set second
+     *
+     * @param int $second
+     *
+     * @return DateTime
+     */
+    public function setSecond($second)
+    {
+        $second = (int) $second;
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_SECOND);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_SECOND);
+
+        if ($this->isValidFieldValue($second, $min, $max)) {
+            $this->calendar->set(\IntlCalendar::FIELD_SECOND, $second);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set minute
+     *
+     * @param int $minute
+     *
+     * @return DateTime
+     */
+    public function setMinute($minute)
+    {
+        $minute = (int) $minute;
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_MINUTE);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_MINUTE);
+
+        if ($this->isValidFieldValue($minute, $min, $max)) {
+            $this->calendar->set(\IntlCalendar::FIELD_MINUTE, $minute);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set hour
+     *
+     * @param int $hour
+     *
+     * @return DateTime
+     */
+    public function setHour($hour)
+    {
+        $hour = (int) $hour;
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_HOUR_OF_DAY);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_HOUR_OF_DAY);
+
+        if ($this->isValidFieldValue($hour, $min, $max)) {
+            $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set day
+     *
+     * @param int $day
+     *
+     * @return DateTime
+     */
+    public function setDay($day)
+    {
+        $day = (int) $day;
+        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
+
+        return $this;
+    }
+
+    /**
+     * Set month
+     *
+     * @param int $month
+     *
+     * @return DateTime
+     */
+    public function setMonth($month)
+    {
+        $currentMonth = (int) $this->calendar->get(\IntlCalendar::FIELD_MONTH);
+        $month = (int) $month - $currentMonth;
+        $this->addMonth($month);
+
+        return $this;
+    }
+
+    /**
+     * Set year
+     *
+     * @param int $year
+     *
+     * @return DateTime
+     */
+    public function setYear($year)
+    {
+        $year = (int) $year;
+        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $year);
 
         return $this;
     }
