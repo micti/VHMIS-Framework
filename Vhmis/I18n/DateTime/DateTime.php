@@ -184,6 +184,111 @@ class DateTime implements DateTimeInterface
     }
 
     /**
+     * Add second
+     *
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    public function addSecond($amount)
+    {
+        $amount = (int) $amount;
+        $this->calendar->add(\IntlCalendar::FIELD_SECOND, $amount);
+
+        return $this;
+    }
+
+    /**
+     * Add minute
+     *
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    public function addMinute($amount)
+    {
+        $amount = (int) $amount;
+        $this->calendar->add(\IntlCalendar::FIELD_MINUTE, $amount);
+
+        return $this;
+    }
+
+    /**
+     * Add hour
+     *
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    public function addHour($amount)
+    {
+        $amount = (int) $amount;
+        $this->calendar->add(\IntlCalendar::FIELD_HOUR, $amount);
+
+        return $this;
+    }
+
+    /**
+     * Add day
+     *
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    public function addDay($amount)
+    {
+        $amount = (int) $amount;
+        $this->calendar->add(\IntlCalendar::FIELD_DAY_OF_MONTH, $amount);
+
+        return $this;
+    }
+
+    /**
+     * Add week
+     *
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    public function addWeek($amount)
+    {
+        $amount = (int) $amount;
+        $this->addDay($amount * 7);
+
+        return $this;
+    }
+
+    /**
+     * Add month
+     *
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    public function addMonth($amount)
+    {
+        $amount = (int) $amount;
+        $this->calendar->add(\IntlCalendar::FIELD_MONTH, $amount);
+
+        return $this;
+    }
+
+    /**
+     * Add year
+     *
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    public function addYear($amount)
+    {
+        $amount = (int) $amount;
+        $this->calendar->add(\IntlCalendar::FIELD_YEAR, $amount);
+
+        return $this;
+    }
+
+    /**
      * Get calendar
      *
      * @param string $calendar
