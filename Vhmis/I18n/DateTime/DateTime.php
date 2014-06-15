@@ -84,6 +84,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
 
     /**
      * Set date
+     * Month based-1
      *
      * @param int $year
      * @param int $month
@@ -93,7 +94,8 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setDate($year, $month, $day)
     {
-        $this->calendar->set($year, $month, $day);
+        $month = (int) $month - 1;
+        $this->calendar->set((int) $year, $month, (int) $day);
 
         return $this;
     }
@@ -109,9 +111,9 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setTime($hour, $minute, $second)
     {
-        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
-        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, $minute);
-        $this->calendar->set(\IntlCalendar::FIELD_SECOND, $second);
+        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, (int) $hour);
+        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, (int) $minute);
+        $this->calendar->set(\IntlCalendar::FIELD_SECOND, (int) $second);
 
         return $this;
     }

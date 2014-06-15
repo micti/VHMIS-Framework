@@ -63,7 +63,16 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetDate()
     {
         $this->date->setDate(1, 1, 1);
-        $this->assertEquals('0001-02-01', $this->date->getDate());
+        $this->assertEquals('0001-01-01', $this->date->getDate());
+
+        $this->date->setDate(2014, 2, 28);
+        $this->assertEquals('2014-02-28', $this->date->getDate());
+
+        $this->date->setDate(2014, 0, 28);
+        $this->assertEquals('2013-12-28', $this->date->getDate());
+
+        $this->date->setDate(2014, -1, 28);
+        $this->assertEquals('2013-11-28', $this->date->getDate());
     }
 
     public function testSetAndGetTime()
@@ -80,12 +89,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDateTime()
     {
-        $this->date->setDate(11111, 1, 1); // move to 11111-02-01
+        $this->date->setDate(11111, 2, 1); // move to 11111-02-01
         $this->date->setTime(-1, -1, -1); // move back 11111-01-31
 
         $this->assertEquals('11111-01-31 22:58:59', $this->date->getDateTime());
 
-        $this->date->setDate(2014, 5, 6); // move to 11111-02-01
+        $this->date->setDate(2014, 6, 6); // move to 11111-02-01
         $this->date->setTime(8, 8, 8); // move back 11111-01-31
 
         $this->assertEquals('2014-06-06 08:08:08', $this->date->getDateTime());
@@ -111,7 +120,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testAddSecond()
     {
-        $this->date->setDate(2014, 0, 31)->setTime(0, 12, 34)->addSecond(31);
+        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addSecond(31);
         $this->assertEquals('2014-01-31 00:13:05', $this->date->getDateTime());
         $this->date->addSecond(-61);
         $this->assertEquals('2014-01-31 00:12:04', $this->date->getDateTime());
@@ -119,7 +128,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testAddMinute()
     {
-        $this->date->setDate(2014, 0, 31)->setTime(0, 12, 34)->addMinute(60);
+        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addMinute(60);
         $this->assertEquals('2014-01-31 01:12:34', $this->date->getDateTime());
         $this->date->addMinute(-23);
         $this->assertEquals('2014-01-31 00:49:34', $this->date->getDateTime());
@@ -127,7 +136,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testAddHour()
     {
-        $this->date->setDate(2014, 0, 31)->setTime(0, 12, 34)->addHour(25);
+        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addHour(25);
         $this->assertEquals('2014-02-01 01:12:34', $this->date->getDateTime());
         $this->date->addHour(-2);
         $this->assertEquals('2014-01-31 23:12:34', $this->date->getDateTime());
@@ -135,7 +144,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testAddDay()
     {
-        $this->date->setDate(2014, 0, 31)->addDay(31);
+        $this->date->setDate(2014, 1, 31)->addDay(31);
         $this->assertEquals('2014-03-03', $this->date->getDate());
         $this->date->addDay(365);
         $this->assertEquals('2015-03-03', $this->date->getDate());
@@ -145,7 +154,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testAddMonth()
     {
-        $this->date->setDate(2014, 0, 31)->addMonth(1);
+        $this->date->setDate(2014, 1, 31)->addMonth(1);
         $this->assertEquals('2014-02-28', $this->date->getDate());
         $this->date->addMonth(1);
         $this->assertEquals('2014-03-28', $this->date->getDate());
@@ -155,7 +164,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testAddYear()
     {
-        $this->date->setDate(2012, 1, 29)->addYear(3);
+        $this->date->setDate(2012, 2, 29)->addYear(3);
         $this->assertEquals('2015-02-28', $this->date->getDate());
         $this->date->addYear(1);
         $this->assertEquals('2016-02-28', $this->date->getDate());
@@ -198,7 +207,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testSetDay()
     {
-        $this->date->setDate(2014, 1, 12);
+        $this->date->setDate(2014, 2, 12);
         $this->date->setDay(29);
         $this->assertEquals('2014-02-12', $this->date->getDate());
         $this->date->setDay(-1);
@@ -209,7 +218,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testSetMonth()
     {
-        $this->date->setDate(2014, 0, 31);
+        $this->date->setDate(2014, 1, 31);
         $this->date->setMonth(2);
         $this->assertEquals('2014-02-28', $this->date->getDate());
         $this->date->setMonth(12);
@@ -219,7 +228,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testSetLeapMonth()
     {
         $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
-        $a->setDate(31, 0, 20);
+        $a->setDate(31, 1, 20);
         $a->setLeapMonth(8); // not leap
         $this->assertEquals('0031-01-20', $a->getDate());
         $a->setMonth(9); // normal
@@ -230,11 +239,11 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testSetYear()
     {
-        $this->date->setDate(2014, 0, 31);
+        $this->date->setDate(2014, 1, 31);
         $this->date->setYear(2016);
         $this->assertEquals('2016-01-31', $this->date->getDate());
 
-        $this->date->setDate(2012, 1, 29);
+        $this->date->setDate(2012, 2, 29);
         $this->date->setYear(2014);
         $this->assertEquals('2014-02-28', $this->date->getDate());
     }
