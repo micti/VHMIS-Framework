@@ -11,7 +11,6 @@
 namespace VhmisTest\I18n;
 
 use \Vhmis\I18n\DateTime\DateTime;
-use \Vhmis\Utils\Exception\InvalidArgumentException;
 
 class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
@@ -197,14 +196,48 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('07:12:34', $this->date->getTime());
     }
 
-    /*public function testSetMonth()
+    public function testSetDay()
+    {
+        $this->date->setDate(2014, 1, 12);
+        $this->date->setDay(29);
+        $this->assertEquals('2014-02-12', $this->date->getDate());
+        $this->date->setDay(-1);
+        $this->assertEquals('2014-02-12', $this->date->getDate());
+        $this->date->setDay(28);
+        $this->assertEquals('2014-02-28', $this->date->getDate());
+    }
+
+    public function testSetMonth()
     {
         $this->date->setDate(2014, 0, 31);
-        $this->date->setMonth(1);
+        $this->date->setMonth(2);
         $this->assertEquals('2014-02-28', $this->date->getDate());
-        $this->date->setMonth(11);
+        $this->date->setMonth(12);
         $this->assertEquals('2014-12-28', $this->date->getDate());
-    }*/
+    }
+
+    public function testSetLeapMonth()
+    {
+        $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
+        $a->setDate(31, 0, 20);
+        $a->setLeapMonth(8); // not leap
+        $this->assertEquals('0031-01-20', $a->getDate());
+        $a->setMonth(9); // normal
+        $this->assertEquals('0031-09-20', $a->getDate());
+        $a->setLeapMonth(9); // leap
+        $this->assertEquals('0031-09-20', $a->getDate());
+    }
+
+    public function testSetYear()
+    {
+        $this->date->setDate(2014, 0, 31);
+        $this->date->setYear(2016);
+        $this->assertEquals('2016-01-31', $this->date->getDate());
+
+        $this->date->setDate(2012, 1, 29);
+        $this->date->setYear(2014);
+        $this->assertEquals('2014-02-28', $this->date->getDate());
+    }
 
     /*public function testConvert()
     {
@@ -235,15 +268,5 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             'relate' => '1964-08-01',
         );
         $this->assertEquals($result, $this->date->convertTo('dangi'));
-    }
-
-    public function testMonthBis()
-    {
-        $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese', 'zh_CN');
-        $a->setDate(31, 4, 8);
-        $a->addYear(1);
-        $this->assertEquals('0032-05-08', $a->formatISODate());
-        $a->addMonth(8);
-        $this->assertEquals('0033-01-08', $a->formatISODate());
     }*/
 }

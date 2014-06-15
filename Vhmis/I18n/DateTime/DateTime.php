@@ -369,13 +369,18 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setDay($day)
     {
         $day = (int) $day;
-        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_DAY_OF_MONTH);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_DAY_OF_MONTH);
+
+        if ($this->isValidFieldValue($day, $min, $max)) {
+            $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
+        }
 
         return $this;
     }
 
     /**
-     * Set month
+     * Set month (1-based)
      *
      * @param int $month
      *
@@ -383,9 +388,47 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setMonth($month)
     {
-        $currentMonth = (int) $this->calendar->get(\IntlCalendar::FIELD_MONTH);
-        $month = (int) $month - $currentMonth;
-        $this->addMonth($month);
+        $month = (int) $month - 1;
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_MONTH);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_MONTH);
+
+        if ($this->isValidFieldValue($month, $min, $max)) {
+            $currentMonth = $this->calendar->get(\IntlCalendar::FIELD_MONTH);
+            $month = $month - $currentMonth;
+            $this->calendar->add(\IntlCalendar::FIELD_MONTH, $month);
+            $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set leap month (1-based)
+     *
+     * @param int $month
+     *
+     * @return DateTime
+     */
+    public function setLeapMonth($month)
+    {
+        $currentMonth = $this->calendar->get(\IntlCalendar::FIELD_MONTH);
+        $currentDay = $this->calendar->get(\IntlCalendar::FIELD_DAY_OF_MONTH);
+        $isLeapCurrentMonth = $this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH);
+
+        $month = (int) $month - 1;
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_MONTH);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_MONTH);
+
+        if ($this->isValidFieldValue($month, $min, $max)) {
+            $month = $month - $currentMonth + 1; // for leap
+            $this->calendar->add(\IntlCalendar::FIELD_MONTH, $month);
+
+            if ($this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH) !== 1) {
+                $this->calendar->set(\IntlCalendar::FIELD_MONTH, $currentMonth);
+                $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $currentDay);
+                $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, $isLeapCurrentMonth);
+            }
+        }
 
         return $this;
     }
@@ -400,7 +443,34 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setYear($year)
     {
         $year = (int) $year;
-        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $year);
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_YEAR);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_YEAR);
+
+        if ($this->isValidFieldValue($year, $min, $max)) {
+            $currentYear = $this->calendar->get(\IntlCalendar::FIELD_YEAR);
+            $year = $year - $currentYear;
+            $this->calendar->add(\IntlCalendar::FIELD_YEAR, $year);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set extended year
+     *
+     * @param int $year
+     *
+     * @return DateTime
+     */
+    public function setExtendedYear($year)
+    {
+        $year = (int) $year;
+        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_EXTENDED_YEAR);
+        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_EXTENDED_YEAR);
+
+        if ($this->isValidFieldValue($year, $min, $max)) {
+            $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, $year);
+        }
 
         return $this;
     }
