@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
+namespace Vhmis\I18n\DateTime\Helper;
+
+use \Vhmis\Utils\Std\AbstractDateTimeHelper;
+use \Vhmis\I18n\DateTime\DateTime;
+
+class Convert extends AbstractDateTimeHelper
+{
+    /**
+     * Cache objects for convert ...
+     *
+     * @var DateTime[]
+     */
+    protected static $cachedDateTimes = array();
+
+    /**
+     * Date object
+     *
+     * @var DateTime
+     */
+    protected $date;
+
+    /**
+     * Convert date to other calendar
+     *
+     * @param string $calendar
+     *
+     * @return array
+     */
+    public function to($calendar)
+    {
+        $result = array();
+
+        if (!isset(DateTime::$calendars[$calendar])) {
+            return $result;
+        }
+
+        $calendarObject = static::getCachedDateTime($calendar);
+        $calendarObject->setTimeZone($this->date->getTimeZone());
+        $calendarObject->setTimestamp($this->date->getTimestamp());
+
+        $result['origin'] = $calendarObject->getDate();
+        //$result['extend'] = $calendarObject->getDate();
+        //$result['relate'] = $calendarObject->getDate();
+        return $result;
+    }
+
+    /**
+     * Get cached calendar for convert
+     *
+     * @param string $calendar
+     *
+     * @return DateTime
+     */
+    protected static function getCachedDateTime($calendar)
+    {
+        if (isset(static::$cachedDateTimes[$calendar])) {
+            return static::$cachedDateTimes[$calendar];
+        }
+
+        static::$cachedDateTimes[$calendar] = new DateTime(null, $calendar, \Locale::getDefault());
+
+        return static::$cachedDateTimes[$calendar];
+    }
+}

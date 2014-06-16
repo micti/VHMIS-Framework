@@ -247,35 +247,4 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setYear(2014);
         $this->assertEquals('2014-02-28', $this->date->getDate());
     }
-
-    /*public function testConvert()
-    {
-        $this->date->setDate(2014, 5, 3);
-        $result = array(
-            'origin' => '0031-05-06',
-            'extend' => '4651-05-06',
-            'relate' => '2014-05-06',
-        );
-        $this->assertEquals($result, $this->date->convertTo('chinese'));
-        $this->assertEquals(array(), $this->date->convertTo('vietnames'));
-        $result = array(
-            'origin' => '0026-06-03',
-            'extend' => '2014-06-03',
-            'relate' => '0026-06-03',
-        );
-        $this->assertEquals($result, $this->date->convertTo('japanese'));
-        $result = array(
-            'origin' => '0031-05-06',
-            'extend' => '4347-05-06',
-            'relate' => '2014-05-06',
-        );
-        $this->assertEquals($result, $this->date->convertTo('dangi'));
-        $this->date->setDate(1964, 8, 6);
-        $result = array(
-            'origin' => '0041-08-01',
-            'extend' => '4297-08-01',
-            'relate' => '1964-08-01',
-        );
-        $this->assertEquals($result, $this->date->convertTo('dangi'));
-    }*/
 }

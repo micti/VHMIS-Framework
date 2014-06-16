@@ -43,16 +43,18 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     );
 
     /**
-     *
-     * @var \DateTimeZone
-     */
-    protected $phpTimeZone;
-
-    /**
+     * IntlCalendar object
      *
      * @var \IntlCalendar
      */
     protected $calendar;
+
+    /**
+     * Helper namespace
+     *
+     * @var string
+     */
+    protected $helperNamespace = '\Vhmis\I18n\DateTime\Helper';
 
     /**
      * Construct
@@ -60,8 +62,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      * @param mixed  $timezone
      * @param string $calendar
      * @param string $locale
-     *
-     * @return null if failure
      *
      * @throws InvalidArgumentException
      */
@@ -114,6 +114,20 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, (int) $hour);
         $this->calendar->set(\IntlCalendar::FIELD_MINUTE, (int) $minute);
         $this->calendar->set(\IntlCalendar::FIELD_SECOND, (int) $second);
+
+        return $this;
+    }
+
+    /**
+     * Set timezone
+     *
+     * @param mixed $timeZone
+     *
+     * @return \Vhmis\I18n\DateTime\DateTime
+     */
+    public function setTimeZone($timeZone)
+    {
+        $this->calendar->setTimeZone($timeZone);
 
         return $this;
     }
@@ -177,6 +191,16 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Get timezone name
+     *
+     * @return string
+     */
+    public function getTimeZone()
+    {
+        return $this->calendar->getTimeZone()->getDisplayName();
+    }
+
+    /**
      * Get epoch timestamp (UTC 00:00)
      *
      * @return int
@@ -187,6 +211,16 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Get calendar type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->calendar->getType();
+    }
+
+    /**
      * Object to string
      *
      * @return string
@@ -194,6 +228,11 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function __toString()
     {
         return $this->getDateTime();
+    }
+
+    public function __get($name)
+    {
+        return $this->getHelper($name);
     }
 
     /**
@@ -478,6 +517,51 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Get Gregorian related year from other calendar year
+     *
+     * @param string $calendar
+     *
+     * @return int
+     */
+    public function getGregorianRelatedYear()
+    {
+        $year = $this->calendar->get(\IntlCalendar::FIELD_EXTENDED_YEAR);
+        $calendar = $this->getType();
+
+        switch ($calendar) {
+            case 'persian':
+                $year += 622;
+                break;
+            case 'hebrew':
+                $year -= 3760;
+                break;
+            case 'chinese':
+                $year -= 2637;
+                break;
+            case 'indian':
+                $year += 79;
+                break;
+            case 'coptic':
+                $year += 284;
+                break;
+            case 'ethiopic':
+                $year += 8;
+                break;
+            case 'dangi':
+                $year -= 2333;
+                break;
+            case 'islamic':
+            case 'islamic-civil':
+                $year = $this->islamicYearToGregorianYear(year);
+                break;
+            default:
+                break;
+        }
+
+        return $year;
+    }
+
+    /**
      * Get calendar
      *
      * @param string $calendar
@@ -491,5 +575,29 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         return $calendar;
+    }
+
+    /**
+     * Get Gregorian related year from Islamic calendar year
+     *
+     * @param int $islamicYear
+     *
+     * @return int
+     */
+    protected function islamicYearToGregorianYear($islamicYear)
+    {
+        $cycle = $offset = $shift = 0;
+
+        if ($islamicYear >= 1397) {
+            $cycle = ($islamicYear - 1397) / 67;
+            $offset = ($islamicYear - 1397) % 67;
+            $shift = 2 * $cycle + (($offset >= 33) ? 1 : 0);
+        } else {
+            $cycle = ($islamicYear - 1396) / 67 - 1;
+            $offset = -($islamicYear - 1396) % 67;
+            $shift = 2 * $cycle + (($offset <= 33) ? 1 : 0);
+        }
+
+        return $islamicYear + 579 - $shift;
     }
 }
