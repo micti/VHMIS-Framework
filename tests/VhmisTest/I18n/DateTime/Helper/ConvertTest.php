@@ -31,6 +31,17 @@ class ConvertTest extends \PHPUnit_Framework_TestCase
             );
         }
 
+        $reflector = new \ReflectionExtension('intl');
+        ob_start();
+        $reflector->info();
+        $output = ob_get_clean();
+        preg_match('/^ICU version => (.*)$/m', $output, $matches);
+        if ($matches[1] < '5') {
+            $this->markTestSkipped(
+                'ICU version > 5 is not available.'
+            );
+        }
+
         $this->convert = new Convert;
     }
 
