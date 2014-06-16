@@ -19,6 +19,18 @@ class ConvertTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!extension_loaded('intl')) {
+            $this->markTestSkipped(
+                'Intl ext is not available.'
+            );
+        }
+
+        if (!class_exists('\IntlCalendar')) {
+            $this->markTestSkipped(
+                'Intl version 3.0.0 is not available.'
+            );
+        }
+
         $this->convert = new Convert;
     }
 
