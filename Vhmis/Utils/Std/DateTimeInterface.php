@@ -95,16 +95,4 @@ interface DateTimeInterface
 
     public function addYear($amount);
 
-    public function setSecond($second);
-
-    public function setMinute($minute);
-
-    public function setHour($hour);
-
-    public function setDay($day);
-
-    public function setMonth($month);
-
-    public function setYear($year);
-
 }

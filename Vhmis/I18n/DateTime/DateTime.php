@@ -18,6 +18,13 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * I18n Datetime class
  *
  * Support many calendars with locale info
+ *
+ * @method \Vhmis\I18n\DateTime\DateTime setSecond(int $second)
+ * @method \Vhmis\I18n\DateTime\DateTime setMinute(int $minute)
+ * @method \Vhmis\I18n\DateTime\DateTime setHour(int $hour)
+ * @method \Vhmis\I18n\DateTime\DateTime setDay(int $day)
+ * @method \Vhmis\I18n\DateTime\DateTime setExtendedYear(int $extendYear)
+ * @method \Vhmis\I18n\DateTime\DateTime setEra(int $era)
  */
 class DateTime extends AbstractDateTime implements DateTimeInterface
 {
@@ -55,6 +62,20 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      * @var string
      */
     protected $helperNamespace = '\Vhmis\I18n\DateTime\Helper';
+
+    /**
+     * Magic methods
+     *
+     * @var array
+     */
+    protected $magicMethods = array(
+        'setSecond' => \IntlCalendar::FIELD_SECOND,
+        'setMinute' => \IntlCalendar::FIELD_MINUTE,
+        'setHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
+        'setDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'setExtendedYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
+        'setEra' => \IntlCalendar::FIELD_ERA
+    );
 
     /**
      * Construct
@@ -230,6 +251,29 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         return $this->getDateTime();
     }
 
+    /**
+     * Magic methods for some set, get, add methods
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if (!isset($this->magicMethods[$name])) {
+            return false;
+        }
+
+        $method = substr($name, 0, 3);
+
+        if ($method === 'set' && count($arguments) === 1) {
+            return $this->setField($this->magicMethods[$name], $arguments[0]);
+        }
+
+        return false;
+    }
+
     public function __get($name)
     {
         return $this->getHelper($name);
@@ -341,54 +385,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Set second
-     *
-     * @param int $second
-     *
-     * @return DateTime
-     */
-    public function setSecond($second)
-    {
-        return $this->set(\IntlCalendar::FIELD_SECOND, $second);
-    }
-
-    /**
-     * Set minute
-     *
-     * @param int $minute
-     *
-     * @return DateTime
-     */
-    public function setMinute($minute)
-    {
-        return $this->set(\IntlCalendar::FIELD_MINUTE, $minute);
-    }
-
-    /**
-     * Set hour
-     *
-     * @param int $hour
-     *
-     * @return DateTime
-     */
-    public function setHour($hour)
-    {
-        return $this->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
-    }
-
-    /**
-     * Set day
-     *
-     * @param int $day
-     *
-     * @return DateTime
-     */
-    public function setDay($day)
-    {
-        return $this->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
-    }
-
-    /**
      * Set month (1-based)
      *
      * @param int $month
@@ -465,18 +461,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Set extended year
-     *
-     * @param int $year
-     *
-     * @return DateTime
-     */
-    public function setExtendedYear($year)
-    {
-        return $this->set(\IntlCalendar::FIELD_EXTENDED_YEAR, $year);
-    }
-
-    /**
      * Get Gregorian related year from other calendar year
      *
      * @param string $calendar
@@ -529,7 +513,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @return \Vhmis\I18n\DateTime\DateTime
      */
-    protected function set($field, $value)
+    protected function setField($field, $value)
     {
         $value = (int) $value;
         $max = $this->calendar->getActualMaximum($field);
@@ -567,16 +551,14 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     protected function islamicYearToGregorianYear($islamicYear)
     {
-        $cycle = $offset = $shift = 0;
+        $cycle = ($islamicYear - 1396) / 67 - 1;
+        $offset = -($islamicYear - 1396) % 67;
+        $shift = 2 * $cycle + (($offset <= 33) ? 1 : 0);
 
         if ($islamicYear >= 1397) {
             $cycle = ($islamicYear - 1397) / 67;
             $offset = ($islamicYear - 1397) % 67;
             $shift = 2 * $cycle + (($offset >= 33) ? 1 : 0);
-        } else {
-            $cycle = ($islamicYear - 1396) / 67 - 1;
-            $offset = -($islamicYear - 1396) % 67;
-            $shift = 2 * $cycle + (($offset <= 33) ? 1 : 0);
         }
 
         return $islamicYear + 579 - $shift;
