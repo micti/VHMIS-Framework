@@ -349,15 +349,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setSecond($second)
     {
-        $second = (int) $second;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_SECOND);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_SECOND);
-
-        if ($this->isValidFieldValue($second, $min, $max)) {
-            $this->calendar->set(\IntlCalendar::FIELD_SECOND, $second);
-        }
-
-        return $this;
+        return $this->set(\IntlCalendar::FIELD_SECOND, $second);
     }
 
     /**
@@ -369,15 +361,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setMinute($minute)
     {
-        $minute = (int) $minute;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_MINUTE);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_MINUTE);
-
-        if ($this->isValidFieldValue($minute, $min, $max)) {
-            $this->calendar->set(\IntlCalendar::FIELD_MINUTE, $minute);
-        }
-
-        return $this;
+        return $this->set(\IntlCalendar::FIELD_MINUTE, $minute);
     }
 
     /**
@@ -389,15 +373,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setHour($hour)
     {
-        $hour = (int) $hour;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_HOUR_OF_DAY);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_HOUR_OF_DAY);
-
-        if ($this->isValidFieldValue($hour, $min, $max)) {
-            $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
-        }
-
-        return $this;
+        return $this->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
     }
 
     /**
@@ -409,15 +385,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setDay($day)
     {
-        $day = (int) $day;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_DAY_OF_MONTH);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_DAY_OF_MONTH);
-
-        if ($this->isValidFieldValue($day, $min, $max)) {
-            $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
-        }
-
-        return $this;
+        return $this->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
     }
 
     /**
@@ -505,15 +473,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setExtendedYear($year)
     {
-        $year = (int) $year;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_EXTENDED_YEAR);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_EXTENDED_YEAR);
-
-        if ($this->isValidFieldValue($year, $min, $max)) {
-            $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, $year);
-        }
-
-        return $this;
+        return $this->set(\IntlCalendar::FIELD_EXTENDED_YEAR, $year);
     }
 
     /**
@@ -559,6 +519,27 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         return $year;
+    }
+
+    /**
+     * Set value of field
+     *
+     * @param int $field
+     * @param int $value
+     *
+     * @return \Vhmis\I18n\DateTime\DateTime
+     */
+    protected function set($field, $value)
+    {
+        $value = (int) $value;
+        $max = $this->calendar->getActualMaximum($field);
+        $min = $this->calendar->getActualMinimum($field);
+
+        if ($this->isValidFieldValue($value, $min, $max)) {
+            $this->calendar->set($field, $value);
+        }
+
+        return $this;
     }
 
     /**
