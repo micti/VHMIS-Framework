@@ -81,18 +81,4 @@ interface DateTimeInterface
      */
     public function __toString();
 
-    public function addSecond($amount);
-
-    public function addMinute($amount);
-
-    public function addHour($amount);
-
-    public function addDay($amount);
-
-    public function addWeek($amount);
-
-    public function addMonth($amount);
-
-    public function addYear($amount);
-
 }

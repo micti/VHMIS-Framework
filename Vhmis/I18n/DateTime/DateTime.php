@@ -19,12 +19,20 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  *
  * Support many calendars with locale info
  *
- * @method \Vhmis\I18n\DateTime\DateTime setSecond(int $second)
- * @method \Vhmis\I18n\DateTime\DateTime setMinute(int $minute)
- * @method \Vhmis\I18n\DateTime\DateTime setHour(int $hour)
- * @method \Vhmis\I18n\DateTime\DateTime setDay(int $day)
- * @method \Vhmis\I18n\DateTime\DateTime setExtendedYear(int $extendYear)
- * @method \Vhmis\I18n\DateTime\DateTime setEra(int $era)
+ * @method \Vhmis\I18n\DateTime\DateTime setSecond(int $second) Set second
+ * @method \Vhmis\I18n\DateTime\DateTime setMinute(int $minute) Set minute
+ * @method \Vhmis\I18n\DateTime\DateTime setHour(int $hour) Set hour
+ * @method \Vhmis\I18n\DateTime\DateTime setDay(int $day) Set day
+ * @method \Vhmis\I18n\DateTime\DateTime setExtendedYear(int $extendYear) Set extended year
+ * @method \Vhmis\I18n\DateTime\DateTime setEra(int $era) Set era
+ * @method \Vhmis\I18n\DateTime\DateTime addSecond(int $amount) Add second
+ * @method \Vhmis\I18n\DateTime\DateTime addMinute(int $amount) Add minute
+ * @method \Vhmis\I18n\DateTime\DateTime addHour(int $amount) Add hour
+ * @method \Vhmis\I18n\DateTime\DateTime addDay(int $amount) Add day
+ * @method \Vhmis\I18n\DateTime\DateTime addWeek(int $amount) Add week
+ * @method \Vhmis\I18n\DateTime\DateTime addMonth(int $amount) Add month
+ * @method \Vhmis\I18n\DateTime\DateTime addYear(int $amount) Add year
+ * @method \Vhmis\I18n\DateTime\DateTime addEra(int $amount) Add era
  */
 class DateTime extends AbstractDateTime implements DateTimeInterface
 {
@@ -74,7 +82,15 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         'setHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
         'setDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
         'setExtendedYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
-        'setEra' => \IntlCalendar::FIELD_ERA
+        'setEra' => \IntlCalendar::FIELD_ERA,
+        'addSecond' => \IntlCalendar::FIELD_SECOND,
+        'addMinute' => \IntlCalendar::FIELD_MINUTE,
+        'addHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
+        'addDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'addWeek' => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'addMonth' => \IntlCalendar::FIELD_MONTH,
+        'addYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
+        'addEra' => \IntlCalendar::FIELD_ERA
     );
 
     /**
@@ -271,117 +287,20 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
             return $this->setField($this->magicMethods[$name], $arguments[0]);
         }
 
+        if ($method === 'add' && count($arguments) === 1) {
+            if ($name === 'addWeek') {
+                $arguments[0] = (int) $arguments[0] * 7;
+            }
+
+            return $this->addField($this->magicMethods[$name], $arguments[0]);
+        }
+
         return false;
     }
 
     public function __get($name)
     {
         return $this->getHelper($name);
-    }
-
-    /**
-     * Add second
-     *
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addSecond($amount)
-    {
-        $amount = (int) $amount;
-        $this->calendar->add(\IntlCalendar::FIELD_SECOND, $amount);
-
-        return $this;
-    }
-
-    /**
-     * Add minute
-     *
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addMinute($amount)
-    {
-        $amount = (int) $amount;
-        $this->calendar->add(\IntlCalendar::FIELD_MINUTE, $amount);
-
-        return $this;
-    }
-
-    /**
-     * Add hour
-     *
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addHour($amount)
-    {
-        $amount = (int) $amount;
-        $this->calendar->add(\IntlCalendar::FIELD_HOUR, $amount);
-
-        return $this;
-    }
-
-    /**
-     * Add day
-     *
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addDay($amount)
-    {
-        $amount = (int) $amount;
-        $this->calendar->add(\IntlCalendar::FIELD_DAY_OF_MONTH, $amount);
-
-        return $this;
-    }
-
-    /**
-     * Add week
-     *
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addWeek($amount)
-    {
-        $amount = (int) $amount;
-        $this->addDay($amount * 7);
-
-        return $this;
-    }
-
-    /**
-     * Add month
-     *
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addMonth($amount)
-    {
-        $amount = (int) $amount;
-        $this->calendar->add(\IntlCalendar::FIELD_MONTH, $amount);
-
-        return $this;
-    }
-
-    /**
-     * Add year
-     *
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addYear($amount)
-    {
-        $amount = (int) $amount;
-        $this->calendar->add(\IntlCalendar::FIELD_YEAR, $amount);
-
-        return $this;
     }
 
     /**
@@ -511,7 +430,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $field
      * @param int $value
      *
-     * @return \Vhmis\I18n\DateTime\DateTime
+     * @return DateTime
      */
     protected function setField($field, $value)
     {
@@ -522,6 +441,22 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         if ($this->isValidFieldValue($value, $min, $max)) {
             $this->calendar->set($field, $value);
         }
+
+        return $this;
+    }
+
+    /**
+     * Add or sub value of field
+     *
+     * @param int $field
+     * @param int $amount
+     *
+     * @return DateTime
+     */
+    protected function addField($field, $amount)
+    {
+        $amount = (int) $amount;
+        $this->calendar->add($field, $amount);
 
         return $this;
     }
