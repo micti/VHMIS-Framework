@@ -49,6 +49,26 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         new DateTime('Hahaha');
     }
 
+    public function testWrongMagicCall()
+    {
+        $this->assertEquals(null, $this->date->abc());
+    }
+
+    public function testWrongGetMagicCall()
+    {
+        $this->assertEquals(null, $this->date->getYear('a'));
+    }
+
+    public function testWrongSetMagicCall()
+    {
+        $this->assertEquals(null, $this->date->setHour());
+    }
+
+    public function testWrongAddMagicCall()
+    {
+        $this->assertEquals(null, $this->date->addYear(1, 4));
+    }
+
     public function testSetAndGetDate()
     {
         $this->date->setDate(1, 1, 1);
@@ -105,60 +125,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(0, $a->getTimestamp());
         $this->assertEquals(0, $b->getTimestamp());
-    }
-
-    public function testAddSecond()
-    {
-        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addSecond(31);
-        $this->assertEquals('2014-01-31 00:13:05', $this->date->getDateTime());
-        $this->date->addSecond(-61);
-        $this->assertEquals('2014-01-31 00:12:04', $this->date->getDateTime());
-    }
-
-    public function testAddMinute()
-    {
-        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addMinute(60);
-        $this->assertEquals('2014-01-31 01:12:34', $this->date->getDateTime());
-        $this->date->addMinute(-23);
-        $this->assertEquals('2014-01-31 00:49:34', $this->date->getDateTime());
-    }
-
-    public function testAddHour()
-    {
-        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addHour(25);
-        $this->assertEquals('2014-02-01 01:12:34', $this->date->getDateTime());
-        $this->date->addHour(-2);
-        $this->assertEquals('2014-01-31 23:12:34', $this->date->getDateTime());
-    }
-
-    public function testAddDay()
-    {
-        $this->date->setDate(2014, 1, 31)->addDay(31);
-        $this->assertEquals('2014-03-03', $this->date->getDate());
-        $this->date->addDay(365);
-        $this->assertEquals('2015-03-03', $this->date->getDate());
-        $this->date->addDay(-3);
-        $this->assertEquals('2015-02-28', $this->date->getDate());
-    }
-
-    public function testAddMonth()
-    {
-        $this->date->setDate(2014, 1, 31)->addMonth(1);
-        $this->assertEquals('2014-02-28', $this->date->getDate());
-        $this->date->addMonth(1);
-        $this->assertEquals('2014-03-28', $this->date->getDate());
-        $this->date->addMonth(-14);
-        $this->assertEquals('2013-01-28', $this->date->getDate());
-    }
-
-    public function testAddYear()
-    {
-        $this->date->setDate(2012, 2, 29)->addYear(3);
-        $this->assertEquals('2015-02-28', $this->date->getDate());
-        $this->date->addYear(1);
-        $this->assertEquals('2016-02-28', $this->date->getDate());
-        $this->date->addYear(-6);
-        $this->assertEquals('2010-02-28', $this->date->getDate());
     }
 
     public function testSetSecond()
@@ -235,5 +201,99 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setDate(2012, 2, 29);
         $this->date->setYear(2014);
         $this->assertEquals('2014-02-28', $this->date->getDate());
+    }
+
+    public function testSetOutYear()
+    {
+        $this->date->setDate(2014, 1, 31);
+        $this->date->setYear(0);
+        $this->assertEquals(2014, $this->date->getYear());
+    }
+
+    public function testSetEra()
+    {
+        $this->date->setDate(12, 1, 31);
+        $this->date->setEra(0);
+        $this->assertEquals(0, $this->date->getEra());
+        $this->date->setEra(-1);
+        $this->assertEquals(0, $this->date->getEra());
+    }
+
+    public function testSetOutEra()
+    {
+        $this->date->setDate(12, 1, 31);
+        $this->date->setEra(0);
+        $this->date->setEra(-1);
+        $this->assertEquals(0, $this->date->getEra());
+    }
+
+    public function testAddSecond()
+    {
+        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addSecond(31);
+        $this->assertEquals('2014-01-31 00:13:05', $this->date->getDateTime());
+        $this->date->addSecond(-61);
+        $this->assertEquals('2014-01-31 00:12:04', $this->date->getDateTime());
+    }
+
+    public function testAddMinute()
+    {
+        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addMinute(60);
+        $this->assertEquals('2014-01-31 01:12:34', $this->date->getDateTime());
+        $this->date->addMinute(-23);
+        $this->assertEquals('2014-01-31 00:49:34', $this->date->getDateTime());
+    }
+
+    public function testAddHour()
+    {
+        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addHour(25);
+        $this->assertEquals('2014-02-01 01:12:34', $this->date->getDateTime());
+        $this->date->addHour(-2);
+        $this->assertEquals('2014-01-31 23:12:34', $this->date->getDateTime());
+    }
+
+    public function testAddDay()
+    {
+        $this->date->setDate(2014, 1, 31)->addDay(31);
+        $this->assertEquals('2014-03-03', $this->date->getDate());
+        $this->date->addDay(365);
+        $this->assertEquals('2015-03-03', $this->date->getDate());
+        $this->date->addDay(-3);
+        $this->assertEquals('2015-02-28', $this->date->getDate());
+    }
+
+    public function testAddWeek()
+    {
+        $this->date->setDate(2014, 1, 31)->addWeek(2);
+        $this->assertEquals('2014-02-14', $this->date->getDate());
+        $this->date->setDate(2014, 12, 11)->addWeek(4);
+        $this->assertEquals('2015-01-08', $this->date->getDate());
+    }
+
+    public function testAddMonth()
+    {
+        $this->date->setDate(2014, 1, 31)->addMonth(1);
+        $this->assertEquals('2014-02-28', $this->date->getDate());
+        $this->date->addMonth(1);
+        $this->assertEquals('2014-03-28', $this->date->getDate());
+        $this->date->addMonth(-14);
+        $this->assertEquals('2013-01-28', $this->date->getDate());
+    }
+
+    public function testAddYear()
+    {
+        $this->date->setDate(2012, 2, 29)->addYear(3);
+        $this->assertEquals('2015-02-28', $this->date->getDate());
+        $this->date->addYear(1);
+        $this->assertEquals('2016-02-28', $this->date->getDate());
+        $this->date->addYear(-6);
+        $this->assertEquals('2010-02-28', $this->date->getDate());
+    }
+
+    public function testAddEra()
+    {
+        $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
+        $a->setEra(63);
+        $a->addEra(4);
+        $this->assertEquals(67, $a->getEra());
     }
 }

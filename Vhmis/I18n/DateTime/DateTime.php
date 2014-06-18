@@ -33,6 +33,14 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method \Vhmis\I18n\DateTime\DateTime addMonth(int $amount) Add month
  * @method \Vhmis\I18n\DateTime\DateTime addYear(int $amount) Add year
  * @method \Vhmis\I18n\DateTime\DateTime addEra(int $amount) Add era
+ * @method \Vhmis\I18n\DateTime\DateTime getSecond() Get second
+ * @method \Vhmis\I18n\DateTime\DateTime getMinute() Get minute
+ * @method \Vhmis\I18n\DateTime\DateTime getHour() Get hour
+ * @method \Vhmis\I18n\DateTime\DateTime getDay() Get day
+ * @method \Vhmis\I18n\DateTime\DateTime getWeek() Get week
+ * @method \Vhmis\I18n\DateTime\DateTime getMonth() Get month
+ * @method \Vhmis\I18n\DateTime\DateTime getYear() Get year
+ * @method \Vhmis\I18n\DateTime\DateTime getEra() Get era
  */
 class DateTime extends AbstractDateTime implements DateTimeInterface
 {
@@ -87,10 +95,18 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         'addMinute' => \IntlCalendar::FIELD_MINUTE,
         'addHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
         'addDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
-        'addWeek' => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'addWeek' => \IntlCalendar::FIELD_WEEK_OF_YEAR,
         'addMonth' => \IntlCalendar::FIELD_MONTH,
         'addYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
-        'addEra' => \IntlCalendar::FIELD_ERA
+        'addEra' => \IntlCalendar::FIELD_ERA,
+        'getSecond' => \IntlCalendar::FIELD_SECOND,
+        'getMinute' => \IntlCalendar::FIELD_MINUTE,
+        'getHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
+        'getDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'getWeek' => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'getMonth' => \IntlCalendar::FIELD_MONTH,
+        'getYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
+        'getEra' => \IntlCalendar::FIELD_ERA
     );
 
     /**
@@ -278,24 +294,24 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function __call($name, $arguments)
     {
         if (!isset($this->magicMethods[$name])) {
-            return false;
+            return null;
         }
 
         $method = substr($name, 0, 3);
+
+        if ($method === 'get' && count($arguments) === 0) {
+            return $this->getField($this->magicMethods[$name]);
+        }
 
         if ($method === 'set' && count($arguments) === 1) {
             return $this->setField($this->magicMethods[$name], $arguments[0]);
         }
 
         if ($method === 'add' && count($arguments) === 1) {
-            if ($name === 'addWeek') {
-                $arguments[0] = (int) $arguments[0] * 7;
-            }
-
             return $this->addField($this->magicMethods[$name], $arguments[0]);
         }
 
-        return false;
+        return null;
     }
 
     public function __get($name)
@@ -422,6 +438,18 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         return $year;
+    }
+
+    /**
+     * Get value of field
+     *
+     * @param int $field
+     *
+     * @return int
+     */
+    protected function getField($field)
+    {
+        return $this->calendar->get($field);
     }
 
     /**
