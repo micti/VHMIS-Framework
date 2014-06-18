@@ -329,10 +329,8 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setMonth($month)
     {
         $month = (int) $month - 1;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_MONTH);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_MONTH);
 
-        if ($this->isValidFieldValue($month, $min, $max)) {
+        if ($this->isValidFieldValue(\IntlCalendar::FIELD_MONTH, $month)) {
             $currentMonth = $this->calendar->get(\IntlCalendar::FIELD_MONTH);
             $month = $month - $currentMonth;
             $this->calendar->add(\IntlCalendar::FIELD_MONTH, $month);
@@ -356,10 +354,8 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         $isLeapCurrentMonth = $this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH);
 
         $month = (int) $month - 1;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_MONTH);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_MONTH);
 
-        if ($this->isValidFieldValue($month, $min, $max)) {
+        if ($this->isValidFieldValue(\IntlCalendar::FIELD_MONTH, $month)) {
             $month = $month - $currentMonth + 1; // for leap
             $this->calendar->add(\IntlCalendar::FIELD_MONTH, $month);
 
@@ -383,10 +379,8 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setYear($year)
     {
         $year = (int) $year;
-        $max = $this->calendar->getActualMaximum(\IntlCalendar::FIELD_YEAR);
-        $min = $this->calendar->getActualMinimum(\IntlCalendar::FIELD_YEAR);
 
-        if ($this->isValidFieldValue($year, $min, $max)) {
+        if ($this->isValidFieldValue(\IntlCalendar::FIELD_YEAR, $year)) {
             $currentYear = $this->calendar->get(\IntlCalendar::FIELD_YEAR);
             $year = $year - $currentYear;
             $this->calendar->add(\IntlCalendar::FIELD_YEAR, $year);
@@ -463,10 +457,8 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     protected function setField($field, $value)
     {
         $value = (int) $value;
-        $max = $this->calendar->getActualMaximum($field);
-        $min = $this->calendar->getActualMinimum($field);
 
-        if ($this->isValidFieldValue($value, $min, $max)) {
+        if ($this->isValidFieldValue($field, $value)) {
             $this->calendar->set($field, $value);
         }
 
@@ -487,6 +479,18 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         $this->calendar->add($field, $amount);
 
         return $this;
+    }
+
+    protected function isValidFieldValue($field, $value)
+    {
+        $max = $this->calendar->getActualMaximum($field);
+        $min = $this->calendar->getActualMinimum($field);
+        
+        if ($value < $min || $value > $max) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

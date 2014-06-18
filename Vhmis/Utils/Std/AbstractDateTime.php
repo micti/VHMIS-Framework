@@ -74,21 +74,4 @@ abstract class AbstractDateTime
 
         return $this->helpers[$name];
     }
-
-    /**
-     *
-     * @param mixed $value
-     * @param mixed $min
-     * @param mixed $max
-     *
-     * @return boolean
-     */
-    protected function isValidFieldValue($value, $min, $max)
-    {
-        if ($value < $min || $value > $max) {
-            return false;
-        }
-
-        return true;
-    }
 }
