@@ -175,7 +175,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $month
      * @param int $day
      *
-     * @return \Vhmis\I18n\DateTime\DateTime
+     * @return DateTime
      */
     public function setDateWithExtenedYear($year, $month, $day)
     {
@@ -186,6 +186,21 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, (int) $day);
 
         return $this;
+    }
+
+    /**
+     * Set date with year is Gregorian related year
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     *
+     * @return DateTime
+     */
+    public function setDateWithGregorianRelatedYear($year, $month, $day)
+    {
+        $year = $this->getExtendedYearFromGregorianRelatedYear($year);
+        return $this->setDateWithExtenedYear($year, $month, $day);
     }
 
     /**
@@ -202,6 +217,46 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, (int) $hour);
         $this->calendar->set(\IntlCalendar::FIELD_MINUTE, (int) $minute);
         $this->calendar->set(\IntlCalendar::FIELD_SECOND, (int) $second);
+
+        return $this;
+    }
+
+    /**
+     * Set date or/and time by ISO style datetime
+     * Year is extended year
+     *
+     * @param string $string
+     *
+     * @return DateTime
+     */
+    public function modify($string)
+    {
+        $datetime =  '/^(r?)(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})(| (\d{1,2}):(\d{1,2}):(\d{1,2}))$/';
+        $time =  '/^(\d{1,2}):(\d{1,2})(|:(\d{1,2}))$/';
+        $matches = array();
+
+        if (preg_match($datetime, $string, $matches)) {
+            $this->setDateWithExtenedYear($matches[2] . $matches[3], $matches[4], $matches[5]);
+
+            if($matches[1] === 'r') {
+                $this->setDateWithGregorianRelatedYear($matches[2] . $matches[3], $matches[4], $matches[5]);
+            }
+
+            if($matches[6] !== '') {
+                $this->setTime($matches[7], $matches[8], $matches[9]);
+            }
+
+            return $this;
+        }
+
+        if (preg_match($time, $string, $matches)) {
+            if($matches[3] !== '') {
+                return $this->setTime($matches[1], $matches[2], $matches[4]);
+            }
+            
+            $second = $this->calendar->get(\IntlCalendar::FIELD_SECOND);
+            return $this->setTime($matches[1], $matches[2], $second);
+        }
 
         return $this;
     }
@@ -230,37 +285,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setTimestamp($timestamp)
     {
         $this->calendar->setTime((int) $timestamp * 1000);
-
-        return $this;
-    }
-
-    /**
-     * Set date or/and time by ISO style datetime
-     * Year is extended year
-     *
-     * @param string $string
-     *
-     * @return DateTime
-     */
-    public function modify($string)
-    {
-        $date =  '/^(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})$/';
-        $time =  '/^(\d{1,2}):(\d{1,2}):(\d{1,2})$/';
-        $datetime =  '/^(-?)(\d{1,5})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/';
-        $matches = array();
-
-        if (preg_match($date, $string, $matches)) {
-            return $this->setDateWithExtenedYear($matches[1] . $matches[2], $matches[3], $matches[4]);
-        }
-
-        if (preg_match($time, $string, $matches)) {
-            return $this->setTime($matches[1], $matches[2], $matches[3]);
-        }
-
-        if (preg_match($datetime, $string, $matches)) {
-            $this->setDateWithExtenedYear($matches[1] . $matches[2], $matches[3], $matches[4]);
-            $this->setTime($matches[5], $matches[6], $matches[7]);
-        }
 
         return $this;
     }
@@ -485,13 +509,13 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Set Gregorian related year
+     * Get extended year from Gregorian related year
      *
      * @param int $year
      *
-     * @return DateTime
+     * @return int
      */
-    public function setGregorianRelatedYear($year)
+    protected function getExtendedYearFromGregorianRelatedYear($year)
     {
         $year = (int) $year;
         $calendar = $this->getType();
@@ -501,7 +525,22 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
             $year = $this->gregorianYearToIslamicYear($year);
         }
 
-        return $this->setField(\IntlCalendar::FIELD_EXTENDED_YEAR, $year);
+        return $year;
+    }
+
+    /**
+     * Set Gregorian related year
+     *
+     * @param int $year
+     *
+     * @return DateTime
+     */
+    public function setGregorianRelatedYear($year)
+    {
+        return $this->setField(
+            \IntlCalendar::FIELD_EXTENDED_YEAR,
+            $this->getExtendedYearFromGregorianRelatedYear($year)
+        );
     }
 
     /**
@@ -553,7 +592,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @return DateTime
      */
-    protected function addField($field, $amount)
+    public function addField($field, $amount)
     {
         $amount = (int) $amount;
         $this->calendar->add($field, $amount);
