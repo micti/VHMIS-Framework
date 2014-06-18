@@ -328,14 +328,16 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setMonth($month)
     {
-        $month = (int) $month - 1;
+        $month = (int) $month;
+        $year = $this->getYear();
 
-        if ($this->isValidFieldValue(\IntlCalendar::FIELD_MONTH, $month)) {
-            $currentMonth = $this->calendar->get(\IntlCalendar::FIELD_MONTH);
-            $month = $month - $currentMonth;
-            $this->calendar->add(\IntlCalendar::FIELD_MONTH, $month);
-            $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
+        $this->setField(\IntlCalendar::FIELD_MONTH, $month);
+
+        if ($this->getMonth() !== $month) {
+            $this->fixLastDayOfMonth($month, $year);
         }
+
+        $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
 
         return $this;
     }
@@ -353,17 +355,12 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         $currentDay = $this->calendar->get(\IntlCalendar::FIELD_DAY_OF_MONTH);
         $isLeapCurrentMonth = $this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH);
 
-        $month = (int) $month - 1;
+        $this->setMonth($month)->addMonth(1);
 
-        if ($this->isValidFieldValue(\IntlCalendar::FIELD_MONTH, $month)) {
-            $month = $month - $currentMonth + 1; // for leap
-            $this->calendar->add(\IntlCalendar::FIELD_MONTH, $month);
-
-            if ($this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH) !== 1) {
-                $this->calendar->set(\IntlCalendar::FIELD_MONTH, $currentMonth);
-                $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $currentDay);
-                $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, $isLeapCurrentMonth);
-            }
+        if ($this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH) !== 1) {
+            $this->calendar->set(\IntlCalendar::FIELD_MONTH, $currentMonth);
+            $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $currentDay);
+            $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, $isLeapCurrentMonth);
         }
 
         return $this;
@@ -379,12 +376,15 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setYear($year)
     {
         $year = (int) $year;
+        $month = $this->getMonth();
 
-        if ($this->isValidFieldValue(\IntlCalendar::FIELD_YEAR, $year)) {
-            $currentYear = $this->calendar->get(\IntlCalendar::FIELD_YEAR);
-            $year = $year - $currentYear;
-            $this->calendar->add(\IntlCalendar::FIELD_YEAR, $year);
+        $this->setField(\IntlCalendar::FIELD_YEAR, $year);
+
+        if ($this->getMonth() !== $month) {
+            $this->fixLastDayOfMonth($month, $year);
         }
+
+        $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
 
         return $this;
     }
@@ -443,7 +443,13 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     protected function getField($field)
     {
-        return $this->calendar->get($field);
+        $value = $this->calendar->get($field);
+
+        if ($field === \IntlCalendar::FIELD_MONTH) {
+            $value++;
+        }
+
+        return $value;
     }
 
     /**
@@ -457,6 +463,10 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     protected function setField($field, $value)
     {
         $value = (int) $value;
+
+        if ($field === \IntlCalendar::FIELD_MONTH) {
+            $value--;
+        }
 
         if ($this->isValidFieldValue($field, $value)) {
             $this->calendar->set($field, $value);
@@ -481,11 +491,27 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         return $this;
     }
 
+    /**
+     * Fix and change to last day of month
+     *
+     * @param int $month
+     * @param int $year
+     *
+     * @return \Vhmis\I18n\DateTime\DateTime
+     */
+    protected function fixLastDayOfMonth($month, $year)
+    {
+        $this->setDate($year, $month, 1);
+        $this->setDay($this->calendar->getActualMaximum(\IntlCalendar::FIELD_DAY_OF_MONTH));
+
+        return $this;
+    }
+
     protected function isValidFieldValue($field, $value)
     {
         $max = $this->calendar->getActualMaximum($field);
         $min = $this->calendar->getActualMinimum($field);
-        
+
         if ($value < $min || $value > $max) {
             return false;
         }
