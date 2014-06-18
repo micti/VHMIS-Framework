@@ -127,6 +127,47 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $b->getTimestamp());
     }
 
+    public function testSetDateWithExtendYear()
+    {
+        $this->date->setDateWithExtenedYear(-2012, 1, 1);
+        $this->assertEquals('2013-01-01', $this->date->getDate());
+    }
+
+    public function testModifyDate()
+    {
+        $this->date->setDate(2012, 2, 29);
+        $this->date->modify('2014-02-28');
+        $this->assertEquals('2014-02-28', $this->date->getDate());
+    }
+
+    public function testModifyTime()
+    {
+        $this->date->setDate(2012, 2, 29)->setTime(1, 2, 3);
+        $this->date->modify('13:15:15');
+        $this->assertEquals('13:15:15', $this->date->getTime());
+    }
+
+    public function testModifyDateTime()
+    {
+        $this->date->setDate(2012, 2, 29)->setTime(1, 2, 3);
+        $this->date->modify('2014-02-28 13:15:15');
+        $this->assertEquals('2014-02-28 13:15:15', $this->date->getDateTime());
+    }
+
+    public function testModifyDateTimeOutRange()
+    {
+        $this->date->setDate(2012, 2, 29)->setTime(1, 2, 3);
+        $this->date->modify('2014-02-29 26:15:15');
+        $this->assertEquals('2014-03-02 02:15:15', $this->date->getDateTime());
+    }
+
+    public function testModifyWrongDateTime()
+    {
+        $this->date->setDate(2012, 2, 29)->setTime(1, 2, 3);
+        $this->date->modify('2014-024-29 26:15:15');
+        $this->assertEquals('2012-02-29 01:02:03', $this->date->getDateTime());
+    }
+
     public function testSetSecond()
     {
         $this->date->setTime(0, 12, 34);

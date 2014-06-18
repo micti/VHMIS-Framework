@@ -137,7 +137,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
 
     /**
      * Set date
-     * Month based-1
      *
      * @param int $year
      * @param int $month
@@ -149,6 +148,26 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     {
         $month = (int) $month - 1;
         $this->calendar->set((int) $year, $month, (int) $day);
+
+        return $this;
+    }
+
+    /**
+     * Set date with year is extended year
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     *
+     * @return \Vhmis\I18n\DateTime\DateTime
+     */
+    public function setDateWithExtenedYear($year, $month, $day)
+    {
+        $month = (int) $month - 1;
+
+        $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, (int) $year);
+        $this->calendar->set(\IntlCalendar::FIELD_MONTH, $month);
+        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, (int) $day);
 
         return $this;
     }
@@ -200,15 +219,46 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Set date or/and time by ISO style datetime
+     * Year is extended year
+     *
+     * @param string $string
+     *
+     * @return DateTime
+     */
+    public function modify($string)
+    {
+        $date =  '/^(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})$/';
+        $time =  '/^(\d{1,2}):(\d{1,2}):(\d{1,2})$/';
+        $datetime =  '/^(-?)(\d{1,5})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/';
+        $matches = array();
+
+        if (preg_match($date, $string, $matches)) {
+            return $this->setDateWithExtenedYear($matches[1] . $matches[2], $matches[3], $matches[4]);
+        }
+
+        if (preg_match($time, $string, $matches)) {
+            return $this->setTime($matches[1], $matches[2], $matches[3]);
+        }
+
+        if (preg_match($datetime, $string, $matches)) {
+            $this->setDateWithExtenedYear($matches[1] . $matches[2], $matches[3], $matches[4]);
+            $this->setTime($matches[5], $matches[6], $matches[7]);
+        }
+
+        return $this;
+    }
+
+    /**
      * Get date (based on ISO format yyyy-mm-dd)
      *
      * @return string
      */
     public function getDate()
     {
-        $year = str_pad($this->calendar->get(\IntlCalendar::FIELD_YEAR), 4, '0', STR_PAD_LEFT);
-        $month = str_pad($this->calendar->get(\IntlCalendar::FIELD_MONTH) + 1, 2, '0', STR_PAD_LEFT);
-        $day = str_pad($this->calendar->get(\IntlCalendar::FIELD_DAY_OF_MONTH), 2, '0', STR_PAD_LEFT);
+        $year = $this->formatField(\IntlCalendar::FIELD_YEAR);
+        $month = $this->formatField(\IntlCalendar::FIELD_MONTH);
+        $day = $this->formatField(\IntlCalendar::FIELD_DAY_OF_MONTH);
 
         $date = $year . '-' . $month . '-' . $day;
         //$date = \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
@@ -222,9 +272,9 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function getTime()
     {
-        $hour = str_pad($this->calendar->get(\IntlCalendar::FIELD_HOUR_OF_DAY), 2, '0', STR_PAD_LEFT);
-        $minute = str_pad($this->calendar->get(\IntlCalendar::FIELD_MINUTE), 2, '0', STR_PAD_LEFT);
-        $second = str_pad($this->calendar->get(\IntlCalendar::FIELD_SECOND), 2, '0', STR_PAD_LEFT);
+        $hour = $this->formatField(\IntlCalendar::FIELD_HOUR_OF_DAY);
+        $minute = $this->formatField(\IntlCalendar::FIELD_MINUTE);
+        $second = $this->formatField(\IntlCalendar::FIELD_SECOND);
 
         $time = $hour . ':' . $minute . ':' . $second;
         //$time = \IntlDateFormatter::formatObject($this->calendar, 'HH:mm:ss');
@@ -517,6 +567,27 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         return true;
+    }
+
+    /**
+     * Format field
+     *
+     * @param int $field
+     *
+     * @return string
+     */
+    protected function formatField($field)
+    {
+        $pad = array(
+            \IntlCalendar::FIELD_YEAR => 4,
+            \IntlCalendar::FIELD_MONTH => 2,
+            \IntlCalendar::FIELD_DAY_OF_MONTH => 2,
+            \IntlCalendar::FIELD_HOUR_OF_DAY => 2,
+            \IntlCalendar::FIELD_MINUTE => 2,
+            \IntlCalendar::FIELD_SECOND => 2
+        );
+
+        return str_pad($this->getField($field), $pad[$field], '0', STR_PAD_LEFT);
     }
 
     /**
