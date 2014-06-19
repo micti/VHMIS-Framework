@@ -22,22 +22,7 @@ class Get extends AbstractDateTimeHelper
      */
     protected $date;
 
-    public function __invoke($name, $arguments)
-    {
-        if (!is_array($arguments)) {
-            return null;
-        }
-
-        if (count($arguments) !== 0) {
-            return null;
-        }
-
-        if (method_exists($this, $name)) {
-            return $this->$name();
-        }
-
-        return null;
-    }
+    protected $params = 0;
 
     public function getSecond()
     {

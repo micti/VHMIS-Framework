@@ -22,63 +22,49 @@ class Add extends AbstractDateTimeHelper
      */
     protected $date;
 
-    public function __invoke($name, $arguments)
-    {
-        $name = str_replace('add', '', $name);
-        $name = strtolower($name);
+    protected $params = 1;
 
-        if(count($arguments) !== 1) {
-            return null;
-        }
-
-        if(method_exists($this, $name)) {
-            return $this->$name($arguments[0]);
-        }
-
-        return null;
-    }
-
-    public function era($amount)
+    public function addEra($amount)
     {
         return $this->date->addField(0, $amount);
     }
-    
-    public function year($amount)
+
+    public function addYear($amount)
     {
         return $this->date->addField(1, $amount);
     }
 
-    public function month($amount)
+    public function addMonth($amount)
     {
         return $this->date->addField(2, $amount);
     }
 
-    public function week($amount)
+    public function addWeek($amount)
     {
         return $this->date->addField(3, $amount);
     }
 
-    public function day($amount)
+    public function addDay($amount)
     {
         return $this->date->addField(5, $amount);
     }
 
-    public function hour($amount)
+    public function addHour($amount)
     {
         return $this->date->addField(11, $amount);
     }
 
-    public function minute($amount)
+    public function addMinute($amount)
     {
         return $this->date->addField(12, $amount);
     }
 
-    public function second($amount)
+    public function addSecond($amount)
     {
         return $this->date->addField(13, $amount);
     }
 
-    public function millisecond($amount)
+    public function addMillisecond($amount)
     {
         return $this->date->addField(14, $amount);
     }

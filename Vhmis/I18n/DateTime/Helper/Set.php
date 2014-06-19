@@ -22,22 +22,7 @@ class Set extends AbstractDateTimeHelper
      */
     protected $date;
 
-    public function __invoke($name, $arguments)
-    {
-        if (!is_array($arguments)) {
-            return null;
-        }
-        
-        if (count($arguments) !== 1) {
-            return null;
-        }
-
-        if (method_exists($this, $name)) {
-            return $this->$name($arguments[0]);
-        }
-
-        return null;
-    }
+    protected $params = 1;
 
     public function setSecond($second)
     {
@@ -66,6 +51,7 @@ class Set extends AbstractDateTimeHelper
         $year = $this->date->getField(1);
 
         $this->date->setField(5, $day);
+
         return $this->fix($year, $month);
     }
 
@@ -80,7 +66,7 @@ class Set extends AbstractDateTimeHelper
     {
         $year = $this->date->getField(1);
 
-        if(!$this->date->setField(2, $month)) {
+        if (!$this->date->setField(2, $month)) {
             return $this->date;
         }
 
@@ -93,11 +79,11 @@ class Set extends AbstractDateTimeHelper
         $currentMonth = $this->date->getField(2);
         $day = $this->date->getField(5);
         $isLeap = $this->date->getField(22);
-        
+
         $this->setMonth($month);
         $this->date->addField(2, 1);
 
-        if($this->date->getField(22) !== 1) {
+        if ($this->date->getField(22) !== 1) {
             $this->setYear($year);
             $this->setMonth($currentMonth);
             $this->setDay($day);
@@ -106,7 +92,6 @@ class Set extends AbstractDateTimeHelper
 
         // fix day
         // $day = $this->date->getActualMaximumValueOfField(5);
-
         return $this->date;
     }
 
@@ -114,10 +99,10 @@ class Set extends AbstractDateTimeHelper
     {
         $month = $this->date->getField(2);
 
-        if(!$this->date->setField(1, $year)) {
+        if (!$this->date->setField(1, $year)) {
             return $this->date;
         }
-        
+
         return $this->fix($year, $month);
     }
 
@@ -125,13 +110,14 @@ class Set extends AbstractDateTimeHelper
     {
         $month = $this->date->getField(2);
         $year = $this->date->getField(1);
-        
+
         $this->date->setField(0, $era);
 
         return $this->fix($year, $month);
     }
 
-    protected function fix($year, $month) {
+    protected function fix($year, $month)
+    {
         $this->date->setField(22, 0);
 
         if ($month !== $this->date->getField(2)) {

@@ -18,14 +18,33 @@ class AbstractDateTimeHelper
     /**
      * Date object
      *
-     * @var AbstractDateTime
+     * @var DateTimeInterface
      */
     protected $date;
+    
+    protected $params = 0;
+
+    public function __invoke($name, $arguments)
+    {
+        if (!is_array($arguments)) {
+            return null;
+        }
+
+        if (count($arguments) !== $this->params) {
+            return null;
+        }
+
+        if (method_exists($this, $name)) {
+            return call_user_func_array(array($this, $name), $arguments);
+        }
+
+        return null;
+    }
 
     /**
      * Set date object
      *
-     * @param AbstractDateTime $date
+     * @param DateTimeInterface $date
      *
      * @return \Vhmis\Utils\Std\AbstractDateTimeHelper
      */
@@ -39,7 +58,7 @@ class AbstractDateTimeHelper
     /**
      * Get date object
      *
-     * @return type
+     * @return DateTimeInterface
      */
     public function getDate()
     {
