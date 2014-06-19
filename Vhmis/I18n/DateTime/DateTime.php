@@ -85,20 +85,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      * @var array
      */
     protected $magicMethods = array(
-        'setSecond' => \IntlCalendar::FIELD_SECOND,
-        'setMinute' => \IntlCalendar::FIELD_MINUTE,
-        'setHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
-        'setDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
-        'setExtendedYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
-        'setEra' => \IntlCalendar::FIELD_ERA,
-        'addSecond' => \IntlCalendar::FIELD_SECOND,
-        'addMinute' => \IntlCalendar::FIELD_MINUTE,
-        'addHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
-        'addDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
-        'addWeek' => \IntlCalendar::FIELD_WEEK_OF_YEAR,
-        'addMonth' => \IntlCalendar::FIELD_MONTH,
-        'addYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
-        'addEra' => \IntlCalendar::FIELD_ERA,
         'getSecond' => \IntlCalendar::FIELD_SECOND,
         'getMinute' => \IntlCalendar::FIELD_MINUTE,
         'getHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
@@ -410,10 +396,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
 
         if ($method === 'get' && count($arguments) === 0) {
             return $this->getField($this->magicMethods[$name]);
-        }
-
-        if ($method === 'set' && count($arguments) === 1) {
-            return $this->setField($this->magicMethods[$name], $arguments[0]);
         }
 
         return null;
