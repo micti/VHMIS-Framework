@@ -22,59 +22,64 @@ class Add extends AbstractDateTimeHelper
      */
     protected $date;
 
+    public function __invoke($name, $arguments)
+    {
+        $name = str_replace('add', '', $name);
+        $name = strtolower($name);
+
+        if(count($arguments) !== 1) {
+            return null;
+        }
+
+        if(method_exists($this, $name)) {
+            return $this->$name($arguments[0]);
+        }
+
+        return null;
+    }
+
     public function era($amount)
     {
-        $this->date->addField(0, $amount);
-
-        return $this;
+        return $this->date->addField(0, $amount);
     }
     
     public function year($amount)
     {
-        $this->date->addField(1, $amount);
-
-        return $this;
+        return $this->date->addField(1, $amount);
     }
 
     public function month($amount)
     {
-        $this->date->addField(2, $amount);
+        return $this->date->addField(2, $amount);
+    }
 
-        return $this;
+    public function week($amount)
+    {
+        return $this->date->addField(3, $amount);
     }
 
     public function day($amount)
     {
-        $this->date->addField(5, $amount);
-
-        return $this;
+        return $this->date->addField(5, $amount);
     }
 
     public function hour($amount)
     {
-        $this->date->addField(11, $amount);
-
-        return $this;
+        return $this->date->addField(11, $amount);
     }
 
     public function minute($amount)
     {
-        $this->date->addField(12, $amount);
-
-        return $this;
+        return $this->date->addField(12, $amount);
     }
 
     public function second($amount)
     {
-        $this->date->addField(13, $amount);
-
-        return $this;
+        return $this->date->addField(13, $amount);
     }
 
     public function millisecond($amount)
     {
-        $this->date->addField(13, $amount);
-
-        return $this;
+        return $this->date->addField(14, $amount);
     }
 }
