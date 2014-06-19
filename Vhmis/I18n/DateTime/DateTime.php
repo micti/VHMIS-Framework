@@ -200,6 +200,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setDateWithGregorianRelatedYear($year, $month, $day)
     {
         $year = $this->getExtendedYearFromGregorianRelatedYear($year);
+
         return $this->setDateWithExtenedYear($year, $month, $day);
     }
 
@@ -238,11 +239,11 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         if (preg_match($datetime, $string, $matches)) {
             $this->setDateWithExtenedYear($matches[2] . $matches[3], $matches[4], $matches[5]);
 
-            if($matches[1] === 'r') {
+            if ($matches[1] === 'r') {
                 $this->setDateWithGregorianRelatedYear($matches[2] . $matches[3], $matches[4], $matches[5]);
             }
 
-            if($matches[6] !== '') {
+            if ($matches[6] !== '') {
                 $this->setTime($matches[7], $matches[8], $matches[9]);
             }
 
@@ -250,11 +251,12 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         if (preg_match($time, $string, $matches)) {
-            if($matches[3] !== '') {
+            if ($matches[3] !== '') {
                 return $this->setTime($matches[1], $matches[2], $matches[4]);
             }
-            
+
             $second = $this->calendar->get(\IntlCalendar::FIELD_SECOND);
+
             return $this->setTime($matches[1], $matches[2], $second);
         }
 
@@ -394,6 +396,12 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function __call($name, $arguments)
     {
+        if (strpos($name, 'add') === 0) {
+            $helper = $this->getHelper('add');
+
+            return $helper($name, $arguments);
+        }
+
         if (!isset($this->magicMethods[$name])) {
             return null;
         }
@@ -408,86 +416,12 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
             return $this->setField($this->magicMethods[$name], $arguments[0]);
         }
 
-        if ($method === 'add' && count($arguments) === 1) {
-            return $this->addField($this->magicMethods[$name], $arguments[0]);
-        }
-
         return null;
     }
 
     public function __get($name)
     {
         return $this->getHelper($name);
-    }
-
-    /**
-     * Set month (1-based)
-     *
-     * @param int $month
-     *
-     * @return DateTime
-     */
-    public function setMonth($month)
-    {
-        $month = (int) $month;
-        $year = $this->getYear();
-
-        $this->setField(\IntlCalendar::FIELD_MONTH, $month);
-
-        if ($this->getMonth() !== $month) {
-            $this->fixLastDayOfMonth($month, $year);
-        }
-
-        $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
-
-        return $this;
-    }
-
-    /**
-     * Set leap month (1-based)
-     *
-     * @param int $month
-     *
-     * @return DateTime
-     */
-    public function setLeapMonth($month)
-    {
-        $currentMonth = $this->calendar->get(\IntlCalendar::FIELD_MONTH);
-        $currentDay = $this->calendar->get(\IntlCalendar::FIELD_DAY_OF_MONTH);
-        $isLeapCurrentMonth = $this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH);
-
-        $this->setMonth($month)->addMonth(1);
-
-        if ($this->calendar->get(\IntlCalendar::FIELD_IS_LEAP_MONTH) !== 1) {
-            $this->calendar->set(\IntlCalendar::FIELD_MONTH, $currentMonth);
-            $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $currentDay);
-            $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, $isLeapCurrentMonth);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set year
-     *
-     * @param int $year
-     *
-     * @return DateTime
-     */
-    public function setYear($year)
-    {
-        $year = (int) $year;
-        $month = $this->getMonth();
-
-        $this->setField(\IntlCalendar::FIELD_YEAR, $year);
-
-        if ($this->getMonth() !== $month) {
-            $this->fixLastDayOfMonth($month, $year);
-        }
-
-        $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
-
-        return $this;
     }
 
     /**
@@ -550,7 +484,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @return int
      */
-    protected function getField($field)
+    public function getField($field)
     {
         $value = $this->calendar->get($field);
 
@@ -567,9 +501,9 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $field
      * @param int $value
      *
-     * @return DateTime
+     * @return boolean
      */
-    protected function setField($field, $value)
+    public function setField($field, $value)
     {
         $value = (int) $value;
 
@@ -578,10 +512,40 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         if ($this->isValidFieldValue($field, $value)) {
-            $this->calendar->set($field, $value);
+            return $this->calendar->set($field, $value);
         }
 
-        return $this;
+        return false;
+    }
+
+    public function getMaximumValueOfField($field)
+    {
+        return $this->calendar->getMaximum($field);
+    }
+
+    public function getMinimumValueOfField($field)
+    {
+        return $this->calendar->getMinimum($field);
+    }
+
+    public function getActualMaximumValueOfField($field)
+    {
+        return $this->calendar->getActualMaximum($field);
+    }
+
+    public function getActualMinimumValueOfField($field)
+    {
+        return $this->calendar->getActualMinimum($field);
+    }
+
+    public function getLeastMaximumValueOfField($field)
+    {
+        return $this->calendar->getLeastMaximum($field);
+    }
+
+    public function getGreatestMinimumValueOfField($field)
+    {
+        return $this->calendar->getGreatestMinimum($field);
     }
 
     /**
@@ -600,26 +564,10 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         return $this;
     }
 
-    /**
-     * Fix and change to last day of month
-     *
-     * @param int $month
-     * @param int $year
-     *
-     * @return \Vhmis\I18n\DateTime\DateTime
-     */
-    protected function fixLastDayOfMonth($month, $year)
+    public function isValidFieldValue($field, $value)
     {
-        $this->setDate($year, $month, 1);
-        $this->setDay($this->calendar->getActualMaximum(\IntlCalendar::FIELD_DAY_OF_MONTH));
-
-        return $this;
-    }
-
-    protected function isValidFieldValue($field, $value)
-    {
-        $max = $this->calendar->getActualMaximum($field);
-        $min = $this->calendar->getActualMinimum($field);
+        $max = $this->calendar->getMaximum($field);
+        $min = $this->calendar->getMinimum($field);
 
         if ($value < $min || $value > $max) {
             return false;

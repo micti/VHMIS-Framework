@@ -15,14 +15,6 @@ namespace Vhmis\Utils\Std;
  */
 abstract class AbstractDateTime
 {
-    const FIELD_SECOND = 0;
-    const FIELD_MINUTE = 1;
-    const FIELD_HOUR = 2;
-    const FIELD_DAY = 3;
-    const FIELD_WEEK = 4;
-    const FIELD_MONTH = 5;
-    const FIELD_YEAR = 6;
-
     /**
      * Calendar type
      *
@@ -50,7 +42,9 @@ abstract class AbstractDateTime
      * @var array
      */
     protected $helperList = array(
-        'convert' => 'Convert'
+        'convert' => 'Convert',
+        'add'     => 'Add',
+        'set'     => 'Set'
     );
 
     /**
