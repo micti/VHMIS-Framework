@@ -233,8 +233,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testAddEra()
     {
         $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
-        $a->setEra(63);
+        $a->setEra(80);
         $a->addEra(4);
-        $this->assertEquals(67, $a->getEra());
+        echo $a->getEra();
+        $this->assertEquals(84, $a->getEra());
     }
 }

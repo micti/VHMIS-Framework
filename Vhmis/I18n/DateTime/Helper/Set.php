@@ -24,6 +24,10 @@ class Set extends AbstractDateTimeHelper
 
     public function __invoke($name, $arguments)
     {
+        if (!is_array($arguments)) {
+            return null;
+        }
+        
         if (count($arguments) !== 1) {
             return null;
         }
@@ -114,6 +118,16 @@ class Set extends AbstractDateTimeHelper
             return $this->date;
         }
         
+        return $this->fix($year, $month);
+    }
+
+    public function setEra($era)
+    {
+        $month = $this->date->getField(2);
+        $year = $this->date->getField(1);
+        
+        $this->date->setField(0, $era);
+
         return $this->fix($year, $month);
     }
 

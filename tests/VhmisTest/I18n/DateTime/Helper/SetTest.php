@@ -33,6 +33,36 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->set = new Set;
     }
 
+    public function testInvoke()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 12, 31);
+        $date->setTime(23, 15, 54);
+
+        $this->set->setDate($date);
+
+        $a = $this->set;
+        $a('setDay', array(1));
+    }
+
+    public function testWrongParams()
+    {
+        $a = $this->set;
+        $this->assertEquals(null, $a('setDay', 1));
+    }
+
+    public function testWrongCountParams()
+    {
+        $a = $this->set;
+        $this->assertEquals(null, $a('setDay', array(1, 2)));
+    }
+
+    public function testWrongMethod()
+    {
+        $a = $this->set;
+        $this->assertEquals(null, $a('setAAAA', array(1)));
+    }
+
     public function testSetSecond()
     {
         $date = new DateTime();
@@ -122,5 +152,16 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->set->setYear(33);
         $this->assertEquals('0033-09-29', $date->getDate());
         $this->assertEquals(0, $date->getField(22));
+    }
+
+    public function testSetEra()
+    {
+        $date = new DateTime('GMT+07:00', 'chinese');
+        $date->setDate(31, 9, 29); // 2014 7 leap
+        $date->setField(22, 1); // 2014 7 leap
+        $this->set->setDate($date);
+        $this->set->setEra(88);
+        $this->assertEquals('0031-09-29', $date->getDate());
+        $this->assertEquals(88, $date->getField(0));
     }
 }
