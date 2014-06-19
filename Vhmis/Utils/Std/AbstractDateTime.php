@@ -44,7 +44,8 @@ abstract class AbstractDateTime
     protected $helperList = array(
         'convert' => 'Convert',
         'add'     => 'Add',
-        'set'     => 'Set'
+        'set'     => 'Set',
+        'get'     => 'Get'
     );
 
     /**
