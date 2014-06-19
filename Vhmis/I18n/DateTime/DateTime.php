@@ -87,14 +87,13 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     protected $magicMethods = array(
         'getSecond' => \IntlCalendar::FIELD_SECOND,
         'getMinute' => \IntlCalendar::FIELD_MINUTE,
-        'getHour' => \IntlCalendar::FIELD_HOUR_OF_DAY,
-        'getDay' => \IntlCalendar::FIELD_DAY_OF_MONTH,
-        'getWeek' => \IntlCalendar::FIELD_DAY_OF_MONTH,
-        'getMonth' => \IntlCalendar::FIELD_MONTH,
-        'getYear' => \IntlCalendar::FIELD_EXTENDED_YEAR,
-        'getEra' => \IntlCalendar::FIELD_ERA
+        'getHour'   => \IntlCalendar::FIELD_HOUR_OF_DAY,
+        'getDay'    => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'getWeek'   => \IntlCalendar::FIELD_DAY_OF_MONTH,
+        'getMonth'  => \IntlCalendar::FIELD_MONTH,
+        'getYear'   => \IntlCalendar::FIELD_EXTENDED_YEAR,
+        'getEra'    => \IntlCalendar::FIELD_ERA
     );
-
     protected $relatedYearAdjust = array(
         'gregorian'     => 622,
         'chinese'       => -2637,
@@ -165,11 +164,11 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setDateWithExtenedYear($year, $month, $day)
     {
-        $month = (int) $month - 1;
-
-        $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, (int) $year);
-        $this->calendar->set(\IntlCalendar::FIELD_MONTH, $month);
-        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, (int) $day);
+        $this->setFields(array(
+            \IntlCalendar::FIELD_EXTENDED_YEAR => $year,
+            \IntlCalendar::FIELD_MONTH         => $month,
+            \IntlCalendar::FIELD_DAY_OF_MONTH  => $day
+        ));
 
         return $this;
     }
@@ -201,9 +200,11 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setTime($hour, $minute, $second)
     {
-        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, (int) $hour);
-        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, (int) $minute);
-        $this->calendar->set(\IntlCalendar::FIELD_SECOND, (int) $second);
+        $this->setFields(array(
+            \IntlCalendar::FIELD_HOUR_OF_DAY => $hour,
+            \IntlCalendar::FIELD_MINUTE      => $minute,
+            \IntlCalendar::FIELD_SECOND      => $second
+        ));
 
         return $this;
     }
@@ -218,8 +219,8 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function modify($string)
     {
-        $datetime =  '/^(r?)(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})(| (\d{1,2}):(\d{1,2}):(\d{1,2}))$/';
-        $time =  '/^(\d{1,2}):(\d{1,2})(|:(\d{1,2}))$/';
+        $datetime = '/^(r?)(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})(| (\d{1,2}):(\d{1,2}):(\d{1,2}))$/';
+        $time = '/^(\d{1,2}):(\d{1,2})(|:(\d{1,2}))$/';
         $matches = array();
 
         if (preg_match($datetime, $string, $matches)) {
@@ -494,6 +495,18 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         return false;
     }
 
+    public function setFields($fields)
+    {
+        foreach ($fields as $field => $value) {
+            if ($field === \IntlCalendar::FIELD_MONTH) {
+                $value = (int) $value - 1;
+            }
+            $this->calendar->set($field, (int) $value);
+        }
+
+        return $this;
+    }
+
     public function getMaximumValueOfField($field)
     {
         return $this->calendar->getMaximum($field);
@@ -562,12 +575,12 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     protected function formatField($field)
     {
         $pad = array(
-            \IntlCalendar::FIELD_YEAR => 4,
-            \IntlCalendar::FIELD_MONTH => 2,
+            \IntlCalendar::FIELD_YEAR         => 4,
+            \IntlCalendar::FIELD_MONTH        => 2,
             \IntlCalendar::FIELD_DAY_OF_MONTH => 2,
-            \IntlCalendar::FIELD_HOUR_OF_DAY => 2,
-            \IntlCalendar::FIELD_MINUTE => 2,
-            \IntlCalendar::FIELD_SECOND => 2
+            \IntlCalendar::FIELD_HOUR_OF_DAY  => 2,
+            \IntlCalendar::FIELD_MINUTE       => 2,
+            \IntlCalendar::FIELD_SECOND       => 2
         );
 
         return str_pad($this->getField($field), $pad[$field], '0', STR_PAD_LEFT);
@@ -622,12 +635,12 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     {
         $cycle = ($gregorianYear - 1977) / 65;
         $offset = ($gregorianYear - 1977) % 65;
-        $shift = 2 * $cycle + (($offset >= 32)? 1: 0);
+        $shift = 2 * $cycle + (($offset >= 32) ? 1 : 0);
 
         if ($gregorianYear < 1977) {
             $cycle = ($gregorianYear - 1976) / 65 - 1;
             $offset = -($gregorianYear - 1976) % 65;
-            $shift = 2 * $cycle + (($offset <= 32)? 1: 0);
+            $shift = 2 * $cycle + (($offset <= 32) ? 1 : 0);
         }
 
         return $gregorianYear - 579 + $shift;
