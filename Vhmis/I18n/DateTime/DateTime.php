@@ -382,20 +382,14 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function __call($name, $arguments)
     {
-        if (strpos($name, 'add') === 0) {
-            $helper = $this->getHelper('add');
+        $helperName = array('add', 'set', 'get');
 
-            return $helper($name, $arguments);
-        }
+        foreach ($helperName as $helper) {
+            if (strpos($name, $helper) === 0) {
+                $helper = $this->getHelper($helper);
 
-        if (!isset($this->magicMethods[$name])) {
-            return null;
-        }
-
-        $method = substr($name, 0, 3);
-
-        if ($method === 'get' && count($arguments) === 0) {
-            return $this->getField($this->magicMethods[$name]);
+                return $helper($name, $arguments);
+            }
         }
 
         return null;
