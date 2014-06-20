@@ -80,37 +80,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     protected $helperNamespace = '\Vhmis\I18n\DateTime\Helper';
 
     /**
-     * Magic methods
-     *
-     * @var array
-     */
-    protected $magicMethods = array(
-        'getSecond' => \IntlCalendar::FIELD_SECOND,
-        'getMinute' => \IntlCalendar::FIELD_MINUTE,
-        'getHour'   => \IntlCalendar::FIELD_HOUR_OF_DAY,
-        'getDay'    => \IntlCalendar::FIELD_DAY_OF_MONTH,
-        'getWeek'   => \IntlCalendar::FIELD_DAY_OF_MONTH,
-        'getMonth'  => \IntlCalendar::FIELD_MONTH,
-        'getYear'   => \IntlCalendar::FIELD_EXTENDED_YEAR,
-        'getEra'    => \IntlCalendar::FIELD_ERA
-    );
-    protected $relatedYearAdjust = array(
-        'gregorian'     => 622,
-        'chinese'       => -2637,
-        'coptic'        => 284,
-        'dangi'         => -2333,
-        'ethiopic'      => 8,
-        'hebrew'        => -3760,
-        'indian'        => 79,
-        'islamic-civil' => 0,
-        'islamic'       => 0,
-        'japanese'      => 0,
-        'persian'       => 0,
-        'taiwan'        => 0,
-        'buddhist'      => 0
-    );
-
-    /**
      * Construct
      *
      * @param mixed  $timezone
@@ -402,59 +371,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Get Gregorian related year
-     *
-     * @return int
-     */
-    public function getGregorianRelatedYear()
-    {
-        $year = $this->getField(\IntlCalendar::FIELD_EXTENDED_YEAR);
-        $calendar = $this->getType();
-
-        $year += $this->relatedYearAdjust[$calendar];
-        if (strpos($calendar, 'islamic') !== false) {
-            $year = $this->islamicYearToGregorianYear($year);
-        }
-
-        return $year;
-    }
-
-    /**
-     * Get extended year from Gregorian related year
-     *
-     * @param int $year
-     *
-     * @return int
-     */
-    protected function getExtendedYearFromGregorianRelatedYear($year)
-    {
-        $year = (int) $year;
-        $calendar = $this->getType();
-
-        $year -= $this->relatedYearAdjust[$calendar];
-        if (strpos($calendar, 'islamic') !== false) {
-            $year = $this->gregorianYearToIslamicYear($year);
-        }
-
-        return $year;
-    }
-
-    /**
-     * Set Gregorian related year
-     *
-     * @param int $year
-     *
-     * @return DateTime
-     */
-    public function setGregorianRelatedYear($year)
-    {
-        return $this->setField(
-            \IntlCalendar::FIELD_EXTENDED_YEAR,
-            $this->getExtendedYearFromGregorianRelatedYear($year)
-        );
-    }
-
-    /**
      * Get value of field
      *
      * @param int $field
@@ -553,7 +469,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         return $this;
     }
 
-    public function isValidFieldValue($field, $value)
+    protected function isValidFieldValue($field, $value)
     {
         $max = $this->calendar->getMaximum($field);
         $min = $this->calendar->getMinimum($field);
@@ -600,49 +516,5 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         return $calendar;
-    }
-
-    /**
-     * Get Gregorian related year from Islamic calendar year
-     *
-     * @param int $islamicYear
-     *
-     * @return int
-     */
-    protected function islamicYearToGregorianYear($islamicYear)
-    {
-        $cycle = ($islamicYear - 1396) / 67 - 1;
-        $offset = -($islamicYear - 1396) % 67;
-        $shift = 2 * $cycle + (($offset <= 33) ? 1 : 0);
-
-        if ($islamicYear >= 1397) {
-            $cycle = ($islamicYear - 1397) / 67;
-            $offset = ($islamicYear - 1397) % 67;
-            $shift = 2 * $cycle + (($offset >= 33) ? 1 : 0);
-        }
-
-        return $islamicYear + 579 - $shift;
-    }
-
-    /**
-     * Get Islamic year from Gregorian related year
-     *
-     * @param int $gregorianYear
-     *
-     * @return int
-     */
-    protected function gregorianYearToIslamicYear($gregorianYear)
-    {
-        $cycle = ($gregorianYear - 1977) / 65;
-        $offset = ($gregorianYear - 1977) % 65;
-        $shift = 2 * $cycle + (($offset >= 32) ? 1 : 0);
-
-        if ($gregorianYear < 1977) {
-            $cycle = ($gregorianYear - 1976) / 65 - 1;
-            $offset = -($gregorianYear - 1976) % 65;
-            $shift = 2 * $cycle + (($offset <= 32) ? 1 : 0);
-        }
-
-        return $gregorianYear - 579 + $shift;
     }
 }

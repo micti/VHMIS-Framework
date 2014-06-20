@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT License
  */
 
-namespace VhmisTest\I18n\Helper;
+namespace VhmisTest\I18n\DateTime\Helper;
 
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Convert;

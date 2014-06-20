@@ -235,7 +235,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
         $a->setEra(80);
         $a->addEra(4);
-        echo $a->getEra();
         $this->assertEquals(84, $a->getEra());
     }
 }
