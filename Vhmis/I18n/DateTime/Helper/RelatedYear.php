@@ -48,8 +48,11 @@ class RelatedYear extends AbstractDateTimeHelper
      *
      * @return null
      */
-    public function __invoke()
+    public function __invoke($name, $arguments)
     {
+        $name = null;
+        $arguments = null;
+
         return null;
     }
 
@@ -90,64 +93,47 @@ class RelatedYear extends AbstractDateTimeHelper
     protected function exchange($year, $from = 'extendyear')
     {
         $way = 1;
-        $method = 'islamicYearToGregorianYear';
 
         if ($from !== 'extendyear') {
             $way = -1;
-            $method = 'gregorianYearToIslamicYear';
         }
 
         $calendar = $this->date->getType();
 
         $year += $this->relatedYearAdjust[$calendar] * $way;
         if (strpos($calendar, 'islamic') !== false) {
-            $year = $this->$method($year);
+            $year = $this->exchangeIslamicYear($year, $from);
         }
 
         return $year;
     }
 
     /**
-     * Get Gregorian related year from Islamic calendar year
+     * Convert related year and extended year for Islamic calendar
      *
-     * @param int $islamicYear
-     *
-     * @return int
-     */
-    protected function islamicYearToGregorianYear($islamicYear)
-    {
-        $cycle = ($islamicYear - 1396) / 67 - 1;
-        $offset = -($islamicYear - 1396) % 67;
-        $shift = 2 * $cycle + (($offset <= 33) ? 1 : 0);
-
-        if ($islamicYear >= 1397) {
-            $cycle = ($islamicYear - 1397) / 67;
-            $offset = ($islamicYear - 1397) % 67;
-            $shift = 2 * $cycle + (($offset >= 33) ? 1 : 0);
-        }
-
-        return $islamicYear + 579 - $shift;
-    }
-
-    /**
-     * Get Islamic year from Gregorian related year
-     *
-     * @param int $gregorianYear
+     * @param int    $year
+     * @param string $from
      *
      * @return int
      */
-    protected function gregorianYearToIslamicYear($gregorianYear)
+    protected function exchangeIslamicYear($year, $from = 'extendyear')
     {
-        $cycle = ($gregorianYear - 1977) / 65;
-        $offset = ($gregorianYear - 1977) % 65;
-        $shift = 2 * $cycle + (($offset >= 32) ? 1 : 0);
+        $data = array(1976, 65, 32);
 
-        if ($gregorianYear < 1977) {
-            $cycle = ($gregorianYear - 1976) / 65 - 1;
-            $offset = -($gregorianYear - 1976) % 65;
-            $shift = 2 * $cycle + (($offset <= 32) ? 1 : 0);
+        if ($from !== 'extendyear') {
+            $data = array(1936, 67, 33);
         }
 
-        return $gregorianYear - 579 + $shift;
+        $cycle = ($year - $data[0]) / $data[1] - 1;
+        $offset = -($year - $data[0]) % $data[1];
+        $shift = 2 * $cycle + (($offset <= $data[2]) ? 1 : 0);
+
+        if ($year >= $data[0] + 1) {
+            $cycle = ($year - $data[0] - 1) / $data[1];
+            $offset = ($year - $data[0] - 1) % $data[1];
+            $shift = 2 * $cycle + (($offset >= $data[2]) ? 1 : 0);
+        }
+
+        return $year + 579 - $shift;
     }
 }

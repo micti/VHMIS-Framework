@@ -37,8 +37,7 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
     {
         $a = $this->relatedYear;
         $this->assertEquals(null, $a('setDay', array(1)));
-        $this->assertEquals(null, $a());
-        $this->assertEquals(null, $a('setDay'));
+        $this->assertEquals(null, $a('setDay', 1));
     }
 
     public function testGet()
