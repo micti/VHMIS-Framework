@@ -134,10 +134,10 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('0031-06-30', $date->getDate());
         $this->assertEquals(0, $date->getField(22));
         $this->set->setLeapMonth(9);
-        $this->assertEquals('0031-09-29', $date->getDate());
+        $this->assertEquals('0031-09bis-29', $date->getDate());
         $this->assertEquals(1, $date->getField(22));
         $this->set->setLeapMonth(11);
-        $this->assertEquals('0031-09-29', $date->getDate());
+        $this->assertEquals('0031-09bis-29', $date->getDate());
         $this->assertEquals(1, $date->getField(22));
         $this->set->setMonth(11);
         $this->assertEquals('0031-11-29', $date->getDate());

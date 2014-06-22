@@ -91,7 +91,9 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function __construct($timezone = null, $calendar = null, $locale = null)
     {
-        $calendar = $this->getCalendarType($calendar);
+        if (!isset(static::$calendars[$calendar])) {
+            $calendar = 'gregorian';
+        }
 
         if ($locale === null) {
             $locale = \Locale::getDefault();
@@ -224,24 +226,14 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function getDate()
     {
-        $year = $this->formatField(\IntlCalendar::FIELD_YEAR);
-        $month = $this->formatField(\IntlCalendar::FIELD_MONTH);
-        $day = $this->formatField(\IntlCalendar::FIELD_DAY_OF_MONTH);
-
-        $date = $year . '-' . $month . '-' . $day;
-        //$date = \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
+        $date = \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
+        
         return $date;
     }
 
     public function getDateWithExtendedYear()
     {
-        $year = $this->formatField(\IntlCalendar::FIELD_EXTENDED_YEAR);
-        $month = $this->formatField(\IntlCalendar::FIELD_MONTH);
-        $day = $this->formatField(\IntlCalendar::FIELD_DAY_OF_MONTH);
-
-        $date = $year . '-' . $month . '-' . $day;
-        //$date = \IntlDateFormatter::formatObject($this->calendar, 'YYYY-MM-dd');
-        return $date;
+        return \IntlDateFormatter::formatObject($this->calendar, 'YYYY-MM-dd');
     }
 
     /**
@@ -251,13 +243,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function getTime()
     {
-        $hour = $this->formatField(\IntlCalendar::FIELD_HOUR_OF_DAY);
-        $minute = $this->formatField(\IntlCalendar::FIELD_MINUTE);
-        $second = $this->formatField(\IntlCalendar::FIELD_SECOND);
-
-        $time = $hour . ':' . $minute . ':' . $second;
-        //$time = \IntlDateFormatter::formatObject($this->calendar, 'HH:mm:ss');
-        return $time;
+        return \IntlDateFormatter::formatObject($this->calendar, 'HH:mm:ss');
     }
 
     /**
@@ -267,9 +253,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function getDateTime()
     {
-        $dateTime = $this->getDate() . ' ' . $this->getTime();
-        //$dateTime = \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd HH:mm:ss');
-        return $dateTime;
+        return \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd HH:mm:ss');
     }
 
     /**
@@ -449,42 +433,5 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         }
 
         return true;
-    }
-
-    /**
-     * Format field
-     *
-     * @param int $field
-     *
-     * @return string
-     */
-    protected function formatField($field)
-    {
-        $pad = array(
-            \IntlCalendar::FIELD_YEAR         => 4,
-            \IntlCalendar::FIELD_MONTH        => 2,
-            \IntlCalendar::FIELD_DAY_OF_MONTH => 2,
-            \IntlCalendar::FIELD_HOUR_OF_DAY  => 2,
-            \IntlCalendar::FIELD_MINUTE       => 2,
-            \IntlCalendar::FIELD_SECOND       => 2
-        );
-
-        return str_pad($this->getField($field), $pad[$field], '0', STR_PAD_LEFT);
-    }
-
-    /**
-     * Get calendar
-     *
-     * @param string $calendar
-     *
-     * @return string
-     */
-    protected function getCalendarType($calendar)
-    {
-        if (!isset(static::$calendars[$calendar])) {
-            $calendar = 'gregorian';
-        }
-
-        return $calendar;
     }
 }
