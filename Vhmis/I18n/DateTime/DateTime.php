@@ -10,6 +10,7 @@
 
 namespace Vhmis\I18n\DateTime;
 
+use \Vhmis\Utils\DateTime as DateTimeUtils;
 use \Vhmis\Utils\Std\DateTimeInterface;
 use \Vhmis\Utils\Std\AbstractDateTime;
 use \Vhmis\Utils\Exception\InvalidArgumentException;
@@ -143,22 +144,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Set date with year is Gregorian related year
-     *
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     *
-     * @return DateTime
-     */
-    public function setDateWithGregorianRelatedYear($year, $month, $day)
-    {
-        $year = $this->getExtendedYearFromGregorianRelatedYear($year);
-
-        return $this->setDateWithExtenedYear($year, $month, $day);
-    }
-
-    /**
      * Set time
      *
      * @param int $hour
@@ -188,32 +173,17 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function modify($string)
     {
-        $datetime = '/^(r?)(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})(| (\d{1,2}):(\d{1,2}):(\d{1,2}))$/';
-        $time = '/^(\d{1,2}):(\d{1,2})(|:(\d{1,2}))$/';
-        $matches = array();
+        $result = DateTimeUtils::praseDateTimeFormat($string);
 
-        if (preg_match($datetime, $string, $matches)) {
-            $this->setDateWithExtenedYear($matches[2] . $matches[3], $matches[4], $matches[5]);
-
-            if ($matches[1] === 'r') {
-                $this->setDateWithGregorianRelatedYear($matches[2] . $matches[3], $matches[4], $matches[5]);
-            }
-
-            if ($matches[6] !== '') {
-                $this->setTime($matches[7], $matches[8], $matches[9]);
-            }
-
-            return $this;
+        if (isset($result['date'])) {
+            $this->setDateWithExtenedYear(
+                (int) $result['date']['year'], (int) $result['date']['month'], (int) $result['date']['day']);
         }
 
-        if (preg_match($time, $string, $matches)) {
-            if ($matches[3] !== '') {
-                return $this->setTime($matches[1], $matches[2], $matches[4]);
-            }
-
-            $second = $this->calendar->get(\IntlCalendar::FIELD_SECOND);
-
-            return $this->setTime($matches[1], $matches[2], $second);
+        if (isset($result['time'])) {
+            $this->setTime(
+                (int) $result['time']['hour'], (int) $result['time']['minute'], (int) $result['time']['second']
+            );
         }
 
         return $this;

@@ -11,6 +11,7 @@
 namespace Vhmis\I18n\DateTime\Helper;
 
 use \Vhmis\Utils\Std\AbstractDateTimeHelper;
+use \Vhmis\Utils\DateTime as DateTimeUtils;
 use \Vhmis\I18n\DateTime\DateTime;
 
 class RelatedYear extends AbstractDateTimeHelper
@@ -50,9 +51,6 @@ class RelatedYear extends AbstractDateTimeHelper
      */
     public function __invoke($name, $arguments)
     {
-        $name = null;
-        $arguments = null;
-
         return null;
     }
 
@@ -78,6 +76,24 @@ class RelatedYear extends AbstractDateTimeHelper
     public function set($year)
     {
         $this->date->setField(19, $this->exchange($year, 'ralatedyear'));
+
+        return $this;
+    }
+
+    public function modify($string)
+    {
+        $result = DateTimeUtils::praseDateTimeFormat($string);
+
+        if (isset($result['date'])) {
+            $year = $this->exchange((int) $result['date']['year'], 'ralatedyear');
+            $this->date->setDateWithExtenedYear($year, (int) $result['date']['month'], (int) $result['date']['day']);
+        }
+
+        if (isset($result['time'])) {
+            $this->date->setTime(
+                (int) $result['time']['hour'], (int) $result['time']['minute'], (int) $result['time']['second']
+            );
+        }
 
         return $this;
     }
@@ -126,13 +142,13 @@ class RelatedYear extends AbstractDateTimeHelper
 
         $cycle = ($year - $data[0]) / $data[1] - 1;
         $offset = -($year - $data[0]) % $data[1];
-        $shift = 2 * $cycle + (($offset <= $data[2]) ? 1 : 0);
 
         if ($year >= $data[0] + 1) {
             $cycle = ($year - $data[0] - 1) / $data[1];
             $offset = ($year - $data[0] - 1) % $data[1];
-            $shift = 2 * $cycle + (($offset >= $data[2]) ? 1 : 0);
         }
+
+        $shift = 2 * $cycle + (($offset >= $data[2]) ? 1 : 0);
 
         return $year + 579 - $shift;
     }

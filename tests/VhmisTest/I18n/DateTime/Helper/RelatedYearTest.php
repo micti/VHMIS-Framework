@@ -59,4 +59,16 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(78, $date->getField(0));
         $this->assertEquals(31, $date->getField(1));
     }
+
+    public function testModify()
+    {
+        $date = new DateTime('GMT+07:00', 'chinese');
+        $this->relatedYear->setDate($date);
+        $this->relatedYear->modify('2014-06-05 11:12:13');
+
+        $this->assertEquals('0031-06-05', $date->getDate(0));
+        $this->assertEquals('0031-06-05 11:12:13', $date->getDateTime(0));
+        $this->assertEquals(78, $date->getField(0));
+        $this->assertEquals(31, $date->getField(1));
+    }
 }
