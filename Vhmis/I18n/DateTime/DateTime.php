@@ -284,48 +284,15 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Object to string
+     * Format
+     *
+     * @param string|array|int $format
      *
      * @return string
      */
-    public function __toString()
+    public function format($format)
     {
-        return $this->getDateTime();
-    }
-
-    /**
-     * Magic __call method for some helpers
-     *
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        $helperName = array('add', 'set', 'get');
-
-        foreach ($helperName as $helper) {
-            if (strpos($name, $helper) === 0) {
-                $helper = $this->getHelper($helper);
-
-                return $helper($name, $arguments);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * magic __get method for get helper object
-     *
-     * @param string $name
-     *
-     * @return \Vhmis\Utils\Std\AbstractDateTimeHelper
-     */
-    public function __get($name)
-    {
-        return $this->getHelper($name);
+        return \IntlDateFormatter::formatObject($this->calendar, $format, $this->calendar->getLocale(1));
     }
 
     /**
@@ -424,5 +391,50 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
             'actual'   => $this->calendar->getActualMinimum($field),
             'greatest' => $this->calendar->getGreatestMinimum($field)
         );
+    }
+
+    /**
+     * Object to string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getDateTime();
+    }
+
+    /**
+     * Magic __call method for some helpers
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        $helperName = array('add', 'set', 'get', 'format');
+
+        foreach ($helperName as $helper) {
+            if (strpos($name, $helper) === 0) {
+                $helper = $this->getHelper($helper);
+
+                return $helper($name, $arguments);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * magic __get method for get helper object
+     *
+     * @param string $name
+     *
+     * @return \Vhmis\Utils\Std\AbstractDateTimeHelper
+     */
+    public function __get($name)
+    {
+        return $this->getHelper($name);
     }
 }

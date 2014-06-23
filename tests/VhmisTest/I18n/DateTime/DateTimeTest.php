@@ -30,18 +30,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        $reflector = new \ReflectionExtension('intl');
-        ob_start();
-        $reflector->info();
-        $output = ob_get_clean();
-        preg_match('/^ICU version => (.*)$/m', $output, $matches);
-        if ($matches[1] < '5') {
-            $this->markTestSkipped(
-                'ICU version > 5 is not available.'
-            );
-        }
-
-        $this->date = new DateTime('Asia/Ho_Chi_Minh');
+        $this->date = new DateTime('Asia/Saigon', '', 'vi_VN');
     }
 
     public function testConstruct()
@@ -144,6 +133,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2013-01-01', $this->date->getDate());
     }
 
+    public function testFormat()
+    {
+        $this->date->setDate(2012, 1, 29);
+        $this->date->setTime(11, 11, 11);
+
+        $this->assertEquals('11:11:11 Giờ Đông Dương Chủ Nhật, ngày 29 tháng 1 năm 2012', $this->date->format(0));
+    }
+
     public function testModifyDate()
     {
         $this->date->setDate(2012, 2, 29);
@@ -179,73 +176,58 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2012-02-29 01:02:03', $this->date->getDateTime());
     }
 
-    public function testAddSecond()
+    public function testSetTimeZone()
     {
-        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addSecond(31);
-        $this->assertEquals('2014-01-31 00:13:05', $this->date->getDateTime());
-        $this->date->addSecond(-61);
-        $this->assertEquals('2014-01-31 00:12:04', $this->date->getDateTime());
+        $this->date->setTimeZone('Asia/Tokyo');
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+        $this->assertEquals('2014-06-24 14:12:13', $this->date->getDateTime());
+        $this->date->setTimeZone('Asia/Ho_Chi_Minh');
+        $this->assertEquals('2014-06-24 12:12:13', $this->date->getDateTime());
     }
 
-    public function testAddMinute()
+    public function testSetTimestamp()
     {
-        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addMinute(60);
-        $this->assertEquals('2014-01-31 01:12:34', $this->date->getDateTime());
-        $this->date->addMinute(-23);
-        $this->assertEquals('2014-01-31 00:49:34', $this->date->getDateTime());
+        $this->date->setTimestamp(0);
+        $this->assertEquals('1970-01-01 07:00:00', $this->date->getDateTime());
     }
 
-    public function testAddHour()
+    public function testGetTimestamp()
     {
-        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34)->addHour(25);
-        $this->assertEquals('2014-02-01 01:12:34', $this->date->getDateTime());
-        $this->date->addHour(-2);
-        $this->assertEquals('2014-01-31 23:12:34', $this->date->getDateTime());
+        $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');
+        $a->set(1970, 0, 1, 7, 0, 0);
+
+        $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
+        $this->assertEquals((int) ($a->getTime() / 1000), $this->date->getTimestamp());
     }
 
-    public function testAddDay()
+    public function testGetTimeZone()
     {
-        $this->date->setDate(2014, 1, 31)->addDay(31);
-        $this->assertEquals('2014-03-03', $this->date->getDate());
-        $this->date->addDay(365);
-        $this->assertEquals('2015-03-03', $this->date->getDate());
-        $this->date->addDay(-3);
-        $this->assertEquals('2015-02-28', $this->date->getDate());
+        $this->date->setTimeZone('Asia/Ho_Chi_Minh');
+        $this->assertEquals('Indochina Time', $this->date->getTimeZone());
     }
 
-    public function testAddWeek()
+    public function testGetType()
     {
-        $this->date->setDate(2014, 1, 31)->addWeek(2);
-        $this->assertEquals('2014-02-14', $this->date->getDate());
-        $this->date->setDate(2014, 12, 11)->addWeek(4);
-        $this->assertEquals('2015-01-08', $this->date->getDate());
+        $a = new DateTime(null, 'japanese');
+        $this->assertEquals('japanese', $a->getType());
+
+        $a = new DateTime(null, 'taiwan');
+        $this->assertEquals('gregorian', $a->getType());
     }
 
-    public function testAddMonth()
+    public function testToString()
     {
-        $this->date->setDate(2014, 1, 31)->addMonth(1);
-        $this->assertEquals('2014-02-28', $this->date->getDate());
-        $this->date->addMonth(1);
-        $this->assertEquals('2014-03-28', $this->date->getDate());
-        $this->date->addMonth(-14);
-        $this->assertEquals('2013-01-28', $this->date->getDate());
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+        $this->assertEquals('2014-06-24 14:12:13', (string) $this->date);
     }
 
-    public function testAddYear()
+    public function testCallWrong()
     {
-        $this->date->setDate(2012, 2, 29)->addYear(3);
-        $this->assertEquals('2015-02-28', $this->date->getDate());
-        $this->date->addYear(1);
-        $this->assertEquals('2016-02-28', $this->date->getDate());
-        $this->date->addYear(-6);
-        $this->assertEquals('2010-02-28', $this->date->getDate());
+        $this->assertEquals(null, $this->date->nothing());
     }
 
-    public function testAddEra()
+    public function testCall()
     {
-        $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
-        $a->setEra(80);
-        $a->addEra(4);
-        $this->assertEquals(84, $a->getEra());
+        $this->assertEquals($this->date, $this->date->setDay(1));
     }
 }
