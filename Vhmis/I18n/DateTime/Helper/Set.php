@@ -124,8 +124,9 @@ class Set extends AbstractDateTimeHelper
             $this->date->setField(5, 1); // move first day
             $this->date->setField(1, $year);
             $this->date->setField(2, $month);
-            echo $this->date->getField(22);
-            $this->date->setField(5, $this->date->getActualMaximumValueOfField(5));
+
+            $max = $this->date->getMaximumValueOfField(5);
+            $this->date->setField(5, $max['actual']);
         }
 
         return $this->date;

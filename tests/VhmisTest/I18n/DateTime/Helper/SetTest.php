@@ -94,7 +94,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('12:15:54', $date->getTime());
     }
 
-    public function atestSetDay()
+    public function testSetDay()
     {
         $date = new DateTime();
         $date->setDate(2014, 2, 28);
@@ -109,12 +109,11 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2014-02-28', $date->getDate());
     }
 
-    public function afdfdtestSetMonth()
+    public function testSetMonth()
     {
         $date = new DateTime('GMT+07:00', 'chinese');
         $date->setDate(31, 9, 20); // 2014 9 leap
         $date->setField(22, 1); // 2014 9 leap
-        $this->assertEquals(29, $date->getActualMaximumValueOfField(5));
         $this->set->setDate($date);
         $this->set->setMonth(12);
         $this->assertEquals('0031-12-20', $date->getDate());

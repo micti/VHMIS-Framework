@@ -136,11 +136,10 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setDateWithExtenedYear($year, $month, $day)
     {
-        $this->setFields(array(
-            \IntlCalendar::FIELD_EXTENDED_YEAR => $year,
-            \IntlCalendar::FIELD_MONTH         => $month,
-            \IntlCalendar::FIELD_DAY_OF_MONTH  => $day
-        ));
+        $month = (int) $month - 1;
+        $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, $year);
+        $this->calendar->set(\IntlCalendar::FIELD_MONTH, $month);
+        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
 
         return $this;
     }
@@ -156,11 +155,9 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function setTime($hour, $minute, $second)
     {
-        $this->setFields(array(
-            \IntlCalendar::FIELD_HOUR_OF_DAY => $hour,
-            \IntlCalendar::FIELD_MINUTE      => $minute,
-            \IntlCalendar::FIELD_SECOND      => $second
-        ));
+        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
+        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, $minute);
+        $this->calendar->set(\IntlCalendar::FIELD_SECOND, $second);
 
         return $this;
     }
@@ -227,7 +224,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function getDate()
     {
         $date = \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
-        
+
         return $date;
     }
 
@@ -297,7 +294,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Magic methods for some set, get, add methods
+     * Magic __call method for some helpers
      *
      * @param string $name
      * @param array  $arguments
@@ -319,6 +316,13 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         return null;
     }
 
+    /**
+     * magic __get method for get helper object
+     *
+     * @param string $name
+     *
+     * @return \Vhmis\Utils\Std\AbstractDateTimeHelper
+     */
     public function __get($name)
     {
         return $this->getHelper($name);
@@ -358,53 +362,14 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
             $value--;
         }
 
-        if ($this->isValidFieldValue($field, $value)) {
-            return $this->calendar->set($field, $value);
+        $max = $this->calendar->getMaximum($field);
+        $min = $this->calendar->getMinimum($field);
+
+        if ($value < $min || $value > $max) {
+            return false;
         }
 
-        return false;
-    }
-
-    public function setFields($fields)
-    {
-        foreach ($fields as $field => $value) {
-            if ($field === \IntlCalendar::FIELD_MONTH) {
-                $value = (int) $value - 1;
-            }
-            $this->calendar->set($field, (int) $value);
-        }
-
-        return $this;
-    }
-
-    public function getMaximumValueOfField($field)
-    {
-        return $this->calendar->getMaximum($field);
-    }
-
-    public function getMinimumValueOfField($field)
-    {
-        return $this->calendar->getMinimum($field);
-    }
-
-    public function getActualMaximumValueOfField($field)
-    {
-        return $this->calendar->getActualMaximum($field);
-    }
-
-    public function getActualMinimumValueOfField($field)
-    {
-        return $this->calendar->getActualMinimum($field);
-    }
-
-    public function getLeastMaximumValueOfField($field)
-    {
-        return $this->calendar->getLeastMaximum($field);
-    }
-
-    public function getGreatestMinimumValueOfField($field)
-    {
-        return $this->calendar->getGreatestMinimum($field);
+        return $this->calendar->set($field, $value);
     }
 
     /**
@@ -423,15 +388,41 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
         return $this;
     }
 
-    protected function isValidFieldValue($field, $value)
+    /**
+     * Get maximum values of field
+     * - Greatest : greatest maxium
+     * - Least : least maxium
+     * - Actual : maxium based on current date/time values
+     *
+     * @param int $field
+     *
+     * @return array
+     */
+    public function getMaximumValueOfField($field)
     {
-        $max = $this->calendar->getMaximum($field);
-        $min = $this->calendar->getMinimum($field);
+        return array(
+            'greatest' => $this->calendar->getMaximum($field),
+            'actual'  => $this->calendar->getActualMaximum($field),
+            'least'   => $this->calendar->getLeastMaximum($field)
+        );
+    }
 
-        if ($value < $min || $value > $max) {
-            return false;
-        }
-
-        return true;
+    /**
+     * Get minimum values of field
+     * - Greatest : greatest minimum
+     * - Least : least minimum
+     * - Actual : minimum based on current date/time values
+     *
+     * @param int $field
+     *
+     * @return array
+     */
+    public function getMinimumValueOfField($field)
+    {
+        return array(
+            'least'  => $this->calendar->getMinimum($field),
+            'actual'   => $this->calendar->getActualMinimum($field),
+            'greatest' => $this->calendar->getGreatestMinimum($field)
+        );
     }
 }
