@@ -49,24 +49,56 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         new DateTime('Hahaha');
     }
 
-    public function testWrongMagicCall()
+    public function testGetField()
     {
-        $this->assertEquals(null, $this->date->abc());
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+
+        $this->assertEquals(2014, $this->date->getField(1));
     }
 
-    public function testWrongGetMagicCall()
+    public function testGetMonthField()
     {
-        $this->assertEquals(null, $this->date->getYear('a'));
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+
+        $this->assertEquals(6, $this->date->getField(2));
     }
 
-    public function testWrongSetMagicCall()
+    public function testSetField()
     {
-        $this->assertEquals(null, $this->date->setHour());
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+        $this->date->setField(1, 2015);
+
+        $this->assertEquals(2015, $this->date->getField(1));
     }
 
-    public function testWrongAddMagicCall()
+    public function testSetMonthField()
     {
-        $this->assertEquals(null, $this->date->addYear(1, 4));
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+        $this->date->setField(2, 4);
+
+        $this->assertEquals(4, $this->date->getField(2));
+    }
+
+    public function testSetFieldGreaterMaxValue()
+    {
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+
+        $this->assertEquals(false, $this->date->setField(1, 1456572015));
+    }
+
+    public function testSetFieldSmallerMinValue()
+    {
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+
+        $this->assertEquals(false, $this->date->setField(1, 0));
+    }
+
+    public function testAddField()
+    {
+        $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
+        $this->date->addField(1, 1);
+
+        $this->assertEquals(2015, $this->date->getField(1));
     }
 
     public function testSetAndGetDate()
@@ -138,7 +170,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setDate(2012, 1, 29);
         $this->date->setTime(11, 11, 11);
 
-        $this->assertEquals('11:11:11 Giờ Đông Dương Chủ Nhật, ngày 29 tháng 1 năm 2012', $this->date->format(0));
+        $this->assertEquals('11:11 29/01/2012', $this->date->format(3));
     }
 
     public function testModifyDate()
@@ -206,6 +238,36 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Indochina Time', $this->date->getTimeZone());
     }
 
+    public function testGetMaximum()
+    {
+        $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');
+        $a->set(1970, 0, 1, 7, 0, 0);
+
+        $result = array(
+            'actual'   => $a->getActualMaximum(0),
+            'least'  => $a->getLeastMaximum(0),
+            'greatest' => $a->getMaximum(0)
+        );
+
+        $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
+        $this->assertEquals($result, $this->date->getMaximumValueOfField(0));
+    }
+
+    public function testGetMinimum()
+    {
+        $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');
+        $a->set(1970, 0, 1, 7, 0, 0);
+
+        $result = array(
+            'actual'   => $a->getActualMinimum(0),
+            'least'  => $a->getMinimum(0),
+            'greatest' => $a->getGreatestMinimum(0)
+        );
+
+        $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
+        $this->assertEquals($result, $this->date->getMinimumValueOfField(0));
+    }
+
     public function testGetType()
     {
         $a = new DateTime(null, 'japanese');
@@ -229,5 +291,25 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testCall()
     {
         $this->assertEquals($this->date, $this->date->setDay(1));
+    }
+
+    public function testGetHelper()
+    {
+        $this->assertInstanceOf('\Vhmis\I18n\DateTime\Helper\Get', $this->date->getHelper('get'));
+    }
+
+    public function testGetHelperWrong()
+    {
+        $this->assertEquals(null, $this->date->getHelper('wrong'));
+    }
+
+    public function testGet()
+    {
+        $this->assertEquals($this->date->getHelper('get'), $this->date->get);
+    }
+
+    public function testGetWrong()
+    {
+        $this->assertEquals(null, $this->date->wrong);
     }
 }

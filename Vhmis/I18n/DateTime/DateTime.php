@@ -314,7 +314,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Set value of field
+     * Set value of field in min and max range of field
      *
      * @param int $field
      * @param int $value
