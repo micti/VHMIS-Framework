@@ -55,6 +55,13 @@ abstract class AbstractDateTime
      */
     abstract public function getType();
 
+    /**
+     * Get helper
+     * 
+     * @param string $name
+     * 
+     * @return AbstractDateTimeHelper
+     */
     public function getHelper($name)
     {
         if (!isset($this->helperList[$name])) {

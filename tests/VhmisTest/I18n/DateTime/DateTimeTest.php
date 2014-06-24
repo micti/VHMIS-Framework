@@ -104,28 +104,50 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetDate()
     {
         $this->date->setDate(1, 1, 1);
-        $this->assertEquals('0001-01-01', $this->date->getDate());
+        $this->assertEquals(1, $this->date->getField(1));
+        $this->assertEquals(1, $this->date->getField(2));
+        $this->assertEquals(1, $this->date->getField(5));
 
         $this->date->setDate(2014, 2, 28);
-        $this->assertEquals('2014-02-28', $this->date->getDate());
+        $this->assertEquals(2014, $this->date->getField(1));
+        $this->assertEquals(2, $this->date->getField(2));
+        $this->assertEquals(28, $this->date->getField(5));
 
         $this->date->setDate(2014, 0, 28);
-        $this->assertEquals('2013-12-28', $this->date->getDate());
+        $this->assertEquals(2013, $this->date->getField(1));
+        $this->assertEquals(12, $this->date->getField(2));
+        $this->assertEquals(28, $this->date->getField(5));
 
         $this->date->setDate(2014, -1, 28);
-        $this->assertEquals('2013-11-28', $this->date->getDate());
+        $this->assertEquals(2013, $this->date->getField(1));
+        $this->assertEquals(11, $this->date->getField(2));
+        $this->assertEquals(28, $this->date->getField(5));
     }
 
     public function testSetAndGetTime()
     {
         $this->date->setTime(1, 1, 1);
-        $this->assertEquals('01:01:01', $this->date->getTime());
+        $this->assertEquals(1, $this->date->getField(11));
+        $this->assertEquals(1, $this->date->getField(12));
+        $this->assertEquals(1, $this->date->getField(13));
 
         $this->date->setTime(0, 0, 0);
-        $this->assertEquals('00:00:00', $this->date->getTime());
+        $this->assertEquals(0, $this->date->getField(11));
+        $this->assertEquals(0, $this->date->getField(12));
+        $this->assertEquals(0, $this->date->getField(13));
 
         $this->date->setTime(-1, -1, -1);
         $this->assertEquals('22:58:59', $this->date->getTime());
+    }
+
+    public function testSetDateWithExtendedYear()
+    {
+        $a = new DateTime(null, 'chinese');
+        $a->setDateWithExtenedYear(4503, 5, 6);
+
+        $this->assertEquals(4503, $a->getField(19));
+        $this->assertEquals(5, $a->getField(2));
+        $this->assertEquals(6, $a->getField(5));
     }
 
     public function testGetDateTime()
@@ -133,12 +155,22 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setDate(11111, 2, 1); // move to 11111-02-01
         $this->date->setTime(-1, -1, -1); // move back 11111-01-31
 
-        $this->assertEquals('11111-01-31 22:58:59', $this->date->getDateTime());
+        $this->assertEquals(11111, $this->date->getField(1));
+        $this->assertEquals(1, $this->date->getField(2));
+        $this->assertEquals(31, $this->date->getField(5));
+        $this->assertEquals(22, $this->date->getField(11));
+        $this->assertEquals(58, $this->date->getField(12));
+        $this->assertEquals(59, $this->date->getField(13));
 
-        $this->date->setDate(2014, 6, 6); // move to 11111-02-01
-        $this->date->setTime(8, 8, 8); // move back 11111-01-31
+        $this->date->setDate(2014, 6, 6);
+        $this->date->setTime(8, 8, 8);
 
-        $this->assertEquals('2014-06-06 08:08:08', $this->date->getDateTime());
+        $this->assertEquals(2014, $this->date->getField(1));
+        $this->assertEquals(6, $this->date->getField(2));
+        $this->assertEquals(6, $this->date->getField(5));
+        $this->assertEquals(8, $this->date->getField(11));
+        $this->assertEquals(8, $this->date->getField(12));
+        $this->assertEquals(8, $this->date->getField(13));
     }
 
     public function testSetAndGetTimestamp()

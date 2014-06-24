@@ -47,34 +47,6 @@ interface DateTimeInterface
     public function setTimestamp($timestamp);
 
     /**
-     * Get date, based on ISO format yyyy-mm-dd
-     *
-     * @return string
-     */
-    public function getDate();
-
-    /**
-     * Get time, based on ISO format hh:mm:ss
-     *
-     * @return string
-     */
-    public function getTime();
-
-    /**
-     * Get date and time, based on ISO format yyyy-mm-dd hh:mm:ss
-     *
-     * @return string
-     */
-    public function getDateTime();
-
-    /**
-     * Get epoch timestamp
-     *
-     * @retunr int
-     */
-    public function getTimestamp();
-
-    /**
      * Object to string
      *
      * @return string

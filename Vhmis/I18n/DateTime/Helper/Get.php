@@ -24,6 +24,41 @@ class Get extends AbstractDateTimeHelper
 
     protected $params = 0;
 
+    /**
+     * Get date (based on ISO format yyyy-mm-dd)
+     *
+     * @return string
+     */
+    public function getDate()
+    {
+        return $this->date->format('yyyy-MM-dd');
+    }
+
+    public function getDateWithExtendedYear()
+    {
+        return $this->date->format('YYYY-MM-dd');
+    }
+
+    /**
+     * Get date (based on ISO format hh:mm:ss)
+     *
+     * @return string
+     */
+    public function getTime()
+    {
+        return $this->date->format('HH:mm:ss');
+    }
+
+    /**
+     * Get date and time (based on ISO format yyyy-mm-dd hh:mm:ss)
+     *
+     * @return string
+     */
+    public function getDateTime()
+    {
+        return $this->date->format('yyyy-MM-dd HH:mm:ss');
+    }
+
     public function getSecond()
     {
         return $this->date->getField(13);
