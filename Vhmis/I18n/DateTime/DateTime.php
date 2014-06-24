@@ -217,43 +217,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Get date (based on ISO format yyyy-mm-dd)
-     *
-     * @return string
-     */
-    public function getDate()
-    {
-        $date = \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd');
-
-        return $date;
-    }
-
-    public function getDateWithExtendedYear()
-    {
-        return \IntlDateFormatter::formatObject($this->calendar, 'YYYY-MM-dd');
-    }
-
-    /**
-     * Get date (based on ISO format hh:mm:ss)
-     *
-     * @return string
-     */
-    public function getTime()
-    {
-        return \IntlDateFormatter::formatObject($this->calendar, 'HH:mm:ss');
-    }
-
-    /**
-     * Get date and time (based on ISO format yyyy-mm-dd hh:mm:ss)
-     *
-     * @return string
-     */
-    public function getDateTime()
-    {
-        return \IntlDateFormatter::formatObject($this->calendar, 'yyyy-MM-dd HH:mm:ss');
-    }
-
-    /**
      * Get timezone name
      *
      * @return string
