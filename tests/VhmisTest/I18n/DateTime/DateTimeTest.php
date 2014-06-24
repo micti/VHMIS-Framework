@@ -255,6 +255,15 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1970-01-01 07:00:00', $this->date->getDateTime());
     }
 
+    public function testGetTimestamp()
+    {
+        $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');
+        $a->set(1970, 0, 1, 7, 0, 0);
+
+        $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
+        $this->assertEquals((int) ($a->getTime() / 1000), $this->date->getTimestamp());
+    }
+
     public function testSetMilliTimesptamp()
     {
         $this->date->setMilliTimestamp(strtotime('2014-06-27 00:30:00 GMT+07:00') * 1000);
@@ -275,13 +284,20 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3546565766948, $this->date->getMilliTimestamp());
     }
 
-    public function testGetTimestamp()
+    public function testDiff()
     {
-        $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');
-        $a->set(1970, 0, 1, 7, 0, 0);
+        $a = new DateTime();
+        $a->setDate(2014, 2, 28)->setTime(12, 12, 12)->setField(14, 000);
+        $b = new DateTime();
+        $b->setDate(2013, 2, 28)->setTime(12, 12, 12)->setField(14, 000);
 
-        $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
-        $this->assertEquals((int) ($a->getTime() / 1000), $this->date->getTimestamp());
+        $this->assertEquals(-1, $a->diffField($b, 1));
+        $this->assertEquals(0, $a->diffField($b, 2));
+        $this->assertEquals(0, $a->diffField($b, 5));
+        $this->assertEquals(0, $a->diffField($b, 11));
+        $this->assertEquals(0, $a->diffField($b, 12));
+        $this->assertEquals(0, $a->diffField($b, 13));
+        $this->assertEquals(0, $a->diffField($b, 14));
     }
 
     public function testGetTimeZone()

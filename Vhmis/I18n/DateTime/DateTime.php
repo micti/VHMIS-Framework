@@ -346,6 +346,21 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Calculate difference between given time and this object's time
+     *
+     * @param DateTime $date
+     * @param int      $field
+     *
+     * @return int
+     */
+    public function diffField($date, $field)
+    {
+        $milli = $date->getMilliTimestamp();
+
+        return $this->calendar->fieldDifference($milli, $field);
+    }
+
+    /**
      * Get maximum values of field
      * - Greatest : greatest maxium
      * - Least : least maxium
