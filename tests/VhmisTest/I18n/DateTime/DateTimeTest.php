@@ -255,6 +255,26 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1970-01-01 07:00:00', $this->date->getDateTime());
     }
 
+    public function testSetMilliTimesptamp()
+    {
+        $this->date->setMilliTimestamp(strtotime('2014-06-27 00:30:00 GMT+07:00') * 1000);
+
+        $this->assertEquals(2014, $this->date->getField(1));
+        $this->assertEquals(6, $this->date->getField(2));
+        $this->assertEquals(27, $this->date->getField(5));
+        $this->assertEquals(0, $this->date->getField(11));
+        $this->assertEquals(30, $this->date->getField(12));
+        $this->assertEquals(0, $this->date->getField(13));
+    }
+
+    public function testGetMilliTimesptamp()
+    {
+        $this->date->setTimestamp(3546565766);
+        $this->date->setField(14, 948);
+
+        $this->assertEquals(3546565766948, $this->date->getMilliTimestamp());
+    }
+
     public function testGetTimestamp()
     {
         $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');

@@ -34,14 +34,17 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method \Vhmis\I18n\DateTime\DateTime addMonth(int $amount) Add month
  * @method \Vhmis\I18n\DateTime\DateTime addYear(int $amount) Add year
  * @method \Vhmis\I18n\DateTime\DateTime addEra(int $amount) Add era
- * @method \Vhmis\I18n\DateTime\DateTime getSecond() Get second
- * @method \Vhmis\I18n\DateTime\DateTime getMinute() Get minute
- * @method \Vhmis\I18n\DateTime\DateTime getHour() Get hour
- * @method \Vhmis\I18n\DateTime\DateTime getDay() Get day
- * @method \Vhmis\I18n\DateTime\DateTime getWeek() Get week
- * @method \Vhmis\I18n\DateTime\DateTime getMonth() Get month
- * @method \Vhmis\I18n\DateTime\DateTime getYear() Get year
- * @method \Vhmis\I18n\DateTime\DateTime getEra() Get era
+ * @method string getDate() Get date as ISO style
+ * @method string getDateWithExtendYear() Get date with extended year as ISO style
+ * @method string getDateTime(int $amount) Get datetime as ISO style
+ * @method int getSecond() Get second
+ * @method int getMinute() Get minute
+ * @method int getHour() Get hour
+ * @method int getDay() Get day
+ * @method int getWeek() Get week
+ * @method int getMonth() Get month
+ * @method int getYear() Get year
+ * @method int getEra() Get era
  */
 class DateTime extends AbstractDateTime implements DateTimeInterface
 {
@@ -217,6 +220,20 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Set milliseconds since the epoch
+     *
+     * @param float $milliseconds
+     *
+     * @return DateTime
+     */
+    public function setMilliTimestamp($milliseconds)
+    {
+        $this->calendar->setTime($milliseconds);
+
+        return $this;
+    }
+
+    /**
      * Get timezone name
      *
      * @return string
@@ -234,6 +251,16 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function getTimestamp()
     {
         return (int) ($this->calendar->getTime() / 1000);
+    }
+
+    /**
+     * Get milliseconds since the epoch
+     *
+     * @return float
+     */
+    public function getMilliTimestamp()
+    {
+        return $this->calendar->getTime();
     }
 
     /**
