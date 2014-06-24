@@ -45,7 +45,9 @@ abstract class AbstractDateTime
         'convert' => 'Convert',
         'add'     => 'Add',
         'set'     => 'Set',
-        'get'     => 'Get'
+        'get'     => 'Get',
+        'format'  => 'Format',
+        'diff'     => 'Diff'
     );
 
     /**
@@ -57,9 +59,9 @@ abstract class AbstractDateTime
 
     /**
      * Get helper
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @return AbstractDateTimeHelper
      */
     public function getHelper($name)

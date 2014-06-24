@@ -36,7 +36,7 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method \Vhmis\I18n\DateTime\DateTime addEra(int $amount) Add era
  * @method string getDate() Get date as ISO style
  * @method string getDateWithExtendYear() Get date with extended year as ISO style
- * @method string getDateTime(int $amount) Get datetime as ISO style
+ * @method string getDateTime() Get datetime as ISO style
  * @method int getSecond() Get second
  * @method int getMinute() Get minute
  * @method int getHour() Get hour
@@ -418,7 +418,7 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function __call($name, $arguments)
     {
-        $helperName = array('add', 'set', 'get', 'format');
+        $helperName = array('add', 'set', 'get', 'format', 'diff');
 
         foreach ($helperName as $helper) {
             if (strpos($name, $helper) === 0) {
