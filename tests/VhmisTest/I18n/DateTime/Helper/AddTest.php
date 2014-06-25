@@ -47,6 +47,17 @@ class AddTest extends \PHPUnit_Framework_TestCase
         $this->add->setDate($this->date);
     }
 
+    public function testAddMillisecond()
+    {
+        $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34);
+        $this->date->setField(14, 321);
+        $this->add->addMillisecond(31);
+        $this->assertEquals(0, $this->date->getField(11));
+        $this->assertEquals(12, $this->date->getField(12));
+        $this->assertEquals(34, $this->date->getField(13));
+        $this->assertEquals(352, $this->date->getField(14));
+    }
+
     public function testAddSecond()
     {
         $this->date->setDate(2014, 1, 31)->setTime(0, 12, 34);
