@@ -33,7 +33,9 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diff($date)
     {
-        return array(
+        $milli = $this->date->getMilliTimestamp();
+
+        $diff = array(
             'era' => $this->date->diffField($date, 0),
             'year' => $this->date->diffField($date, 1),
             'month' => $this->date->diffField($date, 2),
@@ -43,6 +45,10 @@ class Diff extends AbstractDateTimeHelper
             'second' => $this->date->diffField($date, 13),
             'millisecond' => $this->date->diffField($date, 14),
         );
+
+        $this->date->setMilliTimestamp($milli);
+
+        return $diff;
     }
 
     /**
@@ -54,7 +60,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffEra($date)
     {
-        return $this->date->diffField($date, 0);
+        return $this->diffNotEffectValue($date, 0);
     }
 
     /**
@@ -66,7 +72,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffYear($date)
     {
-        return $this->date->diffField($date, 1);
+        return $this->diffNotEffectValue($date, 1);
     }
 
     /**
@@ -76,7 +82,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffMonth($date)
     {
-        return $this->date->diffField($date, 2);
+        return $this->diffNotEffectValue($date, 2);
     }
 
     /**
@@ -88,7 +94,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffDay($date)
     {
-        return $this->date->diffField($date, 5);
+        return $this->diffNotEffectValue($date, 5);
     }
 
     /**
@@ -100,7 +106,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffHour($date)
     {
-        return $this->date->diffField($date, 11);
+        return $this->diffNotEffectValue($date, 11);
     }
 
     /**
@@ -112,7 +118,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffMinute($date)
     {
-        return $this->date->diffField($date, 12);
+        return $this->diffNotEffectValue($date, 12);
     }
 
     /**
@@ -124,7 +130,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffSecond($date)
     {
-        return $this->date->diffField($date, 13);
+        return $this->diffNotEffectValue($date, 13);
     }
 
     /**
@@ -136,7 +142,7 @@ class Diff extends AbstractDateTimeHelper
      */
     public function diffMillisecond($date)
     {
-        return $this->date->diffField($date, 14);
+        return $this->diffNotEffectValue($date, 14);
     }
 
     /**
@@ -171,7 +177,6 @@ class Diff extends AbstractDateTimeHelper
     {
         return $date->getField(0) - $this->date->getField(0);
     }
-
 
     /**
      * Absolute diff for year
@@ -315,5 +320,24 @@ class Diff extends AbstractDateTimeHelper
     public function diffAbsoluteMillisecond($date)
     {
         return $date->getMilliTimestamp() - $this->date->getMilliTimestamp();
+    }
+
+    /**
+     * Get not affected diff value
+     *
+     * @param DateTime $date
+     * @param int      $field
+     *
+     * @return int|false
+     */
+    protected function diffNotEffectValue($date, $field)
+    {
+        $milli = $this->date->getMilliTimestamp();
+
+        $diff = $this->date->diffField($date, $field);
+
+        $this->date->setMilliTimestamp($milli);
+
+        return $diff;
     }
 }
