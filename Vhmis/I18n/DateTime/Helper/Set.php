@@ -103,7 +103,7 @@ class Set extends AbstractDateTimeHelper
     /**
      * Set is leap month
      *
-     * @param boolean $leap
+     * @param int $leap
      *
      * @return DateTime
      */

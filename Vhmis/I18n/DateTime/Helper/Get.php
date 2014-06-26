@@ -127,7 +127,7 @@ class Get extends AbstractDateTimeHelper
     /**
      * Get is leap month
      *
-     * @return boolean
+     * @return int
      */
     public function getIsLeapMonth()
     {
