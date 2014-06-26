@@ -80,8 +80,11 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
         $this->set->setDate($date);
+
         $this->set->setSecond(12);
-        $this->assertEquals('23:15:12', $date->getTime());
+        $this->assertEquals(23, $date->getField(11));
+        $this->assertEquals(15, $date->getField(12));
+        $this->assertEquals(12, $date->getField(13));
     }
 
     public function testSetMinute()
@@ -90,8 +93,11 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
         $this->set->setDate($date);
+
         $this->set->setMinute(12);
-        $this->assertEquals('23:12:54', $date->getTime());
+        $this->assertEquals(23, $date->getField(11));
+        $this->assertEquals(12, $date->getField(12));
+        $this->assertEquals(54, $date->getField(13));
     }
 
     public function testSetHour()
@@ -100,8 +106,11 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
         $this->set->setDate($date);
+
         $this->set->setHour(12);
-        $this->assertEquals('12:15:54', $date->getTime());
+        $this->assertEquals(12, $date->getField(11));
+        $this->assertEquals(15, $date->getField(12));
+        $this->assertEquals(54, $date->getField(13));
     }
 
     public function testSetDay()
@@ -110,13 +119,24 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date->setDate(2014, 2, 28);
         $this->set->setDate($date);
         $this->set->setDay(13);
-        $this->assertEquals('2014-02-13', $date->getDate());
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(13, $date->getField(5));
+
         $this->set->setDay(29);
-        $this->assertEquals('2014-02-28', $date->getDate());
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(28, $date->getField(5));
+
         $this->set->setDay(32);
-        $this->assertEquals('2014-02-28', $date->getDate());
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(28, $date->getField(5));
+
         $this->set->setDay(-5);
-        $this->assertEquals('2014-02-28', $date->getDate());
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(28, $date->getField(5));
     }
 
     public function testSetMonthOut()
@@ -124,6 +144,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
         $date->setDate(2014, 2, 28);
         $this->set->setDate($date);
+
         $this->set->setMonth(14);
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(2, $date->getField(2));
@@ -136,12 +157,19 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date->setDate(31, 9, 20); // 2014 9 leap
         $date->setField(22, 1); // 2014 9 leap
         $this->set->setDate($date);
+
         $this->set->setMonth(12);
-        $this->assertEquals('0031-12-20', $date->getDate());
+        $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(12, $date->getField(2));
+        $this->assertEquals(20, $date->getField(5));
+
         $date->setDate(31, 9, 30); // 2014 9 no leap
         $date->setField(22, 0); // 2014 9 no leap
+
         $this->set->setMonth(11);
-        $this->assertEquals('0031-11-29', $date->getDate());
+        $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(11, $date->getField(2));
+        $this->assertEquals(29, $date->getField(5));
     }
 
     public function testSetLeapMonth()
@@ -150,17 +178,29 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date->setDate(31, 6, 30); // 2014 9 leap
         $date->setField(22, 0); // 2014 9 leap
         $this->set->setDate($date);
+
         $this->set->setLeapMonth(4);
-        $this->assertEquals('0031-06-30', $date->getDate());
+        $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(6, $date->getField(2));
+        $this->assertEquals(30, $date->getField(5));
         $this->assertEquals(0, $date->getField(22));
+
         $this->set->setLeapMonth(9);
-        $this->assertEquals('0031-09bis-29', $date->getDate());
+        $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(9, $date->getField(2));
+        $this->assertEquals(29, $date->getField(5));
         $this->assertEquals(1, $date->getField(22));
+
         $this->set->setLeapMonth(11);
-        $this->assertEquals('0031-09bis-29', $date->getDate());
+        $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(9, $date->getField(2));
+        $this->assertEquals(29, $date->getField(5));
         $this->assertEquals(1, $date->getField(22));
+
         $this->set->setMonth(11);
-        $this->assertEquals('0031-11-29', $date->getDate());
+        $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(11, $date->getField(2));
+        $this->assertEquals(29, $date->getField(5));
         $this->assertEquals(0, $date->getField(22));
     }
 

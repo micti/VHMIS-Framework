@@ -43,7 +43,7 @@ class Set extends AbstractDateTimeHelper
 
     /**
      * Set second
-     * 
+     *
      * @param int $second
      *
      * @return DateTime
