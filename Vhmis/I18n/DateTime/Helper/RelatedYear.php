@@ -47,6 +47,9 @@ class RelatedYear extends AbstractDateTimeHelper
     /**
      * Not support __invoke
      *
+     * @param string $name
+     * @param array  $arguments
+     *
      * @return null
      */
     public function __invoke($name, $arguments)

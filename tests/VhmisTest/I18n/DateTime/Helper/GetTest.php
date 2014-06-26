@@ -49,6 +49,12 @@ class GetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('20141-12-11', $this->get->getDateWithExtendedYear());
     }
 
+    public function testGetDateWithRelatedYear()
+    {
+        $this->date->setDate(20141, 12, 11);
+        $this->assertEquals('20141-12-11', $this->get->getDateWithExtendedYear());
+    }
+
     public function testGetTime()
     {
         $this->date->setTime(11, 12, 11);
@@ -62,6 +68,12 @@ class GetTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testGetDateTimeWithExtendedYear()
+    {
+        $this->date->setDate(2014, 12, 11)->setTime(11, 12, 11);
+        $this->assertEquals('2014-12-11 11:12:11', $this->get->getDateTimeWithExtendedYear());
+    }
+
+    public function testGetDateTimeWithRelatedYear()
     {
         $this->date->setDate(2014, 12, 11)->setTime(11, 12, 11);
         $this->assertEquals('2014-12-11 11:12:11', $this->get->getDateTimeWithExtendedYear());

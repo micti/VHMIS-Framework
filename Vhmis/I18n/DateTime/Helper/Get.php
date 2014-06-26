@@ -35,13 +35,23 @@ class Get extends AbstractDateTimeHelper
     }
 
     /**
-     * Get date with extend year (based on ISO format yyyy-mm-dd)
+     * Get date with extended year (based on ISO format yyyy-mm-dd)
      *
      * @return string
      */
     public function getDateWithExtendedYear()
     {
         return $this->date->format('YYYY-MM-dd');
+    }
+
+    /**
+     * Get date with related year (based on ISO format yyyy-mm-dd)
+     *
+     * @return string
+     */
+    public function getDateWithRelatedYear()
+    {
+        return $this->date->format('rrrr-MM-dd');
     }
 
     /**
@@ -65,13 +75,23 @@ class Get extends AbstractDateTimeHelper
     }
 
     /**
-     * Get date and time with extend year (based on ISO format yyyy-mm-dd hh:mm:ss)
+     * Get date and time with extended year (based on ISO format yyyy-mm-dd hh:mm:ss)
      *
      * @return string
      */
     public function getDateTimeWithExtendedYear()
     {
         return $this->date->format('YYYY-MM-dd HH:mm:ss');
+    }
+
+    /**
+     * Get date and time with related year (based on ISO format yyyy-mm-dd hh:mm:ss)
+     *
+     * @return string
+     */
+    public function getDateTimeWithRelatedYear()
+    {
+        return $this->date->format('rrrr-MM-dd HH:mm:ss');
     }
 
     /**

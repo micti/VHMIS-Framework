@@ -30,6 +30,19 @@ class Convert extends AbstractDateTimeHelper
     protected $date;
 
     /**
+     * Not support __invoke
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return null
+     */
+    public function __invoke($name, $arguments)
+    {
+        return null;
+    }
+
+    /**
      * Convert date to other calendar
      *
      * @param string $calendar
@@ -49,8 +62,9 @@ class Convert extends AbstractDateTimeHelper
         $calendarObject->setTimestamp($this->date->getTimestamp());
 
         $result['origin'] = $calendarObject->getDate();
-        //$result['extend'] = $calendarObject->getDate();
-        //$result['relate'] = $calendarObject->getDate();
+        $result['extendedyear'] = $calendarObject->getDateWithExtendedYear();
+        $result['relatedyear'] = $calendarObject->getDateWithRelatedYear();
+
         return $result;
     }
 
