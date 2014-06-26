@@ -58,6 +58,11 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method int getYear() Get year
  * @method int getEra() Get era
  *
+ * @method string formatFull() Format datetime in full style
+ * @method string formatLong() Format datetime in long style
+ * @method string formatMedium() Format datetime in medium style
+ * @method string formatShort() Format datetime in short style
+ *
  * @method array diff(\Vhmis\I18n\DateTime\DateTime $datetime) Get different
  * @method int diffEra(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by era
  * @method int diffYear(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by year
