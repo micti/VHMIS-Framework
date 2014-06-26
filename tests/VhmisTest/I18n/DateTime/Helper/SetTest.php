@@ -64,6 +64,16 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $a('setAAAA', array(1)));
     }
 
+    public function testSetMillisecond()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 12, 31);
+        $date->setTime(23, 15, 54);
+        $this->set->setDate($date);
+        $this->set->setMillisecond(125);
+        $this->assertEquals(125, $date->getField(14));
+    }
+
     public function testSetSecond()
     {
         $date = new DateTime();
@@ -109,6 +119,17 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('2014-02-28', $date->getDate());
     }
 
+    public function testSetMonthOut()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 2, 28);
+        $this->set->setDate($date);
+        $this->set->setMonth(14);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(28, $date->getField(5));
+    }
+
     public function testSetMonth()
     {
         $date = new DateTime('GMT+07:00', 'chinese');
@@ -141,6 +162,17 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->set->setMonth(11);
         $this->assertEquals('0031-11-29', $date->getDate());
         $this->assertEquals(0, $date->getField(22));
+    }
+
+    public function testSetYearOut()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 2, 28);
+        $this->set->setDate($date);
+        $this->set->setYear(-1);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(28, $date->getField(5));
     }
 
     public function testSetYear()

@@ -13,6 +13,9 @@ namespace Vhmis\I18n\DateTime\Helper;
 use \Vhmis\Utils\Std\AbstractDateTimeHelper;
 use \Vhmis\I18n\DateTime\DateTime;
 
+/**
+ * DateTime set helper
+ */
 class Set extends AbstractDateTimeHelper
 {
     /**
@@ -24,6 +27,27 @@ class Set extends AbstractDateTimeHelper
 
     protected $params = 1;
 
+    /**
+     * Set millisecond
+     *
+     * @param int $millisecond
+     *
+     * @return DateTime
+     */
+    public function setMillisecond($millisecond)
+    {
+        $this->date->setField(14, $millisecond);
+
+        return $this->date;
+    }
+
+    /**
+     * Set second
+     * 
+     * @param int $second
+     *
+     * @return DateTime
+     */
     public function setSecond($second)
     {
         $this->date->setField(13, $second);
@@ -31,6 +55,13 @@ class Set extends AbstractDateTimeHelper
         return $this->date;
     }
 
+    /**
+     * Set minute
+     *
+     * @param int $minute
+     *
+     * @return DateTime
+     */
     public function setMinute($minute)
     {
         $this->date->setField(12, $minute);
@@ -38,6 +69,13 @@ class Set extends AbstractDateTimeHelper
         return $this->date;
     }
 
+    /**
+     * Set hour
+     *
+     * @param int $hour
+     *
+     * @return DateTime
+     */
     public function setHour($hour)
     {
         $this->date->setField(11, $hour);
@@ -45,6 +83,13 @@ class Set extends AbstractDateTimeHelper
         return $this->date;
     }
 
+    /**
+     * Set day
+     *
+     * @param int $day
+     *
+     * @return DateTime
+     */
     public function setDay($day)
     {
         $month = $this->date->getField(2);
@@ -55,6 +100,13 @@ class Set extends AbstractDateTimeHelper
         return $this->fix($year, $month);
     }
 
+    /**
+     * Set is leap month
+     *
+     * @param boolean $leap
+     *
+     * @return DateTime
+     */
     public function setIsLeapMonth($leap)
     {
         $this->date->setField(22, $leap);
@@ -62,6 +114,13 @@ class Set extends AbstractDateTimeHelper
         return $this->date;
     }
 
+    /**
+     * Set month
+     *
+     * @param int $month
+     *
+     * @return DateTime
+     */
     public function setMonth($month)
     {
         $year = $this->date->getField(1);
@@ -73,6 +132,13 @@ class Set extends AbstractDateTimeHelper
         return $this->fix($year, $month);
     }
 
+    /**
+     * Set leap month
+     *
+     * @param int $month
+     *
+     * @return DateTime
+     */
     public function setLeapMonth($month)
     {
         $year = $this->date->getField(1);
@@ -90,11 +156,18 @@ class Set extends AbstractDateTimeHelper
             $this->setIsLeapMonth($isLeap);
         }
 
-        // fix day
+        // Todo: fix day
         // $day = $this->date->getActualMaximumValueOfField(5);
         return $this->date;
     }
 
+    /**
+     * Set year
+     *
+     * @param int $year
+     *
+     * @return DateTime
+     */
     public function setYear($year)
     {
         $month = $this->date->getField(2);
@@ -106,6 +179,13 @@ class Set extends AbstractDateTimeHelper
         return $this->fix($year, $month);
     }
 
+    /**
+     * Set era
+     *
+     * @param int $era
+     *
+     * @return DateTime
+     */
     public function setEra($era)
     {
         $month = $this->date->getField(2);
@@ -116,6 +196,14 @@ class Set extends AbstractDateTimeHelper
         return $this->fix($year, $month);
     }
 
+    /**
+     * Fix day
+     *
+     * @param int $year
+     * @param int $month
+     *
+     * @return DateTime
+     */
     protected function fix($year, $month)
     {
         $this->date->setField(22, 0);
