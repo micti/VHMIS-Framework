@@ -60,15 +60,39 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(31, $date->getField(1));
     }
 
-    public function testModify()
+    public function testModifyDate()
     {
         $date = new DateTime('GMT+07:00', 'chinese');
         $this->relatedYear->setDate($date);
-        $this->relatedYear->modify('2014-06-05 11:12:13');
+        $this->relatedYear->modify('2014-06-05');
 
-        $this->assertEquals('0031-06-05', $date->getDate(0));
-        $this->assertEquals('0031-06-05 11:12:13', $date->getDateTime(0));
-        $this->assertEquals(78, $date->getField(0));
         $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(6, $date->getField(2));
+        $this->assertEquals(5, $date->getField(5));
+    }
+
+    public function testModifyTime()
+    {
+        $date = new DateTime('GMT+07:00', 'chinese');
+        $this->relatedYear->setDate($date);
+        $this->relatedYear->modify('11:12:13');
+
+        $this->assertEquals(11, $date->getField(11));
+        $this->assertEquals(12, $date->getField(12));
+        $this->assertEquals(13, $date->getField(13));
+    }
+
+    public function testModifyDateTime()
+    {
+        $date = new DateTime('GMT+07:00', 'chinese');
+        $this->relatedYear->setDate($date);
+        $this->relatedYear->modify('2014-09-05 06:11:55');
+
+        $this->assertEquals(31, $date->getField(1));
+        $this->assertEquals(9, $date->getField(2));
+        $this->assertEquals(5, $date->getField(5));
+        $this->assertEquals(6, $date->getField(11));
+        $this->assertEquals(11, $date->getField(12));
+        $this->assertEquals(55, $date->getField(13));
     }
 }

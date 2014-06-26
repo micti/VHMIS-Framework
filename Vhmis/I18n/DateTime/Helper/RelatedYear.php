@@ -80,6 +80,14 @@ class RelatedYear extends AbstractDateTimeHelper
         return $this;
     }
 
+    /**
+     * Set date or/and time by ISO style datetime
+     * Year is related year
+     *
+     * @param string $string
+     *
+     * @return RelatedYear
+     */
     public function modify($string)
     {
         $result = DateTimeUtils::praseDateTimeFormat($string);
