@@ -20,12 +20,18 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  *
  * Support many calendars with locale info
  *
+ * @method \Vhmis\I18n\DateTime\DateTime setMillisecond(int $millisecond) Set millisecond
  * @method \Vhmis\I18n\DateTime\DateTime setSecond(int $second) Set second
  * @method \Vhmis\I18n\DateTime\DateTime setMinute(int $minute) Set minute
  * @method \Vhmis\I18n\DateTime\DateTime setHour(int $hour) Set hour
  * @method \Vhmis\I18n\DateTime\DateTime setDay(int $day) Set day
- * @method \Vhmis\I18n\DateTime\DateTime setExtendedYear(int $extendYear) Set extended year
+ * @method \Vhmis\I18n\DateTime\DateTime setIsLeapMont(int $day) Set isLeapMonth
+ * @method \Vhmis\I18n\DateTime\DateTime setMonth(int $month) Set month
+ * @method \Vhmis\I18n\DateTime\DateTime setLeapMonth(int $month) Set leap month
+ * @method \Vhmis\I18n\DateTime\DateTime setYear(int $year) Set year
  * @method \Vhmis\I18n\DateTime\DateTime setEra(int $era) Set era
+ *
+ * @method \Vhmis\I18n\DateTime\DateTime addMillisecond(int $amount) Add millisecond
  * @method \Vhmis\I18n\DateTime\DateTime addSecond(int $amount) Add second
  * @method \Vhmis\I18n\DateTime\DateTime addMinute(int $amount) Add minute
  * @method \Vhmis\I18n\DateTime\DateTime addHour(int $amount) Add hour
@@ -34,9 +40,15 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method \Vhmis\I18n\DateTime\DateTime addMonth(int $amount) Add month
  * @method \Vhmis\I18n\DateTime\DateTime addYear(int $amount) Add year
  * @method \Vhmis\I18n\DateTime\DateTime addEra(int $amount) Add era
+ *
  * @method string getDate() Get date as ISO style
- * @method string getDateWithExtendYear() Get date with extended year as ISO style
+ * @method string getDateWithExtendedYear() Get date with extended year as ISO style
+ * @method string getDateWithRelatedYear() Get date with related year as ISO style
+ * @method string getTime() Get time as ISO style
  * @method string getDateTime() Get datetime as ISO style
+ * @method string getDateTimeWithExtendedYear() Get datetime with extended year as ISO style
+ * @method string getDateTimeWithRelatedYear() Get datetime with related year as ISO style
+ * @method int getMillsecond() Get second
  * @method int getSecond() Get second
  * @method int getMinute() Get minute
  * @method int getHour() Get hour
@@ -45,6 +57,28 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method int getMonth() Get month
  * @method int getYear() Get year
  * @method int getEra() Get era
+ *
+ * @method array diff(\Vhmis\I18n\DateTime\DateTime $datetime) Get different
+ * @method int diffEra(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by era
+ * @method int diffYear(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by year
+ * @method int diffMonth(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by month
+ * @method int diffDay(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by day
+ * @method int diffHour(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by hour
+ * @method int diffMinute(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by minute
+ * @method int diffSecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by second
+ * @method int diffMillisecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get different by millisecond
+ * @method array diffAbsolute(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different
+ * @method int diffAbsoluteEra(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by era
+ * @method int diffAbsoluteYear(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by year
+ * @method int diffAbsoluteMonth(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by month
+ * @method int diffAbsoluteDay(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by day
+ * @method int diffAbsoluteHour(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by hour
+ * @method int diffAbsoluteMinute(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by minute
+ * @method int diffAbsoluteSecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by second
+ * @method double diffAbsoluteMillisecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by millisecond
+ *
+ * @property-read \Vhmis\I18n\DateTime\Helper\Convert $convert Convert helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\RelatedYear $relatedYear Related year helper
  */
 class DateTime extends AbstractDateTime implements DateTimeInterface
 {
