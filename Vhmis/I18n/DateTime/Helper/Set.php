@@ -197,6 +197,58 @@ class Set extends AbstractDateTimeHelper
     }
 
     /**
+     * Set now
+     *
+     * @return DateTime
+     */
+    public function setNow()
+    {
+        $this->date->setMilliTimestamp(\IntlCalendar::getNow());
+
+        return $this->date;
+    }
+
+    /**
+     * Set previous day
+     *
+     * @return DateTime
+     */
+    public function setPreviousDay()
+    {
+        $this->date->addField(5, -1);
+
+        return $this->date;
+    }
+
+    /**
+     * Set next day
+     *
+     * @return DateTime
+     */
+    public function setNextDay()
+    {
+        $this->date->addField(5, 1);
+
+        return $this->date;
+    }
+
+    public function setYesterday()
+    {
+        $this->setNow();
+        $this->setPreviousDay();
+
+        return $this->date;
+    }
+
+    public function setTomorrow()
+    {
+        $this->setNow();
+        $this->setNextDay();
+
+        return $this->date;
+    }
+
+    /**
      * Fix day
      *
      * @param int $year

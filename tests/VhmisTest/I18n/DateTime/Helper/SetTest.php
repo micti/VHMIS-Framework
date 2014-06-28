@@ -236,4 +236,62 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('0031-09-29', $date->getDate());
         $this->assertEquals(88, $date->getField(0));
     }
+
+    public function testSetNow()
+    {
+        $now = time();
+        $date = new DateTime();
+        $date->setDate(100, 1, 1);
+        $this->set->setDate($date);
+        $this->set->setNow();
+        $this->assertEquals((int) date('Y', $now), $date->getField(1));
+        $this->assertEquals((int) date('m', $now), $date->getField(2));
+        $this->assertEquals((int) date('d', $now), $date->getField(5));
+    }
+
+    public function testSetPreviousDay()
+    {
+        $date = new DateTime();
+        $date->setDate(100, 1, 1);
+        $this->set->setDate($date);
+        $this->set->setPreviousDay();
+        $this->assertEquals(99, $date->getField(1));
+        $this->assertEquals(12, $date->getField(2));
+        $this->assertEquals(31, $date->getField(5));
+    }
+
+    public function testSetNextDay()
+    {
+        $date = new DateTime();
+        $date->setDate(100, 1, 1);
+        $this->set->setDate($date);
+        $this->set->setNextDay();
+        $this->assertEquals(100, $date->getField(1));
+        $this->assertEquals(1, $date->getField(2));
+        $this->assertEquals(2, $date->getField(5));
+    }
+
+    public function testSetYesterday()
+    {
+        $now = time() - 24 * 60 * 60;
+        $date = new DateTime();
+        $date->setDate(100, 1, 1);
+        $this->set->setDate($date);
+        $this->set->setYesterday();
+        $this->assertEquals((int) date('Y', $now), $date->getField(1));
+        $this->assertEquals((int) date('m', $now), $date->getField(2));
+        $this->assertEquals((int) date('d', $now), $date->getField(5));
+    }
+
+    public function testSetTomorrow()
+    {
+        $now = time() + 24 * 60 * 60;
+        $date = new DateTime();
+        $date->setDate(100, 1, 1);
+        $this->set->setDate($date);
+        $this->set->setTomorrow();
+        $this->assertEquals((int) date('Y', $now), $date->getField(1));
+        $this->assertEquals((int) date('m', $now), $date->getField(2));
+        $this->assertEquals((int) date('d', $now), $date->getField(5));
+    }
 }
