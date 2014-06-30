@@ -45,9 +45,9 @@ class Diff extends AbstractDateTimeHelper
         'diffAbsoluteMonth'       => 1,
         'diffAbsoluteWeek'        => 1,
         'diffAbsoluteDay'         => 1,
-        'diffAbsoluteHour         => 1',
-        'diffAbsoluteMinute       => 1',
-        'diffAbsoluteSecond       => 1',
+        'diffAbsoluteHour         => 1,
+        'diffAbsoluteMinute       => 1,
+        'diffAbsoluteSecond       => 1,
         'diffAbsoluteMillisecond' => 1
     );
 
