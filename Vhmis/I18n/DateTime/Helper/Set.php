@@ -24,8 +24,30 @@ class Set extends AbstractDateTimeHelper
      * @var DateTime
      */
     protected $date;
-
     protected $params = 1;
+
+    /**
+     * Method list and param number
+     *
+     * @var Array
+     */
+    protected $methodList = array(
+        'setMillisecond' => 1,
+        'setSecond'      => 1,
+        'setMinute'      => 1,
+        'setHour'        => 1,
+        'setDay'         => 1,
+        'setIsLeapMonth' => 1,
+        'setMonth'       => 1,
+        'setLeapMonth'   => 1,
+        'setYear'        => 1,
+        'setEra'         => 1,
+        'setNow'         => 0,
+        'setNextDay'     => 0,
+        'setPreviousDay' => 0,
+        'setTomorrow'    => 0,
+        'setYesterday'   => 0
+    );
 
     /**
      * Set millisecond
@@ -232,6 +254,11 @@ class Set extends AbstractDateTimeHelper
         return $this->date;
     }
 
+    /**
+     * Set yesterday
+     *
+     * @return DateTime
+     */
     public function setYesterday()
     {
         $this->setNow();
@@ -240,6 +267,11 @@ class Set extends AbstractDateTimeHelper
         return $this->date;
     }
 
+    /**
+     * Set tomorrow
+     * 
+     * @return DateTime
+     */
     public function setTomorrow()
     {
         $this->setNow();
