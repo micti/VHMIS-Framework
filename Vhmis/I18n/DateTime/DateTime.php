@@ -192,14 +192,16 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $hour
      * @param int $minute
      * @param int $second
+     * @param int $millisecond
      *
      * @return DateTime
      */
-    public function setTime($hour, $minute, $second)
+    public function setTime($hour, $minute, $second = 0, $millisecond = 0)
     {
-        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, $hour);
-        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, $minute);
-        $this->calendar->set(\IntlCalendar::FIELD_SECOND, $second);
+        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, (int) $hour);
+        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, (int) $minute);
+        $this->calendar->set(\IntlCalendar::FIELD_SECOND, (int) $second);
+        $this->calendar->set(\IntlCalendar::FIELD_MILLISECOND, (int) $millisecond);
 
         return $this;
     }
