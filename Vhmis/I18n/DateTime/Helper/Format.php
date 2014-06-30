@@ -26,6 +26,18 @@ class Format extends AbstractDateTimeHelper
     protected $date;
 
     protected $params = 0;
+    
+    /**
+    * Method list and param number
+    *
+    * @var Array
+    */
+    protected $methodList = array(
+        'formatFull'   => 0,
+        'formatLong'   => 0,
+        'formatMedium' => 0,
+        'formatShort'  => 0
+    );
 
     /**
      * Format datetime in full style
