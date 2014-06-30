@@ -294,4 +294,26 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals((int) date('m', $now), $date->getField(2));
         $this->assertEquals((int) date('d', $now), $date->getField(5));
     }
+
+    public function testSetFirstDayOfMonth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 2, 5);
+        $this->set->setDate($date);
+        $this->set->setFirstDayOfMonth();
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(1, $date->getField(5));
+    }
+
+    public function testSetLastDayOfMonth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 2, 5);
+        $this->set->setDate($date);
+        $this->set->setLastDayOfMonth();
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(2, $date->getField(2));
+        $this->assertEquals(28, $date->getField(5));
+    }
 }

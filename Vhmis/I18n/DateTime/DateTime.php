@@ -35,6 +35,8 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method \Vhmis\I18n\DateTime\DateTime setNextDay() Set next day
  * @method \Vhmis\I18n\DateTime\DateTime setTomorrow() Set tomorrow
  * @method \Vhmis\I18n\DateTime\DateTime setYesterday() Set yesterday
+ * @method \Vhmis\I18n\DateTime\DateTime setFirstDayOfMonth() Set first day of month
+ * @method \Vhmis\I18n\DateTime\DateTime setLastDayOfMonth() Set last day of month
  *
  * @method \Vhmis\I18n\DateTime\DateTime addMillisecond(int $amount) Add millisecond
  * @method \Vhmis\I18n\DateTime\DateTime addSecond(int $amount) Add second

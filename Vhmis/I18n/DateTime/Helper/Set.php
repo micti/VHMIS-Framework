@@ -31,21 +31,23 @@ class Set extends AbstractDateTimeHelper
      * @var array
      */
     protected $methodList = array(
-        'setMillisecond' => 1,
-        'setSecond'      => 1,
-        'setMinute'      => 1,
-        'setHour'        => 1,
-        'setDay'         => 1,
-        'setIsLeapMonth' => 1,
-        'setMonth'       => 1,
-        'setLeapMonth'   => 1,
-        'setYear'        => 1,
-        'setEra'         => 1,
-        'setNow'         => 0,
-        'setNextDay'     => 0,
-        'setPreviousDay' => 0,
-        'setTomorrow'    => 0,
-        'setYesterday'   => 0
+        'setMillisecond'     => 1,
+        'setSecond'          => 1,
+        'setMinute'          => 1,
+        'setHour'            => 1,
+        'setDay'             => 1,
+        'setIsLeapMonth'     => 1,
+        'setMonth'           => 1,
+        'setLeapMonth'       => 1,
+        'setYear'            => 1,
+        'setEra'             => 1,
+        'setNow'             => 0,
+        'setNextDay'         => 0,
+        'setPreviousDay'     => 0,
+        'setTomorrow'        => 0,
+        'setYesterday'       => 0,
+        'setFirstDayOfMonth' => 0,
+        'setLastDayOfMonth'  => 0
     );
 
     /**
@@ -275,6 +277,31 @@ class Set extends AbstractDateTimeHelper
     {
         $this->setNow();
         $this->setNextDay();
+
+        return $this->date;
+    }
+
+    /**
+     * Set first day of month
+     *
+     * @return DateTime
+     */
+    public function setFirstDayOfMonth()
+    {
+        $this->date->setField(5, 1);
+
+        return $this->date;
+    }
+
+    /**
+     * Set last day of month
+     *
+     * @return DateTime
+     */
+    public function setLastDayOfMonth()
+    {
+        $max = $this->date->getMaximumValueOfField(5);
+        $this->date->setField(5, $max['actual']);
 
         return $this->date;
     }
