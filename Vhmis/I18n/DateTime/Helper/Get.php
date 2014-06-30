@@ -23,6 +23,31 @@ class Get extends AbstractDateTimeHelper
     protected $date;
 
     protected $params = 0;
+    
+    /**
+    * Method list and param number
+    *
+    * @var Array
+    */
+    protected $methodList = array(
+        'getDate'                     => 1,
+        'getDateWithExtendedYear'     => 1,
+        'getDateWithRelatedYear'      => 1,
+        'getTime'                     => 1,
+        'getDateTime'                 => 1,
+        'getDateTimeWithExtendedYear' => 1,
+        'getDateTimeWithRelatedYear'  => 1,
+        'getMillisecond'              => 1,
+        'getSecond'                   => 1,
+        'getMinute'                   => 1,
+        'getHour'                     => 1,
+        'getDay'                      => 1,
+        'getIsLeapMonth'              => 1,
+        'getMonth'                    => 1,
+        'getYear'                     => 1,
+        'getExtendedYear'             => 1,
+        'getEra'                      => 1
+    );
 
     /**
      * Get date (based on ISO format yyyy-mm-dd)

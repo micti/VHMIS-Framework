@@ -23,6 +23,33 @@ class Diff extends AbstractDateTimeHelper
     protected $date;
 
     protected $params = 0;
+    
+    /**
+    * Method list and param number
+    *
+    * @var Array
+    */
+    protected $methodList = array(
+        'diff'                    => 1,
+        'diffEra'                 => 1,
+        'diffYear'                => 1,
+        'diffMonth'               => 1,
+        'diffDay'                 => 1,
+        'diffHour'                => 1,
+        'diffMinute'              => 1,
+        'diffSecond'              => 1,
+        'diffMillisecond'         => 1,
+        'diffAbsolute'            => 1,
+        'diffAbsoluteEra'         => 1,
+        'diffAbsoluteYear'        => 1,
+        'diffAbsoluteMonth'       => 1,
+        'diffAbsoluteWeek'        => 1,
+        'diffAbsoluteDay'         => 1,
+        'diffAbsoluteHour'        => 1,
+        'diffAbsoluteMinute'      => 1,
+        'diffAbsoluteSecond'      => 1,
+        'diffAbsoluteMillisecond' => 1
+    );
 
     /**
      * Diff for all fields
