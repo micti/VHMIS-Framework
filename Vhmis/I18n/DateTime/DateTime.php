@@ -30,6 +30,11 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @method \Vhmis\I18n\DateTime\DateTime setLeapMonth(int $month) Set leap month
  * @method \Vhmis\I18n\DateTime\DateTime setYear(int $year) Set year
  * @method \Vhmis\I18n\DateTime\DateTime setEra(int $era) Set era
+ * @method \Vhmis\I18n\DateTime\DateTime setNow() Set now
+ * @method \Vhmis\I18n\DateTime\DateTime setPreviousDay() Set previous day
+ * @method \Vhmis\I18n\DateTime\DateTime setNextDay() Set next day
+ * @method \Vhmis\I18n\DateTime\DateTime setTomorrow() Set tomorrow
+ * @method \Vhmis\I18n\DateTime\DateTime setYesterday() Set yesterday
  *
  * @method \Vhmis\I18n\DateTime\DateTime addMillisecond(int $amount) Add millisecond
  * @method \Vhmis\I18n\DateTime\DateTime addSecond(int $amount) Add second
@@ -179,9 +184,9 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     public function setDateWithExtenedYear($year, $month, $day)
     {
         $month = (int) $month - 1;
-        $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, $year);
+        $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, (int) $year);
         $this->calendar->set(\IntlCalendar::FIELD_MONTH, $month);
-        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
+        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, (int) $day);
 
         return $this;
     }

@@ -25,12 +25,10 @@ class Format extends AbstractDateTimeHelper
      */
     protected $date;
 
-    protected $params = 0;
-    
     /**
     * Method list and param number
     *
-    * @var Array
+    * @var array
     */
     protected $methodList = array(
         'formatFull'   => 0,

@@ -25,23 +25,21 @@ class Add extends AbstractDateTimeHelper
      */
     protected $date;
 
-    protected $params = 1;
-    
     /**
      * Method list and param number
      *
-     * @var Array
+     * @var array
      */
     protected $methodList = array(
-        'addEra'        => 1,
-        'addYear'       => 1,
-        'addMonth'      => 1,
-        'addWeek'       => 1,
-        'addDay'        => 1,
-        'addHour        => 1',
-        'addMinute      => 1',
-        'addSecond      => 1',
-        'addMillisecond => 1',
+        'addEra'         => 1,
+        'addYear'        => 1,
+        'addMonth'       => 1,
+        'addWeek'        => 1,
+        'addDay'         => 1,
+        'addHour'        => 1,
+        'addMinute'      => 1,
+        'addSecond'      => 1,
+        'addMillisecond' => 1,
     );
 
     /**

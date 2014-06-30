@@ -22,31 +22,29 @@ class Get extends AbstractDateTimeHelper
      */
     protected $date;
 
-    protected $params = 0;
-    
     /**
     * Method list and param number
     *
-    * @var Array
+    * @var array
     */
     protected $methodList = array(
-        'getDate'                     => 1,
-        'getDateWithExtendedYear'     => 1,
-        'getDateWithRelatedYear'      => 1,
-        'getTime'                     => 1,
-        'getDateTime'                 => 1,
-        'getDateTimeWithExtendedYear' => 1,
-        'getDateTimeWithRelatedYear'  => 1,
-        'getMillisecond'              => 1,
-        'getSecond'                   => 1,
-        'getMinute'                   => 1,
-        'getHour'                     => 1,
-        'getDay'                      => 1,
-        'getIsLeapMonth'              => 1,
-        'getMonth'                    => 1,
-        'getYear'                     => 1,
-        'getExtendedYear'             => 1,
-        'getEra'                      => 1
+        'getDate'                     => 0,
+        'getDateWithExtendedYear'     => 0,
+        'getDateWithRelatedYear'      => 0,
+        'getTime'                     => 0,
+        'getDateTime'                 => 0,
+        'getDateTimeWithExtendedYear' => 0,
+        'getDateTimeWithRelatedYear'  => 0,
+        'getMillisecond'              => 0,
+        'getSecond'                   => 0,
+        'getMinute'                   => 0,
+        'getHour'                     => 0,
+        'getDay'                      => 0,
+        'getIsLeapMonth'              => 0,
+        'getMonth'                    => 0,
+        'getYear'                     => 0,
+        'getExtendedYear'             => 0,
+        'getEra'                      => 0
     );
 
     /**

@@ -21,24 +21,37 @@ class AbstractDateTimeHelper
      * @var DateTimeInterface
      */
     protected $date;
-    
-    protected $params = 0;
 
+    /**
+     * Method list and param number
+     *
+     * @var array
+     */
+    protected $methodList = array();
+
+    /**
+     * Object callable
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public function __invoke($name, $arguments)
     {
         if (!is_array($arguments)) {
             return null;
         }
 
-        if (count($arguments) !== $this->params) {
+        if (!isset($this->methodList[$name])) {
             return null;
         }
 
-        if (method_exists($this, $name)) {
-            return call_user_func_array(array($this, $name), $arguments);
+        if (count($arguments) !== $this->methodList[$name]) {
+            return null;
         }
 
-        return null;
+        return call_user_func_array(array($this, $name), $arguments);
     }
 
     /**

@@ -24,12 +24,11 @@ class Set extends AbstractDateTimeHelper
      * @var DateTime
      */
     protected $date;
-    protected $params = 1;
 
     /**
      * Method list and param number
      *
-     * @var Array
+     * @var array
      */
     protected $methodList = array(
         'setMillisecond' => 1,
@@ -269,7 +268,7 @@ class Set extends AbstractDateTimeHelper
 
     /**
      * Set tomorrow
-     * 
+     *
      * @return DateTime
      */
     public function setTomorrow()
