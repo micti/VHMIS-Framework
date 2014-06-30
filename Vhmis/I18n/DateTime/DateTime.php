@@ -409,6 +409,32 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Get weekday that is first day of week
+     * 1 : Sunday -> 7 : Saturday
+     *
+     * @return int
+     */
+    public function getWeekFirstDay()
+    {
+        return $this->calendar->getFirstDayOfWeek();
+    }
+
+    /**
+     * Set weekday that is first day of week
+     * 1 : Sunday -> 7 : Saturday
+     *
+     * @param int $dayOfWeek
+     *
+     * @return DateTime
+     */
+    public function setWeekFirstDay($dayOfWeek)
+    {
+        $this->calendar->setFirstDayOfWeek($dayOfWeek);
+
+        return $this;
+    }
+
+    /**
      * Get maximum values of field
      * - Greatest : greatest maxium
      * - Least : least maxium

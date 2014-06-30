@@ -336,6 +336,20 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result, $this->date->getMinimumValueOfField(0));
     }
 
+    public function testGetFirstDayOfWeek()
+    {
+        $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');
+
+        $this->assertEquals($a->getFirstDayOfWeek(), $this->date->getWeekFirstDay());
+    }
+
+    public function testSetFirstDayOfWeek()
+    {
+        $this->date->setWeekFirstDay(4);
+
+        $this->assertEquals(4, $this->date->getWeekFirstDay());
+    }
+
     public function testGetType()
     {
         $a = new DateTime(null, 'japanese');
