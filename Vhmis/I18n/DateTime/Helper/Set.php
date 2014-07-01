@@ -11,6 +11,7 @@
 namespace Vhmis\I18n\DateTime\Helper;
 
 use \Vhmis\Utils\Std\AbstractDateTimeHelper;
+use \Vhmis\Utils\DateTime as DateTimeUtils;
 use \Vhmis\I18n\DateTime\DateTime;
 
 /**
@@ -302,6 +303,34 @@ class Set extends AbstractDateTimeHelper
     {
         $max = $this->date->getMaximumValueOfField(5);
         $this->date->setField(5, $max['actual']);
+
+        return $this->date;
+    }
+
+    /**
+     * Set first day of week
+     *
+     * @return DateTime
+     */
+    public function setFirstDayOfWeek()
+    {
+        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getWeekFirstDay());
+        $position = array_search($this->date->getField(7), $sortedWeekdays);
+        $this->date->addField(5, 0 - $position);
+
+        return $this->date;
+    }
+
+    /**
+     * Set last day of week
+     *
+     * @return DateTime
+     */
+    public function setLastDayOfWeek()
+    {
+        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getWeekFirstDay());
+        $position = array_search($this->date->getField(7), $sortedWeekdays);
+        $this->date->addField(5, 6 - $position);
 
         return $this->date;
     }

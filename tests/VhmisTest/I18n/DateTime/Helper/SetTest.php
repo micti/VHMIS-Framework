@@ -316,4 +316,49 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $date->getField(2));
         $this->assertEquals(28, $date->getField(5));
     }
+
+    public function testSetFirstDayOfWeek()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(4);
+        $this->set->setDate($date);
+        $this->set->setFirstDayOfWeek();
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(9, $date->getField(5));
+
+    }
+
+    public function testSetFirstDayOfWeek2()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDate($date);
+        $this->set->setFirstDayOfWeek();
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(5, $date->getField(5));
+    }
+
+    public function testSetLastDayOfWeek()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(4);
+        $this->set->setDate($date);
+        $this->set->setLastDayOfWeek();
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(15, $date->getField(5));
+    }
+
+    public function testSetLastDayOfWeek2()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDate($date);
+        $this->set->setLastDayOfWeek();
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(11, $date->getField(5));
+    }
 }

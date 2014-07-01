@@ -57,4 +57,35 @@ class DateTime
 
         return $result;
     }
+
+    /**
+     * Sort weekday based on week's first day
+     * 1: Sunday -> 7: Saturday
+     *
+     * For example: if monday is start day of week, the return will be [2,3,4,5,6,7,1]
+     *
+     * @param int $weekFirstDay
+     *
+     * @return array
+     */
+    public static function sortWeekday($weekFirstDay)
+    {
+        $weekFirstDay = (int) $weekFirstDay;
+
+        if ($weekFirstDay < 1 || $weekFirstDay > 7) {
+            return array(1, 2, 3, 4, 5, 6, 7);
+        }
+
+        $weekdayOrder = array();
+
+        for ($i = 1; $i <= 7; $i++) {
+            if ($i >= $weekFirstDay) {
+                $weekdayOrder[$i - $weekFirstDay] = $i;
+            } else {
+                $weekdayOrder[7 - $weekFirstDay + $i] = $i;
+            }
+        }
+
+        return $weekdayOrder;
+    }
 }
