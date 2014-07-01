@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT License
  */
 
-namespace VhmisTest\I18n;
+namespace VhmisTest\Utils;
 
 use \Vhmis\Utils\DateTime as DateTimeUtils;
 
