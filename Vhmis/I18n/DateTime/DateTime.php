@@ -437,6 +437,27 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * Get day of week type
+     *
+     * @return array
+     */
+    public function getDayOfWeekType()
+    {
+        $result = array();
+
+        for ($i = 1; $i <= 7; $i++) {
+            $type = $this->calendar->getDayOfWeekType($i);
+            $transition = $this->calendar->getWeekendTransition($i);
+            $result[$i] = array($type);
+            if ($transition !== false) {
+                $result[$i][] = $transition;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Get maximum values of field
      * - Greatest : greatest maxium
      * - Least : least maxium

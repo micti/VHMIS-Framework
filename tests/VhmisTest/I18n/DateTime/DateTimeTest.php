@@ -350,6 +350,23 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $this->date->getWeekFirstDay());
     }
 
+    public function testGetDayOfWeekType()
+    {
+        $a = new DateTime(null, null, 'vi_VN');
+
+        $result = array(
+            '1' => array(1, 86400000),
+            '2' => array(0),
+            '3' => array(0),
+            '4' => array(0),
+            '5' => array(0),
+            '6' => array(0),
+            '7' => array(1, 0),
+        );
+        
+        $this->assertEquals($result, $this->date->getDayOfWeekType());
+    }
+
     public function testGetType()
     {
         $a = new DateTime(null, 'japanese');
