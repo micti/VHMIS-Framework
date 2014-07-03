@@ -10,23 +10,14 @@
 
 namespace Vhmis\I18n\DateTime\Helper;
 
-use \Vhmis\Utils\Std\AbstractDateTimeHelper;
-use \Vhmis\I18n\DateTime\DateTime;
-
-class Get extends AbstractDateTimeHelper
+class Get extends AbstractHelper
 {
-    /**
-     * Date object
-     *
-     * @var DateTime
-     */
-    protected $date;
 
     /**
-    * Method list and param number
-    *
-    * @var array
-    */
+     * Method list and param number
+     *
+     * @var array
+     */
     protected $methodList = array(
         'getDate'                     => 0,
         'getDateWithExtendedYear'     => 0,

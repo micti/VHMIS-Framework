@@ -41,14 +41,7 @@ abstract class AbstractDateTime
      *
      * @var array
      */
-    protected $helperList = array(
-        'convert' => 'Convert',
-        'add'     => 'Add',
-        'set'     => 'Set',
-        'get'     => 'Get',
-        'format'  => 'Format',
-        'diff'     => 'Diff'
-    );
+    protected $helperList = array();
 
     /**
      * Get calendar type
@@ -73,7 +66,7 @@ abstract class AbstractDateTime
         if (!isset($this->helpers[$name])) {
             $helperClass = $this->helperNamespace . '\\' . $this->helperList[$name];
             $this->helpers[$name] = new $helperClass;
-            $this->helpers[$name]->setDate($this);
+            $this->helpers[$name]->setDateTimeObject($this);
         }
 
         return $this->helpers[$name];

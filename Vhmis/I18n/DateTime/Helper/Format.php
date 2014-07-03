@@ -10,26 +10,17 @@
 
 namespace Vhmis\I18n\DateTime\Helper;
 
-use \Vhmis\Utils\Std\AbstractDateTimeHelper;
-use \Vhmis\I18n\DateTime\DateTime;
-
 /**
  * DateTime format helper
  */
-class Format extends AbstractDateTimeHelper
+class Format extends AbstractHelper
 {
-    /**
-     * Date object
-     *
-     * @var DateTime
-     */
-    protected $date;
 
     /**
-    * Method list and param number
-    *
-    * @var array
-    */
+     * Method list and param number
+     *
+     * @var array
+     */
     protected $methodList = array(
         'formatFull'   => 0,
         'formatLong'   => 0,

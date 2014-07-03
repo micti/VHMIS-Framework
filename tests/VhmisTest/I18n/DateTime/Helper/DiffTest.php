@@ -37,7 +37,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -58,7 +58,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -82,7 +82,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -92,7 +92,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -105,7 +105,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -115,7 +115,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -128,7 +128,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -138,7 +138,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -151,7 +151,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -161,7 +161,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -174,7 +174,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -184,7 +184,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -197,7 +197,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -207,7 +207,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -220,7 +220,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime;
         $date->setDate(2014, 12, 12)->setTime(14, 13, 11)->setField(14, 124);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime;
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
@@ -230,7 +230,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 0);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 12)->setTime(14, 13, 11)->setField(14, 0);
@@ -244,7 +244,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 3)->setTime(17, 12, 11);
@@ -254,7 +254,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
 
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 11);
@@ -267,7 +267,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime(null, 'chinese');
         $date->setDate(30, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
         $date->setField(0, 78);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime(null, 'chinese');
         $a->setDate(31, 10, 3)->setTime(17, 12, 11);
@@ -277,7 +277,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
 
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 11);
@@ -289,7 +289,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 11);
@@ -301,7 +301,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 11);
@@ -313,7 +313,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 11);
@@ -325,7 +325,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 16);
@@ -337,7 +337,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 16)->setField(14, 0);
@@ -349,7 +349,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2013, 8, 12)->setTime(14, 13, 11)->setField(14, 676);
-        $this->diff->setDate($date);
+        $this->diff->setDateTimeObject($date);
 
         $a = new DateTime();
         $a->setDate(2018, 10, 13)->setTime(17, 12, 16)->setField(14, 0);

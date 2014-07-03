@@ -10,21 +10,14 @@
 
 namespace Vhmis\I18n\DateTime\Helper;
 
-use \Vhmis\Utils\Std\AbstractDateTimeHelper;
 use \Vhmis\Utils\DateTime as DateTimeUtils;
 use \Vhmis\I18n\DateTime\DateTime;
 
 /**
  * DateTime set helper
  */
-class Set extends AbstractDateTimeHelper
+class Set extends AbstractHelper
 {
-    /**
-     * Date object
-     *
-     * @var DateTime
-     */
-    protected $date;
 
     /**
      * Method list and param number

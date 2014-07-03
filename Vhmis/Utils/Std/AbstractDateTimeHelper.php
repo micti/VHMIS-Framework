@@ -13,15 +13,8 @@ namespace Vhmis\Utils\Std;
 /**
  * DateTime Helper abstract
  */
-class AbstractDateTimeHelper
+abstract class AbstractDateTimeHelper
 {
-    /**
-     * Date object
-     *
-     * @var DateTimeInterface
-     */
-    protected $date;
-
     /**
      * Method list and param number
      *
@@ -61,20 +54,12 @@ class AbstractDateTimeHelper
      *
      * @return \Vhmis\Utils\Std\AbstractDateTimeHelper
      */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
+    abstract public function setDateTimeObject($date);
 
     /**
      * Get date object
      *
      * @return DateTimeInterface
      */
-    public function getDate()
-    {
-        return $this->date;
-    }
+    abstract public function getDateTimeObject();
 }

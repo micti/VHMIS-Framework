@@ -10,23 +10,15 @@
 
 namespace Vhmis\I18n\DateTime\Helper;
 
-use \Vhmis\Utils\Std\AbstractDateTimeHelper;
 use \Vhmis\I18n\DateTime\DateTime;
 
-class Diff extends AbstractDateTimeHelper
+class Diff extends AbstractHelper
 {
     /**
-     * Date object
+     * Method list and param number
      *
-     * @var DateTime
+     * @var array
      */
-    protected $date;
-
-    /**
-    * Method list and param number
-    *
-    * @var array
-    */
     protected $methodList = array(
         'diff'                    => 1,
         'diffEra'                 => 1,

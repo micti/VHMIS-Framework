@@ -44,7 +44,7 @@ class AddTest extends \PHPUnit_Framework_TestCase
 
         $this->add = new Add;
         $this->date = new DateTime;
-        $this->add->setDate($this->date);
+        $this->add->setDateTimeObject($this->date);
     }
 
     public function testAddMillisecond()
@@ -125,7 +125,7 @@ class AddTest extends \PHPUnit_Framework_TestCase
     {
         $a = new DateTime('Asia/Ho_Chi_Minh', 'chinese');
         $a->setField(0, 80);
-        $this->add->setDate($a);
+        $this->add->setDateTimeObject($a);
         $this->add->addEra(4);
         $this->assertEquals(84, $a->getField(0));
     }

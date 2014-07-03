@@ -10,10 +10,9 @@
 
 namespace Vhmis\I18n\DateTime\Helper;
 
-use \Vhmis\Utils\Std\AbstractDateTimeHelper;
 use \Vhmis\I18n\DateTime\DateTime;
 
-class Convert extends AbstractDateTimeHelper
+class Convert extends AbstractHelper
 {
     /**
      * Cache objects for convert ...
@@ -21,13 +20,6 @@ class Convert extends AbstractDateTimeHelper
      * @var DateTime[]
      */
     protected static $cachedDateTimes = array();
-
-    /**
-     * Date object
-     *
-     * @var DateTime
-     */
-    protected $date;
 
     /**
      * Not support __invoke

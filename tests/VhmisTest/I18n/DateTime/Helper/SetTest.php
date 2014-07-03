@@ -39,7 +39,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
 
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
 
         $a = $this->set;
         $a('setDay', array(1));
@@ -69,7 +69,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setMillisecond(125);
         $this->assertEquals(125, $date->getField(14));
     }
@@ -79,7 +79,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
 
         $this->set->setSecond(12);
         $this->assertEquals(23, $date->getField(11));
@@ -92,7 +92,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
 
         $this->set->setMinute(12);
         $this->assertEquals(23, $date->getField(11));
@@ -105,7 +105,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
         $date->setDate(2014, 12, 31);
         $date->setTime(23, 15, 54);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
 
         $this->set->setHour(12);
         $this->assertEquals(12, $date->getField(11));
@@ -117,7 +117,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 2, 28);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setDay(13);
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(2, $date->getField(2));
@@ -143,7 +143,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 2, 28);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
 
         $this->set->setMonth(14);
         $this->assertEquals(2014, $date->getField(1));
@@ -156,7 +156,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime('GMT+07:00', 'chinese');
         $date->setDate(31, 9, 20); // 2014 9 leap
         $date->setField(22, 1); // 2014 9 leap
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
 
         $this->set->setMonth(12);
         $this->assertEquals(31, $date->getField(1));
@@ -177,7 +177,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime('GMT+07:00', 'chinese');
         $date->setDate(31, 6, 30); // 2014 9 leap
         $date->setField(22, 0); // 2014 9 leap
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
 
         $this->set->setLeapMonth(4);
         $this->assertEquals(31, $date->getField(1));
@@ -208,7 +208,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 2, 28);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setYear(-1);
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(2, $date->getField(2));
@@ -220,7 +220,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime('GMT+07:00', 'chinese');
         $date->setDate(31, 9, 29); // 2014 7 leap
         $date->setField(22, 1); // 2014 7 leap
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setYear(33);
         $this->assertEquals('0033-09-29', $date->getDate());
         $this->assertEquals(0, $date->getField(22));
@@ -231,7 +231,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime('GMT+07:00', 'chinese');
         $date->setDate(31, 9, 29); // 2014 7 leap
         $date->setField(22, 1); // 2014 7 leap
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setEra(88);
         $this->assertEquals('0031-09-29', $date->getDate());
         $this->assertEquals(88, $date->getField(0));
@@ -242,7 +242,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $now = time();
         $date = new DateTime();
         $date->setDate(100, 1, 1);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setNow();
         $this->assertEquals((int) date('Y', $now), $date->getField(1));
         $this->assertEquals((int) date('m', $now), $date->getField(2));
@@ -253,7 +253,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(100, 1, 1);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setPreviousDay();
         $this->assertEquals(99, $date->getField(1));
         $this->assertEquals(12, $date->getField(2));
@@ -264,7 +264,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(100, 1, 1);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setNextDay();
         $this->assertEquals(100, $date->getField(1));
         $this->assertEquals(1, $date->getField(2));
@@ -276,7 +276,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $now = time() - 24 * 60 * 60;
         $date = new DateTime();
         $date->setDate(100, 1, 1);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setYesterday();
         $this->assertEquals((int) date('Y', $now), $date->getField(1));
         $this->assertEquals((int) date('m', $now), $date->getField(2));
@@ -288,7 +288,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $now = time() + 24 * 60 * 60;
         $date = new DateTime();
         $date->setDate(100, 1, 1);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setTomorrow();
         $this->assertEquals((int) date('Y', $now), $date->getField(1));
         $this->assertEquals((int) date('m', $now), $date->getField(2));
@@ -299,7 +299,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 2, 5);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setFirstDayOfMonth();
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(2, $date->getField(2));
@@ -310,7 +310,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 2, 5);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setLastDayOfMonth();
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(2, $date->getField(2));
@@ -321,7 +321,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 7, 10)->setWeekFirstDay(4);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setFirstDayOfWeek();
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(7, $date->getField(2));
@@ -333,7 +333,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setFirstDayOfWeek();
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(7, $date->getField(2));
@@ -344,7 +344,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 7, 10)->setWeekFirstDay(4);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setLastDayOfWeek();
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(7, $date->getField(2));
@@ -355,7 +355,7 @@ class SetTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
-        $this->set->setDate($date);
+        $this->set->setDateTimeObject($date);
         $this->set->setLastDayOfWeek();
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(7, $date->getField(2));

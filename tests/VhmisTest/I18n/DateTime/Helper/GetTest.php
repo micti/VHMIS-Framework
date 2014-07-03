@@ -34,7 +34,7 @@ class GetTest extends \PHPUnit_Framework_TestCase
 
         $this->get = new Get;
         $this->date = new DateTime;
-        $this->get->setDate($this->date);
+        $this->get->setDateTimeObject($this->date);
     }
 
     public function testGetDate()

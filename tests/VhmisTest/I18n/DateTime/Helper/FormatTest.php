@@ -45,7 +45,7 @@ class FormatTest extends \PHPUnit_Framework_TestCase
 
         $this->format = new Format;
         $this->date = new DateTime('Asia/Ho_Chi_Minh', '', 'en_US');
-        $this->format->setDate($this->date);
+        $this->format->setDateTimeObject($this->date);
     }
 
     public function testFormatFull()

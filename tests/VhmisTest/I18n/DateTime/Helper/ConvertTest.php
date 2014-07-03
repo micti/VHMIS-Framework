@@ -55,7 +55,7 @@ class ConvertTest extends \PHPUnit_Framework_TestCase
     public function testConvert()
     {
         $date = new DateTime(null);
-        $this->convert->setDate($date);
+        $this->convert->setDateTimeObject($date);
         $date->setDate(2014, 6, 3);
 
         $result = array(
@@ -89,7 +89,7 @@ class ConvertTest extends \PHPUnit_Framework_TestCase
     public function testConvertNotSupportedCalendar()
     {
         $date = new DateTime(null);
-        $this->convert->setDate($date);
+        $this->convert->setDateTimeObject($date);
         $date->setDate(2014, 6, 3);
         $this->assertEquals(array(), $this->convert->to('vietnamese'));
     }

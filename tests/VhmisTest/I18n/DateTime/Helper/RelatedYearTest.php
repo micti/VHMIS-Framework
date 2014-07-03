@@ -45,7 +45,7 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime('GMT+07:00', 'chinese');
         $date->setDate(31, 6, 30);
         $date->setField(0, 78); // 2014
-        $this->relatedYear->setDate($date);
+        $this->relatedYear->setDateTimeObject($date);
 
         $this->assertEquals(2014, $this->relatedYear->get());
     }
@@ -53,7 +53,7 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
     public function testSet()
     {
         $date = new DateTime('GMT+07:00', 'chinese');
-        $this->relatedYear->setDate($date);
+        $this->relatedYear->setDateTimeObject($date);
         $this->relatedYear->set(2014);
 
         $this->assertEquals(78, $date->getField(0));
@@ -63,7 +63,7 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
     public function testModifyDate()
     {
         $date = new DateTime('GMT+07:00', 'chinese');
-        $this->relatedYear->setDate($date);
+        $this->relatedYear->setDateTimeObject($date);
         $this->relatedYear->modify('2014-06-05');
 
         $this->assertEquals(31, $date->getField(1));
@@ -74,7 +74,7 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
     public function testModifyTime()
     {
         $date = new DateTime('GMT+07:00', 'chinese');
-        $this->relatedYear->setDate($date);
+        $this->relatedYear->setDateTimeObject($date);
         $this->relatedYear->modify('11:12:13');
 
         $this->assertEquals(11, $date->getField(11));
@@ -85,7 +85,7 @@ class RelatedYearTest extends \PHPUnit_Framework_TestCase
     public function testModifyDateTime()
     {
         $date = new DateTime('GMT+07:00', 'chinese');
-        $this->relatedYear->setDate($date);
+        $this->relatedYear->setDateTimeObject($date);
         $this->relatedYear->modify('2014-09-05 06:11:55');
 
         $this->assertEquals(31, $date->getField(1));

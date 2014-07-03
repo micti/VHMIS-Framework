@@ -11,9 +11,6 @@
 namespace Vhmis\I18n\DateTime;
 
 use \Vhmis\Utils\DateTime as DateTimeUtils;
-use \Vhmis\Utils\Std\DateTimeInterface;
-use \Vhmis\Utils\Std\AbstractDateTime;
-use \Vhmis\Utils\Exception\InvalidArgumentException;
 
 /**
  * I18n Datetime class
@@ -94,36 +91,8 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  * @property-read \Vhmis\I18n\DateTime\Helper\Convert $convert Convert helper
  * @property-read \Vhmis\I18n\DateTime\Helper\RelatedYear $relatedYear Related year helper
  */
-class DateTime extends AbstractDateTime implements DateTimeInterface
+class DateTime extends SimpleDateTime
 {
-    /**
-     * List supported calendars
-     *
-     * @var array
-     */
-    public static $calendars = array(
-        'gregorian'     => 'gregorian',
-        'chinese'       => 'chinese',
-        'coptic'        => 'coptic',
-        'dangi'         => 'dangi',
-        'ethiopic'      => 'ethiopic',
-        'hebrew'        => 'hebrew',
-        'indian'        => 'indian',
-        'islamic-civil' => 'islamic-civil',
-        'islamic'       => 'islamic',
-        'japanese'      => 'japanese',
-        'persian'       => 'persian',
-        'taiwan'        => 'taiwan',
-        'buddhist'      => 'buddhist'
-    );
-
-    /**
-     * IntlCalendar object
-     *
-     * @var \IntlCalendar
-     */
-    protected $calendar;
-
     /**
      * Helper namespace
      *
@@ -132,88 +101,18 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
     protected $helperNamespace = '\Vhmis\I18n\DateTime\Helper';
 
     /**
-     * Construct
+     * Helper list
      *
-     * @param mixed  $timezone
-     * @param string $calendar
-     * @param string $locale
-     *
-     * @throws InvalidArgumentException
+     * @var array
      */
-    public function __construct($timezone = null, $calendar = null, $locale = null)
-    {
-        if (!isset(static::$calendars[$calendar])) {
-            $calendar = 'gregorian';
-        }
-
-        if ($locale === null) {
-            $locale = \Locale::getDefault();
-        }
-
-        $locale = $locale . '@calendar=' . $calendar;
-
-        $this->calendar = \IntlCalendar::createInstance($timezone, $locale);
-
-        if ($this->calendar === null) {
-            throw new InvalidArgumentException('Timezone is not valid.');
-        }
-    }
-
-    /**
-     * Set date
-     *
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     *
-     * @return DateTime
-     */
-    public function setDate($year, $month, $day)
-    {
-        $month = (int) $month - 1;
-        $this->calendar->set((int) $year, $month, (int) $day);
-
-        return $this;
-    }
-
-    /**
-     * Set date with year is extended year
-     *
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     *
-     * @return DateTime
-     */
-    public function setDateWithExtenedYear($year, $month, $day)
-    {
-        $month = (int) $month - 1;
-        $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, (int) $year);
-        $this->calendar->set(\IntlCalendar::FIELD_MONTH, $month);
-        $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, (int) $day);
-
-        return $this;
-    }
-
-    /**
-     * Set time
-     *
-     * @param int $hour
-     * @param int $minute
-     * @param int $second
-     * @param int $millisecond
-     *
-     * @return DateTime
-     */
-    public function setTime($hour, $minute, $second = 0, $millisecond = 0)
-    {
-        $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, (int) $hour);
-        $this->calendar->set(\IntlCalendar::FIELD_MINUTE, (int) $minute);
-        $this->calendar->set(\IntlCalendar::FIELD_SECOND, (int) $second);
-        $this->calendar->set(\IntlCalendar::FIELD_MILLISECOND, (int) $millisecond);
-
-        return $this;
-    }
+    protected $helperList = array(
+        'convert' => 'Convert',
+        'add'     => 'Add',
+        'set'     => 'Set',
+        'get'     => 'Get',
+        'format'  => 'Format',
+        'diff'     => 'Diff'
+    );
 
     /**
      * Set date or/and time by ISO style datetime
@@ -237,201 +136,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
                 (int) $result['time']['hour'], (int) $result['time']['minute'], (int) $result['time']['second']
             );
         }
-
-        return $this;
-    }
-
-    /**
-     * Set timezone
-     *
-     * @param mixed $timeZone
-     *
-     * @return \Vhmis\I18n\DateTime\DateTime
-     */
-    public function setTimeZone($timeZone)
-    {
-        $this->calendar->setTimeZone($timeZone);
-
-        return $this;
-    }
-
-    /**
-     * Set epoch timestamp (UTC 00:00)
-     *
-     * @param int $timestamp
-     *
-     * @return DateTime
-     */
-    public function setTimestamp($timestamp)
-    {
-        $this->calendar->setTime((int) $timestamp * 1000);
-
-        return $this;
-    }
-
-    /**
-     * Set milliseconds since the epoch
-     *
-     * @param float $milliseconds
-     *
-     * @return DateTime
-     */
-    public function setMilliTimestamp($milliseconds)
-    {
-        $this->calendar->setTime($milliseconds);
-
-        return $this;
-    }
-
-    /**
-     * Get timezone name
-     *
-     * @return string
-     */
-    public function getTimeZone()
-    {
-        return $this->calendar->getTimeZone()->getDisplayName();
-    }
-
-    /**
-     * Get epoch timestamp (UTC 00:00)
-     *
-     * @return int
-     */
-    public function getTimestamp()
-    {
-        return (int) ($this->calendar->getTime() / 1000);
-    }
-
-    /**
-     * Get milliseconds since the epoch
-     *
-     * @return float
-     */
-    public function getMilliTimestamp()
-    {
-        return $this->calendar->getTime();
-    }
-
-    /**
-     * Get calendar type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->calendar->getType();
-    }
-
-    /**
-     * Format
-     *
-     * @param string|array|int $format
-     *
-     * @return string
-     */
-    public function format($format)
-    {
-        return \IntlDateFormatter::formatObject($this->calendar, $format, $this->calendar->getLocale(1));
-    }
-
-    /**
-     * Get value of field
-     *
-     * @param int $field
-     *
-     * @return int
-     */
-    public function getField($field)
-    {
-        $value = $this->calendar->get($field);
-
-        if ($field === \IntlCalendar::FIELD_MONTH) {
-            $value++;
-        }
-
-        return $value;
-    }
-
-    /**
-     * Set value of field in min and max range of field
-     *
-     * @param int $field
-     * @param int $value
-     *
-     * @return boolean
-     */
-    public function setField($field, $value)
-    {
-        $value = (int) $value;
-
-        if ($field === \IntlCalendar::FIELD_MONTH) {
-            $value--;
-        }
-
-        $max = $this->calendar->getMaximum($field);
-        $min = $this->calendar->getMinimum($field);
-
-        if ($value < $min || $value > $max) {
-            return false;
-        }
-
-        return $this->calendar->set($field, $value);
-    }
-
-    /**
-     * Add or sub value of field
-     *
-     * @param int $field
-     * @param int $amount
-     *
-     * @return DateTime
-     */
-    public function addField($field, $amount)
-    {
-        $amount = (int) $amount;
-        $this->calendar->add($field, $amount);
-
-        return $this;
-    }
-
-    /**
-     * Calculate difference between given time and this object's time
-     *
-     * @param DateTime $date
-     * @param int      $field
-     *
-     * @return int
-     */
-    public function diffField($date, $field)
-    {
-        $milli = $date->getMilliTimestamp();
-
-        return $this->calendar->fieldDifference($milli, $field);
-    }
-
-    /**
-     * Get weekday that is first day of week
-     * 1 : Sunday -> 7 : Saturday
-     *
-     * @return int
-     */
-    public function getWeekFirstDay()
-    {
-        return $this->calendar->getFirstDayOfWeek();
-    }
-
-    /**
-     * Set weekday that is first day of week
-     * 1 : Sunday -> 7 : Saturday
-     *
-     * @param int $dayOfWeek
-     *
-     * @return DateTime
-     */
-    public function setWeekFirstDay($dayOfWeek)
-    {
-        $this->calendar->setFirstDayOfWeek($dayOfWeek);
 
         return $this;
     }
@@ -493,16 +197,6 @@ class DateTime extends AbstractDateTime implements DateTimeInterface
             'actual'   => $this->calendar->getActualMinimum($field),
             'greatest' => $this->calendar->getGreatestMinimum($field)
         );
-    }
-
-    /**
-     * Object to string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getDateTime();
     }
 
     /**

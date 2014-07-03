@@ -10,19 +10,10 @@
 
 namespace Vhmis\I18n\DateTime\Helper;
 
-use \Vhmis\Utils\Std\AbstractDateTimeHelper;
 use \Vhmis\Utils\DateTime as DateTimeUtils;
-use \Vhmis\I18n\DateTime\DateTime;
 
-class RelatedYear extends AbstractDateTimeHelper
+class RelatedYear extends AbstractHelper
 {
-    /**
-     * Date object
-     *
-     * @var DateTime
-     */
-    protected $date;
-
     /**
      * Adjust value
      *
