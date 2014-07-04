@@ -361,4 +361,176 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(7, $date->getField(2));
         $this->assertEquals(11, $date->getField(5));
     }
+
+    public function testSetNthOfMonthWrong1()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(-1, 3);
+
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(10, $date->getField(5));
+    }
+
+    public function testSetNthOfMonthWrong2()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(10, 3);
+
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(10, $date->getField(5));
+    }
+
+    public function testSetNthOfMonthWrong3()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(2, 0);
+
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(10, $date->getField(5));
+    }
+
+    public function testSetNthDayOfMonth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(0, 3);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(3, $date->getField(5));
+
+        $this->set->setNthOfMonth(0, 8);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(8, $date->getField(5));
+
+        $this->set->setNthOfMonth(0, -1);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(31, $date->getField(5));
+    }
+
+    public function testSetNthWeekDayOfMonth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(1, 1);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(6, $date->getField(5));
+
+        $this->set->setNthOfMonth(2, 2);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(14, $date->getField(5));
+
+        $this->set->setNthOfMonth(1, 3);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(20, $date->getField(5));
+
+        $this->set->setNthOfMonth(1, 4);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(27, $date->getField(5));
+
+        $this->set->setNthOfMonth(1, 5);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(27, $date->getField(5));
+    }
+
+    public function testSetNthWeekendOfMonth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(9, 1);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(5, $date->getField(5));
+
+        $this->set->setNthOfMonth(9, 2);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(6, $date->getField(5));
+
+        $this->set->setNthOfMonth(9, 3);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(12, $date->getField(5));
+
+        $this->set->setNthOfMonth(9, 4);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(13, $date->getField(5));
+
+        $this->set->setNthOfMonth(9, 5);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(19, $date->getField(5));
+    }
+
+    public function testSetNthWorkingDayOfMonth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(8, 1);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(1, $date->getField(5));
+
+        $this->set->setNthOfMonth(8, 2);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(2, $date->getField(5));
+
+        $this->set->setNthOfMonth(8, 3);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(3, $date->getField(5));
+
+        $this->set->setNthOfMonth(8, 4);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(4, $date->getField(5));
+
+        $this->set->setNthOfMonth(8, 5);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(7, $date->getField(5));
+
+        $this->set->setNthOfMonth(8, 20);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(28, $date->getField(5));
+
+        $this->set->setNthOfMonth(8, 23);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(31, $date->getField(5));
+
+        $this->set->setNthOfMonth(8, 24);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(31, $date->getField(5));
+    }
 }

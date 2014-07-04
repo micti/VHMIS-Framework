@@ -329,6 +329,143 @@ class Set extends AbstractHelper
     }
 
     /**
+     * Set Nth typeday of month
+     *
+     * Typeday
+     * - Day 0
+     * - Weekday (Sunday to Saturday) 1 - 7
+     * - WorkingDay 8
+     * - Weekend 9
+     *
+     * @param int $type
+     * @param int $nth
+     *
+     * @return DateTime
+     */
+    public function setNthOfMonth($type, $nth)
+    {
+        $nth = (int) $nth;
+        $type = (int) $type;
+
+        if ($type < 0 || $type > 9 || $nth == 0) {
+            return $this->date;
+        }
+
+        if ($type === 0) {
+            $day = $this->findNthDayOfMonth($nth);
+        } elseif ($type > 7) {
+            $day = $this->findNthWorkingDayOrWeekendOfMonth($type, $nth);
+        } else {
+            $day = $this->findNthWeekDayOfMonth($type, $nth);
+        }
+
+        $this->date->setField(5, $day);
+
+        return $this->date;
+    }
+
+    /**
+     * Find Nth weekday of month
+     *
+     * @param int $type
+     * @param int $nth
+     *
+     * @return int
+     */
+    public function findNthWeekDayOfMonth($type, $nth)
+    {
+        // Go to first day of month
+        $this->setFirstDayOfMonth();
+
+        // Get sorted weekday base first weekday of month
+        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getField(7));
+        $position = array_search($type, $sortedWeekdays);
+        $maxium = $this->date->getMaximumValueOfField(5);
+
+        // Move to nth
+        $addedDay = $position + ($nth - 1) * 7;
+        if ($addedDay > $maxium['actual']) {
+            $addedDay = $position + (floor($maxium['actual'] / 7) - 1) * 7; // not always 21 = (4 - 1) * 7???;
+        }
+
+        return $addedDay + 1;
+    }
+
+    /**
+     * Find Nth WorkingDay or Weekend of month
+     *
+     * @param int $type
+     * @param int $nth
+     *
+     * @return int
+     */
+    protected function findNthWorkingDayOrWeekendOfMonth($type, $nth)
+    {
+        // Go to first day of month
+        $this->setFirstDayOfMonth();
+
+        // Get sorted weekday base first day
+        $maxium = $this->date->getMaximumValueOfField(5);
+        $sortedWeekdays = DateTimeUtils::getSortedWeekdayList($this->date->getField(7), $maxium['actual']);
+
+        if ($nth < 0) {
+            $nth *= -1;
+            $sortedWeekdays = array_reverse($sortedWeekdays);
+        }
+
+        // Get type of weekday
+        $weekdayTypes = $this->date->getDayOfWeekType();
+
+        // Get sorted weekend days of month
+        $days = array();
+        foreach ($sortedWeekdays as $position => $weekday) {
+            if ($type === 8) {
+                if ($weekdayTypes[$weekday][0] == 0) {
+                    $days[] = $position + 1;
+                }
+            } else {
+                if ($weekdayTypes[$weekday][0] > 0) {
+                    $days[] = $position + 1;
+                }
+            }
+        }
+
+        // Move to nth
+        if ($nth > count($days)) {
+            $nth = count($days);
+        }
+
+        return $days[$nth - 1];
+    }
+
+    /**
+     * Find Nth day of month
+     *
+     * @param int $nth
+     *
+     * @return int
+     */
+    protected function findNthDayOfMonth($nth)
+    {
+        $maxium = $this->date->getMaximumValueOfField(5);
+        $day = $nth;
+
+        if ($nth < 0) {
+            $day = $maxium['actual'] + $nth + 1;
+        }
+
+        if ($day < 1) {
+            $day = 1;
+        }
+
+        if ($day > $maxium['actual']) {
+            $day = $maxium['actual'];
+        }
+
+        return $day;
+    }
+
+    /**
      * Fix day
      *
      * @param int $year

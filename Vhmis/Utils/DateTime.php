@@ -15,7 +15,6 @@ namespace Vhmis\Utils;
  */
 class DateTime
 {
-
     /**
      *
      * @param string $string
@@ -59,33 +58,65 @@ class DateTime
     }
 
     /**
-     * Sort weekday based on week's first day
+     * Sort weekday based on a first day
      * 1: Sunday -> 7: Saturday
      *
      * For example: if monday is start day of week, the return will be [2,3,4,5,6,7,1]
      *
-     * @param int $weekFirstDay
+     * @param int $firstDay
      *
      * @return array
      */
-    public static function sortWeekday($weekFirstDay)
+    public static function sortWeekday($firstDay)
     {
-        $weekFirstDay = (int) $weekFirstDay;
+        $firstDay = (int) $firstDay;
 
-        if ($weekFirstDay < 1 || $weekFirstDay > 7) {
+        if ($firstDay < 1 || $firstDay > 7) {
             return array(1, 2, 3, 4, 5, 6, 7);
         }
 
         $weekdayOrder = array();
 
         for ($i = 1; $i <= 7; $i++) {
-            if ($i >= $weekFirstDay) {
-                $weekdayOrder[$i - $weekFirstDay] = $i;
+            if ($i >= $firstDay) {
+                $weekdayOrder[$i - $firstDay] = $i;
             } else {
-                $weekdayOrder[7 - $weekFirstDay + $i] = $i;
+                $weekdayOrder[7 - $firstDay + $i] = $i;
             }
         }
 
         return $weekdayOrder;
+    }
+
+    /**
+     * Get a list of weekdays (sorted based on a first day)
+     * 1: Sunday -> 7: Saturday
+     *
+     * For example: if monday is start day of week, and list has 31 elements (like month has 31 days)
+     * the return will be [2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4]
+     *
+     * @param int $firstDay
+     * @param int $total
+     *
+     * @return array
+     */
+    public static function getSortedWeekdayList($firstDay, $total)
+    {
+        $firstDay = (int) $firstDay;
+        $total = (int) $total;
+
+        $sortedWeekday = self::sortWeekday($firstDay);
+        $list = array();
+
+        $j = 0;
+        for ($i = 0; $i < $total; $i++) {
+            $list[] = $sortedWeekday[$j];
+            $j++;
+            if ($j == 7) {
+                $j = 0;
+            }
+        }
+
+        return $list;
     }
 }
