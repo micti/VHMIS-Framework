@@ -36,6 +36,7 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @method \Vhmis\I18n\DateTime\DateTime setLastDayOfMonth() Set last day of month
  * @method \Vhmis\I18n\DateTime\DateTime setFirstDayOfWeek() Set first day of week
  * @method \Vhmis\I18n\DateTime\DateTime setLastDayOfWeek() Set last day of week
+ * @method \Vhmis\I18n\DateTime\DateTime setNthOfMonth(int $type, int $nth) Set Nth typeday of month
  *
  * @method \Vhmis\I18n\DateTime\DateTime addMillisecond(int $amount) Add millisecond
  * @method \Vhmis\I18n\DateTime\DateTime addSecond(int $amount) Add second

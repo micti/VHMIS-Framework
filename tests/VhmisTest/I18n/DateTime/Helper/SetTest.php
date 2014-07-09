@@ -448,11 +448,42 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(7, $date->getField(2));
         $this->assertEquals(27, $date->getField(5));
+    }
 
-        $this->set->setNthOfMonth(1, 5);
+    public function testSetNthWeekdayOfMonthWithOutRangeNth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(6, 5);
         $this->assertEquals(2014, $date->getField(1));
         $this->assertEquals(7, $date->getField(2));
-        $this->assertEquals(27, $date->getField(5));
+        $this->assertEquals(25, $date->getField(5));
+    }
+
+    public function testSetNthWeekdayOfMonthWithNegativeNth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(1, -3);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(13, $date->getField(5));
+    }
+
+    public function testSetNthWeekdayOfMonthWithOutRangeNegativeNth()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(7);
+        $this->set->setDateTimeObject($date);
+
+        $this->set->setNthOfMonth(2, -5);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(7, $date->getField(5));
     }
 
     public function testSetNthWeekendOfMonth()

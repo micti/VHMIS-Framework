@@ -41,7 +41,8 @@ class Set extends AbstractHelper
         'setTomorrow'        => 0,
         'setYesterday'       => 0,
         'setFirstDayOfMonth' => 0,
-        'setLastDayOfMonth'  => 0
+        'setLastDayOfMonth'  => 0,
+        'setNthOfMonth'      => 2
     );
 
     /**
@@ -372,23 +373,33 @@ class Set extends AbstractHelper
      *
      * @return int
      */
-    public function findNthWeekDayOfMonth($type, $nth)
+    protected function findNthWeekDayOfMonth($type, $nth)
     {
-        // Go to first day of month
-        $this->setFirstDayOfMonth();
-
-        // Get sorted weekday base first weekday of month
-        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getField(7));
-        $position = array_search($type, $sortedWeekdays);
         $maxium = $this->date->getMaximumValueOfField(5);
 
-        // Move to nth
-        $addedDay = $position + ($nth - 1) * 7;
-        if ($addedDay > $maxium['actual']) {
-            $addedDay = $position + (floor($maxium['actual'] / 7) - 1) * 7; // not always 21 = (4 - 1) * 7???;
+        if ($nth < 0) {
+            $day = $maxium['actual'] - 6;
+            $this->setDay($day);
+            $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getField(7));
+            $position = array_search($type, $sortedWeekdays);
+            $addedDay = $day + $position + ($nth + 1) * 7;
+            if ($addedDay < 1) {
+                $addedDay = $day + $position + (floor($maxium['actual'] / 7) * -1 + 1) * 7;
+            }
+
+            return $addedDay;
         }
 
-        return $addedDay + 1;
+        $day = 1;
+        $this->setDay($day);
+        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getField(7));
+        $position = array_search($type, $sortedWeekdays);
+        $addedDay = $day + $position + ($nth - 1) * 7;
+        if ($addedDay > $maxium['actual']) {
+            $addedDay = $day + $position + (floor($maxium['actual'] / 7) - 1) * 7;
+        }
+
+        return $addedDay;
     }
 
     /**
