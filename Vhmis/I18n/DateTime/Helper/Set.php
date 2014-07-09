@@ -466,11 +466,11 @@ class Set extends AbstractHelper
         }
 
         if ($day < 1) {
-            $day = 1;
+            return 1;
         }
 
         if ($day > $maxium['actual']) {
-            $day = $maxium['actual'];
+            return $maxium['actual'];
         }
 
         return $day;
