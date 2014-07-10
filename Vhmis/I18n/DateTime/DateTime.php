@@ -27,15 +27,16 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @method \Vhmis\I18n\DateTime\DateTime setLeapMonth(int $month) Set leap month
  * @method \Vhmis\I18n\DateTime\DateTime setYear(int $year) Set year
  * @method \Vhmis\I18n\DateTime\DateTime setEra(int $era) Set era
- * @method \Vhmis\I18n\DateTime\DateTime setPreviousDay() Set previous day
- * @method \Vhmis\I18n\DateTime\DateTime setNextDay() Set next day
- * @method \Vhmis\I18n\DateTime\DateTime setTomorrow() Set tomorrow
- * @method \Vhmis\I18n\DateTime\DateTime setYesterday() Set yesterday
- * @method \Vhmis\I18n\DateTime\DateTime setFirstDayOfMonth() Set first day of month
- * @method \Vhmis\I18n\DateTime\DateTime setLastDayOfMonth() Set last day of month
- * @method \Vhmis\I18n\DateTime\DateTime setFirstDayOfWeek() Set first day of week
- * @method \Vhmis\I18n\DateTime\DateTime setLastDayOfWeek() Set last day of week
- * @method \Vhmis\I18n\DateTime\DateTime setNthOfMonth(int $type, int $nth) Set Nth typeday of month
+ *
+ * @method \Vhmis\I18n\DateTime\DateTime gotoPreviousDay() Set previous day
+ * @method \Vhmis\I18n\DateTime\DateTime gotoNextDay() Set next day
+ * @method \Vhmis\I18n\DateTime\DateTime gotoTomorrow() Set tomorrow
+ * @method \Vhmis\I18n\DateTime\DateTime gotoYesterday() Set yesterday
+ * @method \Vhmis\I18n\DateTime\DateTime gotoFirstDayOfMonth() Set first day of month
+ * @method \Vhmis\I18n\DateTime\DateTime gotoLastDayOfMonth() Set last day of month
+ * @method \Vhmis\I18n\DateTime\DateTime gotoFirstDayOfWeek() Set first day of week
+ * @method \Vhmis\I18n\DateTime\DateTime gotoLastDayOfWeek() Set last day of week
+ * @method \Vhmis\I18n\DateTime\DateTime gotoNthDayOfMonth(int $type, int $nth) Set Nth day of month
  *
  * @method \Vhmis\I18n\DateTime\DateTime addMillisecond(int $amount) Add millisecond
  * @method \Vhmis\I18n\DateTime\DateTime addSecond(int $amount) Add second
@@ -90,6 +91,11 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  *
  * @property-read \Vhmis\I18n\DateTime\Helper\Convert $convert Convert helper
  * @property-read \Vhmis\I18n\DateTime\Helper\RelatedYear $relatedYear Related year helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\Set $set Set helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\Get $get Get helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\Go $go Go helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\Add $add Add helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\Format $format Format helper
  */
 class DateTime extends SimpleDateTime
 {
@@ -111,7 +117,8 @@ class DateTime extends SimpleDateTime
         'set'     => 'Set',
         'get'     => 'Get',
         'format'  => 'Format',
-        'diff'     => 'Diff'
+        'diff'    => 'Diff',
+        'go'      => 'Go'
     );
 
     /**
@@ -229,7 +236,7 @@ class DateTime extends SimpleDateTime
      */
     public function __call($name, $arguments)
     {
-        $helperName = array('add', 'set', 'get', 'format', 'diff');
+        $helperName = array('add', 'set', 'get', 'format', 'diff', 'go');
 
         foreach ($helperName as $helper) {
             if (strpos($name, $helper) === 0) {
