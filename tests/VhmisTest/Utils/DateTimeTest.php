@@ -38,4 +38,28 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortWeekday(8));
     }
+
+    public function testGetPositionOfWeekdayFromSortedWeekdayList()
+    {
+        $list = array(2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4);
+        $days = array(6);
+
+        $this->assertEquals(array(4,11,18,25), DateTimeUtils::getPositionOfWeekdayFromSortedWeekdayList($days, $list));
+    }
+
+    public function testGetPositionOfWeekdayFromSortedWeekdayList1()
+    {
+        $list = array(2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4);
+        $days = array(7,1);
+
+        $this->assertEquals(array(5,6,12,13,19,20,26,27), DateTimeUtils::getPositionOfWeekdayFromSortedWeekdayList($days, $list));
+    }
+
+    public function testGetPositionOfWeekdayFromSortedWeekdayList2()
+    {
+        $list = array(2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4);
+        $days = array(0);
+
+        $this->assertEquals(array(), DateTimeUtils::getPositionOfWeekdayFromSortedWeekdayList($days, $list));
+    }
 }

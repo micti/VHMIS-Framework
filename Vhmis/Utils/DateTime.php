@@ -119,4 +119,28 @@ class DateTime
 
         return $list;
     }
+
+    /**
+     * Get position of weekdays in sorted weekday list (based-0)
+     *
+     * Sorted weekday list [2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4,5,6,7,1,2,3,4]
+     * Get position of weekday 7,1 [5,6,12,13,19,20,26,27]
+     *
+     * @param array $weekdays
+     * @param array $sortedWeekdayList
+     *
+     * @return int
+     */
+    public static function getPositionOfWeekdayFromSortedWeekdayList($weekdays, $sortedWeekdayList)
+    {
+        $count = count($sortedWeekdayList);
+        $result = array();
+        for ($i = 0; $i < $count ; $i++) {
+            if (in_array($sortedWeekdayList[$i], $weekdays)) {
+                $result[] = $i;
+            }
+        }
+
+        return $result;
+    }
 }
