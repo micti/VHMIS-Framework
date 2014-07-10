@@ -98,6 +98,17 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result, $this->date->getMinimumValueOfField(0));
     }
 
+    public function testSetNow()
+    {
+        $now = time();
+        $date = new DateTime();
+        $date->setDate(100, 1, 1);
+        $date->setNow();
+        $this->assertEquals((int) date('Y', $now), $date->getField(1));
+        $this->assertEquals((int) date('m', $now), $date->getField(2));
+        $this->assertEquals((int) date('d', $now), $date->getField(5));
+    }
+
     public function testGetDayOfWeekType()
     {
         $a = new DateTime(null, null, 'vi_VN');

@@ -237,18 +237,6 @@ class SetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(88, $date->getField(0));
     }
 
-    public function testSetNow()
-    {
-        $now = time();
-        $date = new DateTime();
-        $date->setDate(100, 1, 1);
-        $this->set->setDateTimeObject($date);
-        $this->set->setNow();
-        $this->assertEquals((int) date('Y', $now), $date->getField(1));
-        $this->assertEquals((int) date('m', $now), $date->getField(2));
-        $this->assertEquals((int) date('d', $now), $date->getField(5));
-    }
-
     public function testSetPreviousDay()
     {
         $date = new DateTime();

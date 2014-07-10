@@ -35,7 +35,6 @@ class Set extends AbstractHelper
         'setLeapMonth'       => 1,
         'setYear'            => 1,
         'setEra'             => 1,
-        'setNow'             => 0,
         'setNextDay'         => 0,
         'setPreviousDay'     => 0,
         'setTomorrow'        => 0,
@@ -215,18 +214,6 @@ class Set extends AbstractHelper
     }
 
     /**
-     * Set now
-     *
-     * @return DateTime
-     */
-    public function setNow()
-    {
-        $this->date->setMilliTimestamp(\IntlCalendar::getNow());
-
-        return $this->date;
-    }
-
-    /**
      * Set previous day
      *
      * @return DateTime
@@ -257,7 +244,7 @@ class Set extends AbstractHelper
      */
     public function setYesterday()
     {
-        $this->setNow();
+        $this->date->setNow();
         $this->setPreviousDay();
 
         return $this->date;
@@ -270,7 +257,7 @@ class Set extends AbstractHelper
      */
     public function setTomorrow()
     {
-        $this->setNow();
+        $this->date->setNow();
         $this->setNextDay();
 
         return $this->date;
@@ -348,35 +335,41 @@ class Set extends AbstractHelper
         $nth = (int) $nth;
         $type = (int) $type;
 
+        // Wrong value of params, nothing changes
         if ($type < 0 || $type > 9 || $nth == 0) {
             return $this->date;
         }
 
+        // Data
         $dayOfWeekType = $this->date->getDayOfWeekType();
         $maxium = $this->date->getMaximumValueOfField(5);
+
+        // Move to first day of month and get weekday list based on first day
         $this->date->setField(5, 1);
         $sortedWeekdayList = DateTimeUtils::getSortedWeekdayList($this->date->getField(7), $maxium['actual']);
 
+        // Get weekday list based on type
         $list = $dayOfWeekType[$type];
         if ($type > 0 && $type < 8) {
             $list = array($type);
         }
 
+        // Get all position of days of type
         $positions = DateTimeUtils::getPositionOfWeekdayFromSortedWeekdayList($list, $sortedWeekdayList);
 
-        // Nth out range, get maxium
+        // Reversed Nth
         if ($nth < 0) {
             $nth *= -1;
             $positions = array_reverse($positions);
         }
 
-        // Move to nth
+        // Nth is out range, get maxium
         if ($nth > count($positions)) {
             $nth = count($positions);
         }
 
+        // Set Nth day
         $day = $positions[$nth - 1] + 1;
-
         $this->date->setField(5, $day);
 
         return $this->date;

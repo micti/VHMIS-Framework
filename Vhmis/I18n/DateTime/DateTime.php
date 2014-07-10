@@ -27,7 +27,6 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @method \Vhmis\I18n\DateTime\DateTime setLeapMonth(int $month) Set leap month
  * @method \Vhmis\I18n\DateTime\DateTime setYear(int $year) Set year
  * @method \Vhmis\I18n\DateTime\DateTime setEra(int $era) Set era
- * @method \Vhmis\I18n\DateTime\DateTime setNow() Set now
  * @method \Vhmis\I18n\DateTime\DateTime setPreviousDay() Set previous day
  * @method \Vhmis\I18n\DateTime\DateTime setNextDay() Set next day
  * @method \Vhmis\I18n\DateTime\DateTime setTomorrow() Set tomorrow
@@ -158,7 +157,7 @@ class DateTime extends SimpleDateTime
 
             $result[0][] = $i;
             $result[$i] = array($type);
-            
+
             if ($transition !== false) {
                 $result[$i][] = $transition;
                 $result[9][] = $i;
@@ -206,6 +205,18 @@ class DateTime extends SimpleDateTime
             'actual'   => $this->calendar->getActualMinimum($field),
             'greatest' => $this->calendar->getGreatestMinimum($field)
         );
+    }
+
+    /**
+     * Set now
+     *
+     * @return DateTime
+     */
+    public function setNow()
+    {
+        $this->setMilliTimestamp(\IntlCalendar::getNow());
+
+        return $this;
     }
 
     /**
