@@ -352,128 +352,34 @@ class Set extends AbstractHelper
             return $this->date;
         }
 
-        if ($type === 0) {
-            $day = $this->findNthDayOfMonth($nth);
-        } elseif ($type > 7) {
-            $day = $this->findNthWorkingDayOrWeekendOfMonth($type, $nth);
-        } else {
-            $day = $this->findNthWeekDayOfMonth($type, $nth);
+        $dayOfWeekType = $this->date->getDayOfWeekType();
+        $maxium = $this->date->getMaximumValueOfField(5);
+        $this->date->setField(5, 1);
+        $sortedWeekdayList = DateTimeUtils::getSortedWeekdayList($this->date->getField(7), $maxium['actual']);
+
+        $list = $dayOfWeekType[$type];
+        if ($type > 0 && $type < 8) {
+            $list = array($type);
         }
+
+        $positions = DateTimeUtils::getPositionOfWeekdayFromSortedWeekdayList($list, $sortedWeekdayList);
+
+        // Nth out range, get maxium
+        if ($nth < 0) {
+            $nth *= -1;
+            $positions = array_reverse($positions);
+        }
+
+        // Move to nth
+        if ($nth > count($positions)) {
+            $nth = count($positions);
+        }
+
+        $day = $positions[$nth - 1] + 1;
 
         $this->date->setField(5, $day);
 
         return $this->date;
-    }
-
-    /**
-     * Find Nth weekday of month
-     *
-     * @param int $type
-     * @param int $nth
-     *
-     * @return int
-     */
-    protected function findNthWeekDayOfMonth($type, $nth)
-    {
-        $maxium = $this->date->getMaximumValueOfField(5);
-
-        if ($nth < 0) {
-            $day = $maxium['actual'] - 6;
-            $this->setDay($day);
-            $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getField(7));
-            $position = array_search($type, $sortedWeekdays);
-            $addedDay = $day + $position + ($nth + 1) * 7;
-            if ($addedDay < 1) {
-                $addedDay = $day + $position + (floor($maxium['actual'] / 7) * -1 + 1) * 7;
-            }
-
-            return $addedDay;
-        }
-
-        $day = 1;
-        $this->setDay($day);
-        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getField(7));
-        $position = array_search($type, $sortedWeekdays);
-        $addedDay = $day + $position + ($nth - 1) * 7;
-        if ($addedDay > $maxium['actual']) {
-            $addedDay = $day + $position + (floor($maxium['actual'] / 7) - 1) * 7;
-        }
-
-        return $addedDay;
-    }
-
-    /**
-     * Find Nth WorkingDay or Weekend of month
-     *
-     * @param int $type
-     * @param int $nth
-     *
-     * @return int
-     */
-    protected function findNthWorkingDayOrWeekendOfMonth($type, $nth)
-    {
-        // Go to first day of month
-        $this->setFirstDayOfMonth();
-
-        // Get sorted weekday base first day
-        $maxium = $this->date->getMaximumValueOfField(5);
-        $sortedWeekdays = DateTimeUtils::getSortedWeekdayList($this->date->getField(7), $maxium['actual']);
-
-        if ($nth < 0) {
-            $nth *= -1;
-            $sortedWeekdays = array_reverse($sortedWeekdays);
-        }
-
-        // Get type of weekday
-        $weekdayTypes = $this->date->getDayOfWeekType();
-
-        // Get sorted weekend days of month
-        $days = array();
-        foreach ($sortedWeekdays as $position => $weekday) {
-            if ($type === 8) {
-                if ($weekdayTypes[$weekday][0] == 0) {
-                    $days[] = $position + 1;
-                }
-            } else {
-                if ($weekdayTypes[$weekday][0] > 0) {
-                    $days[] = $position + 1;
-                }
-            }
-        }
-
-        // Move to nth
-        if ($nth > count($days)) {
-            $nth = count($days);
-        }
-
-        return $days[$nth - 1];
-    }
-
-    /**
-     * Find Nth day of month
-     *
-     * @param int $nth
-     *
-     * @return int
-     */
-    protected function findNthDayOfMonth($nth)
-    {
-        $maxium = $this->date->getMaximumValueOfField(5);
-        $day = $nth;
-
-        if ($nth < 0) {
-            $day = $maxium['actual'] + $nth + 1;
-        }
-
-        if ($day < 1) {
-            return 1;
-        }
-
-        if ($day > $maxium['actual']) {
-            return $maxium['actual'];
-        }
-
-        return $day;
     }
 
     /**
