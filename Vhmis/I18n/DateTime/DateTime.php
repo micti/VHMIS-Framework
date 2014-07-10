@@ -144,6 +144,8 @@ class DateTime extends SimpleDateTime
     /**
      * Get day of week type
      *
+     * Includes all weekdays, working days, weekend, and weekday type
+     *
      * @return array
      */
     public function getDayOfWeekType()
@@ -153,9 +155,20 @@ class DateTime extends SimpleDateTime
         for ($i = 1; $i <= 7; $i++) {
             $type = $this->calendar->getDayOfWeekType($i);
             $transition = $this->calendar->getWeekendTransition($i);
+
             $result[$i] = array($type);
             if ($transition !== false) {
                 $result[$i][] = $transition;
+            }
+
+            $result[0][] = $i;
+
+            if ($type > 0) {
+                $result[9][] = $i;
+            }
+
+            if ($type === 0) {
+                $result[8][] = $i;
             }
         }
 

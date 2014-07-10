@@ -103,6 +103,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $a = new DateTime(null, null, 'vi_VN');
 
         $result = array(
+            '0' => array(1, 2, 3, 4, 5, 6, 7),
             '1' => array(1, 86400000),
             '2' => array(0),
             '3' => array(0),
@@ -110,6 +111,8 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             '5' => array(0),
             '6' => array(0),
             '7' => array(1, 0),
+            '8' => array(2, 3, 4, 5, 6),
+            '9' => array(1, 7)
         );
 
         $this->assertEquals($result, $this->date->getDayOfWeekType());
