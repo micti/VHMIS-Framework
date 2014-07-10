@@ -156,18 +156,13 @@ class DateTime extends SimpleDateTime
             $type = $this->calendar->getDayOfWeekType($i);
             $transition = $this->calendar->getWeekendTransition($i);
 
+            $result[0][] = $i;
             $result[$i] = array($type);
+            
             if ($transition !== false) {
                 $result[$i][] = $transition;
-            }
-
-            $result[0][] = $i;
-
-            if ($type > 0) {
                 $result[9][] = $i;
-            }
-
-            if ($type === 0) {
+            } else {
                 $result[8][] = $i;
             }
         }
