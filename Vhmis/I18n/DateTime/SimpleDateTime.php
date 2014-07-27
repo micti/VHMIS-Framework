@@ -335,4 +335,15 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     {
         return $this->format('yyyy-MM-dd HH:mm:ss');
     }
+
+    /**
+     * Clone object
+     *
+     * @return SimpleDateTime
+     */
+    public function __clone()
+    {
+        $this->helpers = array();
+        $this->calendar = clone $this->calendar;
+    }
 }
