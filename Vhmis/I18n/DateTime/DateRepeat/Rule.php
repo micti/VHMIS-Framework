@@ -291,10 +291,7 @@ class Rule
         $max = 31;
 
         if ($this->date !== null) {
-            $maxInfo = $this->date->getMaximumValueOfField(5);
-            $max = $maxInfo['greatest'];
-            $minInfo = $this->date->getMinimumValueOfField(5);
-            $min = $minInfo['least'];
+            list($min, $max) = $this->getRangeOfField(5);
         }
 
         $this->repeatedDays = $this->fixIntArray($days, $min, $max);
@@ -317,10 +314,7 @@ class Rule
         $max = 12;
 
         if ($this->date !== null) {
-            $maxInfo = $this->date->getMaximumValueOfField(2);
-            $max = $maxInfo['greatest'];
-            $minInfo = $this->date->getMinimumValueOfField(2);
-            $min = $minInfo['least'];
+            list($min, $max) = $this->getRangeOfField(2);
         }
 
         $this->repeatedMonths = $this->fixIntArray($months, $min, $max);
@@ -339,16 +333,19 @@ class Rule
             return false;
         }
 
-        switch ($this->by) {
-            case 5:
-                return $this->isValidRepeatByWeek();
-            case 6:
-                return $this->isValidRepeatByMonth();
-            case 7:
-                return $this->isValidRepeatByYear();
-            default:
-                return true; // case 4
+        $validMethods = array(
+            5 => 'isValidRepeatByWeek',
+            6 => 'isValidRepeatByMonth',
+            7 => 'isValidRepeatByYear'
+        );
+
+        if (isset($validMethods[$this->by])) {
+            $method = $validMethods[$this->by];
+
+            return $this->$method();
         }
+
+        return true;
     }
 
     /**
@@ -528,5 +525,24 @@ class Rule
         sort($data);
 
         return $data;
+    }
+
+    /**
+     * Get acceptable range of field of date
+     *
+     * @param int $field
+     *
+     * @return int[]
+     */
+    protected function getRangeOfField($field)
+    {
+        $field = (int) $field;
+
+        $maxInfo = $this->date->getMaximumValueOfField($field);
+        $max = $maxInfo['greatest'];
+        $minInfo = $this->date->getMinimumValueOfField($field);
+        $min = $minInfo['least'];
+
+        return array($min, $max);
     }
 }
