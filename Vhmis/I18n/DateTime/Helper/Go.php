@@ -29,9 +29,11 @@ class Go extends AbstractHelper
         'gotoPreviousDay'     => 0,
         'gotoTomorrow'        => 0,
         'gotoYesterday'       => 0,
+        'gotoFirstDayOfWeek'  => 0,
+        'gotoLastDayOfWeek'   => 0,
         'gotoFirstDayOfMonth' => 0,
         'gotoLastDayOfMonth'  => 0,
-        'gotoNthOfMonth'      => 2
+        'gotoNthDayOfMonth'   => 2
     );
 
     /**
