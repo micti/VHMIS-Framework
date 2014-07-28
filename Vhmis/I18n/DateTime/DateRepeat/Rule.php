@@ -356,6 +356,7 @@ class Rule
     public function getInfo()
     {
         return array(
+            'date'        => $this->date,
             'by'          => $this->by,
             'base'        => $this->baseDate,
             'baseDay'     => $this->baseDay,

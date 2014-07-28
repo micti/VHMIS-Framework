@@ -288,6 +288,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
     public function testReset()
     {
         $result = array(
+            'date'        => null,
             'by'          => 4,
             'base'        => null,
             'baseDay'     => null,
