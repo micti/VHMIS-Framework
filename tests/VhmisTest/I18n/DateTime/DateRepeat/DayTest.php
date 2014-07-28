@@ -39,6 +39,18 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!extension_loaded('intl')) {
+            $this->markTestSkipped(
+                'Intl ext is not available.'
+            );
+        }
+
+        if (!class_exists('\IntlCalendar')) {
+            $this->markTestSkipped(
+                'Intl version 3.0.0 is not available.'
+            );
+        }
+        
         $this->dayRepeat = new Day();
         $this->repeatRule = new Rule();
         $this->date = new DateTime('Asia/Ho_Chi_Minh');
