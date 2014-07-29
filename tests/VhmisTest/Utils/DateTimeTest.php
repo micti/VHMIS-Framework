@@ -14,19 +14,24 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
 
 class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSortWeekday()
+    public function testSortedWeekday()
     {
         $this->assertEquals(array(3,4,5,6,7,1,2), DateTimeUtils::sortedWeekday(3));
     }
 
-    public function testSortWeekday1()
+    public function testSortedWeekday1()
     {
         $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortedWeekday(1));
     }
 
-    public function testSortWeekday2()
+    public function testSortedWeekday2()
     {
         $this->assertEquals(array(7,1,2,3,4,5,6), DateTimeUtils::sortedWeekday(7));
+    }
+
+    public function testSortWeekday()
+    {
+        $this->assertEquals(array(3,4,5,6,1), DateTimeUtils::sortWeekday(2, array(8,1,5,6,3,4,0)));
     }
 
     public function testSortWeekdayOutParam()

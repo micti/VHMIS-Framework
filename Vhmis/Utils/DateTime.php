@@ -67,7 +67,7 @@ class DateTime
      *
      * @return array
      */
-    public static function sortWeekday($firstDay)
+    public static function sortedWeekday($firstDay)
     {
         $firstDay = (int) $firstDay;
 
@@ -75,7 +75,17 @@ class DateTime
             return array(1, 2, 3, 4, 5, 6, 7);
         }
 
-        $weekdayOrder = array();
+        $result = array(
+            1 => array(1, 2, 3, 4, 5, 6, 7),
+            2 => array(2, 3, 4, 5, 6, 7, 1),
+            3 => array(3, 4, 5, 6, 7, 1, 2),
+            4 => array(4, 5, 6, 7, 1, 2, 3),
+            5 => array(5, 6, 7, 1, 2, 3, 4),
+            6 => array(6, 7, 1, 2, 3, 4, 5),
+            7 => array(7, 1, 2, 3, 4, 5, 6)
+        );
+
+        /*$weekdayOrder = array();
 
         for ($i = 1; $i <= 7; $i++) {
             if ($i >= $firstDay) {
@@ -85,7 +95,32 @@ class DateTime
             }
         }
 
-        return $weekdayOrder;
+        return $weekdayOrder;*/
+
+        return $result[$firstDay];
+    }
+
+    /**
+     * Sort weekdays based on first day of week
+     * 2, [1, 3, 5, 6] -> [3, 5, 6, 2]
+     *
+     * @param int   $firstDay
+     * @param int[] $weekdays
+     *
+     * @return array
+     */
+    public static function sortWeekday($firstDay, $weekdays)
+    {
+        $sortedWeekday = self::sortedWeekday($firstDay);
+        $result = array();
+
+        for ($i = 0; $i < 7; $i++) {
+            if (in_array($sortedWeekday[$i], $weekdays)) {
+                $result[] = $sortedWeekday[$i];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -105,7 +140,7 @@ class DateTime
         $firstDay = (int) $firstDay;
         $total = (int) $total;
 
-        $sortedWeekday = self::sortWeekday($firstDay);
+        $sortedWeekday = self::sortedWeekday($firstDay);
         $list = array();
 
         $j = 0;
