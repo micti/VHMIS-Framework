@@ -347,7 +347,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
         $locale = $this->calendar->getLocale(1);
         $timezone = $this->calendar->getTimeZone();
 
-        $new = new SimpleDateTime($timezone, $calendar, $locale);
+        $new = new static($timezone, $calendar, $locale);
 
         return $new;
     }
