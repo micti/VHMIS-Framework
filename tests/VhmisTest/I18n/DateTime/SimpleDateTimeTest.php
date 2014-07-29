@@ -299,4 +299,13 @@ class SimpleDateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);
         $this->assertEquals('2014-06-24 14:12:13', (string) $this->date);
     }
+
+    public function testCreateNewWithSameI18nInfo()
+    {
+        $date = $this->date->createNewWithSameI18nInfo();
+        $this->assertEquals($this->date->getType(), $date->getType());
+        $this->assertEquals($this->date->getTimeZone(), $date->getTimeZone());
+        $date->setMilliTimestamp($this->date->getMilliTimestamp());
+        $this->assertEquals($this->date->format(array(0, 0)), $date->format(array(0, 0)));
+    }
 }

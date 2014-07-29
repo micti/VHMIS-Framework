@@ -111,6 +111,15 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDayOfWeekType()
     {
+        $reflector = new \ReflectionExtension('intl');
+        ob_start();
+        $reflector->info();
+        $output = ob_get_clean();
+        preg_match('/^ICU version => (.*)$/m', $output, $matches);
+        if ($matches[1] < '5') {
+            return;
+        }
+
         $a = new DateTime(null, null, 'vi_VN');
 
         $result = array(

@@ -337,6 +337,22 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
+     * New datetime with same I18n info
+     *
+     * @return SimpleDateTime
+     */
+    public function createNewWithSameI18nInfo()
+    {
+        $calendar = $this->getType();
+        $locale = $this->calendar->getLocale(1);
+        $timezone = $this->calendar->getTimeZone();
+
+        $new = new SimpleDateTime($timezone, $calendar, $locale);
+
+        return $new;
+    }
+
+    /**
      * Clone object
      *
      * @return SimpleDateTime
