@@ -84,11 +84,11 @@ abstract class AbstractRepeat
         }
 
         $this->ruleInfo = $info;
-        $this->date = clone $info['date'];
+        $this->date = $info['date']->createNewWithSameI18nInfo();
 
         $this->to = 0;
         $this->from = 0;
-        $this->begin = $this->date->getTimestamp();
+        $this->begin = $info['date']->getTimestamp();
         $this->end = 0;
 
         return $this;
@@ -98,8 +98,9 @@ abstract class AbstractRepeat
      * Check range
      * Return false if range is out start date and end date
      *
-     * @param  string  $fromDate
-     * @param  string  $toDate
+     * @param string $fromDate
+     * @param string $toDate
+     *
      * @return boolean
      */
     protected function checkRange($fromDate, $toDate)

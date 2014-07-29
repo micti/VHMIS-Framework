@@ -42,7 +42,7 @@ class Day extends AbstractRepeat
         $this->date->setTimestamp($this->begin);
 
         if ($this->begin < $this->from) {
-            $from = clone $this->date;
+            $from = $this->date->createNewWithSameI18nInfo();
             $from->setTimestamp($this->from);
             $this->date->addDay(ceil($this->date->diffDay($from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
         }
