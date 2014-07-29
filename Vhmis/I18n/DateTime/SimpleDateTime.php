@@ -82,7 +82,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $month
      * @param int $day
      *
-     * @return DateTime
+     * @return SimpleDateTime
      */
     public function setDate($year, $month, $day)
     {
@@ -99,7 +99,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $month
      * @param int $day
      *
-     * @return DateTime
+     * @return SimpleDateTime
      */
     public function setDateWithExtenedYear($year, $month, $day)
     {
@@ -119,7 +119,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $second
      * @param int $millisecond
      *
-     * @return DateTime
+     * @return SimpleDateTime
      */
     public function setTime($hour, $minute, $second = 0, $millisecond = 0)
     {
@@ -136,7 +136,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @param int $timestamp
      *
-     * @return DateTime
+     * @return SimpleDateTime
      */
     public function setTimestamp($timestamp)
     {
@@ -150,7 +150,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @param float $milliseconds
      *
-     * @return DateTime
+     * @return SimpleDateTime
      */
     public function setMilliTimestamp($milliseconds)
     {
@@ -164,7 +164,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @param mixed $timeZone
      *
-     * @return \Vhmis\I18n\DateTime\DateTime
+     * @return SimpleDateTime
      */
     public function setTimeZone($timeZone)
     {
@@ -275,7 +275,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      * @param int $field
      * @param int $amount
      *
-     * @return DateTime
+     * @return SimpleDateTime
      */
     public function addField($field, $amount)
     {
@@ -288,8 +288,8 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     /**
      * Calculate difference between given time and this object's time
      *
-     * @param DateTime $date
-     * @param int      $field
+     * @param SimpleDateTime $date
+     * @param int            $field
      *
      * @return int
      */
@@ -317,7 +317,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @param int $dayOfWeek
      *
-     * @return DateTime
+     * @return SimpleDateTime
      */
     public function setWeekFirstDay($dayOfWeek)
     {
@@ -348,6 +348,8 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
         $timezone = $this->calendar->getTimeZone();
 
         $new = new static($timezone, $calendar, $locale);
+
+        $new->setWeekFirstDay($this->getWeekFirstDay());
 
         return $new;
     }
