@@ -112,17 +112,37 @@ class Go extends AbstractHelper
     }
 
     /**
+     * Set day of current week
+     *
+     * @param int $weekday
+     *
+     * @return DateTime
+     */
+    public function gotoDayOfWeek($weekday)
+    {
+        $weekday = (int) $weekday;
+        if ($weekday < 1 || $weekday > 7) {
+            return $this->date;
+        }
+
+        $currentWeekday = $this->date->getField(7);
+        $postion = $this->date->getDayOfWeekPosition();
+        $amount = $postion[$weekday] - $postion[$currentWeekday];
+        $this->date->addField(5, $amount);
+
+        return $this->date;
+    }
+
+    /**
      * Set first day of week
      *
      * @return DateTime
      */
     public function gotoFirstDayOfWeek()
     {
-        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getWeekFirstDay());
-        $position = array_search($this->date->getField(7), $sortedWeekdays);
-        $this->date->addField(5, 0 - $position);
+        $sortedWeekdays = $this->date->getSortedWeekday();
 
-        return $this->date;
+        return $this->gotoDayOfWeek($sortedWeekdays[0]);
     }
 
     /**
@@ -132,11 +152,9 @@ class Go extends AbstractHelper
      */
     public function gotoLastDayOfWeek()
     {
-        $sortedWeekdays = DateTimeUtils::sortWeekday($this->date->getWeekFirstDay());
-        $position = array_search($this->date->getField(7), $sortedWeekdays);
-        $this->date->addField(5, 6 - $position);
+        $sortedWeekdays = $this->date->getSortedWeekday();
 
-        return $this->date;
+        return $this->gotoDayOfWeek($sortedWeekdays[6]);
     }
 
     /**

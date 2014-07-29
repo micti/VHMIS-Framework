@@ -102,6 +102,39 @@ class GoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(28, $date->getField(5));
     }
 
+    public function testSetDayOfWeek()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(4);
+        $this->go->setDateTimeObject($date);
+        $this->go->gotoDayOfWeek(0);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(10, $date->getField(5));
+    }
+
+    public function testSetDayOfWeek2()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(4);
+        $this->go->setDateTimeObject($date);
+        $this->go->gotoDayOfWeek(8);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(10, $date->getField(5));
+    }
+
+    public function testSetDayOfWeek3()
+    {
+        $date = new DateTime();
+        $date->setDate(2014, 7, 10)->setWeekFirstDay(4);
+        $this->go->setDateTimeObject($date);
+        $this->go->gotoDayOfWeek(1);
+        $this->assertEquals(2014, $date->getField(1));
+        $this->assertEquals(7, $date->getField(2));
+        $this->assertEquals(13, $date->getField(5));
+    }
+
     public function testSetFirstDayOfWeek()
     {
         $date = new DateTime();
