@@ -226,6 +226,14 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $this->rule->setRepeatedDayPosition(-11);
     }
 
+    /**
+     * @expectedException \Vhmis\Utils\Exception\InvalidArgumentException
+     */
+    public function testSetRepeatedDayPositionException3()
+    {
+        $this->rule->setRepeatedDayPosition(0);
+    }
+
     public function testSetRepeatedDayPosition()
     {
         $this->rule->setRepeatedDayPosition('2');

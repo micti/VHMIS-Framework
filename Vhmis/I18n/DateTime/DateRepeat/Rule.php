@@ -272,6 +272,10 @@ class Rule
         // -10 - 10 ????
         $this->repeatedDayPosition = $this->fixInt($position, -10, 10);
 
+        if ($this->repeatedDayPosition === 0) {
+            throw new InvalidArgumentException('Position is not be 0');
+        }
+
         return $this;
     }
 
