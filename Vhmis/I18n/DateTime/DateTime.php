@@ -181,7 +181,7 @@ class DateTime extends SimpleDateTime
      *
      * @return array
      */
-    public function getDateOfWeekPosition()
+    public function getDayOfWeekPosition()
     {
         $sortedWeekday = $this->getSortedWeekday();
         $positions = array();

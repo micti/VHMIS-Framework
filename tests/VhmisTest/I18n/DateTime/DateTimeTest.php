@@ -138,7 +138,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result, $this->date->getDayOfWeekType());
     }
 
-    public function testGetDateOfWeekPosition()
+    public function testGetDayOfWeekPosition()
     {
         $this->date->setWeekFirstDay(2);
         $result = array(
@@ -151,7 +151,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             1 => 7
         );
 
-        $this->assertEquals($result, $this->date->getDateOfWeekPosition());
+        $this->assertEquals($result, $this->date->getDayOfWeekPosition());
     }
 
     public function testCallWrong()
