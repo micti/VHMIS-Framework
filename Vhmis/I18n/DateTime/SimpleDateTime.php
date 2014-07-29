@@ -319,7 +319,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      */
     public function getSortedWeekday()
     {
-        return DateTimeUtil::sortWeekday($this->getWeekFirstDay());
+        return DateTimeUtil::sortedWeekday($this->getWeekFirstDay());
     }
 
     /**

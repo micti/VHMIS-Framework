@@ -16,27 +16,27 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
     public function testSortWeekday()
     {
-        $this->assertEquals(array(3,4,5,6,7,1,2), DateTimeUtils::sortWeekday(3));
+        $this->assertEquals(array(3,4,5,6,7,1,2), DateTimeUtils::sortedWeekday(3));
     }
 
     public function testSortWeekday1()
     {
-        $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortWeekday(1));
+        $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortedWeekday(1));
     }
 
     public function testSortWeekday2()
     {
-        $this->assertEquals(array(7,1,2,3,4,5,6), DateTimeUtils::sortWeekday(7));
+        $this->assertEquals(array(7,1,2,3,4,5,6), DateTimeUtils::sortedWeekday(7));
     }
 
     public function testSortWeekdayOutParam()
     {
-        $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortWeekday(0));
+        $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortedWeekday(0));
     }
 
     public function testSortWeekdayOutParam2()
     {
-        $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortWeekday(8));
+        $this->assertEquals(array(1,2,3,4,5,6,7), DateTimeUtils::sortedWeekday(8));
     }
 
     public function testGetPositionOfWeekdayFromSortedWeekdayList()
