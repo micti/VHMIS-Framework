@@ -12,6 +12,7 @@ namespace Vhmis\I18n\DateTime;
 
 use \Vhmis\Utils\Std\DateTimeInterface;
 use \Vhmis\Utils\Std\AbstractDateTime;
+use \Vhmis\Utils\DateTime as DateTimeUtil;
 use \Vhmis\Utils\Exception\InvalidArgumentException;
 
 /**
@@ -309,6 +310,16 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     public function getWeekFirstDay()
     {
         return $this->calendar->getFirstDayOfWeek();
+    }
+
+    /**
+     * Get sorted weekday based on first day of week
+     *
+     * @return int[]
+     */
+    public function getSortedWeekday()
+    {
+        return DateTimeUtil::sortWeekday($this->getWeekFirstDay());
     }
 
     /**

@@ -294,6 +294,12 @@ class SimpleDateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $this->date->getWeekFirstDay());
     }
 
+    public function testGetSortedWeekday()
+    {
+        $this->date->setWeekFirstDay(4);
+        $this->assertEquals(array(4,5,6,7,1,2,3), $this->date->getSortedWeekday());
+    }
+
     public function testToString()
     {
         $this->date->setDate(2014, 6, 24)->setTime(14, 12, 13);

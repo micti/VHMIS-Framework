@@ -177,6 +177,23 @@ class DateTime extends SimpleDateTime
     }
 
     /**
+     * Get day of week postion
+     *
+     * @return array
+     */
+    public function getDateOfWeekPosition()
+    {
+        $sortedWeekday = $this->getSortedWeekday();
+        $positions = array();
+
+        for ($i = 0; $i < 7; $i++) {
+            $positions[$sortedWeekday[$i]] = $i + 1;
+        }
+
+        return $positions;
+    }
+
+    /**
      * Get maximum values of field
      * - Greatest : greatest maxium
      * - Least : least maxium

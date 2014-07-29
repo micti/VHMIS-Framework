@@ -138,6 +138,22 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result, $this->date->getDayOfWeekType());
     }
 
+    public function testGetDateOfWeekPosition()
+    {
+        $this->date->setWeekFirstDay(2);
+        $result = array(
+            2 => 1,
+            3 => 2,
+            4 => 3,
+            5 => 4,
+            6 => 5,
+            7 => 6,
+            1 => 7
+        );
+
+        $this->assertEquals($result, $this->date->getDateOfWeekPosition());
+    }
+
     public function testCallWrong()
     {
         $this->assertEquals(null, $this->date->nothing());
