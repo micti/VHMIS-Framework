@@ -34,6 +34,7 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @method \Vhmis\I18n\DateTime\DateTime gotoYesterday() Set yesterday
  * @method \Vhmis\I18n\DateTime\DateTime gotoFirstDayOfMonth() Set first day of month
  * @method \Vhmis\I18n\DateTime\DateTime gotoLastDayOfMonth() Set last day of month
+ * @method \Vhmis\I18n\DateTime\DateTime gotoDayOfWeek() Set day of week
  * @method \Vhmis\I18n\DateTime\DateTime gotoFirstDayOfWeek() Set first day of week
  * @method \Vhmis\I18n\DateTime\DateTime gotoLastDayOfWeek() Set last day of week
  * @method \Vhmis\I18n\DateTime\DateTime gotoNthDayOfMonth(int $type, int $nth) Set Nth day of month

@@ -29,6 +29,7 @@ class Go extends AbstractHelper
         'gotoPreviousDay'     => 0,
         'gotoTomorrow'        => 0,
         'gotoYesterday'       => 0,
+        'gotoDayOfWeek'       => 1,
         'gotoFirstDayOfWeek'  => 0,
         'gotoLastDayOfWeek'   => 0,
         'gotoFirstDayOfMonth' => 0,
@@ -112,7 +113,7 @@ class Go extends AbstractHelper
     }
 
     /**
-     * Set day of current week
+     * Set day of week
      *
      * @param int $weekday
      *
