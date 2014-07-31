@@ -35,6 +35,7 @@ class Diff extends AbstractHelper
         'diffAbsoluteMonth'       => 1,
         'diffAbsoluteWeek'        => 1,
         'diffAbsoluteDay'         => 1,
+        'diffAbsoluteWeek'        => 1,
         'diffAbsoluteHour'        => 1,
         'diffAbsoluteMinute'      => 1,
         'diffAbsoluteSecond'      => 1,
@@ -175,6 +176,7 @@ class Diff extends AbstractHelper
             'era' => $this->diffAbsoluteEra($date),
             'year' => $this->diffAbsoluteYear($date),
             'month' => $this->diffAbsoluteMonth($date),
+            'week' => $this->diffAbsoluteWeek($date),
             'day' => $this->diffAbsoluteDay($date),
             'hour' => $this->diffAbsoluteHour($date),
             'minute' => $this->diffAbsoluteMinute($date),
@@ -231,6 +233,36 @@ class Diff extends AbstractHelper
 
         $this->date->setMilliTimestamp($millisecondDate1);
         $date->setMilliTimestamp($millisecondDate2);
+
+        return $diff;
+    }
+
+    /**
+     * Absolute diff for week
+     *
+     * @param DateTime $date
+     *
+     * @return int
+     */
+    public function diffAbsoluteWeek($date)
+    {
+        $millisecondDate1 = $this->date->getMilliTimestamp();
+        $millisecondDate2 = $date->getMilliTimestamp();
+        $firstDay2 = $date->getWeekFirstDay();
+
+        $date->setTime(0, 0, 0);
+        $date->setField(14, 0);
+        $date->setWeekFirstDay($this->date->getWeekFirstDay());
+        $date->gotoFirstDayOfWeek();
+
+        $this->date->setTime(0, 0, 0);
+        $this->date->setField(14, 0);
+        $this->date->gotoFirstDayOfWeek();
+
+        $diff = ($date->getTimestamp() - $this->date->getTimestamp()) / 24 / 60 / 60 / 7;
+
+        $this->date->setMilliTimestamp($millisecondDate1);
+        $date->setWeekFirstDay($firstDay2)->setMilliTimestamp($millisecondDate2);
 
         return $diff;
     }

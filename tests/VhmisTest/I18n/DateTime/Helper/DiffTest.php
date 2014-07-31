@@ -285,6 +285,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(62, $this->diff->diffAbsoluteMonth($a));
     }
 
+    public function testDiffAbsoluteWeek()
+    {
+        $date = new DateTime();
+        $date->setWeekFirstDay(1)->setDate(2014, 8, 10)->setTime(14, 13, 11)->setField(14, 676);
+        $this->diff->setDateTimeObject($date);
+
+        $a = new DateTime();
+        $a->setWeekFirstDay(1)->setDate(2014, 8, 11)->setTime(17, 12, 11);
+
+        $this->assertEquals(0, $this->diff->diffAbsoluteWeek($a));
+
+        $date->setWeekFirstDay(2);
+
+        $this->assertEquals(1, $this->diff->diffAbsoluteWeek($a));
+    }
+
     public function testDiffAbsoluteDay()
     {
         $date = new DateTime();
@@ -359,6 +375,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
             'year'        => 5,
             'month'       => 62,
             'day'         => 1888,
+            'week'        => 269,
             'hour'        => 45315,
             'minute'      => 2718899,
             'second'      => 163133945,

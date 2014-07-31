@@ -84,6 +84,7 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @method int diffAbsoluteEra(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by era
  * @method int diffAbsoluteYear(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by year
  * @method int diffAbsoluteMonth(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by month
+ * @method int diffAbsoluteWeek(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by week
  * @method int diffAbsoluteDay(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by day
  * @method int diffAbsoluteHour(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by hour
  * @method int diffAbsoluteMinute(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by minute
