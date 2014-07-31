@@ -31,7 +31,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testSortWeekday()
     {
-        $this->assertEquals(array(3,4,5,6,1), DateTimeUtils::sortWeekday(2, array(8,1,5,6,3,4,0)));
+        $this->assertEquals(array(3,4,5,6,1), DateTimeUtils::sortWeekday(2, array(1,5,6,3,4)));
+    }
+
+    public function testSortWeekday2()
+    {
+        $this->assertEquals(array(7,1,2), DateTimeUtils::sortWeekday(7, array(1,2,7)));
     }
 
     public function testSortWeekdayOutParam()

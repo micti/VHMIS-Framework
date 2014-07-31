@@ -102,7 +102,7 @@ class DateTime
 
     /**
      * Sort weekdays based on first day of week
-     * 2, [1, 3, 5, 6] -> [3, 5, 6, 2]
+     * 2, [1, 3, 5, 6] -> [3, 5, 6, 1]
      *
      * @param int   $firstDay
      * @param int[] $weekdays
@@ -111,16 +111,20 @@ class DateTime
      */
     public static function sortWeekday($firstDay, $weekdays)
     {
-        $sortedWeekday = self::sortedWeekday($firstDay);
-        $result = array();
+        sort($weekdays);
+        $before = array();
+        $after = array();
+        $total = count($weekdays);
 
-        for ($i = 0; $i < 7; $i++) {
-            if (in_array($sortedWeekday[$i], $weekdays)) {
-                $result[] = $sortedWeekday[$i];
+        for ($i = 0; $i < $total; $i++) {
+            if ($firstDay <= $weekdays[$i]) {
+                $before[] = $weekdays[$i];
+            } else {
+                $after[] = $weekdays[$i];
             }
         }
 
-        return $result;
+        return array_unique(array_merge($before, $after));
     }
 
     /**
