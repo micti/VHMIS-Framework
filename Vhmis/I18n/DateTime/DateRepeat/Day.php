@@ -10,8 +10,6 @@
 
 namespace Vhmis\I18n\DateTime\DateRepeat;
 
-use \Vhmis\I18n\DateTime\DateTime;
-
 /**
  * Caculation repeated dates by day
  */
@@ -44,7 +42,7 @@ class Day extends AbstractRepeat
         if ($this->begin < $this->from) {
             $from = $this->date->createNewWithSameI18nInfo();
             $from->setTimestamp($this->from);
-            $this->date->addDay(ceil($this->date->diffDay($from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
+            $this->date->addDay(ceil($this->date->diffAbsoluteDay($from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
         }
 
         while ($this->date->getTimestamp() <= $this->to) {
