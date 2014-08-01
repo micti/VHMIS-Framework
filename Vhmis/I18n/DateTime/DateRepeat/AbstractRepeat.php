@@ -11,6 +11,7 @@
 namespace Vhmis\I18n\DateTime\DateRepeat;
 
 use Vhmis\I18n\DateTime\DateTime;
+use Vhmis\Utils\DateTime as DateTimeUtil;
 
 /**
  * Abstract class for all DateRepeat classes
@@ -64,9 +65,9 @@ abstract class AbstractRepeat
     /**
      * Set rule of repeat
      *
-     * @param \Vhmis\DateTime\DateRepeat\Rule $rule
+     * @param Rule $rule
      *
-     * @return \Vhmis\DateTime\DateRepeat\AbstractRepeat
+     * @return AbstractRepeat
      */
     public function setRule(Rule $rule)
     {
@@ -84,6 +85,12 @@ abstract class AbstractRepeat
         }
 
         $this->ruleInfo = $info;
+
+        $this->ruleInfo['weekdays'] = DateTimeUtil::sortWeekday(
+            $info['date']->getWeekFirstDay(),
+            $this->ruleInfo['weekdays']
+        );
+
         $this->date = $info['date']->createNewWithSameI18nInfo();
 
         $this->to = 0;
