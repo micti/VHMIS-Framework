@@ -128,7 +128,7 @@ class Rule
 
         // auto
         $this->repeatedDay = $this->baseWeekday;
-        $this->repeatedDayPosition = ceil($this->baseDay / 7) - 1;
+        $this->repeatedDayPosition = ceil($this->baseDay / 7);
         $this->repeatedDays = array($this->baseDay);
         $this->repeatedMonths = array($this->baseMonth);
         $this->repeatedWeekdays = array($this->baseWeekday);
