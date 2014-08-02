@@ -361,6 +361,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
         $new = new static($timezone, $calendar, $locale);
 
         $new->setWeekFirstDay($this->getWeekFirstDay());
+        $new->setMilliTimestamp($this->getMilliTimestamp());
 
         return $new;
     }
