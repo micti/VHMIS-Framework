@@ -207,11 +207,19 @@ class DateTime extends SimpleDateTime
      */
     public function getMaximumValueOfField($field)
     {
-        return array(
+        $result = array(
             'greatest' => $this->calendar->getMaximum($field),
-            'actual'  => $this->calendar->getActualMaximum($field),
-            'least'   => $this->calendar->getLeastMaximum($field)
+            'actual'   => $this->calendar->getActualMaximum($field),
+            'least'    => $this->calendar->getLeastMaximum($field)
         );
+
+        if ($field === 2) {
+            $result['least']++;
+            $result['actual']++;
+            $result['greatest']++;
+        }
+
+        return $result;
     }
 
     /**
@@ -226,11 +234,19 @@ class DateTime extends SimpleDateTime
      */
     public function getMinimumValueOfField($field)
     {
-        return array(
+        $result = array(
             'least'  => $this->calendar->getMinimum($field),
             'actual'   => $this->calendar->getActualMinimum($field),
             'greatest' => $this->calendar->getGreatestMinimum($field)
         );
+
+        if ($field === 2) {
+            $result['least']++;
+            $result['actual']++;
+            $result['greatest']++;
+        }
+
+        return $result;
     }
 
     /**

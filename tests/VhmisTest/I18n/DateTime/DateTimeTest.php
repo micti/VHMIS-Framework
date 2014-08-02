@@ -81,6 +81,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
         $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
         $this->assertEquals($result, $this->date->getMaximumValueOfField(0));
+
+        $result = array(
+            'actual'   => $a->getActualMaximum(2) + 1,
+            'least'  => $a->getLeastMaximum(2) + 1,
+            'greatest' => $a->getMaximum(2) + 1
+        );
+
+        $this->assertEquals($result, $this->date->getMaximumValueOfField(2));
     }
 
     public function testGetMinimum()
@@ -96,6 +104,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
         $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
         $this->assertEquals($result, $this->date->getMinimumValueOfField(0));
+
+        $result = array(
+            'actual'   => $a->getActualMaximum(2) + 1,
+            'least'  => $a->getLeastMaximum(2) + 1,
+            'greatest' => $a->getMaximum(2) + 1
+        );
+
+        $this->assertEquals($result, $this->date->getMaximumValueOfField(2));
     }
 
     public function testSetNow()
