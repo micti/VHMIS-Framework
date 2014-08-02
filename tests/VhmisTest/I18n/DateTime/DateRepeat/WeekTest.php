@@ -54,7 +54,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        $this->weekRepeat = new Week('2011-01-01', null, 0, 1);
+        $this->weekRepeat = new Week();
         $this->repeatRule = new Rule();
         $this->date = new DateTime('Asia/Ho_Chi_Minh');
         $this->date->modify('2013-01-01');

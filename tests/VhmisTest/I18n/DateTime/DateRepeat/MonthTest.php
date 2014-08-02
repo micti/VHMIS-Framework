@@ -54,7 +54,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        $this->monthRepeat = new Month('2014-05-12', null, 0, 1);
+        $this->monthRepeat = new Month();
         $this->repeatRule = new Rule();
         $this->date = new DateTime('Asia/Ho_Chi_Minh');
     }

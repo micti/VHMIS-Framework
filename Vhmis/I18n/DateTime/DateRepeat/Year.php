@@ -8,9 +8,9 @@
  * @license http://opensource.org/licenses/MIT MIT License
  */
 
-namespace Vhmis\DateTime\DateRepeat;
+namespace Vhmis\I18n\DateTime\DateRepeat;
 
-use \Vhmis\DateTime\DateTime;
+use Vhmis\I18n\DateTime\DateTime;
 
 /**
  * Caculation repeated dates by month
@@ -18,35 +18,6 @@ use \Vhmis\DateTime\DateTime;
 class Year extends AbstractRepeat
 {
     protected $repeatBy = 7;
-
-    /**
-     * Position of day in month
-     *
-     * @var array
-     */
-    protected $dayPositions = array(
-        'first',
-        'second',
-        'third',
-        'fourth',
-        'last'
-    );
-
-    /**
-     * Days
-     *
-     * @var array
-     */
-    protected $days = array(
-        '0' => 'sunday',
-        '1' => 'monday',
-        '2' => 'tuesday',
-        '3' => 'wednesday',
-        '4' => 'thursday',
-        '5' => 'friday',
-        '6' => 'saturday',
-        '7' => 'day'
-    );
 
     /**
      * Caculate all repeated dates in range
@@ -68,34 +39,36 @@ class Year extends AbstractRepeat
             return $repeatedDates;
         }
 
-        $run = clone $this->begin;
-        $run->setDay(1);
+        $this->date->setTimestamp($this->begin);
+        $this->date->setDay(1);
 
         // Skip some years
         if ($this->begin < $this->from) {
-            $run->addYear(ceil($run->diffYear($this->from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
+            $from = $this->date->createNewWithSameI18nInfo();
+            $from->setTimestamp($this->from);
+            $this->date->addYear(ceil($this->date->diffAbsoluteYear($from) / $this->ruleInfo['freq']) * $this->ruleInfo['freq']);
         }
 
-        $month = (int) $run->getMonth();
-        $this->setDayForMonth($run);
+        $month = (int) $this->date->getMonth();
+        $this->setDayForMonth($this->date);
         $total = count($this->ruleInfo['months']);
-        while ($run <= $this->to) {
-            if ($run >= $this->begin && $run >= $this->from) {
-                $repeatedDates[] = $run->formatISODate();
+        while ($this->date->getTimestamp() <= $this->to) {
+            if ($this->date->getTimestamp() >= $this->begin && $this->date->getTimestamp() >= $this->from) {
+                $repeatedDates[] = $this->date->getDateWithExtendedYear();
             }
 
             // Prevent run date goes to next month
             $monthPosition = array_search($month, $this->ruleInfo['months']);
-            $run->setDay(1);
+            $this->date->setDay(1);
 
             if ($monthPosition === $total - 1) {
-                $run->addYear($this->ruleInfo['freq']);
+                $this->date->addYear($this->ruleInfo['freq']);
                 $month = $this->ruleInfo['months'][0];
             } else {
                 $month = $this->ruleInfo['months'][($monthPosition + 1)];
             }
-            $run->setMonth($month);
-            $this->setDayForMonth($run);
+            $this->date->setMonth($month);
+            $this->setDayForMonth($this->date);
         }
 
         return $repeatedDates;
@@ -113,30 +86,30 @@ class Year extends AbstractRepeat
             return $specialEndDate;
         }
 
-        $date = new DateTime;
-        $date->modify($this->ruleInfo['base'])->setDay(1);
+        $this->date->setTimestamp($this->begin);
+        $this->date->setDay(1);
 
         $position = array_search($this->ruleInfo['baseMonth'], $this->ruleInfo['months']);
 
         if ($position !== 0) {
-            $date->setMonth($this->ruleInfo['months'][0]);
+            $this->date->setMonth($this->ruleInfo['months'][0]);
         }
 
         $repeatedYear = ceil(($this->ruleInfo['times'] + $position) / count($this->ruleInfo['months'])) - 1;
         $mod = ($this->ruleInfo['times'] + $position) % count($this->ruleInfo['months']);
         $endMonthPosition = $mod === 0 ? count($this->ruleInfo['months']) - 1 : $mod - 1;
-        $date->addYear($repeatedYear * $this->ruleInfo['freq']);
+        $this->date->addYear($repeatedYear * $this->ruleInfo['freq']);
 
         if ($endMonthPosition === 0) {
-            $this->setDayForMonth($date);
-            $this->ruleInfo['end'] = $date->formatISODate();
+            $this->setDayForMonth($this->date);
+            $this->ruleInfo['end'] = $this->date->getDateWithExtendedYear();
 
             return $this->ruleInfo['end'];
         }
 
-        $date->setMonth($this->ruleInfo['months'][$endMonthPosition]);
-        $this->setDayForMonth($date);
-        $this->ruleInfo['end'] = $date->formatISODate();
+        $this->date->setMonth($this->ruleInfo['months'][$endMonthPosition]);
+        $this->setDayForMonth($this->date);
+        $this->ruleInfo['end'] = $this->date->getDateWithExtendedYear();
 
         return $this->ruleInfo['end'];
     }
@@ -144,24 +117,19 @@ class Year extends AbstractRepeat
     /**
      * Set date for month based on type
      *
-     * @param \Vhmis\DateTime\DateTime $date
+     * @param DateTime $date
      *
-     * @return \Vhmis\DateTime\DateRepeat\Year
+     * @return Year
      */
     protected function setDayForMonth($date)
     {
         if ($this->ruleInfo['type'] === 'day') {
-            $date->setDay($this->ruleInfo['baseDay']);
+            $date->setField(5, $this->ruleInfo['baseDay']);
 
             return $this;
         }
 
-        $date->modify(
-            $this->dayPositions[$this->ruleInfo['position']]
-            . ' '
-            . $this->days[$this->ruleInfo['day']]
-            . ' of this month'
-        );
+        $date->gotoNthDayOfMonth($this->ruleInfo['day'], $this->ruleInfo['position']);
 
         return $this;
     }
