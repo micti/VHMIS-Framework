@@ -91,6 +91,11 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @method int diffAbsoluteSecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by second
  * @method double diffAbsoluteMillisecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by millisecond
  *
+ * @method array repeatByDay(string $fromDate, string $toDate, int $times, int $freg) Get repeated dates by day
+ * @method array repeatByWeek(string $fromDate, string $toDate, int $times, int $freg) Get repeated dates by week
+ * @method array repeatByMonth(string $fromDate, string $toDate, int $times, int $freg) Get repeated dates by month
+ * @method array repeatByYear(string $fromDate, string $toDate, int $times, int $freg) Get repeated dates by year
+ *
  * @property-read \Vhmis\I18n\DateTime\Helper\Convert $convert Convert helper
  * @property-read \Vhmis\I18n\DateTime\Helper\RelatedYear $relatedYear Related year helper
  * @property-read \Vhmis\I18n\DateTime\Helper\Set $set Set helper
@@ -98,6 +103,8 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @property-read \Vhmis\I18n\DateTime\Helper\Go $go Go helper
  * @property-read \Vhmis\I18n\DateTime\Helper\Add $add Add helper
  * @property-read \Vhmis\I18n\DateTime\Helper\Format $format Format helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\Diff $diff Diff helper
+ * @property-read \Vhmis\I18n\DateTime\Helper\Repeat $repeat Repeat helper
  */
 class DateTime extends SimpleDateTime
 {
@@ -121,6 +128,7 @@ class DateTime extends SimpleDateTime
         'format'  => 'Format',
         'diff'    => 'Diff',
         'go'      => 'Go'
+        'repeat'  => 'Repeat'
     );
 
     /**
