@@ -127,7 +127,7 @@ class DateTime extends SimpleDateTime
         'get'     => 'Get',
         'format'  => 'Format',
         'diff'    => 'Diff',
-        'go'      => 'Go'
+        'go'      => 'Go',
         'repeat'  => 'Repeat'
     );
 
