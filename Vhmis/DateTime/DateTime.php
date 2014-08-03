@@ -435,7 +435,9 @@ class DateTime extends \DateTime
     }
 
     /**
-     * Find booking (dorm, hotel) interval
+     * Find booking (dorm, hotel) interval, only use month, day, hour
+     *
+     * Move diff year to diff month
      *
      * @param \Vhmis\DateTime\DateTime
      *
@@ -443,7 +445,7 @@ class DateTime extends \DateTime
      */
     public function findBookingInterval($date)
     {
-        $diff = $this->diff($date);
+        $diff = $this->diff($date, true);
 
         $diff->m += $diff->y * 12;
         $diff->y = 0;
