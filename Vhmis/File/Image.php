@@ -7,7 +7,8 @@ class Image
     protected $file;
     protected $error = array(
         'code'    => 0,
-        'message' => 'Ok');
+        'message' => 'Ok'
+    );
     protected $newImgSource;
     protected $source;
     protected $width;
