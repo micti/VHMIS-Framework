@@ -1,12 +1,11 @@
 <?php
+
 /**
- * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ * Vhmis Framework
  *
- * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package Vhmis_Network
- * @since Vhmis v2.0
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Vhmis\Network;
@@ -21,6 +20,13 @@ use Vhmis\Config\Configure;
  */
 class Response
 {
+
+    /**
+     * Body content
+     * 
+     * @var string
+     */
+    protected $body;
 
     /**
      * Gửi kết quả xử lý tới client
@@ -57,7 +63,7 @@ class Response
      */
     public function body($content)
     {
-        $this->_body = $content;
+        $this->body = $content;
 
         return $this;
     }
@@ -99,10 +105,10 @@ class Response
      *
      * @param string Nội dung trả về
      */
-    protected function sendContent($content = '')
+    protected function sendContent()
     {
         $benmark = Configure::get('Benchmark');
-        $body = str_replace('::::xxxxx-memory-xxxx::::', memory_get_usage(), $this->_body);
+        $body = str_replace('::::xxxxx-memory-xxxx::::', memory_get_usage(), $this->body);
         echo str_replace('::::xxxxx-time-xxxx::::', $benmark->time('start', 'stop'), $body);
     }
 }
