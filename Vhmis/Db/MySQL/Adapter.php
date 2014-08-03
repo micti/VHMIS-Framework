@@ -159,8 +159,6 @@ class Adapter implements \Vhmis\Db\AdapterInterface
         } catch (\Exception $e) {
             return false;
         }
-
-        return false;
     }
 
     public function beginTransaction()

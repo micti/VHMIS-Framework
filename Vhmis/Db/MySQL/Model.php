@@ -13,21 +13,21 @@ class Model implements ModelInterface
     const FETCH_MOD_SET_IDARRAY = 1;
 
     /**
-     * Tên class Model (bắt đầu bằng \)
+     * Model class name
      *
      * @var string
      */
     protected $class;
 
     /**
-     * Tên class Entity
+     * Entity class name
      *
      * @var string
      */
     protected $entityClass;
 
     /**
-     * Tên bảng ứng với model
+     * Table name
      *
      * @var string
      */
@@ -41,7 +41,7 @@ class Model implements ModelInterface
     protected $adapter = null;
 
     /**
-     * Tên trường primary key
+     * Primary key
      *
      * @var string
      */
@@ -100,7 +100,7 @@ class Model implements ModelInterface
     protected $entityHasDeleted = array();
 
     /**
-     *
+     * 
      * @var int
      */
     protected $fetchModRow = 0;
@@ -112,7 +112,7 @@ class Model implements ModelInterface
     protected $fetchModSet = 0;
 
     /**
-     * Thông tin id khác liên quan
+     * Other ids
      *
      * @var array
      */
@@ -256,7 +256,9 @@ class Model implements ModelInterface
      * @param array $order Mảng chứa điều kiện sắp xếp
      * @param int $skip Số row bỏ qua
      * @param int $limit Số row lấy
+     *
      * @return \Vhmis\Db\MySQL\Entity[]|array[]
+     * 
      * @throws \Exception
      */
     public function find($where = array(), $order = array(), $skip = 0, $limit = 0)
@@ -362,10 +364,11 @@ class Model implements ModelInterface
     {
         $result = $this->find($where, $order, 0, 1);
 
-        if (count($result) === 0)
+        if (count($result) === 0) {
             return null;
-        else
-            return end($result);
+        }
+
+        return end($result);
     }
 
     /**

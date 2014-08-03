@@ -68,7 +68,8 @@ class Statement
     /**
      * Thiết lập parameters
      *
-     * @param type $adapter
+     * @param array $parameters
+     * 
      * @return \Vhmis\Db\MySQL\Statement
      */
     public function setParameters($parameters)
@@ -87,8 +88,9 @@ class Statement
      */
     public function prepare($sql = null)
     {
-        if ($this->isPrepared)
+        if ($this->isPrepared) {
             return;
+        }
 
         if ($sql == null) {
             $sql = $this->sql;
@@ -105,7 +107,8 @@ class Statement
     /**
      * Thực thi
      *
-     * @param type $parameters
+     * @param array $parameters
+     *
      * @return \Vhmis\Db\MySQL\Result
      * @throws Exception
      */
