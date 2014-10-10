@@ -34,6 +34,24 @@ class SchoolYear extends CalendarAbstract
     }
 
     /**
+     * Lấy thông tin toàn bộ tuần của năm học
+     * 
+     * @return array
+     */
+    public function getAllWeekInfo()
+    {
+        $totalWeek = $this->getTotalWeek();
+        $weekInfo = array();
+
+        for ($i = 1; $i <= $totalWeek; $i++) {
+            $week = $this->getOriginalDate($i, 2);
+            $weekInfo[$i]['startDate'] = $week['date'];
+        }
+
+        return $weekInfo;
+    }
+
+    /**
      * Get calendar date info
      *
      * @param string|\Vhmis\DateTime\DateTime $date
@@ -56,7 +74,8 @@ class SchoolYear extends CalendarAbstract
 
         $info['week'] = $this->getWeek($date);
         $info['month'] = $this->getMonth($date);
-        $info['weekday'] = $date->getWeekday();
+        //TODO carefully
+        $info['weekday'] = (int) $date->getWeekday() + 1;
         $info['period'] = $this->getPeriod($date->format('H:i'));
 
         return $info;
