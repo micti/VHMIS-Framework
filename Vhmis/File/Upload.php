@@ -102,6 +102,7 @@ class Upload
         }
 
         // Fileinfo
+        $this->result['org_file_name'] = $this->cleanFilename($file['name']);
         list($filename, $filenameNotExt, $fileext, $clientFileext) = $this->getFileInfo($file['name'], $filename);
 
         // Check file size
