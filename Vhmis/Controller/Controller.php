@@ -160,6 +160,10 @@ class Controller implements \Vhmis\Di\ServiceManagerAwareInterface
             exit();
         }
 
+        $template = isset($this->template) ? $this->template : 'Default';
+        //$layout = isset($this->layout) ? $this->layout : 'Default';
+        $this->view->setTemplate($template);
+
         $content = $this->view->render();
 
         $this->response->body($content)->response();
