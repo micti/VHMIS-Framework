@@ -2,93 +2,48 @@
 
 namespace Vhmis\Text;
 
+use Vhmis\Utils\Text;
+
 /**
  * Context specific methods for use in secure output escaping
+ *
+ * @link https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet Escape
  */
 class Escaper
 {
     /**
-     * Entity Map mapping Unicode codepoints to any available named HTML entities.
-     *
-     * While HTML supports far more named entities, the lowest common denominator
-     * has become HTML5's XML Serialisation which is restricted to the those named
-     * entities that XML supports. Using HTML entities would result in this error:
-     *     XML Parsing Error: undefined entity
+     * HTML entity map
      *
      * @var array
      */
-    protected static $htmlNamedEntityMap = array(
-        34 => 'quot', // quotation mark
-        38 => 'amp', // ampersand
-        60 => 'lt', // less-than sign
-        62 => 'gt', // greater-than sign
+    protected $entities = array(
+        34 => '&quot;', // quotation mark
+        38 => '&amp;', // ampersand
+        60 => '&lt;', // less-than sign
+        62 => '&gt;', // greater-than sign
     );
 
     /**
-     * Holds the value of the special flags passed as second parameter to
-     * htmlspecialchars(). We modify these for PHP 5.4 to take advantage
-     * of the new ENT_SUBSTITUTE flag for correctly dealing with invalid
-     * UTF-8 sequences.
+     * Escapes HTML Body value.
      *
-     * @var string
-     */
-    protected $htmlSpecialCharsFlags = ENT_QUOTES;
-
-    /**
-     * Static Matcher which escapes characters for HTML Attribute contexts
-     *
-     * @var callable
-     */
-    protected $htmlAttrMatcher;
-
-    /**
-     * Static Matcher which escapes characters for Javascript contexts
-     *
-     * @var callable
-     */
-    protected $jsMatcher;
-
-    /**
-     * Static Matcher which escapes characters for CSS Attribute contexts
-     *
-     * @var callable
-     */
-    protected $cssMatcher;
-
-    /**
-     * Constructor: Single parameter allows setting of global encoding for use by
-     * the current object. If PHP 5.4 is detected, additional ENT_SUBSTITUTE flag
-     * is set for htmlspecialchars() calls.
-     */
-    public function __construct()
-    {
-        if (defined('ENT_SUBSTITUTE')) {
-            $this->htmlSpecialCharsFlags|= ENT_SUBSTITUTE;
-        }
-
-        // set matcher callbacks
-        $this->htmlAttrMatcher = array($this, 'htmlAttrMatcher');
-        $this->jsMatcher = array($this, 'jsMatcher');
-        $this->cssMatcher = array($this, 'cssMatcher');
-    }
-
-    /**
-     * Escape a string for the HTML Body context where there are very few characters
-     * of special meaning. Internally this will use htmlspecialchars().
+     * [htmltag]ESCAPED CONTENT[/htmltag]
      *
      * @param string $string
+     * @paran string $encoding
+     * 
      * @return string
      */
     public function escapeHtml($string, $encoding = 'utf-8')
     {
-        $result = htmlspecialchars($string, $this->htmlSpecialCharsFlags, $encoding);
+        $result = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $encoding);
+        
         return $result;
     }
 
     /**
-     * Escape a string for the HTML Attribute context. We use an extended set of characters
-     * to escape that are not covered by htmlspecialchars() to cover cases where an attribute
-     * might be unquoted or quoted illegally (e.g. backticks are valid quotes for IE).
+     * Escapes HTML Attribute value.
+     *
+     * [htmltag attr="ESCAPED CONTENT" ...]
      *
      * @param string $string
      * @return string
@@ -99,20 +54,17 @@ class Escaper
             return $string;
         }
 
-        $result = preg_replace_callback('/[^a-z0-9,\.\-_]/iSu', $this->htmlAttrMatcher, $string);
+        $result = preg_replace_callback('/[^a-z0-9,\.\-_]/iSu', array($this, 'htmlAttrMatcher'), $string);
         return $result;
     }
 
     /**
-     * Escape a string for the Javascript context. This does not use json_encode(). An extended
-     * set of characters are escaped beyond ECMAScript's rules for Javascript literal string
-     * escaping in order to prevent misinterpretation of Javascript as HTML leading to the
-     * injection of special characters and entities. The escaping used should be tolerant
-     * of cases where HTML escaping was not applied on top of Javascript escaping correctly.
-     * Backslash escaping is not used as it still leaves the escaped character as-is and so
-     * is not useful in a HTML context.
+     * Escapes JS value.
+     *
+     * var a = 'ESCAPED CONTENT';
      *
      * @param string $string
+     * 
      * @return string
      */
     public function escapeJs($string)
@@ -121,16 +73,15 @@ class Escaper
             return $string;
         }
 
-        $result = preg_replace_callback('/[^a-z0-9,\._]/iSu', $this->jsMatcher, $string);
+        $result = preg_replace_callback('/[^a-z0-9,\._]/iSu', array($this, 'jsMatcher'), $string);
         return $result;
     }
 
     /**
-     * Escape a string for the URI or Parameter contexts. This should not be used to escape
-     * an entire URI - only a subcomponent being inserted. The function is a simple proxy
-     * to rawurlencode() which now implements RFC 3986 since PHP 5.3 completely.
+     * Escapes URI or Parameter value.
      *
      * @param string $string
+     * 
      * @return string
      */
     public function escapeUrl($string)
@@ -139,8 +90,7 @@ class Escaper
     }
 
     /**
-     * Escape a string for the CSS context. CSS escaping can be applied to any string being
-     * inserted into CSS and escapes everything except alphanumerics.
+     * Escapes CSS value.
      *
      * @param string $string
      * @return string
@@ -151,15 +101,15 @@ class Escaper
             return $string;
         }
 
-        $result = preg_replace_callback('/[^a-z0-9]/iSu', $this->cssMatcher, $string);
+        $result = preg_replace_callback('/[^a-z0-9]/iSu', array($this, 'cssMatcher'), $string);
         return $result;
     }
 
     /**
-     * Callback function for preg_replace_callback that applies HTML Attribute
-     * escaping to all matches.
+     * Replaces unsafe Html Attribute characters.
      *
      * @param array $matches
+     *
      * @return string
      */
     protected function htmlAttrMatcher($matches)
@@ -167,43 +117,29 @@ class Escaper
         $chr = $matches[0];
         $ord = ord($chr);
 
-        /**
-         * The following replaces characters undefined in HTML with the
-         * hex entity for the Unicode replacement character.
-         */
+        // Replace undefined characters
         if (($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r") || ($ord >= 0x7f && $ord <= 0x9f)) {
             return '&#xFFFD;';
         }
 
-        /**
-         * Check if the current character to escape has a name entity we should
-         * replace it with while grabbing the integer value of the character.
-         */
-        if (strlen($chr) > 1) {
-            $chr = $this->convertEncoding($chr, 'UTF-16BE', 'UTF-8');
+        // Replace defined characters
+        $ord = $this->getHexOrd($chr);
+        if (isset($this->entities[$ord])) {
+            return $this->entities[$ord];
         }
-
-        $hex = bin2hex($chr);
-        $ord = hexdec($hex);
-        if (isset(static::$htmlNamedEntityMap[$ord])) {
-            return '&' . static::$htmlNamedEntityMap[$ord] . ';';
-        }
-
-        /**
-         * Per OWASP recommendations, we'll use upper hex entities
-         * for any other characters where a named entity does not exist.
-         */
+        
         if ($ord > 255) {
             return sprintf('&#x%04X;', $ord);
         }
+        
         return sprintf('&#x%02X;', $ord);
     }
 
     /**
-     * Callback function for preg_replace_callback that applies Javascript
-     * escaping to all matches.
+     * Replaces unsafe Js characters.
      *
      * @param array $matches
+     *
      * @return string
      */
     protected function jsMatcher($matches)
@@ -212,15 +148,16 @@ class Escaper
         if (strlen($chr) == 1) {
             return sprintf('\\x%02X', ord($chr));
         }
-        $chr = $this->convertEncoding($chr, 'UTF-16BE', 'UTF-8');
+        $chr = Text::convertEncoding($chr, 'UTF-8', 'UTF-16BE');
+        
         return sprintf('\\u%04s', strtoupper(bin2hex($chr)));
     }
 
     /**
-     * Callback function for preg_replace_callback that applies CSS
-     * escaping to all matches.
+     * Replaces unsafe Css characters.
      *
      * @param array $matches
+     *
      * @return string
      */
     protected function cssMatcher($matches)
@@ -229,35 +166,25 @@ class Escaper
         if (strlen($chr) == 1) {
             $ord = ord($chr);
         } else {
-            $chr = $this->convertEncoding($chr, 'UTF-16BE', 'UTF-8');
-            $ord = hexdec(bin2hex($chr));
+            $ord = $this->getHexOrd($chr);
         }
+        
         return sprintf('\\%X ', $ord);
     }
 
     /**
-     * Encoding conversion helper which wraps iconv and mbstring where they exist or throws
-     * and exception where neither is available.
+     * Get the UTF-16BE hexadecimal ordinal value for a character.
      *
-     * @param string $string
-     * @param string $to
-     * @param array|string $from
+     * @param string $chr
+     *
      * @return string
      */
-    protected function convertEncoding($string, $to, $from)
+    protected function getHexOrd($chr)
     {
-        $result = '';
-        if (function_exists('iconv')) {
-            $result = iconv($from, $to, $string);
-        } elseif (function_exists('mb_convert_encoding')) {
-            $result = mb_convert_encoding($string, $to, $from);
-        } else {
-            return '';
+        if (strlen($chr) > 1) {
+            $chr = Text::convertEncoding($chr, 'UTF-8', 'UTF-16BE');
         }
 
-        if ($result === false) {
-            return ''; // return non-fatal blank string on encoding errors from users
-        }
-        return $result;
+        return hexdec(bin2hex($chr));
     }
 }
