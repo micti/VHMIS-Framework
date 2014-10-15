@@ -26,17 +26,15 @@ class Escaper
     /**
      * Escapes HTML Body value.
      *
-     * [htmltag]ESCAPED CONTENT[/htmltag]
-     *
      * @param string $string
      * @paran string $encoding
-     * 
+     *
      * @return string
      */
     public function escapeHtml($string, $encoding = 'utf-8')
     {
         $result = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $encoding);
-        
+
         return $result;
     }
 
@@ -61,10 +59,8 @@ class Escaper
     /**
      * Escapes JS value.
      *
-     * var a = 'ESCAPED CONTENT';
-     *
      * @param string $string
-     * 
+     *
      * @return string
      */
     public function escapeJs($string)
@@ -81,7 +77,7 @@ class Escaper
      * Escapes URI or Parameter value.
      *
      * @param string $string
-     * 
+     *
      * @return string
      */
     public function escapeUrl($string)
@@ -127,11 +123,11 @@ class Escaper
         if (isset($this->entities[$ord])) {
             return $this->entities[$ord];
         }
-        
+
         if ($ord > 255) {
             return sprintf('&#x%04X;', $ord);
         }
-        
+
         return sprintf('&#x%02X;', $ord);
     }
 
@@ -149,7 +145,7 @@ class Escaper
             return sprintf('\\x%02X', ord($chr));
         }
         $chr = Text::convertEncoding($chr, 'UTF-8', 'UTF-16BE');
-        
+
         return sprintf('\\u%04s', strtoupper(bin2hex($chr)));
     }
 
@@ -168,7 +164,7 @@ class Escaper
         } else {
             $ord = $this->getHexOrd($chr);
         }
-        
+
         return sprintf('\\%X ', $ord);
     }
 
