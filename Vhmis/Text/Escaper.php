@@ -26,62 +26,47 @@ class Escaper
     /**
      * Escapes HTML Body value.
      *
-     * [htmltag]ESCAPED CONTENT[/htmltag]
-     *
      * @param string $string
-     * @paran string $encoding
-     * 
+     * @param string $encoding
+     *
      * @return string
      */
     public function escapeHtml($string, $encoding = 'utf-8')
     {
         $result = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $encoding);
-        
+
         return $result;
     }
 
     /**
      * Escapes HTML Attribute value.
      *
-     * [htmltag attr="ESCAPED CONTENT" ...]
-     *
      * @param string $string
+     *
      * @return string
      */
     public function escapeHtmlAttr($string)
     {
-        if ($string === '' || ctype_digit($string)) {
-            return $string;
-        }
-
-        $result = preg_replace_callback('/[^a-z0-9,\.\-_]/iSu', array($this, 'htmlAttrMatcher'), $string);
-        return $result;
+        return $this->escape($string, '[^a-z0-9,\.\-_]', 'HtmlAttr');
     }
 
     /**
      * Escapes JS value.
      *
-     * var a = 'ESCAPED CONTENT';
-     *
      * @param string $string
-     * 
+     *
      * @return string
      */
     public function escapeJs($string)
     {
-        if ($string === '' || ctype_digit($string)) {
-            return $string;
-        }
-
-        $result = preg_replace_callback('/[^a-z0-9,\._]/iSu', array($this, 'jsMatcher'), $string);
-        return $result;
+        return $this->escape($string, '[^a-z0-9,\._]', 'Js');
     }
 
     /**
      * Escapes URI or Parameter value.
      *
      * @param string $string
-     * 
+     *
      * @return string
      */
     public function escapeUrl($string)
@@ -93,15 +78,31 @@ class Escaper
      * Escapes CSS value.
      *
      * @param string $string
+     *
      * @return string
      */
     public function escapeCss($string)
+    {
+        return $this->escape($string, '[^a-z0-9]', 'Css');
+    }
+
+    /**
+     * Escapes value
+     *
+     * @param string $string
+     * @param string $regex
+     * @param string $context
+     *
+     * @return type
+     */
+    protected function escape($string, $regex, $context)
     {
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
 
-        $result = preg_replace_callback('/[^a-z0-9]/iSu', array($this, 'cssMatcher'), $string);
+        $result = preg_replace_callback('/' . $regex . '/iSu', array($this, 'replace' . $context), $string);
+
         return $result;
     }
 
@@ -112,7 +113,7 @@ class Escaper
      *
      * @return string
      */
-    protected function htmlAttrMatcher($matches)
+    protected function replaceHtmlAttr($matches)
     {
         $chr = $matches[0];
         $ord = ord($chr);
@@ -127,11 +128,11 @@ class Escaper
         if (isset($this->entities[$ord])) {
             return $this->entities[$ord];
         }
-        
+
         if ($ord > 255) {
             return sprintf('&#x%04X;', $ord);
         }
-        
+
         return sprintf('&#x%02X;', $ord);
     }
 
@@ -142,14 +143,14 @@ class Escaper
      *
      * @return string
      */
-    protected function jsMatcher($matches)
+    protected function replaceJs($matches)
     {
         $chr = $matches[0];
         if (strlen($chr) == 1) {
             return sprintf('\\x%02X', ord($chr));
         }
         $chr = Text::convertEncoding($chr, 'UTF-8', 'UTF-16BE');
-        
+
         return sprintf('\\u%04s', strtoupper(bin2hex($chr)));
     }
 
@@ -160,7 +161,7 @@ class Escaper
      *
      * @return string
      */
-    protected function cssMatcher($matches)
+    protected function replaceCss($matches)
     {
         $chr = $matches[0];
         if (strlen($chr) == 1) {
@@ -168,7 +169,7 @@ class Escaper
         } else {
             $ord = $this->getHexOrd($chr);
         }
-        
+
         return sprintf('\\%X ', $ord);
     }
 
