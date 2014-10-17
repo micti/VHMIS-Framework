@@ -27,11 +27,7 @@ class Escaper
      * Escapes HTML Body value.
      *
      * @param string $string
-<<<<<<< HEAD
-     * @paran string $encoding
-=======
      * @param string $encoding
->>>>>>> 922d3c6849ba26fe52ed298d1881ef07964a2d92
      *
      * @return string
      */
