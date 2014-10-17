@@ -10,17 +10,24 @@ class Output extends HelperAbstract
     /**
      * Escaper object
      *
-     * @var \Vhmis\Text\Escaper
+     * @var Escaper
      */
     protected $escaper;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->escaper = new Escaper;
     }
 
     /**
+<<<<<<< HEAD
      * Call output as function
+=======
+     * Invoke
+>>>>>>> 922d3c6849ba26fe52ed298d1881ef07964a2d92
      *
      * @param string $string
      * @param string $process
@@ -39,11 +46,19 @@ class Output extends HelperAbstract
     }
 
     /**
+<<<<<<< HEAD
      * Escape HTML body value.
      *
      * @param string $string
      *
      * @return string
+=======
+     * HTML content
+     *
+     * @param string $string
+     *
+     * @return type
+>>>>>>> 922d3c6849ba26fe52ed298d1881ef07964a2d92
      */
     protected function processHtml($string)
     {
@@ -51,11 +66,19 @@ class Output extends HelperAbstract
     }
 
     /**
+<<<<<<< HEAD
      * Escape CSS value.
      *
      * @param string $string
      *
      * @return string
+=======
+     * CSS content
+     *
+     * @param string $string
+     *
+     * @return type
+>>>>>>> 922d3c6849ba26fe52ed298d1881ef07964a2d92
      */
     protected function processCss($string)
     {
@@ -63,11 +86,19 @@ class Output extends HelperAbstract
     }
 
     /**
+<<<<<<< HEAD
      * Escape JS value.
      *
      * @param string $string
      *
      * @return string
+=======
+     * JS content
+     *
+     * @param string $string
+     *
+     * @return type
+>>>>>>> 922d3c6849ba26fe52ed298d1881ef07964a2d92
      */
     protected function processJs($string)
     {
@@ -75,6 +106,7 @@ class Output extends HelperAbstract
     }
 
     /**
+<<<<<<< HEAD
      * Escape HTML Attribute value.
      *
      * @param string $string
@@ -98,4 +130,16 @@ class Output extends HelperAbstract
         return $this->escaper->escapeUrl($string);
     }
 
+=======
+     * HTML Attribute content
+     *
+     * @param string $string
+     *
+     * @return type
+     */
+    protected function processHtmlattr($string)
+    {
+        return $this->escaper->escapeHtmlAttr($string);
+    }
+>>>>>>> 922d3c6849ba26fe52ed298d1881ef07964a2d92
 }

@@ -16,7 +16,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Escaper
-     * 
+     *
      * @var Escaper
      */
     protected $escaper;
@@ -286,7 +286,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase
             if ($chr >= 0x30 && $chr <= 0x39
                 || $chr >= 0x41 && $chr <= 0x5A
                 || $chr >= 0x61 && $chr <= 0x7A
-            ) {    
+            ) {
                 $this->assertEquals($literal, $this->escaper->escapeCss($literal));
             } else {
                 $this->assertNotEquals($literal, $this->escaper->escapeCss($literal));

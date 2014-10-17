@@ -27,7 +27,11 @@ class Escaper
      * Escapes HTML Body value.
      *
      * @param string $string
+<<<<<<< HEAD
      * @paran string $encoding
+=======
+     * @param string $encoding
+>>>>>>> 922d3c6849ba26fe52ed298d1881ef07964a2d92
      *
      * @return string
      */
@@ -41,19 +45,13 @@ class Escaper
     /**
      * Escapes HTML Attribute value.
      *
-     * [htmltag attr="ESCAPED CONTENT" ...]
-     *
      * @param string $string
+     *
      * @return string
      */
     public function escapeHtmlAttr($string)
     {
-        if ($string === '' || ctype_digit($string)) {
-            return $string;
-        }
-
-        $result = preg_replace_callback('/[^a-z0-9,\.\-_]/iSu', array($this, 'htmlAttrMatcher'), $string);
-        return $result;
+        return $this->escape($string, '[^a-z0-9,\.\-_]', 'HtmlAttr');
     }
 
     /**
@@ -65,12 +63,7 @@ class Escaper
      */
     public function escapeJs($string)
     {
-        if ($string === '' || ctype_digit($string)) {
-            return $string;
-        }
-
-        $result = preg_replace_callback('/[^a-z0-9,\._]/iSu', array($this, 'jsMatcher'), $string);
-        return $result;
+        return $this->escape($string, '[^a-z0-9,\._]', 'Js');
     }
 
     /**
@@ -89,15 +82,31 @@ class Escaper
      * Escapes CSS value.
      *
      * @param string $string
+     *
      * @return string
      */
     public function escapeCss($string)
+    {
+        return $this->escape($string, '[^a-z0-9]', 'Css');
+    }
+
+    /**
+     * Escapes value
+     *
+     * @param string $string
+     * @param string $regex
+     * @param string $context
+     *
+     * @return type
+     */
+    protected function escape($string, $regex, $context)
     {
         if ($string === '' || ctype_digit($string)) {
             return $string;
         }
 
-        $result = preg_replace_callback('/[^a-z0-9]/iSu', array($this, 'cssMatcher'), $string);
+        $result = preg_replace_callback('/' . $regex . '/iSu', array($this, 'replace' . $context), $string);
+
         return $result;
     }
 
@@ -108,7 +117,7 @@ class Escaper
      *
      * @return string
      */
-    protected function htmlAttrMatcher($matches)
+    protected function replaceHtmlAttr($matches)
     {
         $chr = $matches[0];
         $ord = ord($chr);
@@ -138,7 +147,7 @@ class Escaper
      *
      * @return string
      */
-    protected function jsMatcher($matches)
+    protected function replaceJs($matches)
     {
         $chr = $matches[0];
         if (strlen($chr) == 1) {
@@ -156,7 +165,7 @@ class Escaper
      *
      * @return string
      */
-    protected function cssMatcher($matches)
+    protected function replaceCss($matches)
     {
         $chr = $matches[0];
         if (strlen($chr) == 1) {
