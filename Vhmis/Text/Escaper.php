@@ -124,16 +124,7 @@ class Escaper
         }
 
         // Replace defined characters
-        $ord = $this->getHexOrd($chr);
-        if (isset($this->entities[$ord])) {
-            return $this->entities[$ord];
-        }
-
-        if ($ord > 255) {
-            return sprintf('&#x%04X;', $ord);
-        }
-
-        return sprintf('&#x%02X;', $ord);
+        return $this->replaceDefinedCharsForHtmlAttr($chr);
     }
 
     /**
@@ -187,5 +178,26 @@ class Escaper
         }
 
         return hexdec(bin2hex($chr));
+    }
+
+    /**
+     * Replace defined characters in HTML Attribute value.
+     *
+     * @param string $chr
+     *
+     * @return string
+     */
+    protected function replaceDefinedCharsForHtmlAttr($chr)
+    {
+        $ord = $this->getHexOrd($chr);
+        if (isset($this->entities[$ord])) {
+            return $this->entities[$ord];
+        }
+
+        if ($ord > 255) {
+            return sprintf('&#x%04X;', $ord);
+        }
+
+        return sprintf('&#x%02X;', $ord);
     }
 }
