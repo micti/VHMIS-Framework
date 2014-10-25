@@ -21,7 +21,7 @@ ZEND = /WebServer/Zend
 ICNL = /WebServer/
 
 # Build chính
-build: prepare framework systems library clear makeconfig
+build: prepare framework systems clear makeconfig
 	@echo Build done
 
 # Chuẩn bị trước khi build
@@ -44,6 +44,7 @@ framework:
 # Build he thong
 systems:
 	@echo System is building ...
+	@mkdir ${BUILD}/System	
 	@mkdir ${BUILD}/System/${SNAME}
 	@cp -R ${SYS}/* ${BUILD}/System/${SNAME}
 
