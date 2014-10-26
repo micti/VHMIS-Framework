@@ -88,6 +88,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     public function setDate($year, $month, $day)
     {
         $month = (int) $month - 1;
+        $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
         $this->calendar->set((int) $year, $month, (int) $day);
 
         return $this;
@@ -105,6 +106,8 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     public function setDateWithExtenedYear($year, $month, $day)
     {
         $month = (int) $month - 1;
+
+        $this->calendar->set(\IntlCalendar::FIELD_IS_LEAP_MONTH, 0);
         $this->calendar->set(\IntlCalendar::FIELD_EXTENDED_YEAR, (int) $year);
         $this->calendar->set(\IntlCalendar::FIELD_MONTH, $month);
         $this->calendar->set(\IntlCalendar::FIELD_DAY_OF_MONTH, (int) $day);
