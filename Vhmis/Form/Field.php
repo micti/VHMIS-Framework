@@ -7,23 +7,30 @@ class Field
 
     /**
      * Name of field.
-     * 
+     *
      * @var string
      */
     protected $name;
 
     /**
      * Type of field.
-     * 
+     *
      * @var string
      */
     protected $type;
 
     /**
+     * Value of field
+     *
+     * @var string
+     */
+    protected $value;
+
+    /**
      * Set name.
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @return Field
      */
     public function setName($name)
@@ -35,7 +42,7 @@ class Field
 
     /**
      * Get name.
-     * 
+     *
      * @return string
      */
     public function getName()
@@ -45,9 +52,9 @@ class Field
 
     /**
      * Set type.
-     * 
+     *
      * @param string $type
-     * 
+     *
      * @return Field
      */
     public function setType($type)
@@ -59,7 +66,7 @@ class Field
 
     /**
      * Get type.
-     * 
+     *
      * @return string
      */
     public function getType()
@@ -67,4 +74,27 @@ class Field
         return $this->type;
     }
 
+    /**
+     * Set value.
+     *
+     * @param string $value
+     *
+     * @return Field
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value.
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 }
