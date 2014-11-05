@@ -14,6 +14,13 @@ class Arr extends ValidatorAbstract
     protected $messages = array(
         self::NOTARRAY => 'Giá trị không phải là mảng'
     );
+    
+    public function setOptions($options)
+    {
+        $this->options = $options;
+        
+        return $this;
+    }
 
     /**
      * Kiểm tra xem có phải là mảng là không

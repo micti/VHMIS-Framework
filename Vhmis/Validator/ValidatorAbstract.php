@@ -50,6 +50,13 @@ abstract class ValidatorAbstract implements ValidatorInterface
     protected $translator;
 
     /**
+     * Options
+     *
+     * @var array
+     */
+    protected $options;
+
+    /**
      * Thực thi trực tiếp
      *
      * @param mixed $value
@@ -66,6 +73,8 @@ abstract class ValidatorAbstract implements ValidatorInterface
             $this->translator = $translator;
         }
     }
+
+    abstract public function setOptions($options);
 
     /**
      * Thiết lập thông báo

@@ -25,4 +25,3 @@ interface ValidatorInterface
      */
     public function getMessageCode();
 }
-
