@@ -44,13 +44,12 @@ class Form
 
     public function fill($values)
     {
-        foreach ($values as $key => $value) {
-            if (isset($this->fields[$key])) {
-                $this->fields[$key]->setValue($value);
+        foreach ($this->fields as $key => $field) {
+            if (array_key_exists($key, $values)) {
+                $field->setValue($values[$key]);
             }
         }
 
         return $this;
     }
-
 }

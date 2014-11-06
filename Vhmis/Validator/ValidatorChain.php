@@ -4,8 +4,6 @@ namespace Vhmis\Validator;
 
 /**
  * Collection of validator
- *
- * @author Micti
  */
 class ValidatorChain
 {
@@ -16,6 +14,13 @@ class ValidatorChain
      */
     protected $validators;
 
+    /**
+     * 
+     * @param string $name
+     * @param array $options
+     * 
+     * @return ValidatorChain
+     */
     public function add($name, $options)
     {
         if (!isset($this->validators[$name])) {
@@ -23,5 +28,7 @@ class ValidatorChain
             $this->validators[$name] = new $class();
             $this->validators[$name]->setOptions($options);
         }
+
+        return $this;
     }
 }
