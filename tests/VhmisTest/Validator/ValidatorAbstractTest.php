@@ -81,4 +81,12 @@ class ValidatorAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(true, $this->validator->isValidForNullOrEmptyValue(null));
         $this->assertSame(true, $this->validator->isValidForNullOrEmptyValue(''));
     }
+    
+    public function testLocaleOption()
+    {
+        locale_set_default('en_US');
+        $this->validator->useLocaleOptions();
+        $options = $this->validator->getOptions();
+        $this->assertSame('en_US', $options['locale']);
+    }
 }

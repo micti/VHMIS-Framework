@@ -110,11 +110,36 @@ abstract class ValidatorAbstract implements ValidatorInterface
         return $this;
     }
 
+    /**
+     * Get options.
+     * 
+     * @return array
+     */
     public function getOptions()
     {
         return $this->options;
     }
+    
+    /**
+     * Use locale in options.
+     * 
+     * @return ValidatorAbstract
+     */
+    public function useLocaleOptions()
+    {
+        $locale = locale_get_default();
+        
+        $this->options += ['locale' => $locale];
+        $this->defaultOptions += ['locale' => $locale];
+        
+        return $this;
+    }
 
+    /**
+     * Reset validator.
+     * 
+     * @return ValidatorAbstract
+     */
     public function reset()
     {
         $this->options = $this->defaultOptions;
