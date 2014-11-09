@@ -60,4 +60,25 @@ class ValidatorAbstractTest extends \PHPUnit_Framework_TestCase
             'allowEmpty' => false
         ], $this->validator->getOptions());
     }
+    
+    public function testNullAndEmptyValue()
+    {
+        $this->assertSame(false, $this->validator->isValidForNullOrEmptyValue(null));
+        $this->assertSame('Not value.', $this->validator->getMessage());
+        $this->assertSame(1, $this->validator->getMessageCode());
+        
+        $this->assertSame(false, $this->validator->isValidForNullOrEmptyValue(''));
+        $this->assertSame('Empty value.', $this->validator->getMessage());
+        $this->assertSame(2, $this->validator->getMessageCode());
+        
+        $options = [
+            'allowNull' => true,
+            'allowEmpty' => true
+        ];
+        
+        $this->validator->setOptions($options);
+        
+        $this->assertSame(true, $this->validator->isValidForNullOrEmptyValue(null));
+        $this->assertSame(true, $this->validator->isValidForNullOrEmptyValue(''));
+    }
 }

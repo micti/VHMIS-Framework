@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace Vhmis\Validator;
 
 use \Vhmis\I18n\Translator;
 
 abstract class ValidatorAbstract implements ValidatorInterface
 {
+
     /**
      * Dữ liệu được đưa vào
      *
@@ -50,14 +59,22 @@ abstract class ValidatorAbstract implements ValidatorInterface
     protected $translator;
 
     /**
-     * Options
+     * Options.
      *
      * @var array
      */
-    protected $options;
+    protected $options = [
+        'allowNull' => false,
+        'allowEmpty' => false
+    ];
 
+    /**
+     * Default options.
+     *
+     * @var array
+     */
     protected $defaultOptions = [
-        'allowNull'  => false,
+        'allowNull' => false,
         'allowEmpty' => false
     ];
 
@@ -88,7 +105,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
      */
     public function setOptions($options)
     {
-        $this->options = array_merge($this->options !== null ? $this->options : $this->defaultOptions, $options);
+        $this->options = array_merge($this->options, $options);
 
         return $this;
     }
@@ -148,10 +165,49 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
+     * Validate null or empty value.
+     *
+     * @param mixed $value
+     *
+     * @return boolean
+     */
+    public function isValidForNullOrEmptyValue($value)
+    {
+        if ($this->isNull($value) && $this->options['allowNull'] === false) {
+            $this->setNotValidInfo(1, 'Not value.');
+            return false;
+        }
+
+        if ($this->isEmpty($value) && $this->options['allowEmpty'] === false) {
+            $this->setNotValidInfo(2, 'Empty value.');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Set not valid info.
+     *
+     * @param string $code
+     * @param string $message
+     *
+     * @return ValidatorAbstract
+     */
+    protected function setNotValidInfo($code, $message)
+    {
+        $this->message = $message;
+        $this->messageCode = $code;
+
+        return $this;
+    }
+
+    /**
      * Kiểm tra xem 1 giá trị có hợp lệ theo regex.
      *
-     * @param type $value Giá trị cần kiểm tra
-     * @param type $pattern Regex pattern sử dụng để kiểm tra
+     * @param mixed $value
+     * @param string $pattern
+     * 
      * @return boolean
      */
     protected function isValidRegex($value, $pattern)
@@ -163,11 +219,25 @@ abstract class ValidatorAbstract implements ValidatorInterface
         return false;
     }
 
+    /**
+     * Is null value.
+     *
+     * @param mixed $value
+     *
+     * @return boolean
+     */
     protected function isNull($value)
     {
         return $value === null;
     }
 
+    /**
+     * Is empty value.
+     *
+     * @param mixed $value
+     *
+     * @return boolean
+     */
     protected function isEmpty($value)
     {
         return $value === '';
