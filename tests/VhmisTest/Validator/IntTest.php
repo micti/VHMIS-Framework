@@ -34,8 +34,10 @@ class IntTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('en_US', $options['locale']);
     }
 
-    public function testValid()
+    public function testIsValid()
     {
+        $this->assertSame(false, $this->intValidator->isValid(null));
+        $this->assertSame(false, $this->intValidator->isValid(''));
         $this->assertSame(false, $this->intValidator->isValid([]));
         $this->assertSame(true, $this->intValidator->isValid(1));
         $this->assertSame(true, $this->intValidator->isValid(-1));
