@@ -56,6 +56,11 @@ abstract class ValidatorAbstract implements ValidatorInterface
      */
     protected $options;
 
+    protected $defaultOptions = [
+        'allowNull'  => false,
+        'allowEmpty' => false
+    ];
+
     /**
      * Thực thi trực tiếp
      *
@@ -69,15 +74,39 @@ abstract class ValidatorAbstract implements ValidatorInterface
 
     public function setTranslator($translator)
     {
-        if($translator instanceof Translator\Translator) {
+        if ($translator instanceof Translator\Translator) {
             $this->translator = $translator;
         }
     }
 
-    abstract public function setOptions($options);
+    /**
+     * Set options.
+     *
+     * @param array $options
+     *
+     * @return ValidatorAbstract
+     */
+    public function setOptions($options)
+    {
+        $this->options = array_merge($this->options !== null ? $this->options : $this->defaultOptions, $options);
+
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function reset()
+    {
+        $this->options = $this->defaultOptions;
+
+        return $this;
+    }
 
     /**
-     * Thiết lập thông báo
+     * Thiết lập thông báo.
      *
      * @param type $message Thông báo
      * @param type $code Mã thông báo
@@ -89,7 +118,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * Lấy thông báo của kết quả kiểm tra
+     * Lấy thông báo của kết quả kiểm tra.
      *
      * @return string
      */
@@ -99,7 +128,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * Lấy mã thông báo của kết quả kiểm tra
+     * Lấy mã thông báo của kết quả kiểm tra.
      *
      * @return string
      */
@@ -109,7 +138,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * Lấy dữ liệu chuẩn
+     * Lấy dữ liệu chuẩn.
      *
      * @return mixed
      */
@@ -119,7 +148,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * Kiểm tra xem 1 giá trị có hợp lệ theo regex
+     * Kiểm tra xem 1 giá trị có hợp lệ theo regex.
      *
      * @param type $value Giá trị cần kiểm tra
      * @param type $pattern Regex pattern sử dụng để kiểm tra
@@ -129,8 +158,18 @@ abstract class ValidatorAbstract implements ValidatorInterface
     {
         if (preg_match($pattern, $value)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
+    }
+
+    protected function isNull($value)
+    {
+        return $value === null;
+    }
+
+    protected function isEmpty($value)
+    {
+        return $value === '';
     }
 }
