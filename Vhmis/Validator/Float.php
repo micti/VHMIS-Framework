@@ -3,14 +3,14 @@
 namespace Vhmis\Validator;
 
 use \NumberFormatter;
-use Vhmis\Config\Configure;
 
 /**
- * Kiểm tra số thập phân
+ * Float validator.
  */
 class Float extends ValidatorAbstract
 {
-    const NOTFLOAT = 'notarray';
+
+    const NOT_FLOAT = 3;
 
     /**
      * Các thông báo lỗi
@@ -18,69 +18,87 @@ class Float extends ValidatorAbstract
      * @var array
      */
     protected $messages = array(
-        self::NOTFLOAT => 'Giá trị không phải là số thực'
+        self::NOT_FLOAT => 'Value is not float number.'
     );
 
     /**
-     * Locale
-     *
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * Khởi tạo
+     * Construct. Using locale options.
      */
     public function __construct()
     {
-        $this->locale = Configure::get('Locale') === null ? 'en_US' : Configure::get('Locale');
+        $this->useLocaleOptions();
     }
 
     /**
-     * Thiết lập
+     * Reset validator. Using locale options.
      *
-     * @param type $options
-     * @return \Vhmis\Validator\ValidatorAbstract
+     * @return Float
      */
-    public function setOptions($options)
+    public function reset()
     {
-        if(isset($options['locale'])) {
-            $this->locale = $options['locale'];
-        }
+        parent::reset();
 
-        return $this;
+        return $this->useLocaleOptions();
     }
 
     /**
-     * Kiểm tra xem giá trị có phải là số thập phân không (Có dựa theo locale)
+     * Validate
      *
      * @param mixed $value
+     *
      * @return boolean
      */
-    public function isValid($value, $params = null)
+    public function isValid($value)
     {
         $this->value = $value;
 
-        if (!is_string($value) && !is_int($value) && !is_float($value)) {
-            $this->setMessage(self::NOTFLOAT);
+        if (!$this->isValidForNullOrEmptyValue($value)) {
             return false;
         }
 
-        if (is_int($value)) {
-            $this->standardValue = $value;
+        if (!$this->isValidType($value)) {
+            return false;
+        }
+
+        if (is_int($value) || is_float($value)) {
+            $this->standardValue = (float) $value;
             return true;
         }
 
-        if (is_float($value)) {
-            $this->standardValue = $value;
-            return true;
+        return $this->isFloat($value);
+    }
+
+    /**
+     * Validate allow type of value.
+     *
+     * @param mixed $value
+     *
+     * @return boolean
+     */
+    protected function isValidType($value)
+    {
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            $this->setNotValidInfo(self::NOT_FLOAT, $this->messages[self::NOT_FLOAT]);
+            return false;
         }
 
-        $format = new NumberFormatter($this->locale, NumberFormatter::DECIMAL);
+        return true;
+    }
+
+    /**
+     * Validate float string
+     *
+     * @param string $value
+     *
+     * @return boolean
+     */
+    protected function isFloat($value)
+    {
+        $format = new NumberFormatter($this->options['locale'], NumberFormatter::DECIMAL);
 
         $parsedFloat = $format->parse($value, NumberFormatter::TYPE_DOUBLE);
         if (intl_is_failure($format->getErrorCode())) {
-            $this->setMessage(self::NOTFLOAT);
+            $this->setMessage(self::NOT_FLOAT);
             return false;
         }
 
@@ -98,7 +116,7 @@ class Float extends ValidatorAbstract
 
         // Kiểm tra lại
         if (strval($parsedFloat) !== $valueFiltered) {
-            $this->setMessage(self::NOTFLOAT);
+            $this->setMessage(self::NOT_FLOAT);
             return false;
         }
 

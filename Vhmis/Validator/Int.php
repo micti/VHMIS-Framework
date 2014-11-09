@@ -13,7 +13,7 @@ namespace Vhmis\Validator;
 use \NumberFormatter;
 
 /**
- * Kiểm tra số nguyên
+ * Integer validator.
  */
 class Int extends ValidatorAbstract
 {
@@ -28,7 +28,7 @@ class Int extends ValidatorAbstract
      * @var array
      */
     protected $messages = array(
-        self::NOT_INT => 'Value is not integer.'
+        self::NOT_INT => 'Value is not integer number.'
     );
 
     /**
@@ -60,6 +60,8 @@ class Int extends ValidatorAbstract
      */
     public function isValid($value)
     {
+        $this->value = $value;
+        
         if (!$this->isValidForNullOrEmptyValue($value)) {
             return false;
         }

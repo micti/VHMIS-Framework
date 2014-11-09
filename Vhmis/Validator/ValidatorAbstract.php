@@ -16,15 +16,14 @@ abstract class ValidatorAbstract implements ValidatorInterface
 {
 
     /**
-     * Dữ liệu được đưa vào
+     * Input value
      *
      * @var mixed
      */
     protected $value;
 
     /**
-     * Dữ liệu chuẩn của dữ liệu được kiểm tra,
-     * được thiết lập sau khi kiểm tra hợp lệ
+     * Filter value for valid input value.
      *
      * @var mixed
      */
@@ -52,13 +51,6 @@ abstract class ValidatorAbstract implements ValidatorInterface
     protected $messageCode;
 
     /**
-     * Translator
-     *
-     * @var \Vhmis\I18n\Translator\Translator
-     */
-    protected $translator;
-
-    /**
      * Options.
      *
      * @var array
@@ -82,18 +74,12 @@ abstract class ValidatorAbstract implements ValidatorInterface
      * Thực thi trực tiếp
      *
      * @param mixed $value
+     *
      * @return bool
      */
     public function __invoke($value)
     {
         return $this->isValid($value);
-    }
-
-    public function setTranslator($translator)
-    {
-        if ($translator instanceof Translator\Translator) {
-            $this->translator = $translator;
-        }
     }
 
     /**
