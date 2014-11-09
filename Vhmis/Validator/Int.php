@@ -1,16 +1,26 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace Vhmis\Validator;
 
 use \NumberFormatter;
-use Vhmis\Config\Configure;
 
 /**
  * Kiểm tra số nguyên
  */
 class Int extends ValidatorAbstract
 {
-    const NOTINT = 'notarray';
+    /**
+     * Not integer code
+     */
+    const NOT_INT = 3;
 
     /**
      * Các thông báo lỗi
@@ -18,51 +28,43 @@ class Int extends ValidatorAbstract
      * @var array
      */
     protected $messages = array(
-        self::NOTINT => 'Giá trị không phải là số nguyên'
+        self::NOT_INT => 'Value is not integer.'
     );
 
     /**
-     * Locale
-     *
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * Khởi tạo
+     * Construct. Using locale options.
      */
     public function __construct()
     {
-        $this->locale = Configure::get('Locale') === null ? 'en_US' : Configure::get('Locale');
+        $this->useLocaleOptions();
     }
 
     /**
-     * Thiết lập
+     * Reset validator. Using locale options.
      *
-     * @param type $options
-     * @return \Vhmis\Validator\ValidatorAbstract
+     * @return Int
      */
-    public function setOptions($options)
+    public function reset()
     {
-        if(isset($options['locale'])) {
-            $this->locale = $options['locale'];
-        }
+        parent::reset();
 
-        return $this;
+        return $this->useLocaleOptions();
     }
 
     /**
-     * Kiểm tra xem giá trị có phải là số nguyên không (Có dựa theo locale)
+     * Validate
      *
      * @param mixed $value
+     *
      * @return boolean
      */
     public function isValid($value)
     {
-        $this->value = $value;
+        if (!$this->isValidForNullOrEmptyValue($value)) {
+            return false;
+        }
 
-        if (!is_string($value) && !is_int($value) && !is_float($value)) {
-            $this->setMessage(self::NOTINT);
+        if (!$this->isValidType($value)) {
             return false;
         }
 
@@ -71,11 +73,39 @@ class Int extends ValidatorAbstract
             return true;
         }
 
-        $format = new NumberFormatter($this->locale, NumberFormatter::DECIMAL);
+        return $this->isInt($value);
+    }
+
+    /**
+     * Validate allow type of value.
+     *
+     * @param mixed $value
+     *
+     * @return boolean
+     */
+    protected function isValidType($value) {
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            $this->setNotValidInfo(self::NOT_INT, $this->messages[self::NOT_INT]);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate integer string or integer float
+     *
+     * @param mixed $value
+     *
+     * @return boolean
+     */
+    protected function isInt($value)
+    {
+        $format = new NumberFormatter($this->options['locale'], NumberFormatter::DECIMAL);
 
         $parsedInt = $format->parse($value, NumberFormatter::TYPE_INT64);
         if (intl_is_failure($format->getErrorCode())) {
-            $this->setMessage(self::NOTINT);
+            $this->setNotValidInfo(self::NOT_INT, $this->messages[self::NOT_INT]);
             return false;
         }
 
@@ -88,7 +118,7 @@ class Int extends ValidatorAbstract
 
         // Kiểm tra lại
         if (strval($parsedInt) !== $valueFiltered) {
-            $this->setMessage(self::NOTINT);
+            $this->setNotValidInfo(self::NOT_INT, $this->messages[self::NOT_INT]);
             return false;
         }
 
