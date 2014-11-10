@@ -14,6 +14,7 @@ use Vhmis\Validator\NotNull;
 
 class NotNullTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * Validator object
      *

@@ -2,9 +2,32 @@
 
 namespace Vhmis\Validator;
 
-class NotNull extends ValidatorAbstract
+class NotNull extends NotSameAbstract
 {
+
+    /**
+     * Error code : Missing option
+     */
+    const E_MISSING_OPTION = 'validator_notnull_error_missing_option';
+
+    /**
+     * Error code : Null
+     */
     const E_NULL = 'validator_notnull_error_null';
+
+    /**
+     * Error code of missing option
+     *
+     * @var string
+     */
+    protected $missingOptionsCode = self::E_MISSING_OPTION;
+
+    /**
+     * Error code of same
+     *
+     * @var string
+     */
+    protected $sameCode = self::E_NULL;
 
     /**
      * Error messages
@@ -12,6 +35,7 @@ class NotNull extends ValidatorAbstract
      * @var array
      */
     protected $messages = array(
+        self::E_MISSING_OPTION => 'Missing some options for validation.',
         self::E_NULL => 'The given value is null.'
     );
 
@@ -24,14 +48,8 @@ class NotNull extends ValidatorAbstract
      */
     public function isValid($value)
     {
-        $this->value = $value;
-        $this->standardValue = $value;
+        $this->options['comparedValue'] = null;
 
-        if ($value === null) {
-            $this->setNotValidInfo(self::E_NULL, $this->messages[self::E_NULL]);
-            return false;
-        }
-
-        return true;
+        return parent::isValid($value);
     }
 }

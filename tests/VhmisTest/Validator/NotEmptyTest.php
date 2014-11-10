@@ -14,6 +14,7 @@ use Vhmis\Validator\NotEmpty;
 
 class NotEmptyTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * Validator object
      *

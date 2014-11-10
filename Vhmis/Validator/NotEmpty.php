@@ -2,9 +2,32 @@
 
 namespace Vhmis\Validator;
 
-class NotEmpty extends ValidatorAbstract
+class NotEmpty extends NotSameAbstract
 {
+
+    /**
+     * Error code : Missing option
+     */
+    const E_MISSING_OPTION = 'validator_notempty_error_missing_option';
+
+    /**
+     * Error code : Empty
+     */
     const E_EMPTY = 'validator_notempty_error_empty';
+
+    /**
+     * Error code of missing option
+     *
+     * @var string
+     */
+    protected $missingOptionsCode = self::E_MISSING_OPTION;
+
+    /**
+     * Error code of same
+     *
+     * @var string
+     */
+    protected $sameCode = self::E_EMPTY;
 
     /**
      * Error messages
@@ -12,6 +35,7 @@ class NotEmpty extends ValidatorAbstract
      * @var array
      */
     protected $messages = array(
+        self::E_MISSING_OPTION => 'Missing some options for validation.',
         self::E_EMPTY => 'The given value is empty.'
     );
 
@@ -24,14 +48,8 @@ class NotEmpty extends ValidatorAbstract
      */
     public function isValid($value)
     {
-        $this->value = $value;
-        $this->standardValue = $value;
+        $this->options['comparedValue'] = '';
 
-        if ($value === '') {
-            $this->setNotValidInfo(self::E_EMPTY, $this->messages[self::E_EMPTY]);
-            return false;
-        }
-
-        return true;
+        return parent::isValid($value);
     }
 }
