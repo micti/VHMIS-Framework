@@ -10,9 +10,9 @@
 
 namespace VhmisTest\Validator;
 
-use Vhmis\Validator\NotSame;
+use Vhmis\Validator\Same;
 
-class NotSameTest extends \PHPUnit_Framework_TestCase
+class SameTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -20,11 +20,11 @@ class NotSameTest extends \PHPUnit_Framework_TestCase
      *
      * @var NotSame
      */
-    protected $notSameValidator;
+    protected $sameValidator;
 
     public function setUp()
     {
-        $this->notSameValidator = new NotSame();
+        $this->sameValidator = new Same();
     }
 
     /**
@@ -32,15 +32,15 @@ class NotSameTest extends \PHPUnit_Framework_TestCase
      */
     public function testMissingOptions()
     {
-        $this->assertFalse($this->notSameValidator->isValid([]));
+        $this->assertFalse($this->sameValidator->isValid([]));
     }
 
     public function testIsValid()
     {
-        $this->notSameValidator->setOptions(['comparedValue' => 'a']);
+        $this->sameValidator->setOptions(['comparedValue' => 'a']);
 
-        $this->assertTrue($this->notSameValidator->isValid(null));
+        $this->assertFalse($this->sameValidator->isValid(null));
 
-        $this->assertFalse($this->notSameValidator->isValid('a'));
+        $this->assertTrue($this->sameValidator->isValid('a'));
     }
 }
