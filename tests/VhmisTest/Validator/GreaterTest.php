@@ -18,7 +18,7 @@ class GreaterTest extends \PHPUnit_Framework_TestCase
     /**
      * Validator object
      *
-     * @var NotEmpty
+     * @var Greater
      */
     protected $greaterValidator;
 

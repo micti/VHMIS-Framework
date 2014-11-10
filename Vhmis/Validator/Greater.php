@@ -4,6 +4,7 @@ namespace Vhmis\Validator;
 
 class Greater extends ComapareAbstract
 {
+
     /**
      * Error code : Empty
      */
