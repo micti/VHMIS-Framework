@@ -144,6 +144,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     public function reset()
     {
         $this->options = $this->defaultOptions;
+        $this->standardValue = null;
 
         return $this;
     }
