@@ -27,10 +27,12 @@ class NotSameTest extends \PHPUnit_Framework_TestCase
         $this->notSameValidator = new NotSame();
     }
 
+    /**
+     * @expectedException \Vhmis\Utils\Exception\MissingOptionException
+     */
     public function testMissingOptions()
     {
         $this->assertFalse($this->notSameValidator->isValid([]));
-        $this->assertSame(NotSame::E_MISSING_OPTION, $this->notSameValidator->getMessageCode());
     }
 
     public function testIsValid()

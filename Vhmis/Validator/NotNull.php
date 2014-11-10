@@ -6,21 +6,9 @@ class NotNull extends NotSameAbstract
 {
 
     /**
-     * Error code : Missing option
-     */
-    const E_MISSING_OPTION = 'validator_notnull_error_missing_option';
-
-    /**
      * Error code : Null
      */
     const E_NULL = 'validator_notnull_error_null';
-
-    /**
-     * Error code of missing option
-     *
-     * @var string
-     */
-    protected $missingOptionsCode = self::E_MISSING_OPTION;
 
     /**
      * Error code of same
@@ -35,9 +23,15 @@ class NotNull extends NotSameAbstract
      * @var array
      */
     protected $messages = array(
-        self::E_MISSING_OPTION => 'Missing some options for validation.',
         self::E_NULL => 'The given value is null.'
     );
+
+    /**
+     * Required options.
+     *
+     * @var array
+     */
+    protected $requiredOptions = [];
 
     /**
      * Validate

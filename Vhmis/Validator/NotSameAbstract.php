@@ -4,19 +4,20 @@ namespace Vhmis\Validator;
 
 abstract class NotSameAbstract extends ValidatorAbstract
 {
-    /**
-     * Error code of missing option
-     *
-     * @var string
-     */
-    protected $missingOptionsCode;
-    
+
     /**
      * Error code of same
      *
      * @var string
      */
     protected $sameCode;
+
+    /**
+     * Required options.
+     *
+     * @var array
+     */
+    protected $requiredOptions = ['comparedValue'];
 
     /**
      * Validate
@@ -28,18 +29,15 @@ abstract class NotSameAbstract extends ValidatorAbstract
     public function isValid($value)
     {
         $this->value = $value;
-        $this->standardValue = $value;
-        
-        if (!array_key_exists('comparedValue', $this->options)) {
-            $this->setNotValidInfo($this->missingOptionsCode, $this->messages[$this->missingOptionsCode]);
-            return false;
-        }
+
+        $this->checkMissingOptions();
 
         if ($value === $this->options['comparedValue']) {
             $this->setNotValidInfo($this->sameCode, $this->messages[$this->sameCode]);
             return false;
         }
 
+        $this->standardValue = $value;
         return true;
     }
 }

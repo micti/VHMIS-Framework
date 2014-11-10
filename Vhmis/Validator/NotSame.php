@@ -4,16 +4,11 @@ namespace Vhmis\Validator;
 
 class NotSame extends NotSameAbstract
 {
-    const E_MISSING_OPTION = 'validator_notsame_error_missing_option';
-    const E_SAME = 'validator_notsame_error_same';
-    
     /**
-     * Error code of missing option
-     *
-     * @var string
+     * Error code : Empty
      */
-    protected $missingOptionsCode = self::E_MISSING_OPTION;
-    
+    const E_SAME = 'validator_notsame_error_same';
+
     /**
      * Error code of same
      *
@@ -27,7 +22,6 @@ class NotSame extends NotSameAbstract
      * @var array
      */
     protected $messages = array(
-        self::E_MISSING_OPTION => 'Missing some options for validation.',
         self::E_SAME => 'The given value is same with compared value.'
     );
 }

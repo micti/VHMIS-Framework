@@ -10,6 +10,8 @@
 
 namespace Vhmis\Validator;
 
+use Vhmis\Utils\Exception\MissingOptionException;
+
 abstract class ValidatorAbstract implements ValidatorInterface
 {
 
@@ -63,6 +65,13 @@ abstract class ValidatorAbstract implements ValidatorInterface
     protected $defaultOptions = [];
 
     /**
+     * Required options.
+     *
+     * @var array
+     */
+    protected $requiredOptions = [];
+
+    /**
      * Thực thi trực tiếp
      *
      * @param mixed $value
@@ -90,32 +99,46 @@ abstract class ValidatorAbstract implements ValidatorInterface
 
     /**
      * Get options.
-     * 
+     *
      * @return array
      */
     public function getOptions()
     {
         return $this->options;
     }
-    
+
+    /**
+     * Check missing options.
+     *
+     * @throws MissingOptionException
+     */
+    public function checkMissingOptions()
+    {
+        foreach ($this->requiredOptions as $option) {
+            if (!array_key_exists($option, $this->options)) {
+                throw new MissingOptionException('Missing option ' . $option . ' for validator');
+            }
+        }
+    }
+
     /**
      * Use locale in options.
-     * 
+     *
      * @return ValidatorAbstract
      */
     public function useLocaleOptions()
     {
         $locale = locale_get_default();
-        
+
         $this->options += ['locale' => $locale];
         $this->defaultOptions += ['locale' => $locale];
-        
+
         return $this;
     }
 
     /**
      * Reset validator.
-     * 
+     *
      * @return ValidatorAbstract
      */
     public function reset()
@@ -128,8 +151,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     /**
      * Thiết lập thông báo.
      *
-     * @param type $message Thông báo
-     * @param type $code Mã thông báo
+     * @param string $code Mã thông báo
      */
     protected function setMessage($code)
     {
@@ -188,7 +210,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
      *
      * @param mixed $value
      * @param string $pattern
-     * 
+     *
      * @return boolean
      */
     protected function isValidRegex($value, $pattern)
