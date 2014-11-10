@@ -20,7 +20,7 @@ abstract class ComapareAbstract extends ValidatorAbstract
     protected $requiredOptions = ['comparedValue'];
 
     /**
-     * Validate
+     * Validate.
      *
      * @param mixed $value
      *

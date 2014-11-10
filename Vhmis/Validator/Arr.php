@@ -4,37 +4,34 @@ namespace Vhmis\Validator;
 
 class Arr extends ValidatorAbstract
 {
-    const NOTARRAY = 'notarray';
 
     /**
-     * Các thông báo lỗi
+     * Error code : Not array.
+     */
+    const E_NOT_ARRAY = 'validator_array_error_not_array';
+
+    /**
+     * Error messages.
      *
      * @var array
      */
     protected $messages = array(
-        self::NOTARRAY => 'Giá trị không phải là mảng'
+        self::E_NOT_ARRAY => 'The given value is not an array.'
     );
-    
-    public function setOptions($options)
-    {
-        $this->options = $options;
-        
-        return $this;
-    }
 
     /**
-     * Kiểm tra xem có phải là mảng là không
+     * Validate.
      *
      * @param mixed $value
+     *
      * @return boolean
      */
     public function isValid($value)
     {
         $this->value = $value;
-        $this->standardValue = null;
 
         if (!is_array($value)) {
-            $this->setMessage(self::NOTARRAY);
+            $this->setNotValidInfo(self::E_NOT_ARRAY, $this->messages[self::E_NOT_ARRAY]);
             return false;
         }
 
