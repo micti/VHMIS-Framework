@@ -2,40 +2,43 @@
 
 namespace Vhmis\Validator;
 
-class Greater extends ValidatorAbstract
+class Greater extends ComapareAbstract
 {
     /**
-     * Giá trị được đem ra so sánh
-     *
-     * @var mixed
+     * Error code : Empty
      */
-    protected $comparedValue;
-
-    public function setOptions($options)
-    {
-        if(isset($options['compare'])) {
-            $this->comparedValue = $options['compare'];
-        }
-
-        return $this;
-    }
+    const E_EQUAL_OR_SMALLER = 'validator_notempty_error_equal_or_smaller';
 
     /**
-     * Kiểm tra xem có lớn hơn với giá trị cần so sánh không
+     * Error code of same
      *
-     * @param mixed $value
+     * @var string
+     */
+    protected $sameCode = self::E_EQUAL_OR_SMALLER;
+
+    /**
+     * Error messages
+     *
+     * @var array
+     */
+    protected $messages = array(
+        self::E_EQUAL_OR_SMALLER => 'The given value is equal or smaller than compared value.'
+    );
+
+    /**
+     * Required options.
+     *
+     * @var array
+     */
+    protected $requiredOptions = ['compare'];
+
+    /**
+     * Compare method.
+     *
      * @return boolean
      */
-    public function isValid($value)
+    protected function compare()
     {
-        $this->value = $value;
-        $this->standardValue = null;
-
-        if ($value < $this->comparedValue) {
-            return false;
-        }
-
-        $this->standardValue = $value;
-        return true;
+        return $this->value > $this->options['compare'];
     }
 }
