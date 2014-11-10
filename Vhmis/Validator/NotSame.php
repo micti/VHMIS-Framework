@@ -2,8 +2,9 @@
 
 namespace Vhmis\Validator;
 
-class NotSame extends NotSameAbstract
+class NotSame extends ComapareAbstract
 {
+
     /**
      * Error code : Empty
      */
@@ -24,4 +25,14 @@ class NotSame extends NotSameAbstract
     protected $messages = array(
         self::E_SAME => 'The given value is same with compared value.'
     );
+
+    /**
+     * Compare method.
+     *
+     * @return boolean
+     */
+    protected function compare()
+    {
+        return $this->value !== $this->options['comparedValue'];
+    }
 }

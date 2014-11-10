@@ -2,7 +2,7 @@
 
 namespace Vhmis\Validator;
 
-class NotNull extends NotSameAbstract
+class NotNull extends ComapareAbstract
 {
 
     /**
@@ -34,16 +34,12 @@ class NotNull extends NotSameAbstract
     protected $requiredOptions = [];
 
     /**
-     * Validate
-     *
-     * @param mixed $value
+     * Compare method.
      *
      * @return boolean
      */
-    public function isValid($value)
+    protected function compare()
     {
-        $this->options['comparedValue'] = null;
-
-        return parent::isValid($value);
+        return $this->value !== null;
     }
 }
