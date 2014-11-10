@@ -52,10 +52,6 @@ class Float extends ValidatorAbstract
     {
         $this->value = $value;
 
-        if (!$this->isValidForNullOrEmptyValue($value)) {
-            return false;
-        }
-
         if (!$this->isValidType($value)) {
             return false;
         }

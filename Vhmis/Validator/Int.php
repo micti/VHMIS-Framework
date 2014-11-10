@@ -61,10 +61,6 @@ class Int extends ValidatorAbstract
     public function isValid($value)
     {
         $this->value = $value;
-        
-        if (!$this->isValidForNullOrEmptyValue($value)) {
-            return false;
-        }
 
         if (!$this->isValidType($value)) {
             return false;

@@ -10,8 +10,6 @@
 
 namespace Vhmis\Validator;
 
-use \Vhmis\I18n\Translator;
-
 abstract class ValidatorAbstract implements ValidatorInterface
 {
 
@@ -55,20 +53,14 @@ abstract class ValidatorAbstract implements ValidatorInterface
      *
      * @var array
      */
-    protected $options = [
-        'allowNull' => false,
-        'allowEmpty' => false
-    ];
+    protected $options = [];
 
     /**
      * Default options.
      *
      * @var array
      */
-    protected $defaultOptions = [
-        'allowNull' => false,
-        'allowEmpty' => false
-    ];
+    protected $defaultOptions = [];
 
     /**
      * Thực thi trực tiếp
@@ -176,28 +168,6 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * Validate null or empty value.
-     *
-     * @param mixed $value
-     *
-     * @return boolean
-     */
-    public function isValidForNullOrEmptyValue($value)
-    {
-        if ($this->isNull($value) && $this->options['allowNull'] === false) {
-            $this->setNotValidInfo(1, 'Not value.');
-            return false;
-        }
-
-        if ($this->isEmpty($value) && $this->options['allowEmpty'] === false) {
-            $this->setNotValidInfo(2, 'Empty value.');
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Set not valid info.
      *
      * @param string $code
@@ -228,29 +198,5 @@ abstract class ValidatorAbstract implements ValidatorInterface
         }
 
         return false;
-    }
-
-    /**
-     * Is null value.
-     *
-     * @param mixed $value
-     *
-     * @return boolean
-     */
-    protected function isNull($value)
-    {
-        return $value === null;
-    }
-
-    /**
-     * Is empty value.
-     *
-     * @param mixed $value
-     *
-     * @return boolean
-     */
-    protected function isEmpty($value)
-    {
-        return $value === '';
     }
 }

@@ -29,59 +29,16 @@ class ValidatorAbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testOptions()
     {
-        $options = [
-            'a' => 'b'
-        ];
+        $this->validator->setOptions(['a' => 'b']);
+        $this->assertSame(['a' => 'b'], $this->validator->getOptions());
 
-        $this->validator->setOptions($options);
-
-        $this->assertSame([
-            'allowNull' => false,
-            'allowEmpty' => false,
-            'a' => 'b'
-                ], $this->validator->getOptions());
-
-        $options = [
-            'allowNull' => true
-        ];
-
-        $this->validator->setOptions($options);
-
-        $this->assertSame([
-            'allowNull' => true,
-            'allowEmpty' => false,
-            'a' => 'b'
-        ], $this->validator->getOptions());
+        $this->validator->setOptions(['a' => 'c']);
+        $this->assertSame(['a' => 'c'], $this->validator->getOptions());
 
         $this->validator->reset();
+        $this->assertSame([], $this->validator->getOptions());
+    }
 
-        $this->assertSame([
-            'allowNull' => false,
-            'allowEmpty' => false
-        ], $this->validator->getOptions());
-    }
-    
-    public function testNullAndEmptyValue()
-    {
-        $this->assertSame(false, $this->validator->isValidForNullOrEmptyValue(null));
-        $this->assertSame('Not value.', $this->validator->getMessage());
-        $this->assertSame(1, $this->validator->getMessageCode());
-        
-        $this->assertSame(false, $this->validator->isValidForNullOrEmptyValue(''));
-        $this->assertSame('Empty value.', $this->validator->getMessage());
-        $this->assertSame(2, $this->validator->getMessageCode());
-        
-        $options = [
-            'allowNull' => true,
-            'allowEmpty' => true
-        ];
-        
-        $this->validator->setOptions($options);
-        
-        $this->assertSame(true, $this->validator->isValidForNullOrEmptyValue(null));
-        $this->assertSame(true, $this->validator->isValidForNullOrEmptyValue(''));
-    }
-    
     public function testLocaleOption()
     {
         locale_set_default('en_US');
