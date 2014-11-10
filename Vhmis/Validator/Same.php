@@ -2,52 +2,37 @@
 
 namespace Vhmis\Validator;
 
-class Equal extends ValidatorAbstract
+class Same extends ComapareAbstract
 {
-    const NOTEQUAL = 'notequal';
 
     /**
-     * Các thông báo lỗi
+     * Error code : Empty
+     */
+    const E_NOT_SAME = 'validator_same_error_not_same';
+
+    /**
+     * Error code of same
+     *
+     * @var string
+     */
+    protected $sameCode = self::E_NOT_SAME;
+
+    /**
+     * Error messages
      *
      * @var array
      */
     protected $messages = array(
-        self::NOTEQUAL => 'Giá trị không bằng giá trị được so sánh'
+        self::E_NOT_SAME => 'The given value is not same with compared value.'
     );
 
     /**
-     * Giá trị được đem ra so sánh
+     * Compare method.
      *
-     * @var mixed
-     */
-    protected $comparedValue;
-
-    public function setOptions($options)
-    {
-        if(isset($options['compare'])) {
-            $this->comparedValue = $options['compare'];
-        }
-
-        return $this;
-    }
-
-    /**
-     * Kiểm tra xem có bằng với giá trị cần so sánh không
-     *
-     * @param mixed $value
      * @return boolean
      */
-    public function isValid($value)
+    protected function compare()
     {
-        $this->value = $value;
-        $this->standardValue = null;
-
-        if ($value !== $this->comparedValue) {
-            $this->setMessage(self::NOTEQUAL);
-            return false;
-        }
-
-        $this->standardValue = $value;
-        return true;
+        return $this->value === $this->options['comparedValue'];
     }
 }
