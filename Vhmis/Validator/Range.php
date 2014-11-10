@@ -2,51 +2,44 @@
 
 namespace Vhmis\Validator;
 
-class Range extends ValidatorAbstract
+class Range extends ComapareAbstract
 {
+
     /**
-     * Giá trị cận dưới đem ra so sánh
-     *
-     * @var mixed
+     * Error code : Empty
      */
-    protected $minValue;
+    const E_OUT_RANGE = 'validator_notempty_error_out_range';
 
     /**
-     * Giá trị cận trên đem ra so sánh
+     * Error code of same
      *
-     * @var mixed
+     * @var string
      */
-    protected $maxValue;
-
-    public function setOptions($options)
-    {
-        if(isset($options['max'])) {
-            $this->maxValue = $options['max'];
-        }
-
-        if(isset($options['min'])) {
-            $this->minValue = $options['min'];
-        }
-
-        return $this;
-    }
+    protected $sameCode = self::E_OUT_RANGE;
 
     /**
-     * Kiểm tra xem nằm trong khoảng không
+     * Error messages
      *
-     * @param mixed $value
+     * @var array
+     */
+    protected $messages = array(
+        self::E_OUT_RANGE => 'The given value is out range.'
+    );
+
+    /**
+     * Required options.
+     *
+     * @var array
+     */
+    protected $requiredOptions = ['min', 'max'];
+
+    /**
+     * Compare method.
+     *
      * @return boolean
      */
-    public function isValid($value)
+    protected function compare()
     {
-        $this->value = $value;
-        $this->standardValue = null;
-
-        if ($value > $this->maxValue || $value < $this->minValue) {
-            return false;
-        }
-
-        $this->standardValue = $value;
-        return true;
+        return $this->value >= $this->options['min'] && $this->value <= $this->options['max'];
     }
 }
