@@ -2,7 +2,7 @@
 
 namespace Vhmis\Validator;
 
-abstract class NotSameAbstract extends ValidatorAbstract
+abstract class ComapareAbstract extends ValidatorAbstract
 {
 
     /**
@@ -32,7 +32,7 @@ abstract class NotSameAbstract extends ValidatorAbstract
 
         $this->checkMissingOptions();
 
-        if ($value === $this->options['comparedValue']) {
+        if (!$this->compare()) {
             $this->setNotValidInfo($this->sameCode, $this->messages[$this->sameCode]);
             return false;
         }
@@ -40,4 +40,11 @@ abstract class NotSameAbstract extends ValidatorAbstract
         $this->standardValue = $value;
         return true;
     }
+
+    /**
+     * Compare method.
+     *
+     * @return boolean
+     */
+    abstract protected function compare();
 }
