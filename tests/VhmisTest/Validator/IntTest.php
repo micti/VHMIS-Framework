@@ -44,8 +44,8 @@ class IntTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(true, $this->intValidator->isValid(1.0));
         $this->assertSame(false, $this->intValidator->isValid('a'));
         $this->assertSame(true, $this->intValidator->isValid('1'));
-        $this->assertSame(true, $this->intValidator->isValid('1,000'));
-        $this->assertSame(false, $this->intValidator->isValid('-1,000.0000'));
+        $this->assertSame(true, $this->intValidator->isValid('1,000.'));
+        $this->assertSame(true, $this->intValidator->isValid('-1,000.0000'));
 
         $this->intValidator->setOptions(['locale' => 'de']);
         $this->assertSame(false, $this->intValidator->isValid('10 000'));

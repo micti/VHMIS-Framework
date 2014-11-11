@@ -15,12 +15,17 @@ use \NumberFormatter;
 /**
  * Integer validator.
  */
-class Int extends ValidatorAbstract
+class Int extends NumberAbstract
 {
     /**
-     * Not integer code
+     * Error code : Not valid type.
      */
-    const NOT_INT = 3;
+    const E_NOT_TYPE = 'validator_int_not_valid_type';
+
+    /**
+     * Error code : Not integer.
+     */
+    const E_NOT_INT = 'validator_int_not_int';
 
     /**
      * Các thông báo lỗi
@@ -28,31 +33,12 @@ class Int extends ValidatorAbstract
      * @var array
      */
     protected $messages = array(
-        self::NOT_INT => 'Value is not integer number.'
+        self::E_NOT_TYPE => 'The given value is not a valid type.',
+        self::E_NOT_INT => 'The given value is not an integer number.'
     );
 
     /**
-     * Construct. Using locale options.
-     */
-    public function __construct()
-    {
-        $this->useLocaleOptions();
-    }
-
-    /**
-     * Reset validator. Using locale options.
-     *
-     * @return Int
-     */
-    public function reset()
-    {
-        parent::reset();
-
-        return $this->useLocaleOptions();
-    }
-
-    /**
-     * Validate
+     * Validate.
      *
      * @param mixed $value
      *
@@ -63,6 +49,7 @@ class Int extends ValidatorAbstract
         $this->value = $value;
 
         if (!$this->isValidType($value)) {
+            $this->setNotValidInfo(self::E_NOT_TYPE, $this->messages[self::E_NOT_TYPE]);
             return false;
         }
 
@@ -71,56 +58,11 @@ class Int extends ValidatorAbstract
             return true;
         }
 
-        return $this->isInt($value);
-    }
-
-    /**
-     * Validate allow type of value.
-     *
-     * @param mixed $value
-     *
-     * @return boolean
-     */
-    protected function isValidType($value) {
-        if (!is_string($value) && !is_int($value) && !is_float($value)) {
-            $this->setNotValidInfo(self::NOT_INT, $this->messages[self::NOT_INT]);
+        if (!$this->isNumber('integer', $value)) {
+            $this->setNotValidInfo(self::E_NOT_INT, $this->messages[self::E_NOT_INT]);
             return false;
         }
 
-        return true;
-    }
-
-    /**
-     * Validate integer string or integer float
-     *
-     * @param mixed $value
-     *
-     * @return boolean
-     */
-    protected function isInt($value)
-    {
-        $format = new NumberFormatter($this->options['locale'], NumberFormatter::DECIMAL);
-
-        $parsedInt = $format->parse($value, NumberFormatter::TYPE_INT64);
-        if (intl_is_failure($format->getErrorCode())) {
-            $this->setNotValidInfo(self::NOT_INT, $this->messages[self::NOT_INT]);
-            return false;
-        }
-
-        // Format lại $value
-        $decimalSep = $format->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
-        $groupingSep = $format->getSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL);
-
-        $valueFiltered = str_replace($groupingSep, '', $value);
-        $valueFiltered = str_replace($decimalSep, '.', $valueFiltered);
-
-        // Kiểm tra lại
-        if (strval($parsedInt) !== $valueFiltered) {
-            $this->setNotValidInfo(self::NOT_INT, $this->messages[self::NOT_INT]);
-            return false;
-        }
-
-        $this->standardValue = $parsedInt;
         return true;
     }
 }

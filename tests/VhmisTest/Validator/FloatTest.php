@@ -47,6 +47,7 @@ class FloatTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(true, $this->floatValidator->isValid('1'));
         $this->assertSame(true, $this->floatValidator->isValid('1,000.34000'));
         $this->assertSame(true, $this->floatValidator->isValid('-1,000.34'));
+        $this->assertSame(true, $this->floatValidator->isValid('-1,000.'));
         $this->assertSame(false, $this->floatValidator->isValid('-1.000,34'));
 
         $this->floatValidator->setOptions(['locale' => 'de']);
