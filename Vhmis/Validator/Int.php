@@ -10,8 +10,6 @@
 
 namespace Vhmis\Validator;
 
-use \NumberFormatter;
-
 /**
  * Integer validator.
  */
