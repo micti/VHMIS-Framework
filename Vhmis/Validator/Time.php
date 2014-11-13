@@ -2,7 +2,7 @@
 
 namespace Vhmis\Validator;
 
-use Vhmis\DateTime\DateTime;
+use Vhmis\DateTime\DateTime as VhmisDateTime;
 
 /**
  * Kiểm tra ngày tháng
@@ -70,9 +70,9 @@ class Time extends ValidatorAbstract
         }
 
         if($this->nosecond) {
-            $date = DateTime::createFromFormat('G:i:s', $value . ':00');
+            $date = VhmisDateTime::createFromFormat('G:i:s', $value . ':00');
         } else {
-            $date = DateTime::createFromFormat('G:i:s', $value);
+            $date = VhmisDateTime::createFromFormat('G:i:s', $value);
         }
 
         // Có một số ngày tháng sai nhưng được DateTime điều chỉnh lại cho

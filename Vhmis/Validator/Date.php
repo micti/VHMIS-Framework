@@ -2,8 +2,7 @@
 
 namespace Vhmis\Validator;
 
-use Vhmis\Config\Configure;
-use Vhmis\DateTime\DateTime;
+use Vhmis\DateTime\DateTime as VhmisDateTime;
 use Vhmis\I18n\FormatPattern\DateTime as FormatDateTime;
 
 /**
@@ -15,7 +14,7 @@ use Vhmis\I18n\FormatPattern\DateTime as FormatDateTime;
  */
 class Date extends ValidatorAbstract
 {
-    const NOTDATE = 'notdate';
+    const E_NOT_DATE = 'notdate';
     const NOTVALID = 'notvalid';
 
     /**
@@ -24,7 +23,7 @@ class Date extends ValidatorAbstract
      * @var array
      */
     protected $messages = array(
-        self::NOTDATE => 'Không phải là ngày',
+        self::E_NOT_DATE => 'Không phải là ngày',
         self::NOTVALID => 'Ngày không hợp lệ'
     );
 
@@ -47,28 +46,17 @@ class Date extends ValidatorAbstract
      */
     public function __construct()
     {
-        $this->locale = Configure::get('Locale') === null ? 'vi_VN' : Configure::get('Locale');
+        $this->useLocaleOptions();
         $this->format = FormatDateTime::dateNativeFormat($this->locale, 3);
     }
-
-    /**
-     * Thiết lập
-     *
-     * @param type $options
-     * @return \Vhmis\Validator\ValidatorAbstract
-     */
-    public function setOptions($options)
+    
+    public function reset()
     {
-        if (isset($options['locale'])) {
-            $this->locale = $options['locale'];
-        }
-
-        if (isset($options['format'])) {
-            $this->format = $options['format'];
-        } else {
-            $this->format = FormatDateTime::dateNativeFormat($this->locale, 3);
-        }
-
+        parent::reset();
+        
+        $this->useLocaleOptions();
+        $this->format = FormatDateTime::dateNativeFormat($this->locale, 3);
+        
         return $this;
     }
 
@@ -83,7 +71,7 @@ class Date extends ValidatorAbstract
         $this->value = $value;
 
         if (!is_string($value) && !($value instanceof \DateTime)) {
-            $this->setMessage(self::NOTDATE);
+            $this->setMessage(self::E_NOT_DATE);
             return false;
         }
 
@@ -92,8 +80,7 @@ class Date extends ValidatorAbstract
             return true;
         }
 
-
-        $date = DateTime::createFromFormat($this->format, $value);
+        $date = VhmisDateTime::createFromFormat($this->format, $value);
 
         // Có một số ngày tháng sai nhưng được DateTime điều chỉnh lại cho
         // đúng, đối với trường hợp này
@@ -105,7 +92,7 @@ class Date extends ValidatorAbstract
         }
 
         if ($date === false) {
-            $this->setMessage(self::NOTDATE);
+            $this->setMessage(self::E_NOT_DATE);
             return false;
         }
 
