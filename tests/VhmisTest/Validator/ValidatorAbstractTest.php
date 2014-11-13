@@ -38,12 +38,4 @@ class ValidatorAbstractTest extends \PHPUnit_Framework_TestCase
         $this->validator->reset();
         $this->assertSame([], $this->validator->getOptions());
     }
-
-    public function testLocaleOption()
-    {
-        locale_set_default('en_US');
-        $this->validator->useLocaleOptions();
-        $options = $this->validator->getOptions();
-        $this->assertSame('en_US', $options['locale']);
-    }
 }
