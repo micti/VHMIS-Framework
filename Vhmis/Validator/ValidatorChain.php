@@ -102,6 +102,7 @@ class ValidatorChain
         $this->addField($field);
 
         $this->fields[$field]['value'] = $value;
+        $this->standardValues[$field] = $value;
 
         return $this;
     }
@@ -118,6 +119,7 @@ class ValidatorChain
         foreach ($this->fields as $key => $field) {
             if (array_key_exists($key, $values)) {
                 $this->fields[$key]['value'] = $values[$key];
+                $this->standardValues[$key] = $values[$key];
             }
         }
 
@@ -169,9 +171,7 @@ class ValidatorChain
                 $validatorObject->reset();
                 $validatorObject->setOptions($options);
 
-                $value = array_key_exists($key, $this->standardValues) ? $this->standardValues[$key] : $field['value'];
-
-                if (!$validatorObject->isValid($value)) {
+                if (!$validatorObject->isValid($this->standardValues[$key])) {
                     $this->notValidField = $key;
                     $this->notValidMessage = $validatorObject->getMessage();
                     $this->notValidCode = $validatorObject->getMessageCode();
@@ -243,6 +243,7 @@ class ValidatorChain
         if (!isset($this->fields[$field])) {
             $this->fields[$field]['value'] = null;
             $this->fields[$field]['validator'] = [];
+            $this->standardValues[$field] = null;
         }
 
         return $this;

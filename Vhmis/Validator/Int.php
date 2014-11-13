@@ -44,7 +44,7 @@ class Int extends NumberAbstract
      */
     public function isValid($value)
     {
-        $this->value = $value;
+        $this->value = $this->standardValue = $value;
 
         if (!$this->isValidType($value)) {
             $this->setNotValidInfo(self::E_NOT_TYPE, $this->messages[self::E_NOT_TYPE]);

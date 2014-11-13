@@ -28,7 +28,7 @@ abstract class ComapareAbstract extends ValidatorAbstract
      */
     public function isValid($value)
     {
-        $this->value = $value;
+        $this->value = $this->standardValue = $value;
 
         $this->checkMissingOptions();
 
@@ -37,7 +37,6 @@ abstract class ComapareAbstract extends ValidatorAbstract
             return false;
         }
 
-        $this->standardValue = $value;
         return true;
     }
 

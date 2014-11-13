@@ -58,7 +58,7 @@ class DateTime extends ValidatorAbstract
      */
     public function isValid($value)
     {
-        $this->value = $value;
+        $this->value = $this->standardValue = $value;
 
         $this->checkMissingOptions();
 

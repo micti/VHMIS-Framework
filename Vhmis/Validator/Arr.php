@@ -28,14 +28,13 @@ class Arr extends ValidatorAbstract
      */
     public function isValid($value)
     {
-        $this->value = $value;
+        $this->value = $this->standardValue = $value;
 
         if (!is_array($value)) {
             $this->setNotValidInfo(self::E_NOT_ARRAY, $this->messages[self::E_NOT_ARRAY]);
             return false;
         }
 
-        $this->standardValue = $value;
         return true;
     }
 }
