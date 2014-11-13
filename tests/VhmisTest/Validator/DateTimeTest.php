@@ -34,12 +34,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
                 'Intl version 3.0.0 is not available.'
             );
         }
-        
+
         locale_set_default('en_US');
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $this->dateTimeValidator = new DateTime();
     }
-    
+
     /**
      * @expectedException \Vhmis\Utils\Exception\MissingOptionException
      */
@@ -47,15 +47,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $this->dateTimeValidator->reset();
         $this->dateTimeValidator->isValid('8/8/2014');
-    }
-    
-    public function testNotValidOption()
-    {
-        $this->dateTimeValidator->setOptions(['pattern' => 'M/d/yy']);
-        $this->dateTimeValidator->setOptions(['timezone' => 'ANHANHA']);
-        $this->dateTimeValidator->setOptions(['locale' => 'ANHANHA']);
-        $this->assertFalse($this->dateTimeValidator->isValid('8/8/2014'));
-        $this->assertSame(DateTime::E_NOT_VALID_OPTION, $this->dateTimeValidator->getMessageCode());
     }
 
     public function testIsValid()
@@ -67,5 +58,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->dateTimeValidator->isValid('13/8/14'));
         $this->assertFalse($this->dateTimeValidator->isValid('34/8/14'));
         $this->assertFalse($this->dateTimeValidator->isValid('a'));
+        $this->assertFalse($this->dateTimeValidator->isValid(new \stdClass));
     }
 }
