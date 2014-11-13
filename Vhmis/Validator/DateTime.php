@@ -60,15 +60,6 @@ class DateTime extends ValidatorAbstract
      *
      * @return Int
      */
-    public function reset()
-    {
-        parent::reset();
-
-        $this->init();
-
-        return $this;
-    }
-
     public function isValid($value)
     {
         $this->value = $value;
@@ -125,5 +116,19 @@ class DateTime extends ValidatorAbstract
         $this->formatters[$formatterId]->setPattern($this->options['pattern']);
 
         return $this->formatters[$formatterId];
+    }
+
+    /**
+     * Init.
+     * 
+     * Set default options.
+     */
+    protected function init()
+    {
+        $this->defaultOptions = [
+            'locale' => locale_get_default(),
+            'timezone' => date_default_timezone_get(),
+            'calendar' => 'Gregorian'
+        ];
     }
 }

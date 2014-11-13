@@ -72,6 +72,14 @@ abstract class ValidatorAbstract implements ValidatorInterface
     protected $requiredOptions = [];
 
     /**
+     * Default contruct
+     */
+    public function __construct()
+    {
+        $this->reset();
+    }
+
+    /**
      * Thực thi trực tiếp
      *
      * @param mixed $value
@@ -122,27 +130,14 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * Use locale in options.
-     *
-     * @return ValidatorAbstract
-     */
-    public function useLocaleOptions()
-    {
-        $locale = locale_get_default();
-
-        $this->options += ['locale' => $locale];
-        $this->defaultOptions += ['locale' => $locale];
-
-        return $this;
-    }
-
-    /**
      * Reset validator.
      *
      * @return ValidatorAbstract
      */
     public function reset()
     {
+        $this->init();
+
         $this->options = $this->defaultOptions;
         $this->standardValue = null;
 
@@ -188,6 +183,16 @@ abstract class ValidatorAbstract implements ValidatorInterface
     public function getStandardValue()
     {
         return $this->standardValue;
+    }
+
+    /**
+     * Init method.
+     *
+     * Default is empty, nothing setup.
+     */
+    protected function init()
+    {
+
     }
 
     /**

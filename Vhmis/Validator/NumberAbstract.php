@@ -17,25 +17,6 @@ use \NumberFormatter;
  */
 abstract class NumberAbstract extends ValidatorAbstract
 {
-    /**
-     * Construct. Using locale options.
-     */
-    public function __construct()
-    {
-        $this->useLocaleOptions();
-    }
-
-    /**
-     * Reset validator. Using locale options.
-     *
-     * @return Int
-     */
-    public function reset()
-    {
-        parent::reset();
-
-        return $this->useLocaleOptions();
-    }
 
     /**
      * Validate allow type of value.
@@ -44,7 +25,8 @@ abstract class NumberAbstract extends ValidatorAbstract
      *
      * @return boolean
      */
-    protected function isValidType($value) {
+    protected function isValidType($value)
+    {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
             return false;
         }
@@ -95,5 +77,10 @@ abstract class NumberAbstract extends ValidatorAbstract
 
         $this->standardValue = $praseValue;
         return true;
+    }
+
+    protected function init()
+    {
+        $this->defaultOptions['locale'] = locale_get_default();
     }
 }
