@@ -92,9 +92,9 @@ class DateTime extends ValidatorAbstract
         $formatterId = $this->options['locale'] . '@calendar=' . $this->options['calendar'];
 
         if (!isset($this->formatters[$formatterId])) {
-            $formater = new \IntlDateFormatter($formatterId, 3, 3);
-            $formater->setLenient(false);
-            $this->formatters[$formatterId] = $formater;
+            $formatter = new \IntlDateFormatter($formatterId, 3, 3);
+            $formatter->setLenient(false);
+            $this->formatters[$formatterId] = $formatter;
         }
 
         $this->formatters[$formatterId]->setTimeZone($this->options['timezone']);
