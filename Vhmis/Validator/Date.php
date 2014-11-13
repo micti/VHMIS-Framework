@@ -40,21 +40,10 @@ class Date extends ValidatorAbstract
      * @var string
      */
     protected $format;
-
-    /**
-     * Khởi tạo
-     */
-    public function __construct()
-    {
-        $this->useLocaleOptions();
-        $this->format = FormatDateTime::dateNativeFormat($this->locale, 3);
-    }
     
-    public function reset()
-    {
-        parent::reset();
-        
-        $this->useLocaleOptions();
+    public function init()
+    {    
+        $this->locale = locale_get_default();
         $this->format = FormatDateTime::dateNativeFormat($this->locale, 3);
         
         return $this;
@@ -85,7 +74,7 @@ class Date extends ValidatorAbstract
         // Có một số ngày tháng sai nhưng được DateTime điều chỉnh lại cho
         // đúng, đối với trường hợp này
         // ta vẫn xem như là không hợp lệ
-        $errors = DateTime::getLastErrors();
+        $errors = VhmisDateTime::getLastErrors();
         if ($errors['warning_count'] > 0) {
             $this->setMessage(self::NOTVALID);
             return false;

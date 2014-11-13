@@ -78,7 +78,7 @@ class Time extends ValidatorAbstract
         // Có một số ngày tháng sai nhưng được DateTime điều chỉnh lại cho
         // đúng, đối với trường hợp này
         // ta vẫn xem như là không hợp lệ
-        $errors = DateTime::getLastErrors();
+        $errors = VhmisDateTime::getLastErrors();
         if ($errors['warning_count'] > 0) {
             $this->setMessage(self::NOTTIME);
             return false;
