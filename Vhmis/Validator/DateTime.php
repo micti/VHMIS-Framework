@@ -19,7 +19,7 @@ class DateTime extends ValidatorAbstract
      * Error code : Not valid for datetime.
      */
     const E_NOT_DATETIME = 'validator_datetime_not_datetime';
-    
+
     /**
      * Error code : Not valid for datetime.
      */
@@ -51,9 +51,9 @@ class DateTime extends ValidatorAbstract
 
     /**
      * Validate.
-     * 
+     *
      * @param mixed $value
-     * 
+     *
      * @return boolean
      */
     public function isValid($value)
@@ -63,8 +63,8 @@ class DateTime extends ValidatorAbstract
         $this->checkMissingOptions();
 
         $formatter = $this->getFormatter();
-        
-        if(!is_string($value)) {
+
+        if (!is_string($value)) {
             $this->setNotValidInfo(self::E_NOT_VALID_TYPE, $this->messages[self::E_NOT_VALID_TYPE]);
             return false;
         }
@@ -105,7 +105,7 @@ class DateTime extends ValidatorAbstract
 
     /**
      * Init.
-     * 
+     *
      * Set default options.
      */
     protected function init()
