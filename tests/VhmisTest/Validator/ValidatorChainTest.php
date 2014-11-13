@@ -24,6 +24,18 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!extension_loaded('intl')) {
+            $this->markTestSkipped(
+                'Intl ext is not available.'
+            );
+        }
+
+        if (!class_exists('\IntlCalendar')) {
+            $this->markTestSkipped(
+                'Intl version 3.0.0 is not available.'
+            );
+        }
+
         locale_set_default('en_US');
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $this->validatorChain = new ValidatorChain();
@@ -49,7 +61,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
             ]
         ];
         $this->assertEquals($fields, $this->validatorChain->getFields());
-        
+
         $this->validatorChain->add('a', 'DateTime', ['pattern' => 'mm-dd-Y']);
         $fields = [
             'a' => [
@@ -61,7 +73,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
             ]
         ];
         $this->assertEquals($fields, $this->validatorChain->getFields());
-        
+
         $this->validatorChain->add('a', 'DateTime', ['pattern' => 'dd-mm-Y']);
         $fields = [
             'a' => [
@@ -104,16 +116,16 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
 
         $this->validatorChain->reset();
         $this->assertEquals([], $this->validatorChain->getFields());
-        
+
         $this->validatorChain->add('a', 'Int');
         $this->validatorChain->add('b', 'Int');
-        
+
         $values = [
             'a' => 1,
             'b' => 2,
             'c' => 3
         ];
-        
+
         $this->validatorChain->fill($values);
         $fields = [
             'a' => [
@@ -135,7 +147,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
     public function testValid()
     {
         $this->validatorChain->reset();
-        
+
         $this->validatorChain->add('a', 'Int');
         $this->validatorChain->addValue('a', '89');
         $this->validatorChain->add('b', 'DateTime', ['pattern' => 'M/d/yy']);
@@ -145,11 +157,11 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_int($standardValues['a']));
         $this->assertTrue($standardValues['b'] instanceof \Vhmis\I18n\DateTime\DateTime);
     }
-    
+
     public function testNotValid()
     {
         $this->validatorChain->reset();
-        
+
         $this->validatorChain->add('a', 'Int');
         $this->validatorChain->add('a', 'Greater', ['compare' => 100]);
         $this->validatorChain->addValue('a', '89');

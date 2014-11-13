@@ -79,7 +79,7 @@ class ValidatorChain
     public function add($field, $validator, $options = [])
     {
         if (!isset($this->validtorList[$validator])) {
-            throw new InvalidArgumentException('Invalid validator');
+            throw new InvalidArgumentException('Invalid validator.');
         }
 
         $this->addField($field);
