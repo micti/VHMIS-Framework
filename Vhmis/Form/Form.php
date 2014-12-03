@@ -91,7 +91,7 @@ class Form
      * @param string $validator
      * @param array $options
      *
-     * @return \Vhmis\Form\Form
+     * @return Form
      */
     public function addValidator($field, $validator, $options = [])
     {
