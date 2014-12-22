@@ -122,7 +122,7 @@ class FieldSet extends Field
 
         foreach ($this->fieldSets as $name => $set) {
             $fieldsOfSet = $set->getAllFields();
-            $field += $fieldsOfSet;
+            $fields += $fieldsOfSet;
         }
 
         return $fields;
