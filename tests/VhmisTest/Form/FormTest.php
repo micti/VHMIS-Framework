@@ -8,26 +8,6 @@ use Vhmis\Form\Field;
 class FormTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testFillTest()
-    {
-        $field1 = new Field();
-        $field2 = new Field();
-        $field3 = new Field();
-        $form = new Form();
-        $form->addField($field1->setName('a'));
-        $form->addField($field2->setName('b'));
-        $form->addField($field3->setName('c'));
-        $data = [
-            'a' => 'A',
-            'b' => 'B'
-        ];
-
-        $form->fill($data);
-        $this->assertSame('A', $field1->getValue());
-        $this->assertSame('B', $field2->getValue());
-        $this->assertSame(null, $field3->getValue());
-    }
-
     public function testValidation()
     {
         $field1 = new Field();

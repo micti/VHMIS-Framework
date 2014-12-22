@@ -23,26 +23,6 @@ class Form extends FieldSet
     }
 
     /**
-     * Fill values.
-     *
-     * @param array $values
-     *
-     * @return Form
-     */
-    public function fill($values)
-    {
-        $fields = $this->getAllFields();
-
-        foreach ($fields as $key => $field) {
-            if (array_key_exists($key, $values)) {
-                $field->setValue($values[$key]);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Add validator for field.
      *
      * @param string $field
