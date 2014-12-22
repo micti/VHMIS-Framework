@@ -89,7 +89,20 @@ class FieldSet extends Field
      */
     public function addFieldSet($fieldSet)
     {
-        $this->fieldSets[$fieldSet->getName()] = $fieldSet;
+        if (is_array($fieldSet)) {
+            $fieldSet = $this->getFactory()->createFieldSet($fieldSet);
+        }
+        
+        if (!($fieldSet instanceof FieldSet)) {
+            return false;
+        }
+
+        $name = $fieldSet->getName();
+        if ($name === null || $name === '') {
+            return false;
+        }
+        
+        $this->fieldSets[$name] = $fieldSet;
 
         return $this;
     }
