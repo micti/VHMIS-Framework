@@ -14,9 +14,9 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $field2 = new Field();
         $field3 = new Field();
         $form = new Form();
-        $form->addField('a', $field1);
-        $form->addField('b', $field2);
-        $form->addField('c', $field3);
+        $form->addField($field1->setName('a'));
+        $form->addField($field2->setName('b'));
+        $form->addField($field3->setName('c'));
         $data = [
             'a' => 'A',
             'b' => 'B'
@@ -34,9 +34,9 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $field2 = new Field();
         $field3 = new Field();
         $form = new Form();
-        $form->addField('a', $field1);
-        $form->addField('b', $field2);
-        $form->addField('c', $field3);
+        $form->addField($field1->setName('a'));
+        $form->addField($field2->setName('b'));
+        $form->addField($field3->setName('c'));
         $data = [
             'a' => 'A',
             'b' => 'B'
