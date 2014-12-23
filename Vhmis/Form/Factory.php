@@ -11,9 +11,9 @@ namespace Vhmis\Form;
  * 'fieldsets' => [
  *   ''
  * ]
- * 
- * 
- * 
+ *
+ *
+ *
  */
 class Factory
 {
@@ -22,12 +22,12 @@ class Factory
      * @var Form[]
      */
     protected $factory;
-    
+
     /**
      * Create form.
-     * 
+     *
      * @param array $config
-     * 
+     *
      * @return \Vhmis\Form\Form
      */
     public function createForm($config)
@@ -35,25 +35,25 @@ class Factory
         if(!isset($config['class'])) {
             $config['class'] = '\\Vhmis\\Form\\Form';
         }
-        
+
         $form = new $config['class']();
         $this->factory[$config['name']] = $form;
-        
+
         $this->createFormDetail($config['name'], $config);
-        
+
         return $form;
     }
-    
+
     public function createFieldSet()
     {
-        
+
     }
-    
+
     /**
      * Create field.
-     * 
+     *
      * @param array $config
-     * 
+     *
      * @return Field
      */
     public function createField($config)
@@ -61,33 +61,44 @@ class Factory
         if(!isset($config['class'])) {
             $config['class'] = '\\Vhmis\\Form\\Field';
         }
-        
+
         $field = new $config['class']();
-        
+
         $this->createFieldDetail($field, $config);
-        
+
         return $field;
     }
-    
+
     /**
      * Create form detail.
-     * 
+     *
      * Other attributes, fieldsets, fields....
-     * 
+     *
      * @param array $config
      */
     protected function createFormDetail($config)
     {
         $form = $this->factory[$config['nane']];
-        
+
         foreach ($config['field'] as $field) {
             $element = $this->createField($field);
             $form->addField($element->getName(), $element);
         }
-        
+
         foreach ($config['fieldSet'] as $field) {
             $element = $this->createField($field);
             $form->addFieldSet($element->getName(), $element);
         }
+    }
+
+    /**
+     * Create field detail.
+     *
+     * @param Field $field
+     * @param array $config
+     */
+    protected function createFieldDetail($field, $config)
+    {
+        $field->setName($config['name']);
     }
 }

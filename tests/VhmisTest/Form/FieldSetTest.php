@@ -20,6 +20,26 @@ class FieldSetTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($fac2, $fieldset->getFactory());
     }
 
+    public function testAddFieldAndFieldSet()
+    {
+        $fieldset = new FieldSet;
+
+        $fieldA = new Field;
+        $fieldA->setName('a');
+        $fieldset->addField($fieldA);
+
+        $fieldset->addField(['name' => 'b']);
+
+        $fieldC = new Field;
+        $this->assertFalse($fieldset->addField($fieldC));
+
+        $allFields = $fieldset->getAllFields();
+
+        $this->assertSame($fieldA, $allFields['a']);
+        $this->assertInstanceOf('\Vhmis\Form\Field', $allFields['b']);
+        $this->assertSame('b', $allFields['b']->getName());
+    }
+
     public function testFillTest()
     {
         $field1 = new Field;

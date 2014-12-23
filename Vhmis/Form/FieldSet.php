@@ -83,7 +83,7 @@ class FieldSet extends Field
     /**
      * Add another fieldset.
      *
-     * @param FieldSet $fieldSet
+     * @param FieldSet|array $fieldSet
      *
      * @return Fieldset
      */
