@@ -39,7 +39,7 @@ class Factory
         $form = new $config['class']();
         $this->factory[$config['name']] = $form;
 
-        $this->createFormDetail($config['name'], $config);
+        $this->createFormDetail($form, $config);
 
         return $form;
     }
@@ -76,16 +76,14 @@ class Factory
      *
      * @param array $config
      */
-    protected function createFormDetail($config)
+    protected function createFormDetail($form, $config)
     {
-        $form = $this->factory[$config['nane']];
-
-        foreach ($config['field'] as $field) {
+        foreach ($config['fields'] as $field) {
             $element = $this->createField($field);
             $form->addField($element->getName(), $element);
         }
 
-        foreach ($config['fieldSet'] as $field) {
+        foreach ($config['fieldsets'] as $field) {
             $element = $this->createField($field);
             $form->addFieldSet($element->getName(), $element);
         }
