@@ -34,9 +34,11 @@ class Factory
         }
 
         $form = new $config['class']();
-        $this->factory[$config['name']] = $form;
+        $this->forms[$config['name']] = $form;
 
         $this->createDetail($form, $config);
+
+        $this->createValidators($form, $config);
 
         return $form;
     }
@@ -115,5 +117,20 @@ class Factory
     protected function createFieldDetail($field, $config)
     {
         $field->setName($config['name']);
+    }
+
+    /**
+     * Create validators.
+     * 
+     * @param Form $form
+     * @param array $config
+     */
+    protected function createValidators($form, $config)
+    {
+        foreach ($config['validators'] as $field => $validators) {
+            foreach ($validators as $config) {
+                $form->addValidator($field, $config['validator'], $config['options']);
+            }
+        }
     }
 }

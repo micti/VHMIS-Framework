@@ -77,6 +77,14 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                         ]
                     ]
                 ]
+            ],
+            'validators' => [
+                'field1' => [
+                    [
+                        'validator' => 'Int',
+                        'options' => []
+                    ]
+                ]
             ]
         ];
 
