@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace VhmisTest\Form;
 
 use Vhmis\Form\FieldSet;
@@ -32,7 +40,7 @@ class FieldSetTest extends \PHPUnit_Framework_TestCase
 
         $fieldC = new Field;
         $this->assertFalse($fieldset->addField($fieldC));
-        
+
         $this->assertFalse($fieldset->addField('a'));
         $this->assertFalse($fieldset->addField(null));
         $this->assertFalse($fieldset->addField(false));
@@ -43,7 +51,7 @@ class FieldSetTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Vhmis\Form\Field', $allFields['b']);
         $this->assertSame('b', $allFields['b']->getName());
     }
-    
+
     public function testAddFieldSet()
     {
         $fieldset = new FieldSet;
@@ -56,7 +64,7 @@ class FieldSetTest extends \PHPUnit_Framework_TestCase
 
         $fieldSetC = new FieldSet;
         $this->assertFalse($fieldset->addFieldSet($fieldSetC));
-        
+
         $this->assertFalse($fieldset->addFieldSet('a'));
         $this->assertFalse($fieldset->addFieldSet(null));
         $this->assertFalse($fieldset->addFieldSet(false));

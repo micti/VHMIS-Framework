@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace Vhmis\Form;
 
 class FieldSet extends Field
 {
+
     /**
      * Fields.
      *
@@ -92,7 +101,7 @@ class FieldSet extends Field
         if (is_array($fieldSet)) {
             $fieldSet = $this->getFactory()->createFieldSet($fieldSet);
         }
-        
+
         if (!($fieldSet instanceof FieldSet)) {
             return false;
         }
@@ -101,7 +110,7 @@ class FieldSet extends Field
         if ($name === null || $name === '') {
             return false;
         }
-        
+
         $this->fieldSets[$name] = $fieldSet;
 
         return $this;
