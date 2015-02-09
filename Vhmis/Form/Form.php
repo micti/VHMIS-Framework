@@ -27,7 +27,35 @@ class Form extends FieldSet
      */
     public function __construct()
     {
-        $this->validatorChain = new ValidatorChain();
+        
+    }
+
+    /**
+     * Set validator chain.
+     * 
+     * @param ValidatorChain $validatorChain
+     * 
+     * @return Form
+     */
+    public function setValidatorChain($validatorChain)
+    {
+        $this->validatorChain = $validatorChain;
+
+        return $this;
+    }
+
+    /**
+     * Get validator chain.
+     * 
+     * @return ValidatorChain
+     */
+    public function getValidatorChain()
+    {
+        if ($this->validatorChain === null) {
+            $this->validatorChain = new ValidatorChain;
+        }
+
+        return $this->validatorChain;
     }
 
     /**
@@ -41,7 +69,7 @@ class Form extends FieldSet
      */
     public function addValidator($field, $validator, $options = [])
     {
-        $this->validatorChain->add($field, $validator, $options);
+        $this->getValidatorChain()->add($field, $validator, $options);
 
         return $this;
     }
@@ -54,10 +82,10 @@ class Form extends FieldSet
     public function isValid()
     {
         foreach ($this->fields as $key => $field) {
-            $this->validatorChain->addValue($key, $field->getValue());
+            $this->getValidatorChain()->addValue($key, $field->getValue());
         }
 
-        return $this->validatorChain->isValid();
+        return $this->getValidatorChain()->isValid();
     }
 
     /**
@@ -67,6 +95,6 @@ class Form extends FieldSet
      */
     public function getStandardValues()
     {
-        return $this->validatorChain->getStandardValues();
+        return $this->getValidatorChain()->getStandardValues();
     }
 }

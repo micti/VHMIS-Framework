@@ -12,9 +12,20 @@ namespace VhmisTest\Form;
 
 use Vhmis\Form\Form;
 use Vhmis\Form\Field;
+use Vhmis\Validator\ValidatorChain;
 
 class FormTest extends \PHPUnit_Framework_TestCase
 {
+
+    public function testSetAndGetValidatorChain()
+    {
+        $form = new Form();
+        $validator = new ValidatorChain();
+        $form->setValidatorChain($validator);
+        $this->assertSame($validator, $form->getValidatorChain());
+        $form2 = new Form();
+        $this->assertInstanceOf('\Vhmis\Validator\ValidatorChain', $form->getValidatorChain());
+    }
 
     public function testValidation()
     {
