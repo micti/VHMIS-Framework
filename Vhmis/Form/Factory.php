@@ -14,13 +14,6 @@ class Factory
 {
 
     /**
-     * Fatory forms cache
-     *
-     * @var Form[]
-     */
-    protected $forms;
-
-    /**
      * Create form.
      *
      * @param array $config
@@ -34,10 +27,8 @@ class Factory
         }
 
         $form = new $config['class']();
-        $this->forms[$config['name']] = $form;
 
-        $this->createDetail($form, $config);
-
+        $this->createFormDetail($form, $config);
         $this->createValidators($form, $config);
 
         return $form;
@@ -58,7 +49,7 @@ class Factory
 
         $fieldset = new $config['class']();
 
-        $this->createDetail($fieldset, $config);
+        $this->createFieldSetDetail($fieldset, $config);
 
         return $fieldset;
     }
@@ -84,26 +75,37 @@ class Factory
     }
 
     /**
-     * Create form or fieldset detail.
+     * Create form detail.
      *
-     * @param Form|Fieldset $form Fieldset or Form
+     * @param Form $form Fieldset or Form
      * @param array $config Config
      */
-    protected function createDetail($form, $config)
+    public function createFormDetail($form, $config)
     {
-        $form->setName($config['name']);
+        $this->createFieldSetDetail($form, $config);
+    }
+
+    /**
+     * Create fieldset detail
+     *
+     * @param Fieldset|Form $fieldset
+     * @param array $config
+     */
+    public function createFieldSetDetail($fieldset, $config)
+    {
+        $fieldset->setName($config['name']);
 
         if (isset($config['fields'])) {
             foreach ($config['fields'] as $field) {
                 $element = $this->createField($field);
-                $form->addField($element);
+                $fieldset->addField($element);
             }
         }
 
         if (isset($config['fieldsets'])) {
             foreach ($config['fieldsets'] as $field) {
                 $element = $this->createFieldSet($field);
-                $form->addFieldSet($element);
+                $fieldset->addFieldSet($element);
             }
         }
     }
@@ -114,18 +116,18 @@ class Factory
      * @param Field $field Field
      * @param array $config Config
      */
-    protected function createFieldDetail($field, $config)
+    public function createFieldDetail($field, $config)
     {
         $field->setName($config['name']);
     }
 
     /**
      * Create validators.
-     * 
+     *
      * @param Form $form
      * @param array $config
      */
-    protected function createValidators($form, $config)
+    public function createValidators($form, $config)
     {
         foreach ($config['validators'] as $field => $validators) {
             foreach ($validators as $config) {
