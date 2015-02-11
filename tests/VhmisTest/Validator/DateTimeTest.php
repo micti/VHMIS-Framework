@@ -59,5 +59,11 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->dateTimeValidator->isValid('34/8/14'));
         $this->assertFalse($this->dateTimeValidator->isValid('a'));
         $this->assertFalse($this->dateTimeValidator->isValid(new \stdClass));
+        
+        $this->dateTimeValidator->setOptions(['pattern' => 'dd/MM/y']);
+        $this->assertTrue($this->dateTimeValidator->isValid('12/02/2015'));
+        $this->assertTrue($this->dateTimeValidator->isValid('12/02/15'));
+        $this->assertTrue($this->dateTimeValidator->isValid('12/2/15'));
+        $this->assertFalse($this->dateTimeValidator->isValid('29/2/15'));
     }
 }
