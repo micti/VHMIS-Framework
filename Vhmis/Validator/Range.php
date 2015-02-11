@@ -8,7 +8,7 @@ class Range extends ComapareAbstract
     /**
      * Error code : Empty
      */
-    const E_OUT_RANGE = 'validator_notempty_error_out_range';
+    const E_OUT_RANGE = 'validator_range_error_out_range';
 
     /**
      * Error code of same

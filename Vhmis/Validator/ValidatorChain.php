@@ -32,7 +32,8 @@ class ValidatorChain
         'NotNull' => '\Vhmis\Validator\NotNull',
         'NotSame' => '\Vhmis\Validator\NotSame',
         'Array' => '\Vhmis\Validator\Arr',
-        'DateTime' => '\Vhmis\Validator\DateTime'
+        'DateTime' => '\Vhmis\Validator\DateTime',
+        'Range' => '\Vhmis\Validator\Range'
     ];
 
     /**
