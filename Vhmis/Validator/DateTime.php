@@ -31,8 +31,8 @@ class DateTime extends ValidatorAbstract
      * @var array
      */
     protected $messages = [
-        self::E_NOT_DATETIME => 'The give value is not valid for datetime.',
-        self::E_NOT_VALID_TYPE => 'The give value is not valid type.'
+        self::E_NOT_DATETIME => 'The given value is not valid for datetime.',
+        self::E_NOT_VALID_TYPE => 'The given value is not valid type.'
     ];
 
     /**
