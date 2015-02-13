@@ -116,7 +116,7 @@ class ValidatorChain
      */
     public function fill($values)
     {
-        foreach ($this->fields as $key => $field) {
+        foreach ($this->fields as $key => $unusedValue) {
             if (array_key_exists($key, $values)) {
                 $this->fields[$key]['value'] = $values[$key];
                 $this->standardValues[$key] = $values[$key];
