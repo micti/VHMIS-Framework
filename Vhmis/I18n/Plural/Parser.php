@@ -17,26 +17,33 @@ class Parser
     {
         $rule = trim(static::removeExamples($rule));
 
-        if($rule === '') {
+        if ($rule === '') {
             return true;
         }
-        
+
         $operands = static::getOperand($number);
         $orConditions = static::getConditions('or', $rule);
 
-        foreach ($orConditions as $orCondition) {
-            $andConditions = static::getConditions('and', $orCondition);
-            $pass = true;
-            foreach ($andConditions as $relation) {
-                $pass = $pass && static::isAcceptedRelation($operands, $relation);
-            }
-
+        foreach ($orConditions as $condition) {
+            $pass = static::isAcceptedCondition($operands, $condition);
             if ($pass === true) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    protected static function isAcceptedCondition($operands, $condition)
+    {
+        $andConditions = static::getConditions('and', $condition);
+        $pass = true;
+
+        foreach ($andConditions as $relation) {
+            $pass = $pass && static::isAcceptedRelation($operands, $relation);
+        }
+
+        return $pass;
     }
 
     protected static function isAcceptedRelation($operands, $relation)
@@ -57,6 +64,8 @@ class Parser
     protected static function isAcceptedValue($value, $relationType, $list)
     {
         $numbers = explode(',', $list);
+        $pass = true;
+
         foreach ($numbers as $number) {
             $range = explode('..', $number, 2);
             $pass = doubleval($value) === doubleval($range[0]);
