@@ -15,6 +15,7 @@ namespace Vhmis\Validator;
  */
 class Upload extends ValidatorAbstract
 {
+
     /**
      * Error code : Not valid for datetime.
      */
@@ -36,13 +37,6 @@ class Upload extends ValidatorAbstract
     ];
 
     /**
-     * Required options.
-     *
-     * @var array
-     */
-    protected $requiredOptions = ['pattern'];
-
-    /**
      * Validate.
      *
      * @param mixed $value
@@ -54,59 +48,58 @@ class Upload extends ValidatorAbstract
         $this->value = $value;
 
         $this->checkMissingOptions();
-        
+
         if (!$this->isValidUploadFile($value['tpm_name'])) {
             return false;
         }
-        
-        if (!$this->isValidSize($value['tpm_name'])) {
-            return false;
-        }
-        
-        if (!$this->isValidFileType($value['ext'], $value['type'])) {
-            return false;
-        }
-        
-        if (!$this->isValidUploadDir($value['path'])) {
+
+        if (!$this->isValidSize($value['size'])) {
             return false;
         }
 
+        if (!$this->isValidFileType($value['ext'], $value['type'])) {
+            return false;
+        }
+
+        $isImage = $this->isImageFile($value['type'], $value['tpm_name']);
+
+        if ($this->options['file'] === 'image' && !isImage) {
+            return false;
+        }
+
+        $this->standardValue = [
+            'name' => $value['name'],
+            'type' => $value['type'],
+            'path' => $value['tpm_name'],
+            'size' => $value['size'],
+            'image' => $isImage
+        ];
+
         return true;
     }
-    
+
     protected function isValidSize($size)
     {
         if ($this->options['maxsize'] === 0) {
             return true;
         }
-        
+
         if ($size > $this->options['maxsize']) {
             return false;
         }
-        
+
         return false;
     }
-    
-    protected function isValidUploadDir($path)
-    {
-        if (!is_dir($path)) {
-            return false;
-        }
-        
-        if (!is_writeable($path)) {
-            return false;
-        }
-    }
-    
+
     protected function isValidUploadFile($filePath)
     {
         if (!is_uploaded_file($filePath)) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     protected function isValidFileType($ext, $mine)
     {
         $ext = strtolower($ext);
@@ -123,12 +116,49 @@ class Upload extends ValidatorAbstract
         }
 
         // Allow all mines
-        if ($this->$this->options['type'][$ext] === '*') {
+        if ($this->options['type'][$ext] === '*') {
             return true;
         }
 
         // Not valid mine
-        if (strpos($this->$this->options['type'][$ext], $mine) === false) {
+        if (strpos($this->options['type'][$ext], $mine) === false) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function isImageFile($fileType, $filePath)
+    {
+        $type = array(
+            'image/gif',
+            'image/jpeg',
+            'image/png',
+            'image/jpg',
+            'image/jpe',
+            'image/pjpeg',
+            'img/x-png'
+        );
+
+        if (!in_array($fileType, $type)) {
+            return false;
+        }
+
+        $size = getimagesize($filePath);
+        if ($size === false) {
+            return false;
+        }
+
+        return $size;
+    }
+
+    protected function isValidImageSize($width, $height)
+    {
+        if ($this->options['imageSize']['width'] !== 0 && $size[0] > $this->options['imageSize']['width']) {
+            return false;
+        }
+
+        if ($this->options['imageSize']['height'] !== 0 && $size[1] > $this->options['imageSize']['height']) {
             return false;
         }
 
@@ -146,7 +176,12 @@ class Upload extends ValidatorAbstract
             'maxsize' => 0,
             'type' => [
                 '*' => '*' // allow all
-            ]
+            ],
+            'imageSize' => [
+                'width' => 0,
+                'height' => 0
+            ],
+            'file' => '*'
         ];
     }
 }
