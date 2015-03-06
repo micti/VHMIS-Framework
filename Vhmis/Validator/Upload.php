@@ -89,40 +89,28 @@ class Upload extends ValidatorAbstract
     }
 
     /**
+     * Validate uploaded file.
      * 
+     * @param string $path
      * @param int $error
      * 
      * @return boolean
      */
     protected function isValidUploadFile($path, $error)
     {
-        switch ($error) {
-            case 0:
-                break;
-            case 1:
-                $this->setError(static::E_PHPE_INI_SIZE);
-                return false;
-            case 2:
-                $this->setError(static::E_PHPE_FORM_SIZE);
-                return false;
-            case 3:
-                $this->setError(static::E_PHPE_PARTIAL);
-                return false;
-            case 4:
-                $this->setError(static::E_PHPE_NO_FILE);
-                return false;
-            case 6:
-                $this->setError(static::E_PHPE_NO_TMP_DIR);
-                return false;
-            case 7:
-                $this->setError(static::E_PHPE_CANT_WRITE);
-                return false;
-            case 8:
-                $this->setError(static::E_PHPE_EXTENSION);
-                return false;
-            default:
-                $this->setError(static::E_UNKNOWN);
-                return false;
+        $case = [
+            '1' => static::E_PHPE_INI_SIZE,
+            '2' => static::E_PHPE_FORM_SIZE,
+            '3' => static::E_PHPE_PARTIAL,
+            '4' => static::E_PHPE_NO_FILE,
+            '6' => static::E_PHPE_NO_TMP_DIR,
+            '7' => static::E_PHPE_CANT_WRITE,
+            '8' => static::E_PHPE_EXTENSION,
+        ];
+
+        if (isset($case[$error])) {
+            $this->setError($case[$error]);
+            return false;
         }
 
         if (!is_uploaded_file($path)) {
@@ -133,6 +121,13 @@ class Upload extends ValidatorAbstract
         return true;
     }
 
+    /**
+     * Validate size of uploaded file.
+     * 
+     * @param int $size
+     * 
+     * @return boolean
+     */
     protected function isValidSize($size)
     {
         if ($this->options['maxsize'] === 0) {
@@ -185,12 +180,7 @@ class Upload extends ValidatorAbstract
             'maxsize' => 0,
             'type' => [
                 '*' => '*' // allow all
-            ],
-            'imageSize' => [
-                'width' => 0,
-                'height' => 0
-            ],
-            'file' => '*'
+            ]
         ];
     }
 }

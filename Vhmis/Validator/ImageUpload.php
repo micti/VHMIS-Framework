@@ -16,6 +16,13 @@ namespace Vhmis\Validator;
 class ImageUpload extends Upload
 {
 
+    /**
+     * Validate image upload.
+     * 
+     * @param array $value
+     * 
+     * @return boolean
+     */
     public function isValid($value)
     {
         if (!parent::isValid($value)) {
@@ -24,7 +31,7 @@ class ImageUpload extends Upload
 
         $image = $this->isImageFile($value['tpm_name']);
 
-        if ($this->options['file'] === 'image' && !$image) {
+        if (!$image) {
             return false;
         }
 
