@@ -145,14 +145,27 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * Thiết lập thông báo.
-     *
-     * @param string $code Mã thông báo
+     * Deprecated method, will be remove soon.
+     * Using setError.
      */
     protected function setMessage($code)
     {
+        $this->setError($code);
+    }
+    
+    /**
+     * Set error.
+     * 
+     * @param string $code
+     * 
+     * @return ValidatorAbstract
+     */
+    protected function setError($code)
+    {
         $this->message = $this->messages[$code];
         $this->messageCode = $code;
+        
+        return $this;
     }
 
     /**
@@ -197,6 +210,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
 
     /**
      * Set not valid info.
+     * Deprecated method, will be remove soon. Using setError.
      *
      * @param string $code
      * @param string $message
