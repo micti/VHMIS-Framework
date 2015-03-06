@@ -17,14 +17,26 @@ class Upload extends ValidatorAbstract
 {
 
     /**
-     * Error code : Not valid for datetime.
-     */
-    const E_NOT_DATETIME = 'validator_datetime_not_datetime';
-
-    /**
-     * Error code : Not valid for datetime.
+     * Error code : PHP upload error code.
      */
     const E_NOT_VALID_TYPE = 'validator_datetime_not_valid_type';
+    const E_PHPE_INI_SIZE = 'validator_upload_phpe_ini_size';
+    const E_PHPE_FORM_SIZE = 'validator_upload_phpe_form_size';
+    const E_PHPE_PARTIAL = 'validator_upload_phpe_partial';
+    const E_PHPE_NO_FILE = 'validator_upload_phpe_no_file';
+    const E_PHPE_NO_TMP_DIR = 'validator_upload_phpe_no_tmp_dir';
+    const E_PHPE_CANT_WRITE = 'validator_upload_phpe_cant_write';
+    const E_PHPE_EXTENSION = 'validator_upload_phpe_extension';
+
+    /**
+     * Error code : Uknown error
+     */
+    const E_UNKNOWN = 'validator_upload_unknown';
+
+    /**
+     * Error code : Uknown error
+     */
+    const E_NO_UPLOADED_FILE = 'validator_upload_no_uploaded_file';
 
     /**
      * Error messages
@@ -32,8 +44,15 @@ class Upload extends ValidatorAbstract
      * @var array
      */
     protected $messages = [
-        self::E_NOT_DATETIME => 'The given value is not valid for datetime.',
-        self::E_NOT_VALID_TYPE => 'The given value is not valid type.'
+        self::E_PHPE_INI_SIZE => 'Uploaded file exceeds the defined PHP INI size',
+        self::E_PHPE_FORM_SIZE => 'Uploaded file exceeds the defined form size',
+        self::E_PHPE_PARTIAL => 'Uploaded file was only partially uploaded',
+        self::E_PHPE_NO_FILE => 'Uploaded file was not uploaded',
+        self::E_PHPE_NO_TMP_DIR => 'Missing a temporary folder',
+        self::E_PHPE_CANT_WRITE => 'Failed to write uploaded file to disk',
+        self::E_PHPE_EXTENSION => 'Uploaded file was stopped by extension',
+        self::E_UNKNOWN => 'Uknown upload error',
+        self::E_NO_UPLOADED_FILE => 'No uploaded file'
     ];
 
     /**
@@ -47,9 +66,7 @@ class Upload extends ValidatorAbstract
     {
         $this->value = $value;
 
-        $this->checkMissingOptions();
-
-        if (!$this->isValidUploadFile($value['tpm_name'])) {
+        if (!$this->isValidUploadFile($value['tpm_name'], $value['error'])) {
             return false;
         }
 
@@ -61,19 +78,57 @@ class Upload extends ValidatorAbstract
             return false;
         }
 
-        $isImage = $this->isImageFile($value['type'], $value['tpm_name']);
-
-        if ($this->options['file'] === 'image' && !isImage) {
-            return false;
-        }
-
         $this->standardValue = [
             'name' => $value['name'],
             'type' => $value['type'],
             'path' => $value['tpm_name'],
-            'size' => $value['size'],
-            'image' => $isImage
+            'size' => $value['size']
         ];
+
+        return true;
+    }
+
+    /**
+     * 
+     * @param int $error
+     * 
+     * @return boolean
+     */
+    protected function isValidUploadFile($path, $error)
+    {
+        switch ($error) {
+            case 0:
+                break;
+            case 1:
+                $this->setError(static::E_PHPE_INI_SIZE);
+                return false;
+            case 2:
+                $this->setError(static::E_PHPE_FORM_SIZE);
+                return false;
+            case 3:
+                $this->setError(static::E_PHPE_PARTIAL);
+                return false;
+            case 4:
+                $this->setError(static::E_PHPE_NO_FILE);
+                return false;
+            case 6:
+                $this->setError(static::E_PHPE_NO_TMP_DIR);
+                return false;
+            case 7:
+                $this->setError(static::E_PHPE_CANT_WRITE);
+                return false;
+            case 8:
+                $this->setError(static::E_PHPE_EXTENSION);
+                return false;
+            default:
+                $this->setError(static::E_UNKNOWN);
+                return false;
+        }
+
+        if (!is_uploaded_file($path)) {
+            $this->setError(static::E_NO_UPLOADED_FILE);
+            return false;
+        }
 
         return true;
     }
@@ -89,15 +144,6 @@ class Upload extends ValidatorAbstract
         }
 
         return false;
-    }
-
-    protected function isValidUploadFile($filePath)
-    {
-        if (!is_uploaded_file($filePath)) {
-            return false;
-        }
-
-        return true;
     }
 
     protected function isValidFileType($ext, $mine)
@@ -122,43 +168,6 @@ class Upload extends ValidatorAbstract
 
         // Not valid mine
         if (strpos($this->options['type'][$ext], $mine) === false) {
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function isImageFile($fileType, $filePath)
-    {
-        $type = array(
-            'image/gif',
-            'image/jpeg',
-            'image/png',
-            'image/jpg',
-            'image/jpe',
-            'image/pjpeg',
-            'img/x-png'
-        );
-
-        if (!in_array($fileType, $type)) {
-            return false;
-        }
-
-        $size = getimagesize($filePath);
-        if ($size === false) {
-            return false;
-        }
-
-        return $size;
-    }
-
-    protected function isValidImageSize($width, $height)
-    {
-        if ($this->options['imageSize']['width'] !== 0 && $size[0] > $this->options['imageSize']['width']) {
-            return false;
-        }
-
-        if ($this->options['imageSize']['height'] !== 0 && $size[1] > $this->options['imageSize']['height']) {
             return false;
         }
 
