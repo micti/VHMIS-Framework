@@ -33,7 +33,8 @@ class ValidatorChain
         'NotSame' => '\Vhmis\Validator\NotSame',
         'Array' => '\Vhmis\Validator\Arr',
         'DateTime' => '\Vhmis\Validator\DateTime',
-        'Range' => '\Vhmis\Validator\Range'
+        'Range' => '\Vhmis\Validator\Range',
+        'Upload' => '\Vhmis\Validator\Upload'
     ];
 
     /**
