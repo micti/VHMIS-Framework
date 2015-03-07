@@ -2,8 +2,11 @@
 
 namespace Vhmis\File;
 
+use Vhmis\Utils\Text;
+
 class Upload
 {
+
     /**
      * Allowed file extensions
      *
@@ -11,26 +14,26 @@ class Upload
      */
     protected $allowTypes = array(
         // Document
-        'doc'  => 'application/msword',
+        'doc' => 'application/msword',
         'docx' => 'application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'ppt'  => 'application/powerpoint',
+        'ppt' => 'application/powerpoint',
         'pptx' => 'application/powerpoint application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'xls'  => 'application/excel application/vnd.ms-excel',
+        'xls' => 'application/excel application/vnd.ms-excel',
         'xlsx' => 'application/excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'txt'  => 'text/plain',
-        'odp'  => 'application/vnd.oasis.opendocument.presentation',
-        'ods'  => 'application/vnd.oasis.opendocument.spreadsheet',
-        'odt'  => 'application/vnd.oasis.opendocument.text',
-        'pdf'  => 'application/pdf application/x-msdownload application/x-download',
+        'txt' => 'text/plain',
+        'odp' => 'application/vnd.oasis.opendocument.presentation',
+        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+        'odt' => 'application/vnd.oasis.opendocument.text',
+        'pdf' => 'application/pdf application/x-msdownload application/x-download',
         // Image
-        'jpe'  => 'image/jpeg image/pjpeg',
+        'jpe' => 'image/jpeg image/pjpeg',
         'jpeg' => 'image/jpeg image/pjpeg',
-        'jpg'  => 'image/jpeg image/pjpeg',
-        'png'  => 'image/png image/x-png',
-        'gif'  => 'image/gif',
+        'jpg' => 'image/jpeg image/pjpeg',
+        'png' => 'image/png image/x-png',
+        'gif' => 'image/gif',
         // Zip, rar
-        'zip'  => 'application/x-zip application/zip application/x-zip-compressed',
-        'rar'  => 'application/x-rar application/rar application/x-rar-compressed',
+        'zip' => 'application/x-zip application/zip application/x-zip-compressed',
+        'rar' => 'application/x-rar application/rar application/x-rar-compressed',
     );
 
     /**
@@ -50,7 +53,7 @@ class Upload
 
     public function __construct()
     {
-
+        
     }
 
     /**
@@ -332,42 +335,6 @@ class Upload
      */
     protected function cleanFilename($filename)
     {
-        // Bad characters
-        $bad = array(
-            "<!--",
-            "-->",
-            "'",
-            "<",
-            ">",
-            '"',
-            '&',
-            '$',
-            '=',
-            ';',
-            '?',
-            '/',
-            "%22", // <
-            "%3c", // <
-            "%253c", // <
-            "%3e", // >
-            "%0e", // >
-            "%28", // (
-            "%29", // )
-            "%2528", // (
-            "%26", // &
-            "%24", // $
-            "%3f", // ?
-            "%3b", // ;
-            "%3d"
-        );
-
-        // Spaces
-        $space = array("%20");
-
-        $filename = str_replace($bad, '', $filename);
-        $filename = str_replace($space, ' ', $filename);
-        $filename = preg_replace('/\s+/u', '_', $filename);
-
-        return $filename;
+        return Text::cleanFilename($filename);
     }
 }

@@ -15,6 +15,7 @@ namespace Vhmis\Utils;
  */
 class Text
 {
+
     /**
      * Random string
      *
@@ -58,8 +59,8 @@ class Text
      * Convert encoding
      *
      * @param string $string
-     * @param string $to
      * @param string $from
+     * @param string $to
      * 
      * @return string
      */
@@ -75,7 +76,47 @@ class Text
         if ($result === false) {
             return '';
         }
-        
+
         return $result;
+    }
+
+    static public function cleanFilename($filename)
+    {
+        $bad = array(
+            "<!--",
+            "-->",
+            "'",
+            "<",
+            ">",
+            '"',
+            '&',
+            '$',
+            '=',
+            ';',
+            '?',
+            '/',
+            "%22", // <
+            "%3c", // <
+            "%253c", // <
+            "%3e", // >
+            "%0e", // >
+            "%28", // (
+            "%29", // )
+            "%2528", // (
+            "%26", // &
+            "%24", // $
+            "%3f", // ?
+            "%3b", // ;
+            "%3d"
+        );
+
+        // Spaces
+        $space = array("%20");
+
+        $filename = str_replace($bad, '', $filename);
+        $filename = str_replace($space, ' ', $filename);
+        $filename = preg_replace('/\s+/u', '_', $filename);
+
+        return $filename;
     }
 }
