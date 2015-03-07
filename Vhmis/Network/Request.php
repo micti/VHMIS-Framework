@@ -272,6 +272,16 @@ class Request
 
         return 'html';
     }
+    
+    public function getPostUpload()
+    {
+        $post = $this->post;
+        $post += $this->post['_files'];
+        
+        unset($post['_files']);
+        
+        return $post;
+    }
 
     /**
      * Lấy dữ liệu của phương thức POST.
