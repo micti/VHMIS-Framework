@@ -32,7 +32,7 @@ class File
 
         if ($fix) {
             if (file_exists($destination)) {
-                $filename = time() . '_' . $filename;
+                $destination = $path . D_SPEC . time() . '_' . $filename;
             }
         }
 
