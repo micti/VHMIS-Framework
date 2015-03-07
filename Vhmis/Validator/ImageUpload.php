@@ -75,10 +75,13 @@ class ImageUpload extends Upload
         parent::init();
 
         $this->defaultOptions['type'] = [
-            'gif' => 'image/gif',
-            'jpg' => 'image/jpg image/jpeg image/jpe image/pjpeg',
-            'jpeg' => 'image/jpg image/jpeg image/jpe image/pjpeg',
-            'png' => 'image/png img/x-png'
+            'image/gif',
+            'image/jpg',
+            'image/jpeg',
+            'image/jpe',
+            'image/pjpeg',
+            'image/png',
+            'img/x-png'
         ];
     }
 }

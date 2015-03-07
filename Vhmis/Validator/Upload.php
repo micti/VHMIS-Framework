@@ -19,7 +19,6 @@ class Upload extends ValidatorAbstract
     /**
      * Error code : PHP upload error code.
      */
-    const E_NOT_VALID_TYPE = 'validator_datetime_not_valid_type';
     const E_PHPE_INI_SIZE = 'validator_upload_phpe_ini_size';
     const E_PHPE_FORM_SIZE = 'validator_upload_phpe_form_size';
     const E_PHPE_PARTIAL = 'validator_upload_phpe_partial';
@@ -37,6 +36,11 @@ class Upload extends ValidatorAbstract
      * Error code : Uknown error
      */
     const E_NO_UPLOADED_FILE = 'validator_upload_no_uploaded_file';
+    
+    /**
+     * Error code : Not valid type
+     */
+    const E_NOT_VALID_TYPE = 'validator_upload_not_valid_type';
 
     /**
      * Error messages
@@ -52,7 +56,8 @@ class Upload extends ValidatorAbstract
         self::E_PHPE_CANT_WRITE => 'Failed to write uploaded file to disk',
         self::E_PHPE_EXTENSION => 'Uploaded file was stopped by extension',
         self::E_UNKNOWN => 'Uknown upload error',
-        self::E_NO_UPLOADED_FILE => 'No uploaded file'
+        self::E_NO_UPLOADED_FILE => 'No uploaded file',
+        self::E_NOT_VALID_TYPE => 'Uploaded file has not valid type'
     ];
 
     /**
@@ -66,7 +71,7 @@ class Upload extends ValidatorAbstract
     {
         $this->value = $value;
 
-        if (!$this->isValidUploadFile($value['tpm_name'], $value['error'])) {
+        if (!$this->isValidUploadFile($value['tmp_name'], $value['error'])) {
             return false;
         }
 
@@ -74,14 +79,14 @@ class Upload extends ValidatorAbstract
             return false;
         }
 
-        if (!$this->isValidFileType($value['ext'], $value['type'])) {
+        if (!$this->isValidFileType($value['type'])) {
             return false;
         }
 
         $this->standardValue = [
             'name' => $value['name'],
             'type' => $value['type'],
-            'path' => $value['tpm_name'],
+            'path' => $value['tmp_name'],
             'size' => $value['size']
         ];
 
@@ -141,28 +146,18 @@ class Upload extends ValidatorAbstract
         return false;
     }
 
-    protected function isValidFileType($ext, $mine)
+    protected function isValidFileType($mine)
     {
-        $ext = strtolower($ext);
         $mine = strtolower($mine);
 
-        // Allow all
-        if (isset($this->options['type']['*'])) {
-            return true;
-        }
-
-        // Not valid ext
-        if (!isset($this->options['type'][$ext])) {
-            return false;
-        }
-
         // Allow all mines
-        if ($this->options['type'][$ext] === '*') {
+        if ($this->options['type'] === []) {
             return true;
         }
 
         // Not valid mine
-        if (strpos($this->options['type'][$ext], $mine) === false) {
+        if (!in_array($mine, $this->options['type'])) {
+            $this->setError(static::E_NOT_VALID_TYPE);
             return false;
         }
 
@@ -178,9 +173,7 @@ class Upload extends ValidatorAbstract
     {
         $this->defaultOptions = [
             'maxsize' => 0,
-            'type' => [
-                '*' => '*' // allow all
-            ]
+            'type' => []
         ];
     }
 }
