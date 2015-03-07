@@ -97,4 +97,14 @@ class Form extends FieldSet
     {
         return $this->getValidatorChain()->getStandardValues();
     }
+    
+    public function getErrorCode()
+    {
+        return $this->getValidatorChain()->getNotValidCode();
+    }
+    
+    public function getErrorMessage()
+    {
+        return $this->getValidatorChain()->getNotValidMessage();
+    }
 }
