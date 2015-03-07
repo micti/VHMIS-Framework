@@ -10,6 +10,8 @@
 
 namespace Vhmis\Validator;
 
+use Vhmis\Utils\File;
+
 /**
  * DateTime validator.
  */
@@ -78,6 +80,8 @@ class Upload extends ValidatorAbstract
         if (!$this->isValidSize($value['size'])) {
             return false;
         }
+        
+        $value['type'] = File::getFileType($value['tmp_name']);
 
         if (!$this->isValidFileType($value['type'])) {
             return false;
@@ -87,6 +91,7 @@ class Upload extends ValidatorAbstract
             'name' => $value['name'],
             'type' => $value['type'],
             'path' => $value['tmp_name'],
+            'ext' => File::getFileExt($value['name']),
             'size' => $value['size']
         ];
 
@@ -146,17 +151,15 @@ class Upload extends ValidatorAbstract
         return false;
     }
 
-    protected function isValidFileType($mine)
+    protected function isValidFileType($type)
     {
-        $mine = strtolower($mine);
-
         // Allow all mines
         if ($this->options['type'] === []) {
             return true;
         }
 
         // Not valid mine
-        if (!in_array($mine, $this->options['type'])) {
+        if (!in_array($type, $this->options['type'])) {
             $this->setError(static::E_NOT_VALID_TYPE);
             return false;
         }
