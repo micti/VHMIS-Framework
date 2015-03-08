@@ -134,7 +134,6 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         $this->repeatRule->reset()->setBaseDate($this->date)->setRepeatBy(6)
             ->setType('relative_day')
             ->setRepeatTimes(2)->setFrequency(2);
-        var_dump($this->repeatRule->getInfo());
         $this->monthRepeat->setRule($this->repeatRule);
         $this->assertEquals('2014-07-26', $this->monthRepeat->endDate());
     }
