@@ -54,7 +54,7 @@ class Parser
             $exps[0] = str_replace($key, $value, $exps[0]);
         }
 
-        eval('$value = ' . trim($exps[0]) . ';');
+        $value = static::calculateSimpleMath($exps[0]);
 
         $list = trim($exps[1]);
 
@@ -177,5 +177,29 @@ class Parser
             'f' => $f,
             't' => $t
         ];
+    }
+    
+    /**
+     * Calculate simple math
+     * 
+     * 4, 4 % 3 ...
+     * 
+     * @param string $math
+     * 
+     * @return int
+     */    
+    protected static function calculateSimpleMath($math)
+    {
+        $parts = explode(' ', trim($math));
+        
+        if (count($parts) !== 3) {
+            return (int) $parts[0];
+        }
+        
+        if ($parts[1] === '%') {
+            return (int) $parts[0] % (int) $parts[2];
+        }
+        
+        return (int) $parts[0];
     }
 }
