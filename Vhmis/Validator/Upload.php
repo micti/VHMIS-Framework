@@ -38,7 +38,7 @@ class Upload extends ValidatorAbstract
      * Error code : Uknown error
      */
     const E_NO_UPLOADED_FILE = 'validator_upload_no_uploaded_file';
-    
+
     /**
      * Error code : Not valid type
      */
@@ -80,7 +80,7 @@ class Upload extends ValidatorAbstract
         if (!$this->isValidSize($value['size'])) {
             return false;
         }
-        
+
         $value['type'] = File::getFileType($value['tmp_name']);
 
         if (!$this->isValidFileType($value['type'])) {

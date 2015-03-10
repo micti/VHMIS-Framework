@@ -1,61 +1,93 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace Vhmis\I18n\Translator;
 
 class Translator
 {
-    protected $locale;
-
-    protected $dictionary;
 
     /**
+     * Resource of translated messages
      *
-     * @param type $locale
+     * @var array
      */
-    public function setLocale($locale)
+    protected $resource;
+
+    /**
+     * Resource loader
+     *
+     * @var Loader\LoaderInterface
+     */
+    protected $loader;
+
+    /**
+     * Set loader.
+     *
+     * @param Loader\FileLoaderInterface $loader
+     *
+     * @return Translator
+     */
+    public function setLoader(Loader\FileLoaderInterface $loader)
     {
-        $this->locale = $locale;
+        $this->loader = $loader;
+
+        return $this;
     }
 
     /**
-     * Translate
+     * Get locale.
      *
-     * @param type $message
-     * @param type $textdomain
-     * @param type $locale
-     * @return type
+     * @param string $locale
+     *
+     * @return string
      */
-    public function translate($message, $textdomain, $locale)
+    public function getLocale($locale)
     {
-        if(!isset($this->dictionary[$locale][$textdomain][$message])) {
+        return (!is_string($locale) || $locale === '') ? \Locale::getDefault() : $locale;
+    }
+
+    /**
+     * Translate.
+     *
+     * @param string $message
+     * @param string $textdomain
+     * @param string $locale
+     *
+     * @return string
+     */
+    public function translate($message, $textdomain = 'Default', $locale = '')
+    {
+        $locale = $this->getLocale($locale);
+
+        $messages = $this->getTranslatedMessages($locale, $textdomain);
+        if (!isset($messages[$message])) {
             return $message;
         }
 
-        return $this->dictionary[$locale][$textdomain][$message];
+        return $messages[$message];
     }
 
     /**
-     * Tên ngắn gọn để gọi translate
+     * Get resource messages.
      *
-     * @param type $message
-     * @param type $textdomain
-     * @param type $locale
-     * @return type
+     * @param string $locale
+     * @param string $textdomain
+     *
+     * @return array
      */
-    public function __($message, $textdomain, $locale)
+    protected function getTranslatedMessages($locale, $textdomain)
     {
-        return $this->translate($message, $textdomain, $locale);
-    }
+        if (!isset($this->resource[$locale][$textdomain])) {
+            $this->resource[$locale][$textdomain] = $this->loader->load($locale, $textdomain);
+        }
 
-    /**
-     * Tên ngắn gọn để xuất translate
-     *
-     * @param type $message
-     * @param type $textdomain
-     * @param type $locale
-     */
-    public function _e($message, $textdomain, $locale)
-    {
-        echo $this->translate($message, $textdomain, $locale);
+        return $this->resource[$locale][$textdomain];
     }
 }
