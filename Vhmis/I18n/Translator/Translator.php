@@ -23,7 +23,7 @@ class Translator
     /**
      * Resource loader
      *
-     * @var Loader\LoaderInterface
+     * @var Loader\FileLoaderInterface
      */
     protected $loader;
 
