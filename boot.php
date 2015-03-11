@@ -11,28 +11,14 @@
  */
 
 /**
- * DÀNH CHO BẢN ĐANG PHÁT TRIỂN, hiện thị tất cả các lỗi
- */
-error_reporting(E_ALL | E_NOTICE);
-
-/**
- * DÀNH CHO BẢN SỬ DỤNG, tắt các hiển thị lỗi
- */
-// error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
-/**
  * Thiết lập các đường dẫn, đường dẫn require
  */
 define('D_SPEC', DIRECTORY_SEPARATOR);
-define('P_SPEC', PATH_SEPARATOR);
 
 define('VHMIS_LIBS_PATH', VHMIS_PATH . D_SPEC . 'Libs');
 define('VHMIS_CORE_PATH', VHMIS_PATH . D_SPEC . 'Vhmis');
 define('VHMIS_APPS_PATH', VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Apps');
 define('VHMIS_SYS_CONF_PATH', VHMIS_SYS_PATH . D_SPEC . SYSTEM . D_SPEC . 'Config');
-
-// Một số thư viện
-set_include_path(VHMIS_LIBS_PATH . D_SPEC . P_SPEC . get_include_path());
 
 // Autoload
 include 'autoload.php';
