@@ -66,8 +66,8 @@ class Resource
             return;
         }
 
-        if (is_readable(__DIR__ . D_SPEC . $supplemental . '.php')) {
-            $data = include $supplemental . '.php';
+        if (is_readable(__DIR__ . D_SPEC . 'Data' . D_SPEC . $supplemental . '.php')) {
+            $data = include 'Data' . D_SPEC . $supplemental . '.php';
         }
 
         static::$i18nData[$supplemental] = $data;
@@ -95,13 +95,13 @@ class Resource
         $data = array();
 
         /** pls check * */
-        if (is_readable(__DIR__ . D_SPEC . $locale . D_SPEC . static::$main[$field] . '.php')) {
-            $data = include $locale . D_SPEC . static::$main[$field] . '.php';
+        if (is_readable(__DIR__ . D_SPEC . 'Data' . D_SPEC . $locale . D_SPEC . static::$main[$field] . '.php')) {
+            $data = include 'Data' . D_SPEC . $locale . D_SPEC . static::$main[$field] . '.php';
         }
 
         /** pls check * */
-        if (is_readable(__DIR__ . D_SPEC . $lang . D_SPEC . static::$main[$field] . '.php')) {
-            $data = $data + include $lang . D_SPEC . static::$main[$field] . '.php';
+        if (is_readable(__DIR__ . D_SPEC . 'Data' . D_SPEC . $lang . D_SPEC . static::$main[$field] . '.php')) {
+            $data = $data + include 'Data' . $lang . D_SPEC . static::$main[$field] . '.php';
         }
 
         if ($field === 'gregorian') {
