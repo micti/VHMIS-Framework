@@ -1,11 +1,13 @@
 <?php
-$data = array(
-    'numbers' => array(
+
+$data = [
+    'numbers' => [
         'defaultNumberingSystem' => 'latn',
-        'otherNumberingSystems' => array(
-            'native' => 'latn'
-        ),
-        'symbols-numberSystem-latn' => array(
+        'otherNumberingSystems' => [
+            'native' => 'latn',
+        ],
+        'minimumGroupingDigits' => '1',
+        'symbols-numberSystem-latn' => [
             'decimal' => '.',
             'group' => ',',
             'list' => ';',
@@ -13,18 +15,16 @@ $data = array(
             'plusSign' => '+',
             'minusSign' => '-',
             'exponential' => 'E',
+            'superscriptingExponent' => '×',
             'perMille' => '‰',
             'infinity' => '∞',
-            'nan' => 'NaN'
-        ),
-        'decimalFormats-numberSystem-latn' => array(
-            'standard' => array(
-                'decimalFormat' => array(
-                    'pattern' => '#,##0.###'
-                )
-            ),
-            'long' => array(
-                'decimalFormat' => array(
+            'nan' => 'NaN',
+            'timeSeparator' => ':',
+        ],
+        'decimalFormats-numberSystem-latn' => [
+            'standard' => '#,##0.###',
+            'long' => [
+                'decimalFormat' => [
                     '1000-count-one' => '0 thousand',
                     '1000-count-other' => '0 thousand',
                     '10000-count-one' => '00 thousand',
@@ -48,11 +48,11 @@ $data = array(
                     '10000000000000-count-one' => '00 trillion',
                     '10000000000000-count-other' => '00 trillion',
                     '100000000000000-count-one' => '000 trillion',
-                    '100000000000000-count-other' => '000 trillion'
-                )
-            ),
-            'short' => array(
-                'decimalFormat' => array(
+                    '100000000000000-count-other' => '000 trillion',
+                ],
+            ],
+            'short' => [
+                'decimalFormat' => [
                     '1000-count-one' => '0K',
                     '1000-count-other' => '0K',
                     '10000-count-one' => '00K',
@@ -76,46 +76,39 @@ $data = array(
                     '10000000000000-count-one' => '00T',
                     '10000000000000-count-other' => '00T',
                     '100000000000000-count-one' => '000T',
-                    '100000000000000-count-other' => '000T'
-                )
-            )
-        ),
-        'scientificFormats-numberSystem-latn' => array(
-            'standard' => array(
-                'scientificFormat' => array(
-                    'pattern' => '#E0'
-                )
-            )
-        ),
-        'percentFormats-numberSystem-latn' => array(
-            'standard' => array(
-                'percentFormat' => array(
-                    'pattern' => '#,##0%'
-                )
-            )
-        ),
-        'currencyFormats-numberSystem-latn' => array(
-            'currencySpacing' => array(
-                'beforeCurrency' => array(
+                    '100000000000000-count-other' => '000T',
+                ],
+            ],
+        ],
+        'scientificFormats-numberSystem-latn' => [
+            'standard' => '#E0',
+        ],
+        'percentFormats-numberSystem-latn' => [
+            'standard' => '#,##0%',
+        ],
+        'currencyFormats-numberSystem-latn' => [
+            'currencySpacing' => [
+                'beforeCurrency' => [
                     'currencyMatch' => '[:^S:]',
                     'surroundingMatch' => '[:digit:]',
-                    'insertBetween' => ' '
-                ),
-                'afterCurrency' => array(
+                    'insertBetween' => ' ',
+                ],
+                'afterCurrency' => [
                     'currencyMatch' => '[:^S:]',
                     'surroundingMatch' => '[:digit:]',
-                    'insertBetween' => ' '
-                )
-            ),
-            'standard' => array(
-                'currencyFormat' => array(
-                    'pattern' => '¤#,##0.00;(¤#,##0.00)'
-                )
-            ),
+                    'insertBetween' => ' ',
+                ],
+            ],
+            'accounting' => '¤#,##0.00;(¤#,##0.00]',
+            'standard' => '¤#,##0.00',
             'unitPattern-count-one' => '{0} {1}',
-            'unitPattern-count-other' => '{0} {1}'
-        )
-    )
-);
+            'unitPattern-count-other' => '{0} {1}',
+        ],
+        'miscPatterns-numberSystem-latn' => [
+            'atLeast' => '{0}+',
+            'range' => '{0}–{1}',
+        ],
+    ],
+];
 
 return $data;

@@ -1,11 +1,12 @@
 <?php
-$data = array(
-    'dates' => array(
-        'calendars' => array(
-            'gregorian' => array(
-                'months' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+
+$data = [
+    'dates' => [
+        'calendars' => [
+            'gregorian' => [
+                'months' => [
+                    'format' => [
+                        'abbreviated' => [
                             1 => '1월',
                             2 => '2월',
                             3 => '3월',
@@ -17,9 +18,9 @@ $data = array(
                             9 => '9월',
                             10 => '10월',
                             11 => '11월',
-                            12 => '12월'
-                        ),
-                        'narrow' => array(
+                            12 => '12월',
+                        ],
+                        'narrow' => [
                             1 => '1월',
                             2 => '2월',
                             3 => '3월',
@@ -31,9 +32,9 @@ $data = array(
                             9 => '9월',
                             10 => '10월',
                             11 => '11월',
-                            12 => '12월'
-                        ),
-                        'wide' => array(
+                            12 => '12월',
+                        ],
+                        'wide' => [
                             1 => '1월',
                             2 => '2월',
                             3 => '3월',
@@ -45,11 +46,11 @@ $data = array(
                             9 => '9월',
                             10 => '10월',
                             11 => '11월',
-                            12 => '12월'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
+                            12 => '12월',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
                             1 => '1월',
                             2 => '2월',
                             3 => '3월',
@@ -61,9 +62,9 @@ $data = array(
                             9 => '9월',
                             10 => '10월',
                             11 => '11월',
-                            12 => '12월'
-                        ),
-                        'narrow' => array(
+                            12 => '12월',
+                        ],
+                        'narrow' => [
                             1 => '1월',
                             2 => '2월',
                             3 => '3월',
@@ -75,9 +76,9 @@ $data = array(
                             9 => '9월',
                             10 => '10월',
                             11 => '11월',
-                            12 => '12월'
-                        ),
-                        'wide' => array(
+                            12 => '12월',
+                        ],
+                        'wide' => [
                             1 => '1월',
                             2 => '2월',
                             3 => '3월',
@@ -89,359 +90,367 @@ $data = array(
                             9 => '9월',
                             10 => '10월',
                             11 => '11월',
-                            12 => '12월'
-                        )
-                    )
-                ),
-                'days' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+                            12 => '12월',
+                        ],
+                    ],
+                ],
+                'days' => [
+                    'format' => [
+                        'abbreviated' => [
                             'sun' => '일',
                             'mon' => '월',
                             'tue' => '화',
                             'wed' => '수',
                             'thu' => '목',
                             'fri' => '금',
-                            'sat' => '토'
-                        ),
-                        'narrow' => array(
+                            'sat' => '토',
+                        ],
+                        'narrow' => [
                             'sun' => '일',
                             'mon' => '월',
                             'tue' => '화',
                             'wed' => '수',
                             'thu' => '목',
                             'fri' => '금',
-                            'sat' => '토'
-                        ),
-                        'short' => array(
+                            'sat' => '토',
+                        ],
+                        'short' => [
                             'sun' => '일',
                             'mon' => '월',
                             'tue' => '화',
                             'wed' => '수',
                             'thu' => '목',
                             'fri' => '금',
-                            'sat' => '토'
-                        ),
-                        'wide' => array(
+                            'sat' => '토',
+                        ],
+                        'wide' => [
                             'sun' => '일요일',
                             'mon' => '월요일',
                             'tue' => '화요일',
                             'wed' => '수요일',
                             'thu' => '목요일',
                             'fri' => '금요일',
-                            'sat' => '토요일'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
+                            'sat' => '토요일',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
                             'sun' => '일',
                             'mon' => '월',
                             'tue' => '화',
                             'wed' => '수',
                             'thu' => '목',
                             'fri' => '금',
-                            'sat' => '토'
-                        ),
-                        'narrow' => array(
+                            'sat' => '토',
+                        ],
+                        'narrow' => [
                             'sun' => '일',
                             'mon' => '월',
                             'tue' => '화',
                             'wed' => '수',
                             'thu' => '목',
                             'fri' => '금',
-                            'sat' => '토'
-                        ),
-                        'short' => array(
+                            'sat' => '토',
+                        ],
+                        'short' => [
                             'sun' => '일',
                             'mon' => '월',
                             'tue' => '화',
                             'wed' => '수',
                             'thu' => '목',
                             'fri' => '금',
-                            'sat' => '토'
-                        ),
-                        'wide' => array(
+                            'sat' => '토',
+                        ],
+                        'wide' => [
                             'sun' => '일요일',
                             'mon' => '월요일',
                             'tue' => '화요일',
                             'wed' => '수요일',
                             'thu' => '목요일',
                             'fri' => '금요일',
-                            'sat' => '토요일'
-                        )
-                    )
-                ),
-                'quarters' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+                            'sat' => '토요일',
+                        ],
+                    ],
+                ],
+                'quarters' => [
+                    'format' => [
+                        'abbreviated' => [
                             1 => '1분기',
                             2 => '2분기',
                             3 => '3분기',
-                            4 => '4분기'
-                        ),
-                        'narrow' => array(
+                            4 => '4분기',
+                        ],
+                        'narrow' => [
                             1 => '1',
                             2 => '2',
                             3 => '3',
-                            4 => '4'
-                        ),
-                        'wide' => array(
+                            4 => '4',
+                        ],
+                        'wide' => [
                             1 => '제 1/4분기',
                             2 => '제 2/4분기',
                             3 => '제 3/4분기',
-                            4 => '제 4/4분기'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
+                            4 => '제 4/4분기',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
                             1 => '1분기',
                             2 => '2분기',
                             3 => '3분기',
-                            4 => '4분기'
-                        ),
-                        'narrow' => array(
+                            4 => '4분기',
+                        ],
+                        'narrow' => [
                             1 => '1',
                             2 => '2',
                             3 => '3',
-                            4 => '4'
-                        ),
-                        'wide' => array(
+                            4 => '4',
+                        ],
+                        'wide' => [
                             1 => '제 1/4분기',
                             2 => '제 2/4분기',
                             3 => '제 3/4분기',
-                            4 => '제 4/4분기'
-                        )
-                    )
-                ),
-                'dayPeriods' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+                            4 => '제 4/4분기',
+                        ],
+                    ],
+                ],
+                'dayPeriods' => [
+                    'format' => [
+                        'abbreviated' => [
                             'am' => '오전',
-                            'pm' => '오후'
-                        ),
-                        'narrow' => array(
+                            'noon' => '정오',
+                            'pm' => '오후',
+                        ],
+                        'narrow' => [
                             'am' => '오전',
-                            'pm' => '오후'
-                        ),
-                        'wide' => array(
+                            'noon' => '정오',
+                            'pm' => '오후',
+                        ],
+                        'wide' => [
                             'am' => '오전',
-                            'pm' => '오후'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
+                            'noon' => '정오',
+                            'pm' => '오후',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
                             'am' => '오전',
-                            'pm' => '오후'
-                        ),
-                        'narrow' => array(
+                            'noon' => '정오',
+                            'pm' => '오후',
+                        ],
+                        'narrow' => [
                             'am' => '오전',
-                            'pm' => '오후'
-                        ),
-                        'wide' => array(
+                            'noon' => '정오',
+                            'pm' => '오후',
+                        ],
+                        'wide' => [
                             'am' => '오전',
-                            'pm' => '오후'
-                        )
-                    )
-                ),
-                'eras' => array(
-                    'eraNames' => array(
-                        0 => '서력기원전',
-                        1 => '서력기원'
-                    ),
-                    'eraAbbr' => array(
+                            'noon' => '정오',
+                            'pm' => '오후',
+                        ],
+                    ],
+                ],
+                'eras' => [
+                    'eraNames' => [
                         0 => '기원전',
-                        1 => '서기'
-                    ),
-                    'eraNarrow' => array(
+                        '0-alt-variant' => 'BCE',
+                        1 => '서기',
+                        '1-alt-variant' => 'CE',
+                    ],
+                    'eraAbbr' => [
                         0 => '기원전',
-                        1 => '서기'
-                    )
-                ),
-                'dateFormats' => array(
+                        '0-alt-variant' => 'BCE',
+                        1 => '서기',
+                        '1-alt-variant' => 'CE',
+                    ],
+                    'eraNarrow' => [
+                        0 => '기원전',
+                        '0-alt-variant' => 'BCE',
+                        1 => '서기',
+                        '1-alt-variant' => 'CE',
+                    ],
+                ],
+                'dateFormats' => [
                     'full' => 'y년 M월 d일 EEEE',
                     'long' => 'y년 M월 d일',
                     'medium' => 'y. M. d.',
-                    'short' => 'yy. M. d.'
-                ),
-                'timeFormats' => array(
+                    'short' => 'yy. M. d.',
+                ],
+                'timeFormats' => [
                     'full' => 'a h시 m분 s초 zzzz',
                     'long' => 'a h시 m분 s초 z',
                     'medium' => 'a h:mm:ss',
-                    'short' => 'a h:mm'
-                ),
-                'dateTimeFormats' => array(
+                    'short' => 'a h:mm',
+                ],
+                'dateTimeFormats' => [
                     'full' => '{1} {0}',
                     'long' => '{1} {0}',
                     'medium' => '{1} {0}',
                     'short' => '{1} {0}',
-                    'availableFormats' => array(
-                        'd' => 'd일',
-                        'Ed' => 'd일 (E)',
+                    'availableFormats' => [
+                        'E' => 'ccc',
                         'EEEEd' => 'd일 EEEE',
+                        'EHm' => '(E] HH:mm',
+                        'EHms' => '(E] HH:mm:ss',
+                        'Ed' => 'd일 (E]',
+                        'Ehm' => '(E] a h:mm',
+                        'Ehms' => '(E] a h:mm:ss',
                         'Gy' => 'G y년',
                         'GyMMM' => 'G y년 MMM',
-                        'GyMMMd' => 'G y년 MMM d일',
-                        'GyMMMEd' => 'G y년 MMM d일 (E)',
                         'GyMMMEEEEd' => 'G y년 MMM d일 EEEE',
-                        'h' => 'a h시',
+                        'GyMMMEd' => 'G y년 MMM d일 (E]',
+                        'GyMMMd' => 'G y년 MMM d일',
                         'H' => 'H시',
                         'HHmmss' => 'HH:mm:ss',
-                        'hm' => 'a h:mm',
                         'Hm' => 'HH:mm',
-                        'hms' => 'a h:mm:ss',
                         'Hms' => 'H시 m분 s초',
                         'M' => 'M월',
-                        'Md' => 'M. d.',
-                        'MEd' => 'M. d. (E)',
                         'MEEEEd' => 'M. d. EEEE',
+                        'MEd' => 'M. d. (E]',
                         'MMM' => 'LLL',
-                        'MMMd' => 'MMM d일',
-                        'MMMEd' => 'MMM d일 (E)',
                         'MMMEEEEd' => 'MMM d일 EEEE',
+                        'MMMEd' => 'MMM d일 (E]',
+                        'MMMd' => 'MMM d일',
+                        'Md' => 'M. d.',
+                        'd' => 'd일',
+                        'h' => 'a h시',
+                        'hm' => 'a h:mm',
+                        'hms' => 'a h:mm:ss',
                         'mmss' => 'mm:ss',
                         'ms' => 'mm:ss',
                         'y' => 'y년',
                         'yM' => 'y. M.',
-                        'yMd' => 'y. M. d.',
-                        'yMEd' => 'y. M. d. (E)',
                         'yMEEEEd' => 'y. M. d. EEEE',
+                        'yMEd' => 'y. M. d. (E]',
                         'yMM' => 'y. M.',
                         'yMMM' => 'y년 MMM',
-                        'yMMMd' => 'y년 MMM d일',
-                        'yMMMEd' => 'y년 MMM d일 (E)',
                         'yMMMEEEEd' => 'y년 MMM d일 EEEE',
+                        'yMMMEd' => 'y년 MMM d일 (E]',
+                        'yMMMd' => 'y년 MMM d일',
+                        'yMd' => 'y. M. d.',
                         'yQQQ' => 'y년 QQQ',
-                        'yQQQQ' => 'y년 QQQQ'
-                    ),
-                    'appendItems' => array(
-                        'Day' => '{0} ({2}: {1})',
+                        'yQQQQ' => 'y년 QQQQ',
+                    ],
+                    'appendItems' => [
+                        'Day' => '{0} ({2}: {1}]',
                         'Day-Of-Week' => '{0} {1}',
                         'Era' => '{1} {0}',
-                        'Hour' => '{0} ({2}: {1})',
-                        'Minute' => '{0} ({2}: {1})',
-                        'Month' => '{0} ({2}: {1})',
-                        'Quarter' => '{0} ({2}: {1})',
-                        'Second' => '{0} ({2}: {1})',
+                        'Hour' => '{0} ({2}: {1}]',
+                        'Minute' => '{0} ({2}: {1}]',
+                        'Month' => '{0} ({2}: {1}]',
+                        'Quarter' => '{0} ({2}: {1}]',
+                        'Second' => '{0} ({2}: {1}]',
                         'Timezone' => '{0} {1}',
-                        'Week' => '{0} ({2}: {1})',
-                        'Year' => '{1} {0}'
-                    ),
-                    'intervalFormats' => array(
+                        'Week' => '{0} ({2}: {1}]',
+                        'Year' => '{1} {0}',
+                    ],
+                    'intervalFormats' => [
                         'intervalFormatFallback' => '{0} ~ {1}',
-                        'd' => array(
-                            'd' => 'd일 ~ d일'
-                        ),
-                        'h' => array(
+                        'H' => [
+                            'H' => 'H ~ H시',
+                        ],
+                        'Hm' => [
+                            'H' => 'HH:mm ~ HH:mm',
+                            'm' => 'HH:mm ~ HH:mm',
+                        ],
+                        'Hmv' => [
+                            'H' => 'HH:mm ~ HH:mm v',
+                            'm' => 'HH:mm ~ HH:mm v',
+                        ],
+                        'Hv' => [
+                            'H' => 'HH ~ HH시 v',
+                        ],
+                        'M' => [
+                            'M' => 'M월~M월',
+                        ],
+                        'MEd' => [
+                            'M' => 'M. d (E] ~ M. d (E]',
+                            'd' => 'M. d (E] ~ M. d (E]',
+                        ],
+                        'MMM' => [
+                            'M' => 'MMM~MMM',
+                        ],
+                        'MMMEd' => [
+                            'M' => 'M월 d일 (E] ~ M월 d일 (E]',
+                            'd' => 'M월 d일 (E] ~ d일 (E]',
+                        ],
+                        'MMMM' => [
+                            'M' => 'LLLL-LLLL',
+                        ],
+                        'MMMd' => [
+                            'M' => 'M월 d일 ~ M월 d일',
+                            'd' => 'MMM d일~d일',
+                        ],
+                        'Md' => [
+                            'M' => 'M. d ~ M. d',
+                            'd' => 'M. d ~ M. d',
+                        ],
+                        'd' => [
+                            'd' => 'd일~d일',
+                        ],
+                        'h' => [
                             'a' => 'a h시 ~ a h시',
-                            'h' => 'a h시 ~ h시'
-                        ),
-                        'H' => array(
-                            'H' => 'HH ~ HH시'
-                        ),
-                        'hm' => array(
+                            'h' => 'a h시 ~ h시',
+                        ],
+                        'hm' => [
                             'a' => 'a h:mm ~ a h:mm',
                             'h' => 'a h:mm~h:mm',
-                            'm' => 'a h:mm~h:mm'
-                        ),
-                        'Hm' => array(
-                            'H' => 'HH:mm ~ HH:mm',
-                            'm' => 'HH:mm ~ HH:mm'
-                        ),
-                        'hmv' => array(
+                            'm' => 'a h:mm~h:mm',
+                        ],
+                        'hmv' => [
                             'a' => 'a h:mm ~ a h:mm v',
                             'h' => 'a h:mm~h:mm v',
-                            'm' => 'a h:mm~h:mm v'
-                        ),
-                        'Hmv' => array(
-                            'H' => 'HH:mm ~ HH:mm v',
-                            'm' => 'HH:mm ~ HH:mm v'
-                        ),
-                        'hv' => array(
-                            'a' => 'a h시 ~ a h시(v)',
-                            'h' => 'a h시 ~ h시(v)'
-                        ),
-                        'Hv' => array(
-                            'H' => 'HH ~ HH시 v'
-                        ),
-                        'M' => array(
-                            'M' => 'M월 ~ M월'
-                        ),
-                        'Md' => array(
-                            'd' => 'M. d ~ M. d',
-                            'M' => 'M. d ~ M. d'
-                        ),
-                        'MEd' => array(
-                            'd' => 'M. d (E) ~ M. d (E)',
-                            'M' => 'M. d (E) ~ M. d (E)'
-                        ),
-                        'MMM' => array(
-                            'M' => 'MMM ~ MMM'
-                        ),
-                        'MMMd' => array(
-                            'd' => 'M월 d일 ~ d일',
-                            'M' => 'M월 d일 ~ M월 d일'
-                        ),
-                        'MMMEd' => array(
-                            'd' => 'M월 d일 (E) ~ d일 (E)',
-                            'M' => 'M월 d일 (E) ~ M월 d일 (E)'
-                        ),
-                        'MMMM' => array(
-                            'M' => 'LLLL-LLLL'
-                        ),
-                        'y' => array(
-                            'y' => 'y년 ~ y년'
-                        ),
-                        'yM' => array(
+                            'm' => 'a h:mm~h:mm v',
+                        ],
+                        'hv' => [
+                            'a' => 'a h시 ~ a h시(v]',
+                            'h' => 'a h시 ~ h시(v]',
+                        ],
+                        'y' => [
+                            'y' => 'y년 ~ y년',
+                        ],
+                        'yM' => [
                             'M' => 'y. M ~ y. M',
-                            'y' => 'y. M ~ y. M'
-                        ),
-                        'yMd' => array(
-                            'd' => 'y. M. d. ~ y. M. d.',
-                            'M' => 'y. M. d. ~ y. M. d.',
-                            'y' => 'y. M. d. ~ y. M. d.'
-                        ),
-                        'yMEd' => array(
-                            'd' => 'y. M. d. (E) ~ y. M. d. (E)',
-                            'M' => 'y. M. d. (E) ~ y. M. d. (E)',
-                            'y' => 'y. M. d. (E) ~ y. M. d. (E)'
-                        ),
-                        'yMMM' => array(
+                            'y' => 'y. M ~ y. M',
+                        ],
+                        'yMEd' => [
+                            'M' => 'y. M. d. (E] ~ y. M. d. (E]',
+                            'd' => 'y. M. d. (E] ~ y. M. d. (E]',
+                            'y' => 'y. M. d. (E] ~ y. M. d. (E]',
+                        ],
+                        'yMMM' => [
                             'M' => 'y년 M월~M월',
-                            'y' => 'y년 M월 ~ y년 M월'
-                        ),
-                        'yMMMd' => array(
-                            'd' => 'y년 M월 d일~d일',
-                            'M' => 'y년 M월 d일 ~ M월 d일',
-                            'y' => 'y년 M월 d일 ~ y년 M월 d일'
-                        ),
-                        'yMMMEd' => array(
-                            'd' => 'y년 M월 d일 (E) ~ d일 (E)',
-                            'M' => 'y년 M월 d일 (E) ~ M월 d일 (E)',
-                            'y' => 'y년 M월 d일 (E) ~ y년 M월 d일 (E)'
-                        ),
-                        'yMMMEEEEd' => array(
-                            'd' => 'y년 M월 d일 EEEE ~ d일 EEEE',
+                            'y' => 'y년 M월 ~ y년 M월',
+                        ],
+                        'yMMMEEEEd' => [
                             'M' => 'y년 M월 d일 EEEE ~ M월 d일 EEEE',
-                            'y' => 'y년 M월 d일 EEEE ~ y년 M월 d일 EEEE'
-                        ),
-                        'yMMMM' => array(
-                            'M' => 'y년 MM월 ~ MM월',
-                            'y' => 'y년 MM월 ~ y년 MM월'
-                        )
-                    )
-                ),
-                'fields' => array(
-                    'day' => array(
-                        -2 => 'The day before yesterday',
-                        -1 => 'Yesterday',
-                        0 => 'Today',
-                        1 => 'Tomorrow',
-                        2 => 'The day after tomorrow'
-                    )
-                )
-            )
-        )
-    )
-);
+                            'd' => 'y년 M월 d일 EEEE ~ d일 EEEE',
+                            'y' => 'y년 M월 d일 EEEE ~ y년 M월 d일 EEEE',
+                        ],
+                        'yMMMEd' => [
+                            'M' => 'y년 M월 d일 (E] ~ M월 d일 (E]',
+                            'd' => 'y년 M월 d일 (E] ~ d일 (E]',
+                            'y' => 'y년 M월 d일 (E] ~ y년 M월 d일 (E]',
+                        ],
+                        'yMMMM' => [
+                            'M' => 'y년 MMMM ~ MMMM',
+                            'y' => 'y년 MMMM ~ y년 MMMM',
+                        ],
+                        'yMMMd' => [
+                            'M' => 'y년 M월 d일 ~ M월 d일',
+                            'd' => 'y년 M월 d일~d일',
+                            'y' => 'y년 M월 d일 ~ y년 M월 d일',
+                        ],
+                        'yMd' => [
+                            'M' => 'y. M. d. ~ y. M. d.',
+                            'd' => 'y. M. d. ~ y. M. d.',
+                            'y' => 'y. M. d. ~ y. M. d.',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
 
 return $data;

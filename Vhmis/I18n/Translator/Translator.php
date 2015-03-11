@@ -10,6 +10,8 @@
 
 namespace Vhmis\I18n\Translator;
 
+use Vhmis\I18n\Plural\Plural;
+
 class Translator
 {
 
@@ -72,6 +74,28 @@ class Translator
         }
 
         return $messages[$message];
+    }
+    
+    /**
+     * 
+     * @param string $message
+     * @param int|double $value
+     * @param string $textdomain
+     * @param string $locale
+     * 
+     * @return string
+     */
+    public function translatePlural($message, $value, $textdomain = 'Default', $locale = '')
+    {
+        $locale = $this->getLocale($locale);
+        $type = Plural::type($value, $locale);
+
+        $messages = $this->getTranslatedMessages($locale, $textdomain);
+        if (!isset($messages[$message])) {
+            return $message;
+        }
+
+        return $messages[$message][$type];
     }
 
     /**

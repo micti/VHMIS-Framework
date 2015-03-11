@@ -1,11 +1,12 @@
 <?php
-$data = array(
-    'dates' => array(
-        'calendars' => array(
-            'gregorian' => array(
-                'months' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+
+$data = [
+    'dates' => [
+        'calendars' => [
+            'gregorian' => [
+                'months' => [
+                    'format' => [
+                        'abbreviated' => [
                             1 => 'thg 1',
                             2 => 'thg 2',
                             3 => 'thg 3',
@@ -17,9 +18,9 @@ $data = array(
                             9 => 'thg 9',
                             10 => 'thg 10',
                             11 => 'thg 11',
-                            12 => 'thg 12'
-                        ),
-                        'narrow' => array(
+                            12 => 'thg 12',
+                        ],
+                        'narrow' => [
                             1 => '1',
                             2 => '2',
                             3 => '3',
@@ -31,39 +32,39 @@ $data = array(
                             9 => '9',
                             10 => '10',
                             11 => '11',
-                            12 => '12'
-                        ),
-                        'wide' => array(
-                            1 => 'tháng một',
-                            2 => 'tháng hai',
-                            3 => 'tháng ba',
-                            4 => 'tháng tư',
-                            5 => 'tháng năm',
-                            6 => 'tháng sáu',
-                            7 => 'tháng bảy',
-                            8 => 'tháng tám',
-                            9 => 'tháng chín',
-                            10 => 'tháng mười',
-                            11 => 'tháng mười một',
-                            12 => 'tháng mười hai'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
-                            1 => 'thg 1',
-                            2 => 'thg 2',
-                            3 => 'thg 3',
-                            4 => 'thg 4',
-                            5 => 'thg 5',
-                            6 => 'thg 6',
-                            7 => 'thg 7',
-                            8 => 'thg 8',
-                            9 => 'thg 9',
-                            10 => 'thg 10',
-                            11 => 'thg 11',
-                            12 => 'thg 12'
-                        ),
-                        'narrow' => array(
+                            12 => '12',
+                        ],
+                        'wide' => [
+                            1 => 'tháng 1',
+                            2 => 'tháng 2',
+                            3 => 'tháng 3',
+                            4 => 'tháng 4',
+                            5 => 'tháng 5',
+                            6 => 'tháng 6',
+                            7 => 'tháng 7',
+                            8 => 'tháng 8',
+                            9 => 'tháng 9',
+                            10 => 'tháng 10',
+                            11 => 'tháng 11',
+                            12 => 'tháng 12',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
+                            1 => 'Thg 1',
+                            2 => 'Thg 2',
+                            3 => 'Thg 3',
+                            4 => 'Thg 4',
+                            5 => 'Thg 5',
+                            6 => 'Thg 6',
+                            7 => 'Thg 7',
+                            8 => 'Thg 8',
+                            9 => 'Thg 9',
+                            10 => 'Thg 10',
+                            11 => 'Thg 11',
+                            12 => 'Thg 12',
+                        ],
+                        'narrow' => [
                             1 => '1',
                             2 => '2',
                             3 => '3',
@@ -75,362 +76,370 @@ $data = array(
                             9 => '9',
                             10 => '10',
                             11 => '11',
-                            12 => '12'
-                        ),
-                        'wide' => array(
-                            1 => 'tháng một',
-                            2 => 'tháng hai',
-                            3 => 'tháng ba',
-                            4 => 'tháng tư',
-                            5 => 'tháng năm',
-                            6 => 'tháng sáu',
-                            7 => 'tháng bảy',
-                            8 => 'tháng tám',
-                            9 => 'tháng chín',
-                            10 => 'tháng mười',
-                            11 => 'tháng mười một',
-                            12 => 'tháng mười hai'
-                        )
-                    )
-                ),
-                'days' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+                            12 => '12',
+                        ],
+                        'wide' => [
+                            1 => 'Tháng 1',
+                            2 => 'Tháng 2',
+                            3 => 'Tháng 3',
+                            4 => 'Tháng 4',
+                            5 => 'Tháng 5',
+                            6 => 'Tháng 6',
+                            7 => 'Tháng 7',
+                            8 => 'Tháng 8',
+                            9 => 'Tháng 9',
+                            10 => 'Tháng 10',
+                            11 => 'Tháng 11',
+                            12 => 'Tháng 12',
+                        ],
+                    ],
+                ],
+                'days' => [
+                    'format' => [
+                        'abbreviated' => [
                             'sun' => 'CN',
                             'mon' => 'Th 2',
                             'tue' => 'Th 3',
                             'wed' => 'Th 4',
                             'thu' => 'Th 5',
                             'fri' => 'Th 6',
-                            'sat' => 'Th 7'
-                        ),
-                        'narrow' => array(
+                            'sat' => 'Th 7',
+                        ],
+                        'narrow' => [
                             'sun' => 'CN',
                             'mon' => 'T2',
                             'tue' => 'T3',
                             'wed' => 'T4',
                             'thu' => 'T5',
                             'fri' => 'T6',
-                            'sat' => 'T7'
-                        ),
-                        'short' => array(
+                            'sat' => 'T7',
+                        ],
+                        'short' => [
                             'sun' => 'CN',
                             'mon' => 'T2',
                             'tue' => 'T3',
                             'wed' => 'T4',
                             'thu' => 'T5',
                             'fri' => 'T6',
-                            'sat' => 'T7'
-                        ),
-                        'wide' => array(
-                            'sun' => 'Chủ nhật',
-                            'mon' => 'Thứ hai',
-                            'tue' => 'Thứ ba',
-                            'wed' => 'Thứ tư',
-                            'thu' => 'Thứ năm',
-                            'fri' => 'Thứ sáu',
-                            'sat' => 'Thứ bảy'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
+                            'sat' => 'T7',
+                        ],
+                        'wide' => [
+                            'sun' => 'Chủ Nhật',
+                            'mon' => 'Thứ Hai',
+                            'tue' => 'Thứ Ba',
+                            'wed' => 'Thứ Tư',
+                            'thu' => 'Thứ Năm',
+                            'fri' => 'Thứ Sáu',
+                            'sat' => 'Thứ Bảy',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
                             'sun' => 'CN',
                             'mon' => 'Th 2',
                             'tue' => 'Th 3',
                             'wed' => 'Th 4',
                             'thu' => 'Th 5',
                             'fri' => 'Th 6',
-                            'sat' => 'Th 7'
-                        ),
-                        'narrow' => array(
+                            'sat' => 'Th 7',
+                        ],
+                        'narrow' => [
                             'sun' => 'CN',
                             'mon' => 'T2',
                             'tue' => 'T3',
                             'wed' => 'T4',
                             'thu' => 'T5',
                             'fri' => 'T6',
-                            'sat' => 'T7'
-                        ),
-                        'short' => array(
+                            'sat' => 'T7',
+                        ],
+                        'short' => [
                             'sun' => 'CN',
                             'mon' => 'T2',
                             'tue' => 'T3',
                             'wed' => 'T4',
                             'thu' => 'T5',
                             'fri' => 'T6',
-                            'sat' => 'T7'
-                        ),
-                        'wide' => array(
-                            'sun' => 'Chủ nhật',
-                            'mon' => 'Thứ hai',
-                            'tue' => 'Thứ ba',
-                            'wed' => 'Thứ tư',
-                            'thu' => 'Thứ năm',
-                            'fri' => 'Thứ sáu',
-                            'sat' => 'Thứ bảy'
-                        )
-                    )
-                ),
-                'quarters' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+                            'sat' => 'T7',
+                        ],
+                        'wide' => [
+                            'sun' => 'Chủ Nhật',
+                            'mon' => 'Thứ Hai',
+                            'tue' => 'Thứ Ba',
+                            'wed' => 'Thứ Tư',
+                            'thu' => 'Thứ Năm',
+                            'fri' => 'Thứ Sáu',
+                            'sat' => 'Thứ Bảy',
+                        ],
+                    ],
+                ],
+                'quarters' => [
+                    'format' => [
+                        'abbreviated' => [
                             1 => 'Q1',
                             2 => 'Q2',
                             3 => 'Q3',
-                            4 => 'Q4'
-                        ),
-                        'narrow' => array(
+                            4 => 'Q4',
+                        ],
+                        'narrow' => [
                             1 => '1',
                             2 => '2',
                             3 => '3',
-                            4 => '4'
-                        ),
-                        'wide' => array(
+                            4 => '4',
+                        ],
+                        'wide' => [
                             1 => 'Quý 1',
                             2 => 'Quý 2',
                             3 => 'Quý 3',
-                            4 => 'Quý 4'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
+                            4 => 'Quý 4',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
                             1 => 'Q1',
                             2 => 'Q2',
                             3 => 'Q3',
-                            4 => 'Q4'
-                        ),
-                        'narrow' => array(
+                            4 => 'Q4',
+                        ],
+                        'narrow' => [
                             1 => '1',
                             2 => '2',
                             3 => '3',
-                            4 => '4'
-                        ),
-                        'wide' => array(
+                            4 => '4',
+                        ],
+                        'wide' => [
                             1 => 'Quý 1',
                             2 => 'Quý 2',
                             3 => 'Quý 3',
-                            4 => 'Quý 4'
-                        )
-                    )
-                ),
-                'dayPeriods' => array(
-                    'format' => array(
-                        'abbreviated' => array(
+                            4 => 'Quý 4',
+                        ],
+                    ],
+                ],
+                'dayPeriods' => [
+                    'format' => [
+                        'abbreviated' => [
                             'am' => 'SA',
-                            'pm' => 'CH'
-                        ),
-                        'narrow' => array(
+                            'noon' => 'TR',
+                            'pm' => 'CH',
+                        ],
+                        'narrow' => [
+                            'am' => 's',
+                            'noon' => 'tr',
+                            'pm' => 'c',
+                        ],
+                        'wide' => [
                             'am' => 'SA',
-                            'pm' => 'CH'
-                        ),
-                        'wide' => array(
+                            'noon' => 'TR',
+                            'pm' => 'CH',
+                        ],
+                    ],
+                    'stand-alone' => [
+                        'abbreviated' => [
                             'am' => 'SA',
-                            'pm' => 'CH'
-                        )
-                    ),
-                    'stand-alone' => array(
-                        'abbreviated' => array(
+                            'noon' => 'TR',
+                            'pm' => 'CH',
+                        ],
+                        'narrow' => [
+                            'am' => 's',
+                            'noon' => 'tr',
+                            'pm' => 'c',
+                        ],
+                        'wide' => [
                             'am' => 'SA',
-                            'pm' => 'CH'
-                        ),
-                        'narrow' => array(
-                            'am' => 'SA',
-                            'pm' => 'CH'
-                        ),
-                        'wide' => array(
-                            'am' => 'SA',
-                            'pm' => 'CH'
-                        )
-                    )
-                ),
-                'eras' => array(
-                    'eraNames' => array(
+                            'noon' => 'TR',
+                            'pm' => 'CH',
+                        ],
+                    ],
+                ],
+                'eras' => [
+                    'eraNames' => [
                         0 => 'tr. CN',
-                        1 => 'sau CN'
-                    ),
-                    'eraAbbr' => array(
+                        '0-alt-variant' => 'BCE',
+                        1 => 'sau CN',
+                        '1-alt-variant' => 'CE',
+                    ],
+                    'eraAbbr' => [
                         0 => 'tr. CN',
-                        1 => 'sau CN'
-                    ),
-                    'eraNarrow' => array(
+                        '0-alt-variant' => 'BCE',
+                        1 => 'sau CN',
+                        '1-alt-variant' => 'CE',
+                    ],
+                    'eraNarrow' => [
                         0 => 'tr. CN',
-                        1 => 'sau CN'
-                    )
-                ),
-                'dateFormats' => array(
+                        '0-alt-variant' => 'BCE',
+                        1 => 'sau CN',
+                        '1-alt-variant' => 'CE',
+                    ],
+                ],
+                'dateFormats' => [
                     'full' => 'EEEE, \'ngày\' dd MMMM \'năm\' y',
-                    'long' => '\'Ngày\' dd \'tháng\' M \'năm\' y',
+                    'long' => '\'Ngày\' dd \'tháng\' MM \'năm\' y',
                     'medium' => 'dd-MM-y',
-                    'short' => 'dd/MM/y'
-                ),
-                'timeFormats' => array(
+                    'short' => 'dd/MM/y',
+                ],
+                'timeFormats' => [
                     'full' => 'HH:mm:ss zzzz',
                     'long' => 'HH:mm:ss z',
                     'medium' => 'HH:mm:ss',
-                    'short' => 'HH:mm'
-                ),
-                'dateTimeFormats' => array(
+                    'short' => 'HH:mm',
+                ],
+                'dateTimeFormats' => [
                     'full' => '{0} {1}',
                     'long' => '{0} {1}',
                     'medium' => '{0} {1}',
                     'short' => '{0} {1}',
-                    'availableFormats' => array(
-                        'd' => '\'Ngày\' dd',
+                    'availableFormats' => [
+                        'E' => 'ccc',
+                        'EHm' => 'E HH:mm',
+                        'EHms' => 'E HH:mm:ss',
                         'Ed' => 'E, dd',
-                        'Gy' => 'G y',
-                        'GyMMM' => 'G y MMM',
-                        'GyMMMd' => 'G y MMM d',
-                        'GyMMMEd' => 'G y MMM d, E',
-                        'h' => 'h a',
+                        'Ehm' => 'E h:mm a',
+                        'Ehms' => 'E h:mm:ss a',
+                        'Gy' => 'y G',
+                        'GyMMM' => 'MMM y G',
+                        'GyMMMEd' => 'E, dd MMM y G',
+                        'GyMMMd' => 'dd MMM, y G',
                         'H' => 'HH',
-                        'hm' => 'h:mm a',
                         'Hm' => 'H:mm',
-                        'hms' => 'h:mm:ss a',
                         'Hms' => 'H:mm:ss',
                         'M' => 'L',
-                        'Md' => 'dd-M',
                         'MEd' => 'E, dd-M',
-                        'MMdd' => 'dd-MM',
                         'MMM' => 'LLL',
-                        'MMMd' => 'dd MMM',
                         'MMMEd' => 'E, dd MMM',
-                        'MMMMd' => 'dd MMMM',
-                        'MMMMEd' => 'E, dd MMMM',
+                        'MMMMEd' => 'E, d MMMM',
+                        'MMMMd' => 'd MMMM',
+                        'MMMd' => 'd MMM',
+                        'MMdd' => 'dd-MM',
+                        'Md' => 'dd-M',
+                        'd' => 'd',
+                        'h' => 'h a',
+                        'hm' => 'h:mm a',
+                        'hms' => 'h:mm:ss a',
                         'mmss' => 'mm:ss',
                         'ms' => 'mm:ss',
-                        'y' => '\'Năm\' y',
+                        'y' => 'y',
                         'yM' => 'M/y',
-                        'yMd' => 'd/M/y',
                         'yMEd' => 'E, dd-M-y',
-                        'yMM' => 'MM-y',
+                        'yMM' => '\'tháng\' MM, y',
                         'yMMM' => 'MMM y',
-                        'yMMMd' => 'dd MMM, y',
                         'yMMMEd' => 'E, dd MMM y',
-                        'yMMMM' => 'MMMM y',
+                        'yMMMM' => 'MMMM \'năm\' y',
+                        'yMMMd' => 'dd MMM, y',
+                        'yMd' => 'd/M/y',
                         'yQQQ' => 'QQQ y',
-                        'yQQQQ' => 'QQQQ y'
-                    ),
-                    'appendItems' => array(
-                        'Day' => '{0} ({2}: {1})',
+                        'yQQQQ' => 'QQQQ y',
+                    ],
+                    'appendItems' => [
+                        'Day' => '{0} ({2}: {1}]',
                         'Day-Of-Week' => '{0} {1}',
                         'Era' => '{1} {0}',
-                        'Hour' => '{0} ({2}: {1})',
-                        'Minute' => '{0} ({2}: {1})',
-                        'Month' => '{0} ({2}: {1})',
-                        'Quarter' => '{0} ({2}: {1})',
-                        'Second' => '{0} ({2}: {1})',
+                        'Hour' => '{0} ({2}: {1}]',
+                        'Minute' => '{0} ({2}: {1}]',
+                        'Month' => '{0} ({2}: {1}]',
+                        'Quarter' => '{0} ({2}: {1}]',
+                        'Second' => '{0} ({2}: {1}]',
                         'Timezone' => '{0} {1}',
-                        'Week' => '{0} ({2}: {1})',
-                        'Year' => '{1} {0}'
-                    ),
-                    'intervalFormats' => array(
+                        'Week' => '{0} ({2}: {1}]',
+                        'Year' => '{1} {0}',
+                    ],
+                    'intervalFormats' => [
                         'intervalFormatFallback' => '{0} - {1}',
-                        'd' => array(
-                            'd' => '\'Ngày\' dd-dd'
-                        ),
-                        'h' => array(
+                        'H' => [
+                            'H' => 'HH–HH',
+                        ],
+                        'Hm' => [
+                            'H' => 'HH:mm-HH:mm',
+                            'm' => 'HH:mm-HH:mm',
+                        ],
+                        'Hmv' => [
+                            'H' => 'HH:mm-HH:mm v',
+                            'm' => 'HH:mm-HH:mm v',
+                        ],
+                        'Hv' => [
+                            'H' => 'HH–HH v',
+                        ],
+                        'M' => [
+                            'M' => '\'Tháng\' M - M',
+                        ],
+                        'MEd' => [
+                            'M' => 'EEEE, dd/MM - EEEE, dd/MM',
+                            'd' => 'EEEE, dd/MM - EEEE, dd/MM',
+                        ],
+                        'MMM' => [
+                            'M' => 'MMM-MMM',
+                        ],
+                        'MMMEd' => [
+                            'M' => 'EEEE, \'ngày\' dd \'tháng\' M - EEEE, \'ngày\' dd \'tháng\' M',
+                            'd' => 'EEEE, \'ngày\' dd - EEEE, \'ngày\' dd \'tháng\' M',
+                        ],
+                        'MMMd' => [
+                            'M' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M',
+                            'd' => '\'Ngày\' dd - \'Ngày\' dd \'tháng\' M',
+                        ],
+                        'Md' => [
+                            'M' => 'dd/MM - dd/MM',
+                            'd' => 'dd/MM - dd/MM',
+                        ],
+                        'd' => [
+                            'd' => '\'Ngày\' dd-dd',
+                        ],
+                        'h' => [
                             'a' => 'h\'h\' a - h\'h\' a',
-                            'h' => 'h\'h\' - h\'h\' a'
-                        ),
-                        'H' => array(
-                            'H' => 'HH\'h\' - HH\'h\''
-                        ),
-                        'hm' => array(
+                            'h' => 'h–h a',
+                        ],
+                        'hm' => [
                             'a' => 'h:mm a – h:mm a',
                             'h' => 'h:mm-h:mm a',
-                            'm' => 'h:mm-h:mm a'
-                        ),
-                        'Hm' => array(
-                            'H' => 'HH:mm-HH:mm',
-                            'm' => 'HH:mm-HH:mm'
-                        ),
-                        'hmv' => array(
+                            'm' => 'h:mm-h:mm a',
+                        ],
+                        'hmv' => [
                             'a' => 'h:mm a – h:mm a v',
                             'h' => 'h:mm-h:mm a v',
-                            'm' => 'h:mm-h:mm a v'
-                        ),
-                        'Hmv' => array(
-                            'H' => 'HH:mm-HH:mm v',
-                            'm' => 'HH:mm-HH:mm v'
-                        ),
-                        'hv' => array(
+                            'm' => 'h:mm-h:mm a v',
+                        ],
+                        'hv' => [
                             'a' => 'h\'h\' a - h\'h\' a v',
-                            'h' => 'h\'h\'-h\'h\' a v'
-                        ),
-                        'Hv' => array(
-                            'H' => 'HH\'h\'-HH\'h\' v'
-                        ),
-                        'M' => array(
-                            'M' => '\'Tháng\' M - \'Tháng\' M'
-                        ),
-                        'Md' => array(
-                            'd' => 'dd/MM - dd/MM',
-                            'M' => 'dd/MM - dd/MM'
-                        ),
-                        'MEd' => array(
-                            'd' => 'EEEE, dd/MM - EEEE, dd/MM',
-                            'M' => 'EEEE, dd/MM - EEEE, dd/MM'
-                        ),
-                        'MMM' => array(
-                            'M' => 'MMM-MMM'
-                        ),
-                        'MMMd' => array(
-                            'd' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M',
-                            'M' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M'
-                        ),
-                        'MMMEd' => array(
-                            'd' => 'EEEE, \'ngày\' dd - EEEE, \'ngày\' dd \'tháng\' M',
-                            'M' => 'EEEE, \'ngày\' dd \'tháng\' M - EEEE, \'ngày\' dd \'tháng\' M'
-                        ),
-                        'y' => array(
-                            'y' => 'y-y'
-                        ),
-                        'yM' => array(
+                            'h' => 'h–h a v',
+                        ],
+                        'y' => [
+                            'y' => 'y-y',
+                        ],
+                        'yM' => [
                             'M' => 'MM/y - MM/y',
-                            'y' => 'MM/y - MM/y'
-                        ),
-                        'yMd' => array(
-                            'd' => 'dd/MM/y - dd/MM/y',
-                            'M' => 'dd/MM/y - dd/MM/y',
-                            'y' => 'dd/MM/y - dd/MM/y'
-                        ),
-                        'yMEd' => array(
-                            'd' => 'EEEE, dd/MM/y - EEEE, dd/MM/y',
+                            'y' => 'MM/y - MM/y',
+                        ],
+                        'yMEd' => [
                             'M' => 'EEEE, dd/MM/y - EEEE, dd/MM/y',
-                            'y' => 'EEEE, dd/MM/y - EEEE, dd/MM/y'
-                        ),
-                        'yMMM' => array(
+                            'd' => 'EEEE, dd/MM/y - EEEE, dd/MM/y',
+                            'y' => 'EEEE, dd/MM/y - EEEE, dd/MM/y',
+                        ],
+                        'yMMM' => [
                             'M' => '\'Tháng\' M - \'Tháng\' M \'năm\' y',
-                            'y' => '\'Tháng\' M \'năm\' y - \'Tháng\' M \'năm\' y'
-                        ),
-                        'yMMMd' => array(
-                            'd' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M \'năm\' y',
-                            'M' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M \'năm\' y',
-                            'y' => '\'Ngày\' dd \'tháng\' M \'năm\' y - \'Ngày\' dd \'tháng\' M \'năm\' y'
-                        ),
-                        'yMMMEd' => array(
-                            'd' => 'EEEE, \'ngày\' dd MMM - EEEE, \'ngày\' dd MMM \'năm\' y',
+                            'y' => '\'Tháng\' M \'năm\' y - \'Tháng\' M \'năm\' y',
+                        ],
+                        'yMMMEd' => [
                             'M' => 'E, dd \'tháng\' M - E, dd \'tháng\' M, y',
-                            'y' => 'E, dd \'tháng\' M, y - E, dd \'tháng\' M, y'
-                        ),
-                        'yMMMM' => array(
-                            'M' => 'MMMM-MMMM y',
-                            'y' => 'MMMM y – MMMM y'
-                        )
-                    )
-                ),
-                'fields' => array(
-                    'day' => array(
-                        -2 => 'The day before yesterday',
-                        -1 => 'Yesterday',
-                        0 => 'Today',
-                        1 => 'Tomorrow',
-                        2 => 'The day after tomorrow'
-                    )
-                )
-            )
-        )
-    )
-);
+                            'd' => 'EEEE, \'ngày\' dd MMM - EEEE, \'ngày\' dd MMM \'năm\' y',
+                            'y' => 'E, dd \'tháng\' M, y - E, dd \'tháng\' M, y',
+                        ],
+                        'yMMMM' => [
+                            'M' => 'MMMM-MMMM \'năm\' y',
+                            'y' => 'MMMM y – MMMM y',
+                        ],
+                        'yMMMd' => [
+                            'M' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M \'năm\' y',
+                            'd' => '\'Ngày\' dd - \'Ngày\' dd \'tháng\' M \'năm\' y',
+                            'y' => '\'Ngày\' dd \'tháng\' M \'năm\' y - \'Ngày\' dd \'tháng\' M \'năm\' y',
+                        ],
+                        'yMd' => [
+                            'M' => 'dd/MM/y - dd/MM/y',
+                            'd' => 'dd/MM/y - dd/MM/y',
+                            'y' => 'dd/MM/y - dd/MM/y',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
 
 return $data;

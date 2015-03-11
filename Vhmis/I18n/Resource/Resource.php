@@ -4,6 +4,7 @@ namespace Vhmis\I18n\Resource;
 
 class Resource
 {
+
     /**
      * Mảng chứa dữ liệu
      *
@@ -35,11 +36,11 @@ class Resource
      * @var type
      */
     protected static $main = array(
-        'gregorian'  => 'ca-gregorian',
+        'gregorian' => 'ca-gregorian',
         'datefields' => 'dateFields',
-        'list'       => 'listPatterns',
+        'list' => 'listPatterns',
         'number',
-        'units'      => 'units'
+        'units' => 'units'
     );
 
     /**
@@ -52,12 +53,11 @@ class Resource
     {
         $locale = str_replace('_', '-', $locale);
 
-        if($locale == '') {
+        if ($locale == '') {
             $locale = locale_get_default();
         }
 
         return $locale;
-
     }
 
     protected static function loadSupplemental($supplemental)
@@ -174,18 +174,18 @@ class Resource
 
         return array(
             'displayName' => '',
-            '-1'          => '',
-            '0'           => '',
-            '1'           => ''
+            '-1' => '',
+            '0' => '',
+            '1' => ''
         );
     }
 
     public static function dateIntervalPattern($field, $diffrenceField, $locale = '', $calendar = 'gregorian')
     {
         $falseReturn = array(
-            'pattern'      => '{0} - {1}',
+            'pattern' => '{0} - {1}',
             'patternbegin' => 'YYYY-MM-dd HH:mm:ss',
-            'patternend'   => 'YYYY-MM-dd HH:mm:ss'
+            'patternend' => 'YYYY-MM-dd HH:mm:ss'
         );
 
         $punctuationMark = '/-|~|‐|–|—/';
@@ -242,9 +242,9 @@ class Resource
         }
 
         return array(
-            'pattern'      => $pattern,
+            'pattern' => $pattern,
             'patternbegin' => $firstIsFirst ? $patternpart[0] : $patternpart[1],
-            'patternend'   => $firstIsFirst ? $patternpart[1] : $patternpart[0]
+            'patternend' => $firstIsFirst ? $patternpart[1] : $patternpart[0]
         );
     }
 
@@ -299,4 +299,5 @@ class Resource
 
         return static::$i18nData[$locale][$calendar][$field];
     }
+
 }
