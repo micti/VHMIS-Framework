@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ * Vhmis Framework
  *
- * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package Vhmis_Boot
- * @since Vhmis v1.0
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
  */
 
 /**
