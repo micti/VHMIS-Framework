@@ -16,6 +16,13 @@ class Translator
 {
 
     /**
+     * Message formatter objects.
+     *
+     * @var \MessageFormatter[]
+     */
+    protected $messageFormatters = [];
+
+    /**
      * Resource of translated messages
      *
      * @var array
@@ -75,14 +82,15 @@ class Translator
 
         return $messages[$message];
     }
-    
+
     /**
-     * 
+     * Plural translate.
+     *
      * @param string $message
      * @param int|double $value
      * @param string $textdomain
      * @param string $locale
-     * 
+     *
      * @return string
      */
     public function translatePlural($message, $value, $textdomain = 'Default', $locale = '')
@@ -96,6 +104,35 @@ class Translator
         }
 
         return $messages[$message][$type];
+    }
+
+    /**
+     * Translate by message formatter pattern.
+     *
+     * @param string $message
+     * @param array $values
+     * @param string $textdomain
+     * @param string $locale
+     *
+     * @return string
+     */
+    public function transtaleFormatter($message, $values, $textdomain = 'Default', $locale = '')
+    {
+        $locale = $this->getLocale($locale);
+        $messages = $this->getTranslatedMessages($locale, $textdomain);
+        $formatter = $this->getMessageFormatter($locale);
+
+        if (!isset($messages[$message])) {
+            return $message;
+        }
+
+        $formatter->setPattern($messages[$message]);
+        $formatString = $formatter->format($values);
+        if (!$formatString) {
+            return '';
+        }
+
+        return $formatString;
     }
 
     /**
@@ -113,5 +150,21 @@ class Translator
         }
 
         return $this->resource[$locale][$textdomain];
+    }
+
+    /**
+     * Get message formatter.
+     *
+     * @param string $locale
+     *
+     * @return \MessageFormatter
+     */
+    protected function getMessageFormatter($locale)
+    {
+        if (!isset($this->messageFormatters[$locale])) {
+            $this->messageFormatters[$locale] = new \MessageFormatter($locale, 'emptypattern');
+        }
+
+        return $this->messageFormatters[$locale];
     }
 }

@@ -36,19 +36,36 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $translator->setLoader($loader);
 
         $this->assertSame(
-            'Có 1 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1, 'Default', 'vi_VN'), 1)
+                'Có 1 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1, 'Default', 'vi_VN'), 1)
         );
 
         $this->assertSame(
-            'Có 1567 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1567, 'Default', 'vi_VN'), 1567)
+                'Có 1567 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1567, 'Default', 'vi_VN'), 1567)
         );
 
         $this->assertSame(
-            'There is 1 apple in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1, 'Default', 'en_US'), 1)
+                'There is 1 apple in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1, 'Default', 'en_US'), 1)
         );
 
         $this->assertSame(
-            'There are 467 apples in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 467, 'Default', 'en_US'), 467)
+                'There are 467 apples in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 467, 'Default', 'en_US'), 467)
+        );
+    }
+
+    public function testTranslateFomatter()
+    {
+        $loader = new PhpArray;
+        $loader->setPath(__DIR__ . '/data');
+
+        $translator = new Translator;
+        $translator->setLoader($loader);
+
+        $data = array(4560, 123, 4560 / 123);
+        $this->assertSame(
+                '4,560 monkeys on 123 trees make 37.073 monkeys per tree', $translator->transtaleFormatter('monkeys on trees make monkeys per tree', $data, 'Default', 'en_US')
+        );
+        $this->assertSame(
+                '4.560 con khỉ trên 123 cây nên có 37,073 con khi trên mỗi cây', $translator->transtaleFormatter('monkeys on trees make monkeys per tree', $data, 'Default', 'vi_VN')
         );
     }
 }
