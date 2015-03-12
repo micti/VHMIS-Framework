@@ -23,18 +23,25 @@ class Translator
     protected $messageFormatters = [];
 
     /**
-     * Resource of translated messages
+     * Resource of translated messages.
      *
      * @var array
      */
     protected $resource;
 
     /**
-     * Resource loader
+     * Resource loader.
      *
      * @var Loader\FileLoaderInterface
      */
     protected $loader;
+    
+    /**
+     * Fallback locale
+     * 
+     * @var string
+     */
+    protected $fallbackLocale = 'en_US';
 
     /**
      * Set loader.
@@ -47,6 +54,20 @@ class Translator
     {
         $this->loader = $loader;
 
+        return $this;
+    }
+    
+    /**
+     * Set fallback locale
+     *
+     * @param string $locale
+     * 
+     * @return Translator
+     */
+    public function setFallbackLocale($locale)
+    {
+        $this->fallbackLocale = $locale;
+        
         return $this;
     }
 
@@ -110,7 +131,7 @@ class Translator
      * Translate by message formatter pattern.
      *
      * @param string $message
-     * @param array $values
+     * @param array  $values
      * @param string $textdomain
      * @param string $locale
      *
