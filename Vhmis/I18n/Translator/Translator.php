@@ -87,16 +87,21 @@ class Translator
      * Translate.
      *
      * @param string $message
+     * @param array  $values
      * @param string $textdomain
      * @param string $locale
      *
      * @return string
      */
-    public function translate($message, $textdomain = 'Default', $locale = '')
+    public function translate($message, $values, $textdomain = 'Default', $locale = '')
     {
         $locale = $this->getLocale($locale);
 
         $translatedMessage = $this->getTranslatedMessages($message, $locale, $textdomain);
+
+        if (is_array($values)) {
+            $translatedMessage = $this->formatMessage($translatedMessage, $values, $locale);
+        }
 
         return $translatedMessage;
     }
@@ -104,41 +109,43 @@ class Translator
     /**
      * Plural translate.
      *
-     * @param string $message
-     * @param int|double $value
-     * @param string $textdomain
-     * @param string $locale
+     * @param string     $message
+     * @param int|double $nvalue
+     * @param array      $values
+     * @param string     $textdomain
+     * @param string     $locale
      *
      * @return string
      */
-    public function translatePlural($message, $value, $textdomain = 'Default', $locale = '')
+    public function translatePlural($message, $nvalue, $values = null, $textdomain = 'Default', $locale = '')
     {
         $locale = $this->getLocale($locale);
-        $type = Plural::type($value, $locale);
+        $type = Plural::type($nvalue, $locale);
 
         $translatedMessage = $this->getTranslatedMessages($message . '.' . $type, $locale, $textdomain);
+
+        if (is_array($values)) {
+            $translatedMessage = $this->formatMessage($translatedMessage, $values, $locale);
+        }
 
         return $translatedMessage;
     }
 
     /**
-     * Translate by message formatter pattern.
+     * Format message.
      *
      * @param string $message
      * @param array  $values
-     * @param string $textdomain
      * @param string $locale
      *
      * @return string
      */
-    public function transtaleFormatter($message, $values, $textdomain = 'Default', $locale = '')
+    protected function formatMessage($message, $values, $locale)
     {
-        $locale = $this->getLocale($locale);
-        $translatedMessage = $this->getTranslatedMessages($message, $locale, $textdomain);
         $formatter = $this->getMessageFormatter($locale);
-
-        $formatter->setPattern($translatedMessage);
+        $formatter->setPattern($message);
         $formatString = $formatter->format($values);
+
         if (!$formatString) {
             return '';
         }
