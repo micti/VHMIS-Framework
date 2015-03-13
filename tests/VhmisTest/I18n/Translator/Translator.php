@@ -24,7 +24,8 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $translator = new Translator;
         $translator->setLoader($loader);
 
-        $this->assertSame('Xin chào', $translator->translate('hello', 'All', 'vi_VN'));
+        //$this->assertSame('Xin chào', $translator->translate('hello', 'All', 'vi_VN'));
+        $this->assertSame('Chào buổi sáng', $translator->translate('good.morning', 'All', 'vi_VN'));
     }
 
     public function testTranslatePlural()
@@ -36,19 +37,19 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $translator->setLoader($loader);
 
         $this->assertSame(
-                'Có 1 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1, 'Default', 'vi_VN'), 1)
+                'Có 1 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag', 1, 'Default', 'vi_VN'), 1)
         );
 
         $this->assertSame(
-                'Có 1567 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1567, 'Default', 'vi_VN'), 1567)
+                'Có 1567 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag', 1567, 'Default', 'vi_VN'), 1567)
         );
 
         $this->assertSame(
-                'There is 1 apple in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 1, 'Default', 'en_US'), 1)
+                'There is 1 apple in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag', 1, 'Default', 'en_US'), 1)
         );
 
         $this->assertSame(
-                'There are 467 apples in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag.', 467, 'Default', 'en_US'), 467)
+                'There are 467 apples in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag', 467, 'Default', 'en_US'), 467)
         );
     }
 

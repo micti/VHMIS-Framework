@@ -11,6 +11,7 @@
 namespace Vhmis\I18n\Translator\Loader;
 
 use Vhmis\Utils\Exception\InvalidArgumentException;
+use Vhmis\Utils\Arr;
 
 class PhpArray implements FileLoaderInterface
 {
@@ -36,6 +37,6 @@ class PhpArray implements FileLoaderInterface
             throw new InvalidArgumentException('Resource must be an array');
         }
 
-        return $data;
+        return Arr::flatten($data, '.');
     }
 }

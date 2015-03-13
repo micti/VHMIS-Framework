@@ -39,12 +39,14 @@ class PhpArrayTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $result = [
-            'hello' => 'Xin chào'
+            'hello' => 'Xin chào',
+            'good.morning' => 'Chào buổi sáng',
+            'good.afternoon' => 'Chào buổi chiều'
         ];
 
         $path = __DIR__ . '/../data';
         $loader = new PhpArray;
         $loader->setPath($path);
-        $this->assertSame($result, $loader->load('vi_VN', 'All'));
+        $this->assertEquals($result, $loader->load('vi_VN', 'All'));
     }
 }

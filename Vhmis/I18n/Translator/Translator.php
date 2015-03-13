@@ -35,7 +35,7 @@ class Translator
      * @var Loader\FileLoaderInterface
      */
     protected $loader;
-    
+
     /**
      * Fallback locale
      * 
@@ -56,7 +56,7 @@ class Translator
 
         return $this;
     }
-    
+
     /**
      * Set fallback locale
      *
@@ -67,7 +67,7 @@ class Translator
     public function setFallbackLocale($locale)
     {
         $this->fallbackLocale = $locale;
-        
+
         return $this;
     }
 
@@ -96,12 +96,9 @@ class Translator
     {
         $locale = $this->getLocale($locale);
 
-        $messages = $this->getTranslatedMessages($locale, $textdomain);
-        if (!isset($messages[$message])) {
-            return $message;
-        }
+        $translatedMessage = $this->getTranslatedMessages($message, $locale, $textdomain);
 
-        return $messages[$message];
+        return $translatedMessage;
     }
 
     /**
@@ -119,12 +116,9 @@ class Translator
         $locale = $this->getLocale($locale);
         $type = Plural::type($value, $locale);
 
-        $messages = $this->getTranslatedMessages($locale, $textdomain);
-        if (!isset($messages[$message])) {
-            return $message;
-        }
+        $translatedMessage = $this->getTranslatedMessages($message . '.' . $type, $locale, $textdomain);
 
-        return $messages[$message][$type];
+        return $translatedMessage;
     }
 
     /**
@@ -140,14 +134,10 @@ class Translator
     public function transtaleFormatter($message, $values, $textdomain = 'Default', $locale = '')
     {
         $locale = $this->getLocale($locale);
-        $messages = $this->getTranslatedMessages($locale, $textdomain);
+        $translatedMessage = $this->getTranslatedMessages($message, $locale, $textdomain);
         $formatter = $this->getMessageFormatter($locale);
 
-        if (!isset($messages[$message])) {
-            return $message;
-        }
-
-        $formatter->setPattern($messages[$message]);
+        $formatter->setPattern($translatedMessage);
         $formatString = $formatter->format($values);
         if (!$formatString) {
             return '';
@@ -162,15 +152,19 @@ class Translator
      * @param string $locale
      * @param string $textdomain
      *
-     * @return array
+     * @return string
      */
-    protected function getTranslatedMessages($locale, $textdomain)
+    protected function getTranslatedMessages($message, $locale, $textdomain)
     {
         if (!isset($this->resource[$locale][$textdomain])) {
             $this->resource[$locale][$textdomain] = $this->loader->load($locale, $textdomain);
         }
 
-        return $this->resource[$locale][$textdomain];
+        if (!isset($this->resource[$locale][$textdomain][$message])) {
+            return $message;
+        }
+
+        return $this->resource[$locale][$textdomain][$message];
     }
 
     /**
