@@ -161,7 +161,7 @@ class Translator
         }
 
         if (!isset($this->resource[$locale][$textdomain][$message])) {
-            if (isset($this->fallbackLocale)) {
+            if (isset($this->fallbackLocale) && $this->fallbackLocale !== $locale) {
                 return $this->getTranslatedMessages($message, $this->fallbackLocale, $textdomain);
             }
 
