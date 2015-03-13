@@ -41,6 +41,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         
         $translator->setFallbackLocale('vi_VN');
         $this->assertSame('Chào buổi sáng', $translator->translate('good.morning', 'All', 'en_US'));
+        $this->assertSame('something.not.found.both', $translator->translate('something.not.found.both', 'All', 'en_US'));
     }
 
     public function testTranslatePlural()
