@@ -22,7 +22,7 @@ class PhpArrayTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new PhpArray;
 
-        $loader->load('en_US', 'All');
+        $loader->load('en_US', 'NotArray');
     }
 
     /**
@@ -33,7 +33,7 @@ class PhpArrayTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__ . '../data';
         $loader = new PhpArray;
         $loader->setPath($path);
-        $loader->load('en_US', 'All');
+        $loader->load('en_US', 'NotArray');
     }
 
     public function testLoad()

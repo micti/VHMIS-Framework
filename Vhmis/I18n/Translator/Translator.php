@@ -41,7 +41,7 @@ class Translator
      * 
      * @var string
      */
-    protected $fallbackLocale = 'en_US';
+    protected $fallbackLocale;
 
     /**
      * Set loader.
@@ -161,6 +161,10 @@ class Translator
         }
 
         if (!isset($this->resource[$locale][$textdomain][$message])) {
+            if (isset($this->fallbackLocale)) {
+                return $this->getTranslatedMessages($message, $this->fallbackLocale, $textdomain);
+            }
+
             return $message;
         }
 

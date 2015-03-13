@@ -24,8 +24,23 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $translator = new Translator;
         $translator->setLoader($loader);
 
-        //$this->assertSame('Xin chào', $translator->translate('hello', 'All', 'vi_VN'));
+        $this->assertSame('Xin chào', $translator->translate('hello', 'All', 'vi_VN'));
+        $this->assertSame('Hello', $translator->translate('hello', 'All', 'en_US'));
         $this->assertSame('Chào buổi sáng', $translator->translate('good.morning', 'All', 'vi_VN'));
+    }
+    
+    public function testFallbackTranslate()
+    {
+        $loader = new PhpArray;
+        $loader->setPath(__DIR__ . '/data');
+
+        $translator = new Translator;
+        $translator->setLoader($loader);
+
+        $this->assertSame('good.morning', $translator->translate('good.morning', 'All', 'en_US'));
+        
+        $translator->setFallbackLocale('vi_VN');
+        $this->assertSame('Chào buổi sáng', $translator->translate('good.morning', 'All', 'en_US'));
     }
 
     public function testTranslatePlural()
