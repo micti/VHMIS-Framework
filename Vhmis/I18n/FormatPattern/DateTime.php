@@ -35,9 +35,6 @@ class DateTime
      */
     static public function dateNativeFormat($locale, $type)
     {
-        if ($locale === 'ko_Kr')
-            return 'Y-m-d';
-
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
 
@@ -72,9 +69,6 @@ class DateTime
 
     static public function dateFormat($locale, $type)
     {
-        if ($locale === 'ko_Kr')
-            return 'y-MM-dd';
-
         $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
 
