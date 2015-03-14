@@ -10,8 +10,7 @@
 
 namespace Vhmis\I18n\Translator\Loader;
 
-use Vhmis\Utils\Exception\InvalidArgumentException;
-use Vhmis\Utils\Arr;
+use Vhmis\Utils\Loader\PhpArray as Loader;
 
 class PhpArray implements FileLoaderInterface
 {
@@ -27,16 +26,6 @@ class PhpArray implements FileLoaderInterface
     {
         $path = $this->path . D_SPEC . $locale . D_SPEC . $domain . '.php';
 
-        if (!is_file($path) || !is_readable($path)) {
-            throw new InvalidArgumentException('No resource found : ' . $path);
-        }
-
-        $data = require $path;
-
-        if (!is_array($data)) {
-            throw new InvalidArgumentException('Resource must be an array');
-        }
-
-        return Arr::flatten($data, '.');
+        return Loader::load($path, true);
     }
 }

@@ -15,27 +15,6 @@ use Vhmis\I18n\Translator\Loader\PhpArray;
 class PhpArrayTest extends \PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @expectedException \Vhmis\Utils\Exception\InvalidArgumentException
-     */
-    public function testNotFound()
-    {
-        $loader = new PhpArray;
-
-        $loader->load('en_US', 'NotArray');
-    }
-
-    /**
-     * @expectedException \Vhmis\Utils\Exception\InvalidArgumentException
-     */
-    public function testNotValidArray()
-    {
-        $path = __DIR__ . '../data';
-        $loader = new PhpArray;
-        $loader->setPath($path);
-        $loader->load('en_US', 'NotArray');
-    }
-
     public function testLoad()
     {
         $result = [

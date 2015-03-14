@@ -10,7 +10,7 @@ class Resource
      *
      * @var array
      */
-    protected static $i18nData = array();
+    protected static $i18nData = [];
 
     /**
      * Locale mặc định
@@ -24,24 +24,24 @@ class Resource
      *
      * @var array
      */
-    protected static $locales = array(
+    protected static $locales = [
         'vi',
         'en',
         'ko'
-    );
+    ];
 
     /**
      * Danh mục các dữ liệu chính support
      *
      * @var type
      */
-    protected static $main = array(
+    protected static $main = [
         'gregorian' => 'ca-gregorian',
         'datefields' => 'dateFields',
         'list' => 'listPatterns',
         'number',
         'units' => 'units'
-    );
+    ];
 
     /**
      * Chỉnh lại tên locale đúng với tên trong dữ liệu CLDR
@@ -86,8 +86,7 @@ class Resource
         $locale = static::fixLocaleName($locale);
 
         if (isset(static::$i18nData[$locale][$field])) {
-            return;
-            //throw new \Exception($field . ' I18n Data Not Supported.');
+            throw new \Exception('I18n Data for ' . $field . 'Not Supported.');
         }
 
         list($lang, $ter) = explode('-', $locale, 2);
