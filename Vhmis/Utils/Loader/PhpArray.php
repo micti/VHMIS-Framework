@@ -25,12 +25,12 @@ class PhpArray
      * @param string $file
      * @param string $flatten
      * @param string $flattenSpec
-     * 
+     *
      * @return array
      */
     static public function load($file, $flatten = false, $flattenSpec = '.')
     {
-        if (!is_file($file) || !is_readable($file)) {
+        if (!static::isReadable($file)) {
             throw new InvalidArgumentException('File not found : ' . $file);
         }
 
@@ -45,5 +45,25 @@ class PhpArray
         }
 
         return $data;
+    }
+
+    /**
+     * Check readable file.
+     *
+     * @param string $file
+     *
+     * @return boolean
+     */
+    static private function isReadable($file)
+    {
+        if (!is_file($file)) {
+            return false;
+        }
+
+        if (!is_readable($file)) {
+            return false;
+        }
+
+        return true;
     }
 }
