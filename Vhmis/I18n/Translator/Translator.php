@@ -38,7 +38,7 @@ class Translator
 
     /**
      * Fallback locale
-     * 
+     *
      * @var string
      */
     protected $fallbackLocale;
@@ -61,7 +61,7 @@ class Translator
      * Set fallback locale
      *
      * @param string $locale
-     * 
+     *
      * @return Translator
      */
     public function setFallbackLocale($locale)
@@ -107,7 +107,7 @@ class Translator
     }
 
     /**
-     * Plural translate.
+     * Cardinal plural translate.
      *
      * @param string     $message
      * @param int|double $nvalue
@@ -117,10 +117,10 @@ class Translator
      *
      * @return string
      */
-    public function translatePlural($message, $nvalue, $values = null, $textdomain = 'Default', $locale = '')
+    public function translateCardinalPlural($message, $nvalue, $values = null, $textdomain = 'Default', $locale = '')
     {
         $locale = $this->getLocale($locale);
-        $type = Plural::type($nvalue, $locale);
+        $type = Plural::getCardinalType($nvalue, $locale);
 
         $translatedMessage = $this->getTranslatedMessages($message . '.' . $type, $locale, $textdomain);
 

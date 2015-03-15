@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT License
  */
 
-namespace VhmisTest\I18n\Resource\Loader;
+namespace VhmisTest\I18n\Resource;
 
 use Vhmis\I18n\Resource\Loader;
 

@@ -22,11 +22,12 @@ class Plural
      *
      * @param int|double|float|string $number
      * @param string $locale
+     *
      * @return string
      */
-    public static function type($number, $locale = '')
+    public static function getCardinalType($number, $locale = '')
     {
-        $rules = I18nResource::pluralsRule($locale);
+        $rules = I18nResource::getCardinalPluralRule($locale);
 
         foreach ($rules as $type => $rule) {
             if (Parser::isAccept($number, $rule)) {

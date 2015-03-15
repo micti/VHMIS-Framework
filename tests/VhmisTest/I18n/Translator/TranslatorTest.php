@@ -52,7 +52,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('something.not.found.both', $translator->translate('something.not.found.both', null, 'All', 'en_US'));
     }
 
-    public function testTranslatePlural()
+    public function testTranslateCardinalPlural()
     {
         $loader = new PhpArray;
         $loader->setPath(__DIR__ . '/data');
@@ -61,19 +61,19 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $translator->setLoader($loader);
 
         $this->assertSame(
-                'Có 1 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag', 1, null, 'Default', 'vi_VN'), 1)
+                'Có 1 quả táo trong túi xách.', sprintf($translator->translateCardinalPlural('There are xxx apples in the bag', 1, null, 'Default', 'vi_VN'), 1)
         );
 
         $this->assertSame(
-                'Có 1567 quả táo trong túi xách.', sprintf($translator->translatePlural('There are xxx apples in the bag', 1567, null, 'Default', 'vi_VN'), 1567)
+                'Có 1567 quả táo trong túi xách.', sprintf($translator->translateCardinalPlural('There are xxx apples in the bag', 1567, null, 'Default', 'vi_VN'), 1567)
         );
 
         $this->assertSame(
-                'There is 1 apple in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag', 1, null, 'Default', 'en_US'), 1)
+                'There is 1 apple in the bag.', sprintf($translator->translateCardinalPlural('There are xxx apples in the bag', 1, null, 'Default', 'en_US'), 1)
         );
 
         $this->assertSame(
-                'There are 467 apples in the bag.', sprintf($translator->translatePlural('There are xxx apples in the bag', 467, null, 'Default', 'en_US'), 467)
+                'There are 467 apples in the bag.', sprintf($translator->translateCardinalPlural('There are xxx apples in the bag', 467, null, 'Default', 'en_US'), 467)
         );
     }
 }
