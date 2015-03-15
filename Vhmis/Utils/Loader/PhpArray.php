@@ -54,7 +54,7 @@ class PhpArray
      *
      * @return boolean
      */
-    static private function isReadable($file)
+    static public function isReadable($file)
     {
         if (!is_file($file)) {
             return false;
