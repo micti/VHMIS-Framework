@@ -1,6 +1,6 @@
 <?php
 
-$data = [
+return [
     'dates' => [
         'fields' => [
             'era' => [
@@ -435,5 +435,3 @@ $data = [
         ],
     ],
 ];
-
-return $data;

@@ -1,6 +1,6 @@
 <?php
 
-$data = [
+return [
     'units' => [
         'long' => [
             'per' => [
@@ -1849,5 +1849,3 @@ $data = [
         ],
     ],
 ];
-
-return $data;

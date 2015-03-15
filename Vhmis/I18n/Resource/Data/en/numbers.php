@@ -1,6 +1,6 @@
 <?php
 
-$data = [
+return [
     'numbers' => [
         'defaultNumberingSystem' => 'latn',
         'otherNumberingSystems' => [
@@ -110,5 +110,3 @@ $data = [
         ],
     ],
 ];
-
-return $data;

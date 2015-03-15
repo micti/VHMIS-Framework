@@ -3,7 +3,7 @@
 return [
     'dates' => [
         'calendars' => [
-            'gregorian' => [
+            'roc' => [
                 'months' => [
                     'format' => [
                         'abbreviated' => [
@@ -260,29 +260,23 @@ return [
                 ],
                 'eras' => [
                     'eraNames' => [
-                        0 => 'Before Christ',
-                        '0-alt-variant' => 'Before Common Era',
-                        1 => 'Anno Domini',
-                        '1-alt-variant' => 'Common Era',
+                        0 => 'Before R.O.C.',
+                        1 => 'Minguo',
                     ],
                     'eraAbbr' => [
-                        0 => 'BC',
-                        '0-alt-variant' => 'BCE',
-                        1 => 'AD',
-                        '1-alt-variant' => 'CE',
+                        0 => 'Before R.O.C.',
+                        1 => 'Minguo',
                     ],
                     'eraNarrow' => [
-                        0 => 'B',
-                        '0-alt-variant' => 'BCE',
-                        1 => 'A',
-                        '1-alt-variant' => 'CE',
+                        0 => 'Before R.O.C.',
+                        1 => 'Minguo',
                     ],
                 ],
                 'dateFormats' => [
-                    'full' => 'EEEE, MMMM d, y',
-                    'long' => 'MMMM d, y',
-                    'medium' => 'MMM d, y',
-                    'short' => 'M/d/yy',
+                    'full' => 'EEEE, MMMM d, y G',
+                    'long' => 'MMMM d, y G',
+                    'medium' => 'MMM d, y G',
+                    'short' => 'M/d/y GGGGG',
                 ],
                 'timeFormats' => [
                     'full' => 'h:mm:ss a zzzz',
@@ -320,15 +314,16 @@ return [
                         'hm' => 'h:mm a',
                         'hms' => 'h:mm:ss a',
                         'ms' => 'mm:ss',
-                        'y' => 'y',
-                        'yM' => 'M/y',
-                        'yMEd' => 'E, M/d/y',
-                        'yMMM' => 'MMM y',
-                        'yMMMEd' => 'E, MMM d, y',
-                        'yMMMd' => 'MMM d, y',
-                        'yMd' => 'M/d/y',
-                        'yQQQ' => 'QQQ y',
-                        'yQQQQ' => 'QQQQ y',
+                        'y' => 'y G',
+                        'yyyy' => 'y G',
+                        'yyyyM' => 'M/y GGGGG',
+                        'yyyyMEd' => 'E, M/d/y GGGGG',
+                        'yyyyMMM' => 'MMM y G',
+                        'yyyyMMMEd' => 'E, MMM d, y G',
+                        'yyyyMMMd' => 'MMM d, y G',
+                        'yyyyMd' => 'M/d/y GGGGG',
+                        'yyyyQQQ' => 'QQQ y G',
+                        'yyyyQQQQ' => 'QQQQ y G',
                     ],
                     'appendItems' => [
                         'Day' => '{0} ({2}: {1}]',
@@ -403,39 +398,39 @@ return [
                             'h' => 'h – h a v',
                         ],
                         'y' => [
-                            'y' => 'y – y',
+                            'y' => 'y – y G',
                         ],
                         'yM' => [
-                            'M' => 'M/y – M/y',
-                            'y' => 'M/y – M/y',
+                            'M' => 'M/y – M/y GGGGG',
+                            'y' => 'M/y – M/y GGGGG',
                         ],
                         'yMEd' => [
-                            'M' => 'E, M/d/y – E, M/d/y',
-                            'd' => 'E, M/d/y – E, M/d/y',
-                            'y' => 'E, M/d/y – E, M/d/y',
+                            'M' => 'E, M/d/y – E, M/d/y GGGGG',
+                            'd' => 'E, M/d/y – E, M/d/y GGGGG',
+                            'y' => 'E, M/d/y – E, M/d/y GGGGG',
                         ],
                         'yMMM' => [
-                            'M' => 'MMM – MMM y',
-                            'y' => 'MMM y – MMM y',
+                            'M' => 'MMM – MMM y G',
+                            'y' => 'MMM y – MMM y G',
                         ],
                         'yMMMEd' => [
-                            'M' => 'E, MMM d – E, MMM d, y',
-                            'd' => 'E, MMM d – E, MMM d, y',
-                            'y' => 'E, MMM d, y – E, MMM d, y',
+                            'M' => 'E, MMM d – E, MMM d, y G',
+                            'd' => 'E, MMM d – E, MMM d, y G',
+                            'y' => 'E, MMM d, y – E, MMM d, y G',
                         ],
                         'yMMMM' => [
-                            'M' => 'MMMM – MMMM y',
-                            'y' => 'MMMM y – MMMM y',
+                            'M' => 'MMMM – MMMM y G',
+                            'y' => 'MMMM y – MMMM y G',
                         ],
                         'yMMMd' => [
-                            'M' => 'MMM d – MMM d, y',
-                            'd' => 'MMM d – d, y',
-                            'y' => 'MMM d, y – MMM d, y',
+                            'M' => 'MMM d – MMM d, y G',
+                            'd' => 'MMM d – d, y G',
+                            'y' => 'MMM d, y – MMM d, y G',
                         ],
                         'yMd' => [
-                            'M' => 'M/d/y – M/d/y',
-                            'd' => 'M/d/y – M/d/y',
-                            'y' => 'M/d/y – M/d/y',
+                            'M' => 'M/d/y – M/d/y GGGGG',
+                            'd' => 'M/d/y – M/d/y GGGGG',
+                            'y' => 'M/d/y – M/d/y GGGGG',
                         ],
                     ],
                 ],
