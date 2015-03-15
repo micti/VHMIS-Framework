@@ -1,6 +1,6 @@
 <?php
 
-$data = [
+return [
     'listPatterns' => [
         'listPattern-type-standard' => [
             'start' => '{0}, {1}',
@@ -28,5 +28,3 @@ $data = [
         ],
     ],
 ];
-
-return $data;

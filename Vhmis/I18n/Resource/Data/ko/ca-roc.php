@@ -3,7 +3,7 @@
 return [
     'dates' => [
         'calendars' => [
-            'gregorian' => [
+            'roc' => [
                 'months' => [
                     'format' => [
                         'abbreviated' => [
@@ -252,29 +252,23 @@ return [
                 ],
                 'eras' => [
                     'eraNames' => [
-                        0 => '기원전',
-                        '0-alt-variant' => 'BCE',
-                        1 => '서기',
-                        '1-alt-variant' => 'CE',
+                        0 => '중화민국전',
+                        1 => '중화민국',
                     ],
                     'eraAbbr' => [
-                        0 => '기원전',
-                        '0-alt-variant' => 'BCE',
-                        1 => '서기',
-                        '1-alt-variant' => 'CE',
+                        0 => '중화민국전',
+                        1 => '중화민국',
                     ],
                     'eraNarrow' => [
-                        0 => '기원전',
-                        '0-alt-variant' => 'BCE',
-                        1 => '서기',
-                        '1-alt-variant' => 'CE',
+                        0 => '중화민국전',
+                        1 => '중화민국',
                     ],
                 ],
                 'dateFormats' => [
-                    'full' => 'y년 M월 d일 EEEE',
-                    'long' => 'y년 M월 d일',
-                    'medium' => 'y. M. d.',
-                    'short' => 'yy. M. d.',
+                    'full' => 'G y년 M월 d일 EEEE',
+                    'long' => 'G y년 M월 d일',
+                    'medium' => 'G y. M. d.',
+                    'short' => 'G y. M. d.',
                 ],
                 'timeFormats' => [
                     'full' => 'a h시 m분 s초 zzzz',
@@ -290,11 +284,11 @@ return [
                     'availableFormats' => [
                         'E' => 'ccc',
                         'EEEEd' => 'd일 EEEE',
-                        'EHm' => '(E] HH:mm',
-                        'EHms' => '(E] HH:mm:ss',
+                        'EHm' => 'E HH:mm',
+                        'EHms' => 'E HH:mm:ss',
                         'Ed' => 'd일 (E]',
-                        'Ehm' => '(E] a h:mm',
-                        'Ehms' => '(E] a h:mm:ss',
+                        'Ehm' => 'E h:mm a',
+                        'Ehms' => 'E h:mm:ss a',
                         'Gy' => 'G y년',
                         'GyMMM' => 'G y년 MMM',
                         'GyMMMEEEEd' => 'G y년 MMM d일 EEEE',
@@ -316,20 +310,19 @@ return [
                         'h' => 'a h시',
                         'hm' => 'a h:mm',
                         'hms' => 'a h:mm:ss',
-                        'mmss' => 'mm:ss',
                         'ms' => 'mm:ss',
-                        'y' => 'y년',
-                        'yM' => 'y. M.',
-                        'yMEEEEd' => 'y. M. d. EEEE',
-                        'yMEd' => 'y. M. d. (E]',
-                        'yMM' => 'y. M.',
-                        'yMMM' => 'y년 MMM',
-                        'yMMMEEEEd' => 'y년 MMM d일 EEEE',
-                        'yMMMEd' => 'y년 MMM d일 (E]',
-                        'yMMMd' => 'y년 MMM d일',
-                        'yMd' => 'y. M. d.',
-                        'yQQQ' => 'y년 QQQ',
-                        'yQQQQ' => 'y년 QQQQ',
+                        'y' => 'G y년',
+                        'yyyy' => 'G y년',
+                        'yyyyM' => 'G y. M.',
+                        'yyyyMEEEEd' => 'G y. M. d. EEEE',
+                        'yyyyMEd' => 'G y. M. d. (E]',
+                        'yyyyMMM' => 'G y년 MMM',
+                        'yyyyMMMEEEEd' => 'G y년 MMM d일 EEEE',
+                        'yyyyMMMEd' => 'G y년 MMM d일 (E]',
+                        'yyyyMMMd' => 'G y년 MMM d일',
+                        'yyyyMd' => 'G y. M. d.',
+                        'yyyyQQQ' => 'G y년 QQQ',
+                        'yyyyQQQQ' => 'G y년 QQQQ',
                     ],
                     'appendItems' => [
                         'Day' => '{0} ({2}: {1}]',
@@ -347,7 +340,7 @@ return [
                     'intervalFormats' => [
                         'intervalFormatFallback' => '{0} ~ {1}',
                         'H' => [
-                            'H' => 'H ~ H시',
+                            'H' => 'HH ~ HH시',
                         ],
                         'Hm' => [
                             'H' => 'HH:mm ~ HH:mm',
@@ -361,14 +354,18 @@ return [
                             'H' => 'HH ~ HH시 v',
                         ],
                         'M' => [
-                            'M' => 'M월~M월',
+                            'M' => 'M월 ~ M월',
                         ],
                         'MEd' => [
                             'M' => 'M. d (E] ~ M. d (E]',
                             'd' => 'M. d (E] ~ M. d (E]',
                         ],
                         'MMM' => [
-                            'M' => 'MMM~MMM',
+                            'M' => 'MMM ~ MMM',
+                        ],
+                        'MMMEEEEd' => [
+                            'M' => 'M월 d일 EEEE ~ M월 d일 EEEE',
+                            'd' => 'M월 d일 EEEE ~ d일 EEEE',
                         ],
                         'MMMEd' => [
                             'M' => 'M월 d일 (E] ~ M월 d일 (E]',
@@ -379,14 +376,14 @@ return [
                         ],
                         'MMMd' => [
                             'M' => 'M월 d일 ~ M월 d일',
-                            'd' => 'MMM d일~d일',
+                            'd' => 'M월 d일 ~ d일',
                         ],
                         'Md' => [
                             'M' => 'M. d ~ M. d',
                             'd' => 'M. d ~ M. d',
                         ],
                         'd' => [
-                            'd' => 'd일~d일',
+                            'd' => 'd일 ~ d일',
                         ],
                         'h' => [
                             'a' => 'a h시 ~ a h시',
@@ -407,44 +404,44 @@ return [
                             'h' => 'a h시 ~ h시(v]',
                         ],
                         'y' => [
-                            'y' => 'y년 ~ y년',
+                            'y' => 'G y년 ~ y년',
                         ],
                         'yM' => [
-                            'M' => 'y. M ~ y. M',
-                            'y' => 'y. M ~ y. M',
+                            'M' => 'G y. M ~ y. M',
+                            'y' => 'G y. M ~ y. M',
                         ],
                         'yMEd' => [
-                            'M' => 'y. M. d. (E] ~ y. M. d. (E]',
-                            'd' => 'y. M. d. (E] ~ y. M. d. (E]',
-                            'y' => 'y. M. d. (E] ~ y. M. d. (E]',
+                            'M' => 'G y. M. d. (E] ~ y. M. d. (E]',
+                            'd' => 'G y. M. d. (E] ~ y. M. d. (E]',
+                            'y' => 'G y. M. d. (E] ~ y. M. d. (E]',
                         ],
                         'yMMM' => [
-                            'M' => 'y년 M월~M월',
-                            'y' => 'y년 M월 ~ y년 M월',
+                            'M' => 'G y년 M월~M월',
+                            'y' => 'G y년 M월 ~ y년 M월',
                         ],
                         'yMMMEEEEd' => [
-                            'M' => 'y년 M월 d일 EEEE ~ M월 d일 EEEE',
-                            'd' => 'y년 M월 d일 EEEE ~ d일 EEEE',
-                            'y' => 'y년 M월 d일 EEEE ~ y년 M월 d일 EEEE',
+                            'M' => 'G y년 M월 d일 EEEE ~ M월 d일 EEEE',
+                            'd' => 'G y년 M월 d일 EEEE ~ d일 EEEE',
+                            'y' => 'G y년 M월 d일 EEEE ~ y년 M월 d일 EEEE',
                         ],
                         'yMMMEd' => [
-                            'M' => 'y년 M월 d일 (E] ~ M월 d일 (E]',
-                            'd' => 'y년 M월 d일 (E] ~ d일 (E]',
-                            'y' => 'y년 M월 d일 (E] ~ y년 M월 d일 (E]',
+                            'M' => 'G y년 M월 d일 (E] ~ M월 d일 (E]',
+                            'd' => 'G y년 M월 d일 (E] ~ d일 (E]',
+                            'y' => 'G y년 M월 d일 (E] ~ y년 M월 d일 (E]',
                         ],
                         'yMMMM' => [
-                            'M' => 'y년 MMMM ~ MMMM',
-                            'y' => 'y년 MMMM ~ y년 MMMM',
+                            'M' => 'G y년 MM월 ~ MM월',
+                            'y' => 'G y년 MM월 ~ y년 MM월',
                         ],
                         'yMMMd' => [
-                            'M' => 'y년 M월 d일 ~ M월 d일',
-                            'd' => 'y년 M월 d일~d일',
-                            'y' => 'y년 M월 d일 ~ y년 M월 d일',
+                            'M' => 'G y년 M월 d일 ~ M월 d일',
+                            'd' => 'G y년 M월 d일~d일',
+                            'y' => 'G y년 M월 d일 ~ y년 M월 d일',
                         ],
                         'yMd' => [
-                            'M' => 'y. M. d. ~ y. M. d.',
-                            'd' => 'y. M. d. ~ y. M. d.',
-                            'y' => 'y. M. d. ~ y. M. d.',
+                            'M' => 'G y. M. d. ~ y. M. d.',
+                            'd' => 'G y. M. d. ~ y. M. d.',
+                            'y' => 'G y. M. d. ~ y. M. d.',
                         ],
                     ],
                 ],
