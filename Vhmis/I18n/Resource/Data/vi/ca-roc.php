@@ -3,7 +3,7 @@
 return [
     'dates' => [
         'calendars' => [
-            'gregorian' => [
+            'roc' => [
                 'months' => [
                     'format' => [
                         'abbreviated' => [
@@ -252,29 +252,23 @@ return [
                 ],
                 'eras' => [
                     'eraNames' => [
-                        0 => 'tr. CN',
-                        '0-alt-variant' => 'BCE',
-                        1 => 'sau CN',
-                        '1-alt-variant' => 'CE',
+                        0 => 'Trước R.O.C',
+                        1 => 'R.O.C.',
                     ],
                     'eraAbbr' => [
-                        0 => 'tr. CN',
-                        '0-alt-variant' => 'BCE',
-                        1 => 'sau CN',
-                        '1-alt-variant' => 'CE',
+                        0 => 'Trước R.O.C',
+                        1 => 'R.O.C.',
                     ],
                     'eraNarrow' => [
-                        0 => 'tr. CN',
-                        '0-alt-variant' => 'BCE',
-                        1 => 'sau CN',
-                        '1-alt-variant' => 'CE',
+                        0 => 'Trước R.O.C',
+                        1 => 'R.O.C.',
                     ],
                 ],
                 'dateFormats' => [
-                    'full' => 'EEEE, \'ngày\' dd MMMM \'năm\' y',
-                    'long' => '\'Ngày\' dd \'tháng\' MM \'năm\' y',
-                    'medium' => 'dd-MM-y',
-                    'short' => 'dd/MM/y',
+                    'full' => 'EEEE, \'ngày\' dd MMMM \'năm\' y G',
+                    'long' => '\'Ngày\' dd \'tháng\' M \'năm\' y G',
+                    'medium' => 'dd-MM-y G',
+                    'short' => 'dd/MM/y GGGGG',
                 ],
                 'timeFormats' => [
                     'full' => 'HH:mm:ss zzzz',
@@ -294,39 +288,39 @@ return [
                         'Ed' => 'E, dd',
                         'Ehm' => 'E h:mm a',
                         'Ehms' => 'E h:mm:ss a',
-                        'Gy' => 'y G',
+                        'Gy' => '\'Năm\' y G',
                         'GyMMM' => 'MMM y G',
                         'GyMMMEd' => 'E, dd MMM y G',
                         'GyMMMd' => 'dd MMM, y G',
-                        'H' => 'HH',
-                        'Hm' => 'H:mm',
-                        'Hms' => 'H:mm:ss',
-                        'M' => 'L',
+                        'H' => 'HH\'h\'',
+                        'Hm' => 'HH:mm',
+                        'Hms' => 'HH:mm:ss',
+                        'M' => '\'tháng\' L',
                         'MEd' => 'E, dd-M',
                         'MMM' => 'LLL',
                         'MMMEd' => 'E, dd MMM',
-                        'MMMMEd' => 'E, d MMMM',
-                        'MMMMd' => 'd MMMM',
-                        'MMMd' => 'd MMM',
+                        'MMMMEd' => 'E, dd MMMM',
+                        'MMMMd' => 'dd MMMM',
+                        'MMMd' => 'dd MMM',
                         'MMdd' => 'dd-MM',
                         'Md' => 'dd-M',
-                        'd' => 'd',
-                        'h' => 'h a',
+                        'd' => '\'Ngày\' dd',
+                        'h' => 'h\'h\' a',
                         'hm' => 'h:mm a',
                         'hms' => 'h:mm:ss a',
-                        'mmss' => 'mm:ss',
                         'ms' => 'mm:ss',
-                        'y' => 'y',
-                        'yM' => 'M/y',
-                        'yMEd' => 'E, dd-M-y',
-                        'yMM' => '\'tháng\' MM, y',
-                        'yMMM' => 'MMM y',
-                        'yMMMEd' => 'E, dd MMM y',
-                        'yMMMM' => 'MMMM \'năm\' y',
-                        'yMMMd' => 'dd MMM, y',
-                        'yMd' => 'd/M/y',
-                        'yQQQ' => 'QQQ y',
-                        'yQQQQ' => 'QQQQ y',
+                        'y' => '\'Năm\' y G',
+                        'yyyy' => '\'Năm\' y G',
+                        'yyyyM' => 'M/y G',
+                        'yyyyMEd' => 'E, dd-M-y G',
+                        'yyyyMM' => 'MM-y G',
+                        'yyyyMMM' => 'MMM y G',
+                        'yyyyMMMEd' => 'E, dd MMM y G',
+                        'yyyyMMMM' => 'MMMM y G',
+                        'yyyyMMMd' => 'dd MMM, y G',
+                        'yyyyMd' => 'd/M/y G',
+                        'yyyyQQQ' => 'QQQ y G',
+                        'yyyyQQQQ' => 'QQQQ y G',
                     ],
                     'appendItems' => [
                         'Day' => '{0} ({2}: {1}]',
@@ -344,7 +338,7 @@ return [
                     'intervalFormats' => [
                         'intervalFormatFallback' => '{0} - {1}',
                         'H' => [
-                            'H' => 'HH–HH',
+                            'H' => 'HH\'h\' - HH\'h\'',
                         ],
                         'Hm' => [
                             'H' => 'HH:mm-HH:mm',
@@ -355,10 +349,10 @@ return [
                             'm' => 'HH:mm-HH:mm v',
                         ],
                         'Hv' => [
-                            'H' => 'HH–HH v',
+                            'H' => 'HH\'h\'-HH\'h\' v',
                         ],
                         'M' => [
-                            'M' => '\'Tháng\' M - M',
+                            'M' => '\'Tháng\' M - \'Tháng\' M',
                         ],
                         'MEd' => [
                             'M' => 'EEEE, dd/MM - EEEE, dd/MM',
@@ -373,7 +367,7 @@ return [
                         ],
                         'MMMd' => [
                             'M' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M',
-                            'd' => '\'Ngày\' dd - \'Ngày\' dd \'tháng\' M',
+                            'd' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M',
                         ],
                         'Md' => [
                             'M' => 'dd/MM - dd/MM',
@@ -384,7 +378,7 @@ return [
                         ],
                         'h' => [
                             'a' => 'h\'h\' a - h\'h\' a',
-                            'h' => 'h–h a',
+                            'h' => 'h\'h\' - h\'h\' a',
                         ],
                         'hm' => [
                             'a' => 'h:mm a – h:mm a',
@@ -398,42 +392,42 @@ return [
                         ],
                         'hv' => [
                             'a' => 'h\'h\' a - h\'h\' a v',
-                            'h' => 'h–h a v',
+                            'h' => 'h\'h\'-h\'h\' a v',
                         ],
                         'y' => [
-                            'y' => 'y-y',
+                            'y' => 'y-y G',
                         ],
                         'yM' => [
-                            'M' => 'MM/y - MM/y',
-                            'y' => 'MM/y - MM/y',
+                            'M' => 'MM/y - MM/y G',
+                            'y' => 'MM/y - MM/y G',
                         ],
                         'yMEd' => [
-                            'M' => 'EEEE, dd/MM/y - EEEE, dd/MM/y',
-                            'd' => 'EEEE, dd/MM/y - EEEE, dd/MM/y',
-                            'y' => 'EEEE, dd/MM/y - EEEE, dd/MM/y',
+                            'M' => 'EEEE, dd/MM/y - EEEE, dd/MM/y G',
+                            'd' => 'EEEE, dd/MM/y - EEEE, dd/MM/y G',
+                            'y' => 'EEEE, dd/MM/y - EEEE, dd/MM/y G',
                         ],
                         'yMMM' => [
-                            'M' => '\'Tháng\' M - \'Tháng\' M \'năm\' y',
-                            'y' => '\'Tháng\' M \'năm\' y - \'Tháng\' M \'năm\' y',
+                            'M' => '\'Tháng\' M - \'Tháng\' M \'năm\' y G',
+                            'y' => '\'Tháng\' M \'năm\' y - \'Tháng\' M \'năm\' y G',
                         ],
                         'yMMMEd' => [
-                            'M' => 'E, dd \'tháng\' M - E, dd \'tháng\' M, y',
-                            'd' => 'EEEE, \'ngày\' dd MMM - EEEE, \'ngày\' dd MMM \'năm\' y',
-                            'y' => 'E, dd \'tháng\' M, y - E, dd \'tháng\' M, y',
+                            'M' => 'E, dd \'tháng\' M - E, dd \'tháng\' M, y G',
+                            'd' => 'EEEE, \'ngày\' dd MMM - EEEE, \'ngày\' dd MMM \'năm\' y G',
+                            'y' => 'E, dd \'tháng\' M, y - E, dd \'tháng\' M, y G',
                         ],
                         'yMMMM' => [
-                            'M' => 'MMMM-MMMM \'năm\' y',
-                            'y' => 'MMMM y – MMMM y',
+                            'M' => 'MMMM-MMMM y G',
+                            'y' => 'MMMM y – MMMM y G',
                         ],
                         'yMMMd' => [
-                            'M' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M \'năm\' y',
-                            'd' => '\'Ngày\' dd - \'Ngày\' dd \'tháng\' M \'năm\' y',
-                            'y' => '\'Ngày\' dd \'tháng\' M \'năm\' y - \'Ngày\' dd \'tháng\' M \'năm\' y',
+                            'M' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M \'năm\' y G',
+                            'd' => '\'Ngày\' dd \'tháng\' M - \'Ngày\' dd \'tháng\' M \'năm\' y G',
+                            'y' => '\'Ngày\' dd \'tháng\' M \'năm\' y - \'Ngày\' dd \'tháng\' M \'năm\' y G',
                         ],
                         'yMd' => [
-                            'M' => 'dd/MM/y - dd/MM/y',
-                            'd' => 'dd/MM/y - dd/MM/y',
-                            'y' => 'dd/MM/y - dd/MM/y',
+                            'M' => 'dd/MM/y - dd/MM/y G',
+                            'd' => 'dd/MM/y - dd/MM/y G',
+                            'y' => 'dd/MM/y - dd/MM/y G',
                         ],
                     ],
                 ],
