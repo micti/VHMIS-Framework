@@ -77,7 +77,6 @@ class Loader
      * Load supplemental data.
      *
      * @param string $field
-     * @param string $locale
      *
      * @return array
      *
@@ -140,7 +139,6 @@ class Loader
      * Check supported supplemental data.
      *
      * @param string $field
-     * @param string $locale
      *
      * @return boolean
      */
@@ -156,7 +154,6 @@ class Loader
     /**
      * Check supported locale.
      *
-     * @param string $field
      * @param string $locale
      *
      * @return boolean
