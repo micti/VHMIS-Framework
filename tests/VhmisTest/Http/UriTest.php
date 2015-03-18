@@ -34,6 +34,12 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('https://user:pass@local.example.com:3001/foo?bar=baz#quz', $uri->getURI());
     }
 
+    public function testConstructorSetForInvalidUri()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Invalid uri.');
+        $uri = new Uri(4343);
+    }
+
     public function testCanSerializeToString()
     {
         $url = 'https://user:pass@local.example.com:3001/foo?bar=baz#quz';
@@ -135,7 +141,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithPathReturnsNewInstanceWithProvidedPath()
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $new = $uri->withPath('/bar/baz');
+        $new = $uri->withPath('/bar/baz?fdfdgf=gfdgfd#fgdsfgfd');
         $this->assertNotSame($uri, $new);
         $this->assertEquals('/bar/baz', $new->getPath());
         $this->assertEquals('https://user:pass@local.example.com:3001/bar/baz?bar=baz#quz', (string) $new);
@@ -148,9 +154,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
             'true' => [ true],
             'false' => [ false],
             'array' => [ [ '/bar/baz']],
-            'object' => [ (object) [ '/bar/baz']],
-            'query' => [ '/bar/baz?bat=quz'],
-            'fragment' => [ '/bar/baz#bat'],
+            'object' => [ (object) [ '/bar/baz']]
         ];
     }
 
@@ -167,10 +171,13 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithQueryReturnsNewInstanceWithProvidedQuery()
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $new = $uri->withQuery('baz=bat');
+        $new = $uri->withQuery('?baz=bat#fgdgfdgfdgfd');
         $this->assertNotSame($uri, $new);
         $this->assertEquals('baz=bat', $new->getQuery());
         $this->assertEquals('https://user:pass@local.example.com:3001/foo?baz=bat#quz', (string) $new);
+
+        $new = $uri->withQuery('?baz=baat');
+        $this->assertEquals('baz=baat', $new->getQuery());
     }
 
     public function invalidQueryStrings()
@@ -181,7 +188,6 @@ class UriTest extends \PHPUnit_Framework_TestCase
             'false' => [ false],
             'array' => [ [ 'baz=bat']],
             'object' => [ (object) [ 'baz=bat']],
-            'fragment' => [ 'baz=bat#quz'],
         ];
     }
 
@@ -202,6 +208,9 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame($uri, $new);
         $this->assertEquals('qat', $new->getFragment());
         $this->assertEquals('https://user:pass@local.example.com:3001/foo?bar=baz#qat', (string) $new);
+
+        $new = $uri->withFragment('#qat');
+        $this->assertEquals('qat', $new->getFragment());
     }
 
     public function authorityInfo()

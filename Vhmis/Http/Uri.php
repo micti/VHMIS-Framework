@@ -30,9 +30,9 @@ class Uri implements UriInterface
     /**
      * Port.
      *
-     * @var string
+     * @var int
      */
-    protected $port = '';
+    protected $port = 0;
 
     /**
      * Host.
@@ -83,13 +83,7 @@ class Uri implements UriInterface
      */
     public function __construct($uri = '')
     {
-        if (!is_string($uri)) {
-            throw new InvalidArgumentException('URI passed to constructor must be a string');
-        }
-
-        if (!empty($uri)) {
-            $this->setUri($uri);
-        }
+        $this->setUri($uri);
     }
 
     /**
@@ -98,9 +92,15 @@ class Uri implements UriInterface
      * @param string $uri
      *
      * @return Uri
+     *
+     * @throws InvalidArgumentException
      */
     public function setUri($uri)
     {
+        if (!is_string($uri)) {
+            throw new InvalidArgumentException('Invalid uri.');
+        }
+
         $this->prase($uri);
 
         return $this;
@@ -177,7 +177,7 @@ class Uri implements UriInterface
      */
     public function getPort()
     {
-        if (!$this->port) {
+        if ($this->port === 0) {
             return null;
         }
 
@@ -191,7 +191,11 @@ class Uri implements UriInterface
      */
     public function getPath()
     {
-        return $this->path != '' ? $this->path : '/';
+        if (strpos($this->path, '/') !== 0) {
+            return '/' . $this->path;
+        }
+
+        return $this->path;
     }
 
     /**
@@ -330,18 +334,18 @@ class Uri implements UriInterface
     {
         if ($port === null) {
             $new = clone $this;
-            $new->port = '';
+            $new->port = 0;
             return $new;
         }
 
         if (!is_numeric($port)) {
-            throw new InvalidArgumentException('Invalid port specified; must be an integer or string');
+            throw new InvalidArgumentException('Invalid port.');
         }
 
         $port = (int) $port;
 
         if ($port < 1 || $port > 65535) {
-            throw new InvalidArgumentException('Invalid port specified; must be a valid TCP/UDP port');
+            throw new InvalidArgumentException('Invalid port.');
         }
 
         $new = clone $this;
@@ -364,20 +368,10 @@ class Uri implements UriInterface
             throw new InvalidArgumentException('Invalid path specified.');
         }
 
-        if (strpos($path, '?') !== false) {
-            throw new InvalidArgumentException('Invalid path specified.');
-        }
-
-        if (strpos($path, '#') !== false) {
-            throw new InvalidArgumentException('Invalid path specified');
-        }
-
-        if (!empty($path) && strpos($path, '/') !== 0) {
-            $path = '/' . $path;
-        }
+        $path = explode('?', $path);
 
         $new = clone $this;
-        $new->path = $path;
+        $new->path = $path[0];
 
         return $new;
     }
@@ -396,16 +390,14 @@ class Uri implements UriInterface
             throw new InvalidArgumentException('Invalid query string.');
         }
 
-        if (strpos($query, '#') !== false) {
-            throw new InvalidArgumentException('Invalid query string.');
-        }
+        $query = explode('#', $query);
 
-        if (strpos($query, '?') === 0) {
-            $query = substr($query, 1);
+        if (strpos($query[0], '?') === 0) {
+            $query[0] = substr($query[0], 1);
         }
 
         $new = clone $this;
-        $new->query = $query;
+        $new->query = $query[0];
 
         return $new;
     }
@@ -432,7 +424,7 @@ class Uri implements UriInterface
     /**
      * Prase URI
      *
-     * $param string $uri
+     * @param string $uri
      */
     protected function prase($uri)
     {
@@ -456,7 +448,7 @@ class Uri implements UriInterface
             return true;
         }
 
-        if (!$this->host || !$this->port) {
+        if (!$this->host || $this->port === 0) {
             return false;
         }
 
