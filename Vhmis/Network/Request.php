@@ -94,7 +94,7 @@ class Request
 
         $this->uri = new Uri($url);
 
-        if ($this->uri->isValid() == false) {
+        if ($this->uri->getHost() === '') {
             $this->responeCode = '403';
 
             return;
