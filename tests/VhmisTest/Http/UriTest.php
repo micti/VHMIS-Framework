@@ -36,7 +36,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorSetForInvalidUri()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid uri.');
+        $this->setExpectedException('InvalidArgumentException');
         $uri = new Uri(4343);
     }
 
@@ -134,7 +134,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithPortRaisesExceptionForInvalidPorts($port)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException', 'Invalid port');
+        $this->setExpectedException('InvalidArgumentException');
         $new = $uri->withPort($port);
     }
 
@@ -164,7 +164,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithPathRaisesExceptionForInvalidPaths($path)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException', 'Invalid path');
+        $this->setExpectedException('InvalidArgumentException');
         $new = $uri->withPath($path);
     }
 
@@ -197,7 +197,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithQueryRaisesExceptionForInvalidQueryStrings($query)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException', 'Invalid query string.');
+        $this->setExpectedException('InvalidArgumentException');
         $new = $uri->withQuery($query);
     }
 
@@ -310,7 +310,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testMutatingWithNonWebSchemeRaisesAnException($scheme)
     {
         $uri = new Uri('http://example.com');
-        $this->setExpectedException('InvalidArgumentException', 'Invalid scheme specified');
+        $this->setExpectedException('InvalidArgumentException');
         $uri->withScheme($scheme);
     }
 

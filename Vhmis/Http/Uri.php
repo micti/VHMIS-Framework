@@ -101,7 +101,7 @@ class Uri implements UriInterface
             throw new InvalidArgumentException('Invalid uri.');
         }
 
-        $this->prase($uri);
+        $this->parse($uri);
 
         return $this;
     }
@@ -231,10 +231,7 @@ class Uri implements UriInterface
             $uri .= $this->scheme . '://';
         }
 
-        $authority = $this->getAuthority();
-        if (!empty($authority)) {
-            $uri .= $authority;
-        }
+        $uri .= $this->getAuthority();
 
         $uri .= $this->getPath();
 
@@ -271,7 +268,7 @@ class Uri implements UriInterface
     public function withScheme($scheme)
     {
         if (!in_array($scheme, ['', 'http', 'https', 'http://', 'https://'], true)) {
-            throw new InvalidArgumentException('Invalid scheme specified');
+            throw new InvalidArgumentException('Invalid scheme.');
         }
 
         $new = clone $this;
@@ -280,6 +277,7 @@ class Uri implements UriInterface
     }
 
     /**
+     * Create a new instance with the specified user information.
      *
      * @param string $user
      * @param null|string $password
@@ -304,6 +302,7 @@ class Uri implements UriInterface
     }
 
     /**
+     * Create a new instance with the specified host.
      *
      * @param string $host
      *
@@ -314,7 +313,7 @@ class Uri implements UriInterface
     public function withHost($host)
     {
         if (!is_string($host)) {
-            throw new InvalidArgumentException('Invalid host specified.');
+            throw new InvalidArgumentException('Invalid host.');
         }
 
         $new = clone $this;
@@ -323,6 +322,7 @@ class Uri implements UriInterface
     }
 
     /**
+     * Create a new instance with the specified port.
      *
      * @param int|string $port
      *
@@ -355,6 +355,7 @@ class Uri implements UriInterface
     }
 
     /**
+     * Create a new instance with the specified path.
      *
      * @param string $path
      *
@@ -365,7 +366,7 @@ class Uri implements UriInterface
     public function withPath($path)
     {
         if (!is_string($path)) {
-            throw new InvalidArgumentException('Invalid path specified.');
+            throw new InvalidArgumentException('Invalid path.');
         }
 
         $path = explode('?', $path);
@@ -377,6 +378,7 @@ class Uri implements UriInterface
     }
 
     /**
+     * Create a new instance with the specified query string.
      *
      * @param string $query
      *
@@ -392,18 +394,15 @@ class Uri implements UriInterface
 
         $query = explode('#', $query);
 
-        if (strpos($query[0], '?') === 0) {
-            $query[0] = substr($query[0], 1);
-        }
-
         $new = clone $this;
-        $new->query = $query[0];
+        $new->query = $this->removeFirstCharacter($query[0], '?');
+
 
         return $new;
     }
 
     /**
-     * Create a new instance with the specified URI fragment.
+     * Create a new instance with the specified fragment.
      *
      * @param string $fragment The URI fragment to use with the new instance.
      *
@@ -411,22 +410,18 @@ class Uri implements UriInterface
      */
     public function withFragment($fragment)
     {
-        if (strpos($fragment, '#') === 0) {
-            $fragment = substr($fragment, 1);
-        }
-
         $new = clone $this;
-        $new->fragment = $fragment;
+        $new->fragment = $this->removeFirstCharacter($fragment, '#');
 
         return $new;
     }
 
     /**
-     * Prase URI
+     * Parse URI
      *
      * @param string $uri
      */
-    protected function prase($uri)
+    protected function parse($uri)
     {
         $result = parse_url($uri);
 
@@ -461,6 +456,23 @@ class Uri implements UriInterface
         }
 
         return false;
+    }
+
+    /**
+     * Remove first character if it exists.
+     *
+     * @param string $string
+     * @param string $character
+     *
+     * @return string
+     */
+    protected function removeFirstCharacter($string, $character)
+    {
+        if (strpos($string, $character) === 0) {
+            $string = substr($string, 1);
+        }
+
+        return $string;
     }
 
 }
