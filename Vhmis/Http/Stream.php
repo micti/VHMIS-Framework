@@ -2,15 +2,17 @@
 
 namespace Vhmis\Http;
 
+use Vhmis\Utils\Exception\InvalidArgumentException;
+
 class Stream implements StreamableInterface
 {
 
     /**
-     * Original resource of stream.
+     * Underlying resource.
      *
      * @var resource
      */
-    protected $stream;
+    protected $resource;
 
     /**
      * Readable.
@@ -34,6 +36,13 @@ class Stream implements StreamableInterface
     protected $writeable;
 
     /**
+     * Current size of resource.
+     *
+     * @var int
+     */
+    protected $size;
+
+    /**
      * Construct with a resource.
      *
      * @param resource $stream
@@ -43,10 +52,16 @@ class Stream implements StreamableInterface
     public function __construct($stream)
     {
         if (!is_resource($stream)) {
-            throw new \InvalidArgumentException('Stream must be a resource');
+            throw new InvalidArgumentException('Stream must be a resource');
         }
 
-        $this->stream = $stream;
+        $this->resource = $stream;
+
+        $meta = stream_get_meta_data($this->resource);
+        $this->seekable = $meta['seekable'];
+        $this->readable = $this->isReadMode($meta['mode']);
+        $this->writeable = $this->isWriteMode($meta['mode']);
+        $this->size = $this->getSize();
     }
 
     /**
@@ -56,13 +71,13 @@ class Stream implements StreamableInterface
      */
     public function __toString()
     {
-        if ($this->stream === null) {
+        if ($this->resource === null) {
             return '';
         }
 
         $this->seek(0);
 
-        return stream_get_contents($this->stream);
+        return stream_get_contents($this->resource);
     }
 
     /**
@@ -72,7 +87,7 @@ class Stream implements StreamableInterface
      */
     public function close()
     {
-        if ($this->steam !== null) {
+        if ($this->resource === null) {
             return;
         }
 
@@ -86,17 +101,22 @@ class Stream implements StreamableInterface
      */
     public function detach()
     {
-        $resource = $this->stream;
-        $this->steam = null;
+        $resource = $this->resource;
+        $this->resource = null;
         $this->seekable = $this->writeable = $this->readable = false;
         $this->size = null;
 
         return $resource;
     }
 
+    /**
+     * Returns true if the stream is at the end of the stream.
+     *
+     * @return boolean
+     */
     public function eof()
     {
-        
+        return !$this->resource || feof($this->resource);
     }
 
     /**
@@ -106,7 +126,7 @@ class Stream implements StreamableInterface
      */
     public function getContents()
     {
-        return $this->stream ? stream_get_contents($this->stream) : '';
+        return $this->resource ? stream_get_contents($this->resource) : '';
     }
 
     /**
@@ -120,15 +140,15 @@ class Stream implements StreamableInterface
     {
         $metadata = [];
 
-        if ($this->stream) {
-            $metadata = stream_get_meta_data($this->stream);
+        if ($this->resource) {
+            $metadata = stream_get_meta_data($this->resource);
         }
 
         if ($key === null) {
             return $metadata;
         }
 
-        return isset($metadata[$key]) ? : null;
+        return isset($metadata[$key]) ? $metadata[$key] : null;
     }
 
     /**
@@ -142,11 +162,11 @@ class Stream implements StreamableInterface
             return $this->size;
         }
 
-        if ($this->stream === null) {
+        if ($this->resource === null) {
             return null;
         }
 
-        $stats = fstat($this->stream);
+        $stats = fstat($this->resource);
 
         if (isset($stats['size'])) {
             $this->size = $stats['size'];
@@ -173,7 +193,7 @@ class Stream implements StreamableInterface
 
     public function read($length)
     {
-        return $this->readable ? fread($this->stream, $length) : false;
+        return $this->readable ? fread($this->resource, $length) : false;
     }
 
     public function rewind()
@@ -187,7 +207,7 @@ class Stream implements StreamableInterface
             return false;
         }
 
-        return fseek($this->stream, $offset, $whence) === 0;
+        return fseek($this->resource, $offset, $whence) === 0;
     }
 
     /**
@@ -197,7 +217,7 @@ class Stream implements StreamableInterface
      */
     public function tell()
     {
-        return $this->stream ? ftell($this->stream) : false;
+        return $this->resource ? ftell($this->resource) : false;
     }
 
     /**
@@ -209,7 +229,56 @@ class Stream implements StreamableInterface
      */
     public function write($string)
     {
-        return $this->writeable ? fwrite($this->stream, $string) : false;
+        $this->size = null;
+
+        return $this->writeable ? fwrite($this->resource, $string) : false;
     }
 
+    protected function isWriteMode($mode)
+    {
+        /* if (strpos($mode, 'w') !== false) {
+          return true;
+          }
+
+          if (strpos($mode, '+') !== false) {
+          return true;
+          }
+
+          if (strpos($mode, 'a') !== false) {
+          return true;
+          }
+
+          if (strpos($mode, 'x') !== false) {
+          return true;
+          }
+
+          if (strpos($mode, 'c') !== false) {
+          return true;
+          }
+
+          return false; */
+
+        $modes = [
+            'w', 'a', 'x', 'c', 'rw',
+            'w+', 'a+', 'x+', 'c+', 'r+',
+            'w+b', 'w+b', 'x+b', 'c+b', 'r+b',
+            'w+t', 'w+t', 'x+t', 'c+t', 'r+t',
+            'wb'
+        ];
+
+        return in_array($mode, $modes);
+    }
+
+    protected function isReadMode($mode)
+    {
+        if (strpos($mode, 'r') !== false) {
+            return true;
+        }
+
+        if (strpos($mode, '+') !== false) {
+            return true;
+        }
+
+        return false;
+    }
 }
