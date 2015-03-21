@@ -70,17 +70,22 @@ class Response implements ResponseInterface
 
     /**
      *
-     * @var type 
+     * @var int
      */
     protected $statusCode;
+
+    /**
+     *
+     * @var string
+     */
     protected $statusPhrase;
 
     /**
-     * 
+     *
      * @param integer $statusCode
      * @param array $headers
      * @param StreamableInterface $body
-     * 
+     *
      * @throws InvalidArgumentException
      */
     public function __construct($statusCode, $headers = [], $body = null)
@@ -93,6 +98,9 @@ class Response implements ResponseInterface
             $this->headers[$prepareValue[0]] = $prepareValue[1];
         }
 
+        if (!($body instanceof StreamableInterface)) {
+            $body = new Stream(fopen('php://temp', 'w+b'));
+        }
         $this->body = $body;
     }
 
@@ -103,12 +111,12 @@ class Response implements ResponseInterface
 
     /**
      * Create a new instance with the specified status code, and optionally reason phrase, for the response.
-     * 
+     *
      * @param integer $code
      * @param string|null $reasonPhrase
-     * 
-     * @return self
-     * 
+     *
+     * @return ResponseInterface
+     *
      * @throws InvalidArgumentException
      */
     public function withStatus($code, $reasonPhrase = null)
@@ -122,7 +130,7 @@ class Response implements ResponseInterface
 
     /**
      * Gets the response Reason-Phrase, a short textual description of the Status-Code.
-     * 
+     *
      * @return string|null
      */
     public function getReasonPhrase()
@@ -138,7 +146,7 @@ class Response implements ResponseInterface
      * Check status code.
      *
      * @param string|int $code
-     * 
+     *
      * @throws InvalidArgumentException
      */
     protected function checkStatusCode($code)
