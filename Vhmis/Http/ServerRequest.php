@@ -28,7 +28,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @var array
      */
     protected $fileParams;
-    
+
     /**
      *
      * @var array
@@ -36,19 +36,19 @@ class ServerRequest extends Request implements ServerRequestInterface
     protected $parsedBody;
 
     /**
-     * 
+     *
      * @var array
      */
     protected $attributes;
-    
-    public function __construct($body)
+
+    public function __construct($body = null)
     {
         $this->serverParams = $_SERVER;
         $this->cookieParams = $_COOKIE;
         $this->fileParams = $_FILES;
         $this->queryParams = $_GET;
         $this->parsedBody = $_POST;
-        
+
         parent::__construct($this->serverParams['REQUEST_METHOD'], $this->getRequestUri(), [], $body);
     }
 
@@ -124,7 +124,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * Create a new instance with the specified body parameters.
      *
      * @param null|array|object
-     * 
+     *
      * @return self
      */
     public function withParsedBody($data)
@@ -168,7 +168,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
         return $new;
     }
-    
+
     /**
      * Get request uri.
      *
@@ -179,7 +179,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         $server = $this->serverParams['SERVER_NAME'];
         $path = $this->serverParams['REQUEST_URI'];
         $protocol = !empty($this->serverParams['HTTPS']) ? 'https' : 'http';
-        
+
         return $protocol . '://' . $server . $path;
     }
 }

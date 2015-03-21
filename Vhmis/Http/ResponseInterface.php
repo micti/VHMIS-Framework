@@ -27,6 +27,7 @@ namespace Vhmis\Http;
  */
 interface ResponseInterface extends MessageInterface
 {
+
     /**
      * Gets the response Status-Code.
      *
@@ -55,7 +56,7 @@ interface ResponseInterface extends MessageInterface
      * @param null|string $reasonPhrase The reason phrase to use with the
      *     provided status code; if none is provided, implementations MAY
      *     use the defaults as suggested in the HTTP specification.
-     * @return self
+     * @return ResponseInterface
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
     public function withStatus($code, $reasonPhrase = null);
