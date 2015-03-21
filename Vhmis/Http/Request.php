@@ -120,7 +120,7 @@ class Request implements RequestInterface
      */
     public function getMethod()
     {
-        return $this->method;
+        return strtolower($this->method);
     }
 
     /**
@@ -131,7 +131,7 @@ class Request implements RequestInterface
      */
     public function withMethod($method)
     {
-        if (!in_array($method, $this->methods, true)) {
+        if (!in_array(strtoupper($method), $this->methods, true)) {
             throw new InvalidArgumentException('Invalid method');
         }
 
