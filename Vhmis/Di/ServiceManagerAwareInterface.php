@@ -14,7 +14,7 @@ interface ServiceManagerAwareInterface
     /**
      * Thiết lập Service Manager
      *
-     * @param \Vhmis\Di\ServiceManager $di
+     * @param \Vhmis\Di\ServiceManager $sm
      */
     public function setServiceManager(ServiceManager $sm);
 }
