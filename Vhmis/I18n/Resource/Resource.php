@@ -25,6 +25,12 @@ class Resource
         return static::getSupplementalData('plurals')[$lang[0]];
     }
 
+    public static function getDateField($type, $locale = '')
+    {
+        $locale = static::getLocale($locale);
+        return static::getMainData('dateFields', $locale)['dates']['fields'][$type];
+    }
+
     /**
      * Get main data.
      *

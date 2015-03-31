@@ -95,7 +95,8 @@ class View
         'appInfo'  => 'App',
         'dateTime' => 'DateTime',
         'number'   => 'Number',
-        'output'   => 'Output'
+        'output'   => 'Output',
+        'dtRelative' => 'DateTimeRelative'
     );
 
     /**
@@ -115,7 +116,7 @@ class View
     public function setTemplate($name)
     {
         $this->template = $name;
-        
+
         return $this;
     }
 
@@ -151,13 +152,13 @@ class View
      * Set app url
      *
      * @param string $url
-     * 
+     *
      * @return \Vhmis\View\View
      */
     public function setAppUrl($url)
     {
         $this->appUrl = $url;
-        
+
         return $this;
     }
 
@@ -175,13 +176,13 @@ class View
      * Set controller
      *
      * @param string $name
-     * 
+     *
      * @return \Vhmis\View\View
      */
     public function setController($name)
     {
         $this->controller = $name;
-        
+
         return $this;
     }
 
@@ -195,7 +196,7 @@ class View
     public function setView($name)
     {
         $this->method = $name;
-        
+
         return $this;
     }
 
@@ -203,7 +204,7 @@ class View
      * Set output
      *
      * @param string $name
-     * 
+     *
      * @return \Vhmis\View\View
      */
     public function setOutput($name)
@@ -217,13 +218,13 @@ class View
      * Set user info
      *
      * @param array $user
-     * 
+     *
      * @return \Vhmis\View\View
      */
     public function setUser($user)
     {
         $this->user = $user;
-        
+
         return $this;
     }
 
@@ -232,7 +233,7 @@ class View
      *
      * @param string $key
      * @param mixed $data
-     * 
+     *
      * @return \Vhmis\View\View
      */
     public function setData($key, $data)
@@ -416,7 +417,7 @@ class View
      * @param string $app
      * @param string $name
      * @param array $data
-     * 
+     *
      * @return string
      */
     protected function appBlock($app, $name, $data = array())

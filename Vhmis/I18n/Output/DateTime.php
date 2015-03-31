@@ -14,7 +14,7 @@ namespace Vhmis\I18n\Output;
 
 use \IntlDateFormatter;
 use \Vhmis\I18n\Resource\Resource as I18nResource;
-use \Vhmis\I18n\Plurals\Plurals as I18nPlurals;
+use \Vhmis\I18n\Plural\Plural as I18nPlural;
 use \Vhmis\DateTime\DateTime as VhDateTime;
 
 /**
@@ -505,29 +505,26 @@ class DateTime
         }
 
         if ($diff->y != 0) {
-            $type = I18nPlurals::type($diff->y, $this->locale);
-            $unitsPattern = I18nResource::units('year-past', $this->locale);
-            return str_replace('{0}', $diff->y, $unitsPattern['unitPattern-count-' . $type]);
+            $field = 'year';
+            $type = I18nPlural::getCardinalType($diff->y, $this->locale);
         } else if ($diff->m != 0) {
-            $type = I18nPlurals::type($diff->m, $this->locale);
-            $unitsPattern = I18nResource::units('month-past', $this->locale);
-            return str_replace('{0}', $diff->m, $unitsPattern['unitPattern-count-' . $type]);
+            $field = 'month';
+            $type = I18nPlural::getCardinalType($diff->m, $this->locale);
         } else if ($diff->d != 0) {
-            $type = I18nPlurals::type($diff->d, $this->locale);
-            $unitsPattern = I18nResource::units('day-past', $this->locale);
-            return str_replace('{0}', $diff->d, $unitsPattern['unitPattern-count-' . $type]);
+            $field = 'day';
+            $type = I18nPlural::getCardinalType($diff->d, $this->locale);
         } else if ($diff->h != 0) {
-            $type = I18nPlurals::type($diff->h, $this->locale);
-            $unitsPattern = I18nResource::units('hour-past', $this->locale);
-            return str_replace('{0}', $diff->h, $unitsPattern['unitPattern-count-' . $type]);
+            $field = 'hour';
+            $type = I18nPlural::getCardinalType($diff->h, $this->locale);
         } else if ($diff->i != 0) {
-            $type = I18nPlurals::type($diff->i, $this->locale);
-            $unitsPattern = I18nResource::units('minute-past', $this->locale);
-            return str_replace('{0}', $diff->i, $unitsPattern['unitPattern-count-' . $type]);
+            $field = 'minute';
+            $type = I18nPlural::getCardinalType($diff->i, $this->locale);
         } else {
-            $type = I18nPlurals::type($diff->s, $this->locale);
-            $unitsPattern = I18nResource::units('second-past', $this->locale);
-            return str_replace('{0}', $diff->s, $unitsPattern['unitPattern-count-' . $type]);
+            $field = 'second';
+            $type = I18nPlural::getCardinalType($diff->s, $this->locale);
         }
+
+        $dateFieldData = I18nResource::getDateField($field, $this->locale);
+        return str_replace('{0}', $diff->s, $dateFieldData['relativeTime-type-past']['relativeTimePattern-count-' . $type]);
     }
 }
