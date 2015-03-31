@@ -20,25 +20,26 @@ use \Vhmis\Utils\Exception\InvalidArgumentException;
  */
 class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
 {
+
     /**
      * List supported calendars
      *
      * @var array
      */
     public static $calendars = array(
-        'gregorian'     => 'gregorian',
-        'chinese'       => 'chinese',
-        'coptic'        => 'coptic',
-        'dangi'         => 'dangi',
-        'ethiopic'      => 'ethiopic',
-        'hebrew'        => 'hebrew',
-        'indian'        => 'indian',
+        'gregorian' => 'gregorian',
+        'chinese' => 'chinese',
+        'coptic' => 'coptic',
+        'dangi' => 'dangi',
+        'ethiopic' => 'ethiopic',
+        'hebrew' => 'hebrew',
+        'indian' => 'indian',
         'islamic-civil' => 'islamic-civil',
-        'islamic'       => 'islamic',
-        'japanese'      => 'japanese',
-        'persian'       => 'persian',
-        'taiwan'        => 'taiwan',
-        'buddhist'      => 'buddhist'
+        'islamic' => 'islamic',
+        'japanese' => 'japanese',
+        'persian' => 'persian',
+        'taiwan' => 'taiwan',
+        'buddhist' => 'buddhist'
     );
 
     /**
@@ -77,7 +78,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param int $year
      * @param int $month
@@ -95,7 +96,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
     }
 
     /**
-     * Set date with year is extended year
+     * Set date with extended year.
      *
      * @param int $year
      * @param int $month
@@ -224,9 +225,13 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
      *
      * @return string
      */
-    public function format($format)
+    public function format($format, $locale = '')
     {
-        return \IntlDateFormatter::formatObject($this->calendar, $format, $this->calendar->getLocale(1));
+        if ($locale === '') {
+            $locale = $this->getLocale();
+        }
+        
+        return \IntlDateFormatter::formatObject($this->calendar, $format, $locale);
     }
 
     /**
@@ -338,6 +343,16 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
         $this->calendar->setFirstDayOfWeek($dayOfWeek);
 
         return $this;
+    }
+
+    /**
+     * Get locale.
+     * 
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->calendar->getLocale(1);
     }
 
     /**
