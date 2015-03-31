@@ -16,6 +16,12 @@ class Application implements ApplicationInterface
     protected $appPath;
     protected $config;
 
+    /**
+     *
+     * @var \Vhmis\Di\ServiceManager
+     */
+    public $container;
+
     public function __construct($appPath)
     {
         if (!is_dir($appPath)) {
@@ -23,6 +29,8 @@ class Application implements ApplicationInterface
         }
 
         $this->appPath = $appPath;
+
+        $this->container = new \Vhmis\Di\ServiceManager();
     }
 
     /**
