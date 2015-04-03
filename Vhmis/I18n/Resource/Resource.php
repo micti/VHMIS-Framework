@@ -31,6 +31,18 @@ class Resource
         return static::getMainData('dateFields', $locale)['dates']['fields'][$type];
     }
 
+    public static function getDateFormat($type, $calendar = 'gregorian', $locale = '')
+    {
+        $locale = static::getLocale($locale);
+        $data = static::getMainData('ca-' . $calendar, $locale)['dates']['calendars'][$calendar]['dateTimeFormats']['availableFormats'];
+
+        if (!isset($data[$type])) {
+            return '';
+        }
+
+        return $data[$type];
+    }
+
     /**
      * Get main data.
      *
