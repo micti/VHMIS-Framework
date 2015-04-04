@@ -84,7 +84,7 @@ class RelatedYear extends AbstractHelper
      */
     public function modify($string)
     {
-        $result = DateTimeUtils::praseDateTimeFormat($string);
+        $result = DateTimeUtils::praseFormat($string);
 
         if (isset($result['date'])) {
             $year = $this->exchange((int) $result['date']['year'], 'ralatedyear');
