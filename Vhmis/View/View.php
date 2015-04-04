@@ -96,7 +96,9 @@ class View
         'dateTime' => 'DateTime',
         'number'   => 'Number',
         'output'   => 'Output',
-        'dtRelative' => 'DateTimeRelative'
+        'dtRelative' => 'DateTimeRelative',
+        'dtPatternFormat' => 'DateTimePatternFormat',
+        'dtFormat' => 'DateTimeStyleFormat'
     );
 
     /**
