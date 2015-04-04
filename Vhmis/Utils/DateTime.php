@@ -16,45 +16,30 @@ namespace Vhmis\Utils;
 class DateTime
 {
     /**
-     *
+     * Prase datetime string.
+     * 
      * @param string $string
      *
      * @return array
      */
-    public static function praseDateTimeFormat($string)
+    public static function praseFormat($string)
     {
-        $datetime = '/^(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})(| (\d{1,2}):(\d{1,2}):(\d{1,2}))$/';
-        $time = '/^(\d{1,2}):(\d{1,2}):(\d{1,2})$/';
-        $matches = array();
-        $result = array();
-
-        if (preg_match($datetime, $string, $matches)) {
-            $result['date'] = array(
-                'year'  => $matches[1] . $matches[2],
-                'month' => $matches[3],
-                'day'   => $matches[4]
-            );
-
-            if ($matches[5] !== '') {
-                $result['time'] = array(
-                    'hour'   => $matches[6],
-                    'minute' => $matches[7],
-                    'second' => $matches[8]
-                );
+        $format = [
+            'Year',
+            'YearMonth',
+            'DateTime',
+            'Time'
+        ];
+        
+        foreach($format as $type) {
+            $result = self::{'prase' . $type . 'Format'}($string);
+            
+            if($result !== []) {
+                return $result;
             }
-
-            return $result;
         }
-
-        if (preg_match($time, $string, $matches)) {
-            $result['time'] = array(
-                'hour'   => $matches[1],
-                'minute' => $matches[2],
-                'second' => $matches[3]
-            );
-        }
-
-        return $result;
+        
+        return [];
     }
 
     /**
@@ -180,6 +165,82 @@ class DateTime
             }
         }
 
+        return $result;
+    }
+    
+    protected static function praseYearFormat($string)
+    {
+        $pattern = '/^(-?)(\d{1,5})$/';
+        $matches = array();
+        $result = array();
+
+        if (preg_match($pattern, $string, $matches)) {
+            $result['date'] = array(
+                'year'  => $matches[1] . $matches[2],
+                'month' => 1,
+                'day'   => 1
+            );
+        }
+        
+        return $result;
+    }
+    
+    protected static function praseYearMonthFormat($string)
+    {
+        $pattern = '/^(-?)(\d{1,5})-(\d{1,2})$/';
+        $matches = array();
+        $result = array();
+
+        if (preg_match($pattern, $string, $matches)) {
+            $result['date'] = array(
+                'year'  => $matches[1] . $matches[2],
+                'month' => $matches[3],
+                'day'   => 1
+            );
+        }
+        
+        return $result;
+    }
+    
+    protected static function praseDateTimeFormat($string)
+    {
+        $pattern = '/^(-?)(\d{1,5})-(\d{1,2})-(\d{1,2})(| (\d{1,2}):(\d{1,2}):(\d{1,2}))$/';
+        $matches = array();
+        $result = array();
+
+        if (preg_match($pattern, $string, $matches)) {
+            $result['date'] = array(
+                'year'  => $matches[1] . $matches[2],
+                'month' => $matches[3],
+                'day'   => $matches[4]
+            );
+
+            if ($matches[5] !== '') {
+                $result['time'] = array(
+                    'hour'   => $matches[6],
+                    'minute' => $matches[7],
+                    'second' => $matches[8]
+                );
+            }
+        }
+        
+        return $result;
+    }
+    
+    protected static function praseTimeFormat($string)
+    {
+        $pattern = '/^(\d{1,2}):(\d{1,2}):(\d{1,2})$/';
+        $matches = array();
+        $result = array();
+
+        if (preg_match($pattern, $string, $matches)) {
+            $result['time'] = array(
+                'hour'   => $matches[1],
+                'minute' => $matches[2],
+                'second' => $matches[3]
+            );
+        }
+        
         return $result;
     }
 }

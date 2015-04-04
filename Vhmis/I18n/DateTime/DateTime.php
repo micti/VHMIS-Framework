@@ -141,7 +141,7 @@ class DateTime extends SimpleDateTime
      */
     public function modify($string)
     {
-        $result = DateTimeUtils::praseDateTimeFormat($string);
+        $result = DateTimeUtils::praseFormat($string);
 
         if (isset($result['date'])) {
             $this->setDateWithExtenedYear(
