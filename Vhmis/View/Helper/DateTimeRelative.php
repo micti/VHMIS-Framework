@@ -5,20 +5,35 @@ namespace Vhmis\View\Helper;
 use Vhmis\I18n\Formatter\DateTimeRelative as dtRelativeFormatter;
 use Vhmis\I18n\DateTime\DateTime;
 
-class DateTimeRelative extends HelperAbstract
+class DateTimeRelative extends AbstractDateTime
 {
 
     /**
+     * DateTimeRelative formatter object.
      *
      * @var dtRelativeFormatter
      */
     protected $dtRelativeFormatter;
 
+    /**
+     * Construct.
+     */
     public function __construct()
     {
         $this->dtRelativeFormatter = new dtRelativeFormatter;
     }
 
+    /**
+     * Get relative string.
+     *
+     * @param DateTime|mixed $date
+     * @param DateTime|mixed $rootDate
+     * @param string|mixed $timezone
+     * @param string $calendar
+     * @param string $locale
+     *
+     * @return string
+     */
     public function __invoke($date, $rootDate = null, $timezone = null, $calendar = '', $locale = '')
     {
         if (!($date instanceof DateTime)) {
@@ -30,16 +45,5 @@ class DateTimeRelative extends HelperAbstract
         }
 
         return $this->dtRelativeFormatter->relative($date, $rootDate, $locale);
-    }
-
-    protected function getDate($date, $timezone, $calendar)
-    {
-        $datestring = $date;
-        if (!is_string($date)) {
-            $datestring = '';
-        }
-
-        $date = new DateTime($timezone, $calendar);
-        return $date->modify($datestring);
     }
 }
