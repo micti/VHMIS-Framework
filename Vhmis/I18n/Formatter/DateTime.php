@@ -11,19 +11,12 @@
 namespace Vhmis\I18n\Formatter;
 
 use Vhmis\I18n\Resource\Resource;
-use IntlDateFormatter;
 
 /**
  * Format datetime in string
  */
 class DateTime
 {
-    /**
-     * IntlDateFormatter objects.
-     *
-     * @var IntlDateFormatter[]
-     */
-    protected $intlDateFormatters = [];
 
     /**
      * Pattern id list.
@@ -97,7 +90,7 @@ class DateTime
      */
     public function pattern($datetime, $pattern, $locale)
     {
-        if(!in_array($pattern, $this->patternIds)) {
+        if (!in_array($pattern, $this->patternIds)) {
             return $datetime->format([3, 3], $locale);
         }
 
@@ -107,42 +100,6 @@ class DateTime
             return $datetime->format([3, 3], $locale);
         }
 
-        // Error with utf8
-        // return $datetime->format($format, $locale);
-
-        $formatter = $this->getDateTimeFormatter($locale, $datetime->getType());
-        $formatter->setTimeZone($datetime->getTimeZone());
-        $formatter->setPattern($format);
-
-        return $formatter->format($datetime->getTimestamp());
-    }
-
-    /**
-     * Get IntlDateFormatter by locale and calendar.
-     *
-     * @param string $locale
-     * @param string $calendar
-     *
-     * @return IntlDateFormatter
-     */
-    protected function getDateTimeFormatter($locale, $calendar)
-    {
-        if ($locale === '') {
-            $locale = \Locale::getDefault();
-        }
-
-        $calendarType = IntlDateFormatter::GREGORIAN;
-
-        if ($calendar !== 'gregorian') {
-            $locale .= '@calendar=' . $calendar;
-            $calendarType = IntlDateFormatter::TRADITIONAL;
-        }
-
-        if (!isset($this->intlDateFormatter[$locale])) {
-            $this->intlDateFormatter[$locale] = new IntlDateFormatter($locale, 0, 0);
-            $this->intlDateFormatter[$locale]->setCalendar($calendarType);
-        }
-
-        return $this->intlDateFormatter[$locale];
+        return $datetime->format($format, $locale);
     }
 }
