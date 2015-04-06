@@ -99,7 +99,9 @@ class View
         'dtRelative' => 'DateTimeRelative',
         'dtPatternFormat' => 'DateTimePatternFormat',
         'dtFormat' => 'DateTimeStyleFormat',
-        'dtInterval' => 'DateTimeInterval'
+        'dtInterval' => 'DateTimeInterval',
+        'dtFieldName' => 'DateTimeFieldName',
+        'calFieldName' => 'CalendarFieldName'
     );
 
     /**

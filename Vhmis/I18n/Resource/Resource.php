@@ -25,6 +25,17 @@ class Resource
         return static::getSupplementalData('plurals')[$lang[0]];
     }
 
+    public static function getCalendarField($field, $value, $width, $context = 'stand-alone', $calendar = 'gregorian', $locale = '')
+    {
+        $data = static::getMainData('ca-' . $calendar, $locale)['dates']['calendars'][$calendar];
+
+        if (!isset($data[$field][$context][$width][$value])) {
+            return '';
+        }
+
+        return $data[$field][$context][$width][$value];
+    }
+
     public static function getDateField($type, $locale = '')
     {
         $locale = static::getLocale($locale);
