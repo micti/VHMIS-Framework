@@ -98,7 +98,8 @@ class View
         'output'   => 'Output',
         'dtRelative' => 'DateTimeRelative',
         'dtPatternFormat' => 'DateTimePatternFormat',
-        'dtFormat' => 'DateTimeStyleFormat'
+        'dtFormat' => 'DateTimeStyleFormat',
+        'dtInterval' => 'DateTimeInterval'
     );
 
     /**
