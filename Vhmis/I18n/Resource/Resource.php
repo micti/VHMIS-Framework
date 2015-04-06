@@ -48,7 +48,7 @@ class Resource
      * @param string $calendar
      * @param string $locale
      *
-     * @return array|null
+     * @return array|string|null
      */
     public static function getDateIntervalFormat($type, $calendar = 'gregorian', $locale = '')
     {

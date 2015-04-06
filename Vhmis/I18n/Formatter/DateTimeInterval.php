@@ -10,7 +10,6 @@
 
 namespace Vhmis\I18n\Formatter;
 
-use Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\Resource\Resource;
 
 /**
@@ -24,8 +23,9 @@ class DateTimeInterval
     /**
      * Relative string of 2 datetimes.
      *
-     * @param DateTime $date1
-     * @param DateTime $date2
+     * @param \Vhmis\I18n\DateTime\DateTime $date1
+     * @param \Vhmis\I18n\DateTime\DateTime $date2
+     * @param string $type
      * @param string $locale
      *
      * @return string
@@ -79,8 +79,8 @@ class DateTimeInterval
     /**
      * Format by interval pattern.
      *
-     * @param DateTime $date1
-     * @param DateTime $date2
+     * @param \Vhmis\I18n\DateTime\DateTime $date1
+     * @param \Vhmis\I18n\DateTime\DateTime $date2
      * @param string $pattern
      * @param string $locale
      *
@@ -111,8 +111,8 @@ class DateTimeInterval
     /**
      * Fallback format when interval pattern doesn't exist.
      *
-     * @param DateTime $date1
-     * @param DateTime $date2
+     * @param \Vhmis\I18n\DateTime\DateTime $date1
+     * @param \Vhmis\I18n\DateTime\DateTime $date2
      * @param string $locale
      *
      * @return string
@@ -136,7 +136,7 @@ class DateTimeInterval
     /**
      * Format only one date if 2 dates are same (from era to minute field).
      *
-     * @param DateTime $date
+     * @param \Vhmis\I18n\DateTime\DateTime $date
      * @param string $type
      * @param string $locale
      *
