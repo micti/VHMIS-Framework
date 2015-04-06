@@ -15,19 +15,20 @@ use \Vhmis\I18n\DateTime\Helper\Diff;
 
 class DiffTest extends \PHPUnit_Framework_TestCase
 {
+
     protected $diff;
 
     public function setUp()
     {
         if (!extension_loaded('intl')) {
             $this->markTestSkipped(
-                'Intl ext is not available.'
+                    'Intl ext is not available.'
             );
         }
 
         if (!class_exists('\IntlCalendar')) {
             $this->markTestSkipped(
-                'Intl version 3.0.0 is not available.'
+                    'Intl version 3.0.0 is not available.'
             );
         }
         $this->diff = new Diff;
@@ -43,13 +44,13 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $a->setDate(2016, 5, 11)->setTime(19, 13, 10)->setField(14, 123);
 
         $result = array(
-            'era'         => false,
-            'year'        => 1,
-            'month'       => 4,
-            'day'         => 29,
-            'hour'        => 4,
-            'minute'      => 59,
-            'second'      => 58,
+            'era' => false,
+            'year' => 1,
+            'month' => 4,
+            'day' => 29,
+            'hour' => 4,
+            'minute' => 59,
+            'second' => 58,
             'millisecond' => 999
         );
 
@@ -65,13 +66,13 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $a->setField(0, 78);
 
         $result = array(
-            'era'         => 0,
-            'year'        => 1,
-            'month'       => 3,
-            'day'         => 0,
-            'hour'        => 0,
-            'minute'      => 0,
-            'second'      => 0,
+            'era' => 0,
+            'year' => 1,
+            'month' => 3,
+            'day' => 0,
+            'hour' => 0,
+            'minute' => 0,
+            'second' => 0,
             'millisecond' => 0
         );
 
@@ -371,17 +372,43 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $a->setDate(2018, 10, 13)->setTime(17, 12, 16)->setField(14, 0);
 
         $result = array(
-            'era'         => 0,
-            'year'        => 5,
-            'month'       => 62,
-            'day'         => 1888,
-            'week'        => 269,
-            'hour'        => 45315,
-            'minute'      => 2718899,
-            'second'      => 163133945,
+            'era' => 0,
+            'year' => 5,
+            'month' => 62,
+            'day' => 1888,
+            'week' => 269,
+            'hour' => 45315,
+            'minute' => 2718899,
+            'second' => 163133945,
             'millisecond' => 163133944324.0
         );
 
         $this->assertEquals($result, $this->diff->diffAbsolute($a));
+    }
+
+    public function testDiffCheck()
+    {
+        $date = new DateTime();
+        $date->setDate(2013, 8, 12)->setTime(17, 13, 11)->setField(14, 676);
+        $this->diff->setDateTimeObject($date);
+
+        $a = new DateTime();
+        $a->setDate(2018, 10, 13)->setTime(5, 12, 16)->setField(14, 676);
+
+        $result = array(
+            'era' => false,
+            'year' => true,
+            'month' => true,
+            'day' => true,
+            'week' => false,
+            'am_pm' => true,
+            'hour_am_pm' => false,
+            'hour' => true,
+            'minute' => true,
+            'second' => true,
+            'millisecond' => false
+        );
+
+        $this->assertEquals($result, $this->diff->diffCheck($a));
     }
 }

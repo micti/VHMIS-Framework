@@ -90,6 +90,7 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  * @method int diffAbsoluteMinute(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by minute
  * @method int diffAbsoluteSecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by second
  * @method double diffAbsoluteMillisecond(\Vhmis\I18n\DateTime\DateTime $datetime) Get absolute different by millisecond
+ * @method bool[] diffCheck(\Vhmis\I18n\DateTime\DateTime $datetime) Find diff or same value of all fields
  *
  * @method array repeatByDay(string $fromDate, string $toDate, int $times, int $freg) Get repeated dates by day
  * @method array repeatByWeek(string $fromDate, string $toDate, int $times, int $freg) Get repeated dates by week
@@ -108,6 +109,7 @@ use \Vhmis\Utils\DateTime as DateTimeUtils;
  */
 class DateTime extends SimpleDateTime
 {
+
     /**
      * Helper namespace
      *
@@ -122,13 +124,13 @@ class DateTime extends SimpleDateTime
      */
     protected $helperList = array(
         'convert' => 'Convert',
-        'add'     => 'Add',
-        'set'     => 'Set',
-        'get'     => 'Get',
-        'format'  => 'Format',
-        'diff'    => 'Diff',
-        'go'      => 'Go',
-        'repeat'  => 'Repeat'
+        'add' => 'Add',
+        'set' => 'Set',
+        'get' => 'Get',
+        'format' => 'Format',
+        'diff' => 'Diff',
+        'go' => 'Go',
+        'repeat' => 'Repeat'
     );
 
     /**
@@ -145,12 +147,12 @@ class DateTime extends SimpleDateTime
 
         if (isset($result['date'])) {
             $this->setDateWithExtenedYear(
-                (int) $result['date']['year'], (int) $result['date']['month'], (int) $result['date']['day']);
+                    (int) $result['date']['year'], (int) $result['date']['month'], (int) $result['date']['day']);
         }
 
         if (isset($result['time'])) {
             $this->setTime(
-                (int) $result['time']['hour'], (int) $result['time']['minute'], (int) $result['time']['second']
+                    (int) $result['time']['hour'], (int) $result['time']['minute'], (int) $result['time']['second']
             );
         }
 
@@ -217,8 +219,8 @@ class DateTime extends SimpleDateTime
     {
         $result = array(
             'greatest' => $this->calendar->getMaximum($field),
-            'actual'   => $this->calendar->getActualMaximum($field),
-            'least'    => $this->calendar->getLeastMaximum($field)
+            'actual' => $this->calendar->getActualMaximum($field),
+            'least' => $this->calendar->getLeastMaximum($field)
         );
 
         if ($field === 2) {
@@ -243,8 +245,8 @@ class DateTime extends SimpleDateTime
     public function getMinimumValueOfField($field)
     {
         $result = array(
-            'least'  => $this->calendar->getMinimum($field),
-            'actual'   => $this->calendar->getActualMinimum($field),
+            'least' => $this->calendar->getMinimum($field),
+            'actual' => $this->calendar->getActualMinimum($field),
             'greatest' => $this->calendar->getGreatestMinimum($field)
         );
 

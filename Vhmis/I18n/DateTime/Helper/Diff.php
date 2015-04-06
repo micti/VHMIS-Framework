@@ -14,32 +14,34 @@ use \Vhmis\I18n\DateTime\DateTime;
 
 class Diff extends AbstractHelper
 {
+
     /**
      * Method list and param number
      *
      * @var array
      */
     protected $methodList = array(
-        'diff'                    => 1,
-        'diffEra'                 => 1,
-        'diffYear'                => 1,
-        'diffMonth'               => 1,
-        'diffDay'                 => 1,
-        'diffHour'                => 1,
-        'diffMinute'              => 1,
-        'diffSecond'              => 1,
-        'diffMillisecond'         => 1,
-        'diffAbsolute'            => 1,
-        'diffAbsoluteEra'         => 1,
-        'diffAbsoluteYear'        => 1,
-        'diffAbsoluteMonth'       => 1,
-        'diffAbsoluteWeek'        => 1,
-        'diffAbsoluteDay'         => 1,
-        'diffAbsoluteWeek'        => 1,
-        'diffAbsoluteHour'        => 1,
-        'diffAbsoluteMinute'      => 1,
-        'diffAbsoluteSecond'      => 1,
-        'diffAbsoluteMillisecond' => 1
+        'diff' => 1,
+        'diffEra' => 1,
+        'diffYear' => 1,
+        'diffMonth' => 1,
+        'diffDay' => 1,
+        'diffHour' => 1,
+        'diffMinute' => 1,
+        'diffSecond' => 1,
+        'diffMillisecond' => 1,
+        'diffAbsolute' => 1,
+        'diffAbsoluteEra' => 1,
+        'diffAbsoluteYear' => 1,
+        'diffAbsoluteMonth' => 1,
+        'diffAbsoluteWeek' => 1,
+        'diffAbsoluteDay' => 1,
+        'diffAbsoluteWeek' => 1,
+        'diffAbsoluteHour' => 1,
+        'diffAbsoluteMinute' => 1,
+        'diffAbsoluteSecond' => 1,
+        'diffAbsoluteMillisecond' => 1,
+        'diffCheck' => 1
     );
 
     /**
@@ -360,6 +362,30 @@ class Diff extends AbstractHelper
     }
 
     /**
+     * Find diff or same value of all fields.
+     *
+     * @param DateTime $date
+     *
+     * @return bool[]
+     */
+    public function diffCheck($date)
+    {
+        return [
+            'era' => $this->isDiffField($date, 0),
+            'year' => $this->isDiffField($date, 1),
+            'month' => $this->isDiffField($date, 2),
+            'week' => $this->isDiffField($date, 8),
+            'day' => $this->isDiffField($date, 5),
+            'am_pm' => $this->isDiffField($date, 9),
+            'hour_am_pm' => $this->isDiffField($date, 10), // hour in am/pm
+            'hour' => $this->isDiffField($date, 11),
+            'minute' => $this->isDiffField($date, 12),
+            'second' => $this->isDiffField($date, 13),
+            'millisecond' => $this->isDiffField($date, 14)
+        ];
+    }
+
+    /**
      * Absolute diff for millisecond
      *
      * @param DateTime $date
@@ -369,6 +395,19 @@ class Diff extends AbstractHelper
     public function diffAbsoluteMillisecond($date)
     {
         return $date->getMilliTimestamp() - $this->date->getMilliTimestamp();
+    }
+
+    /**
+     * Find diff or same value of a field.
+     *
+     * @param DateTime $date
+     * @param int $field
+     *
+     * @return bool
+     */
+    protected function isDiffField($date, $field)
+    {
+        return $this->date->getField($field) !== $date->getField($field);
     }
 
     /**
