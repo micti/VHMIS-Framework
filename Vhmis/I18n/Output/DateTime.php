@@ -355,72 +355,6 @@ class DateTime
         return $this->customPattern($value, '\'' . $w['displayName'] . ':\' ww - Y');
     }
 
-    /**
-     * Xuất khoảng thời gian
-     *
-     * @param string $value1
-     * @param string $value2
-     * @param string $pattern
-     * @return type
-     */
-    public function range($value1, $value2, $pattern)
-    {
-        $this->dateFirst->modify($value1);
-        $this->dateSecond->modify($value2);
-
-        if ($this->dateFirst > $this->dateSecond) {
-            $this->dateFirst->modify($value2);
-            $this->dateSecond->modify($value1);
-        }
-
-        $interval = $this->dateFirst->findInterval($this->dateSecond);
-
-        // Tìm interval cho ngày
-        $intervalField = '';
-
-        if ($interval['y'] !== 0 && strpos($pattern, 'y') !== false) {
-            $intervalField = 'y';
-        } else {
-            if ($interval['M'] !== 0 && strpos($pattern, 'M') !== false) {
-                $intervalField = 'M';
-            } else {
-                if ($interval['d'] !== 0 && strpos($pattern, 'd') !== false) {
-                    $intervalField = 'd';
-                }
-            }
-        }
-
-        // Tìm interval cho giờ
-        if ($interval['H'] !== 0 && strpos($pattern, 'H') !== false) {
-            $intervalField = 'H';
-        } else {
-            if (strpos($pattern, 'h') !== false) {
-                if ($interval['a'] !== 0) {
-                    $intervalField = 'a';
-                } else {
-                    $intervalField = 'h';
-                }
-            } else {
-                if ($interval['m'] !== 0 && strpos($pattern, 'm') !== false) {
-                    $intervalField = 'm';
-                }
-            }
-        }
-
-        $data = I18nResource::dateIntervalPattern($pattern, $intervalField, $this->locale);
-
-        $value1 = $this->customPattern($this->dateFirst->formatISODateTime(), $data['patternbegin']);
-        $value2 = $this->customPattern($this->dateSecond->formatISODateTime(), $data['patternend']);
-
-        if ($value1 === $value2) {
-            return $value1;
-        }
-
-        $value = str_replace('{0}', $value1, $data['pattern']);
-        $value = str_replace('{1}', $value2, $value);
-
-        return $value;
-    }
 
     /**
      * Xuất khoảng cách thời gian tính theo số năm, số ngày ....
@@ -486,45 +420,5 @@ class DateTime
         $unitsPattern = I18nResource::units($field, $this->locale);
         $type = I18nPlurals::type($number, $this->locale);
         return str_replace('{0}', $number, $unitsPattern['unitPattern-count-' . $type]);
-    }
-
-    public function ago($date, $rootDate = '')
-    {
-        $this->dateFirst->modify($date);
-
-        if ($rootDate === '') {
-            $this->dateSecond->setNow();
-        } else {
-            $this->dateSecond->modify($rootDate);
-        }
-
-        $diff = $this->dateFirst->diff($this->dateSecond);
-
-        if ($diff->invert === 1) {
-            return '';
-        }
-
-        if ($diff->y != 0) {
-            $field = 'year';
-            $type = I18nPlural::getCardinalType($diff->y, $this->locale);
-        } else if ($diff->m != 0) {
-            $field = 'month';
-            $type = I18nPlural::getCardinalType($diff->m, $this->locale);
-        } else if ($diff->d != 0) {
-            $field = 'day';
-            $type = I18nPlural::getCardinalType($diff->d, $this->locale);
-        } else if ($diff->h != 0) {
-            $field = 'hour';
-            $type = I18nPlural::getCardinalType($diff->h, $this->locale);
-        } else if ($diff->i != 0) {
-            $field = 'minute';
-            $type = I18nPlural::getCardinalType($diff->i, $this->locale);
-        } else {
-            $field = 'second';
-            $type = I18nPlural::getCardinalType($diff->s, $this->locale);
-        }
-
-        $dateFieldData = I18nResource::getDateField($field, $this->locale);
-        return str_replace('{0}', $diff->s, $dateFieldData['relativeTime-type-past']['relativeTimePattern-count-' . $type]);
     }
 }

@@ -33,11 +33,29 @@ class Resource
 
     public static function getDateFormat($type, $calendar = 'gregorian', $locale = '')
     {
-        $locale = static::getLocale($locale);
         $data = static::getMainData('ca-' . $calendar, $locale)['dates']['calendars'][$calendar]['dateTimeFormats']['availableFormats'];
 
         if (!isset($data[$type])) {
             return '';
+        }
+
+        return $data[$type];
+    }
+
+    /**
+     *
+     * @param string $type
+     * @param string $calendar
+     * @param string $locale
+     *
+     * @return array|null
+     */
+    public static function getDateIntervalFormat($type, $calendar = 'gregorian', $locale = '')
+    {
+        $data = static::getMainData('ca-' . $calendar, $locale)['dates']['calendars'][$calendar]['dateTimeFormats']['intervalFormats'];
+
+        if (!isset($data[$type])) {
+            return null;
         }
 
         return $data[$type];
@@ -58,7 +76,7 @@ class Resource
             static::$i18nData[$fixlocale][$field] = Loader::loadMainData($field, $fixlocale);
         }
 
-        return static::$i18nData[$locale][$field];
+        return static::$i18nData[$fixlocale][$field];
     }
 
     /**
