@@ -10,7 +10,7 @@
 
 namespace Vhmis\I18n\Formatter;
 
-use \Vhmis\I18n\Resource\Resource;
+use Vhmis\I18n\Resource\Resource;
 
 /**
  * Interval string of 2 datetimes.
