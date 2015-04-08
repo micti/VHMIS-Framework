@@ -46,6 +46,19 @@ class DateTimeInterval
             'hour_am_pm' => 'h',
             'minute' => 'm'
         ];
+
+        // If type contains H (24 hours) instead of h (12 hours)
+        if (strpos($type, 'H') !== false) {
+            $fields = [
+                'era' => 'G',
+                'year' => 'y',
+                'month' => 'M',
+                'day' => 'd',
+                'hour' => 'H',
+                'minute' => 'm'
+            ];
+        }
+
         $greatesDiffField = '';
 
         foreach ($fields as $key => $field) {
@@ -177,4 +190,5 @@ class DateTimeInterval
 
         return true;
     }
+
 }
