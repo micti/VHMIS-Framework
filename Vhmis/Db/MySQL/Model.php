@@ -591,6 +591,16 @@ class Model implements ModelInterface
 
         return $this;
     }
+    
+    public function setFetchModEntityWithIdKey()
+    {
+        return $this->setFetchMod(self::FETCH_MOD_ROW_ENTITY, self::FETCH_MOD_SET_IDARRAY);
+    }
+    
+    public function setFetchModArrayWithIdKey()
+    {
+        return $this->setFetchMod(self::FETCH_MOD_ROW_ARRAY, self::FETCH_MOD_SET_IDARRAY);
+    }
 
     public function setDefaultFetchMod()
     {
