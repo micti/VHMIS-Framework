@@ -10,6 +10,9 @@
 
 namespace Vhmis\Form;
 
+/**
+ * Factory class to create form or its element like field, fieldset.
+ */
 class Factory
 {
 
@@ -20,7 +23,7 @@ class Factory
      *
      * @return \Vhmis\Form\Form
      */
-    public function createForm($config)
+    public static function createForm($config)
     {
         if (!isset($config['class'])) {
             $config['class'] = '\\Vhmis\\Form\\Form';
@@ -28,8 +31,7 @@ class Factory
 
         $form = new $config['class']();
 
-        $this->createFormDetail($form, $config);
-        $this->createValidators($form, $config);
+        self::createFormDetail($form, $config);
 
         return $form;
     }
@@ -41,7 +43,7 @@ class Factory
      *
      * @return \Vhmis\Form\config
      */
-    public function createFieldSet($config)
+    public static function createFieldSet($config)
     {
         if (!isset($config['class'])) {
             $config['class'] = '\\Vhmis\\Form\\FieldSet';
@@ -49,7 +51,7 @@ class Factory
 
         $fieldset = new $config['class']();
 
-        $this->createFieldSetDetail($fieldset, $config);
+        self::createFieldSetDetail($fieldset, $config);
 
         return $fieldset;
     }
@@ -61,7 +63,7 @@ class Factory
      *
      * @return Field
      */
-    public function createField($config)
+    public static function createField($config)
     {
         if (!isset($config['class'])) {
             $config['class'] = '\\Vhmis\\Form\\Field';
@@ -69,7 +71,7 @@ class Factory
 
         $field = new $config['class']();
 
-        $this->createFieldDetail($field, $config);
+        self::createFieldDetail($field, $config);
 
         return $field;
     }
@@ -80,9 +82,13 @@ class Factory
      * @param Form $form Fieldset or Form
      * @param array $config Config
      */
-    public function createFormDetail($form, $config)
+    public static function createFormDetail($form, $config)
     {
-        $this->createFieldSetDetail($form, $config);
+        self::createFieldSetDetail($form, $config);
+
+        if (isset($config['validators'])) {
+            self::createFormValidators($form, $config['validators']);
+        }
     }
 
     /**
@@ -91,20 +97,20 @@ class Factory
      * @param Fieldset|Form $fieldset
      * @param array $config
      */
-    public function createFieldSetDetail($fieldset, $config)
+    public static function createFieldSetDetail($fieldset, $config)
     {
         $fieldset->setName($config['name']);
 
         if (isset($config['fields'])) {
             foreach ($config['fields'] as $field) {
-                $element = $this->createField($field);
+                $element = self::createField($field);
                 $fieldset->addField($element);
             }
         }
 
         if (isset($config['fieldsets'])) {
             foreach ($config['fieldsets'] as $field) {
-                $element = $this->createFieldSet($field);
+                $element = self::createFieldSet($field);
                 $fieldset->addFieldSet($element);
             }
         }
@@ -116,20 +122,36 @@ class Factory
      * @param Field $field Field
      * @param array $config Config
      */
-    public function createFieldDetail($field, $config)
+    public static function createFieldDetail($field, $config)
     {
         $field->setName($config['name']);
+
+        if (isset($config['validators'])) {
+            foreach ($config['validators'] as $validator => $options) {
+                $field->addValidator($validator, $options);
+            }
+        }
+
+        if (isset($config['allow'])) {
+            if (in_array('null', $config['allow'])) {
+                $field->allowNull();
+            }
+
+            if (in_array('empty', $config['allow'])) {
+                $field->allowEmpty();
+            }
+        }
     }
 
     /**
-     * Create validators.
+     * Create form validators.
      *
      * @param Form $form
      * @param array $config
      */
-    public function createValidators($form, $config)
+    public static function createFormValidators($form, $config)
     {
-        foreach ($config['validators'] as $field => $validators) {
+        foreach ($config as $field => $validators) {
             foreach ($validators as $config) {
                 $form->addValidator($field, $config['validator'], $config['options']);
             }

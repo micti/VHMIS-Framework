@@ -10,15 +10,13 @@
 
 namespace Vhmis\Form;
 
+/**
+ * Field of form.
+ */
 class Field
 {
 
-    /**
-     * Name of field.
-     *
-     * @var string
-     */
-    protected $name;
+    use FormElementTrait;
 
     /**
      * Type of field.
@@ -28,35 +26,32 @@ class Field
     protected $type;
 
     /**
-     * Value of field
+     * Value of field.
      *
      * @var string
      */
     protected $value;
 
     /**
-     * Set name.
+     * Validators of field.
      *
-     * @param string $name
-     *
-     * @return Field
+     * @var array
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+    protected $validators = [];
 
     /**
-     * Get name.
+     * Field value can be null.
      *
-     * @return string
+     * @var boolean
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    protected $allowNull = false;
+
+    /**
+     * Field value can be empty.
+     *
+     * @var boolean
+     */
+    protected $allowEmpty = false;
 
     /**
      * Set type.
@@ -104,5 +99,66 @@ class Field
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Add validator.
+     *
+     * @param string $validator
+     * @param array $options
+     *
+     * @return Field
+     */
+    public function addValidator($validator, $options = null)
+    {
+        $this->validators[$validator] = $options;
+
+        return $this;
+    }
+
+    /**
+     * Get validators.
+     *
+     * @return array
+     */
+    public function getValidators()
+    {
+        return $this->validators;
+    }
+
+    /**
+     * Set field value can be empty.
+     */
+    public function allowEmpty()
+    {
+        $this->allowEmpty = true;
+    }
+
+    /**
+     * Set field value can be null.
+     */
+    public function allowNull()
+    {
+        $this->allowNull = true;
+    }
+
+    /**
+     * Is field value can be empty.
+     *
+     * @return boolean
+     */
+    public function isAllowedEmpty()
+    {
+        return $this->allowEmpty;
+    }
+
+    /**
+     * Is field value can be null.
+     *
+     * @return boolean
+     */
+    public function isAllowedNull()
+    {
+        return $this->allowNull;
     }
 }

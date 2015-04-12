@@ -10,8 +10,13 @@
 
 namespace Vhmis\Form;
 
-class FieldSet extends Field
+/**
+ * Fieldset of form.
+ */
+class FieldSet
 {
+
+    use FormElementTrait;
 
     /**
      * Fields.
@@ -28,41 +33,6 @@ class FieldSet extends Field
     protected $fieldSets = [];
 
     /**
-     * Form factory.
-     *
-     * @var Factory
-     */
-    protected $factory;
-
-    /**
-     * Set form factory.
-     *
-     * @param Factory $factory
-     *
-     * @return FieldSet
-     */
-    public function setFactory($factory)
-    {
-        $this->factory = $factory;
-
-        return $this;
-    }
-
-    /**
-     * Get form factory.
-     *
-     * @return Factory
-     */
-    public function getFactory()
-    {
-        if ($this->factory === null) {
-            $this->setFactory(new Factory());
-        }
-
-        return $this->factory;
-    }
-
-    /**
      * Add field.
      *
      * @param Field|array $field
@@ -72,7 +42,7 @@ class FieldSet extends Field
     public function addField($field)
     {
         if (is_array($field)) {
-            $field = $this->getFactory()->createField($field);
+            $field = Factory::createField($field);
         }
 
         if (!($field instanceof Field)) {
@@ -99,7 +69,7 @@ class FieldSet extends Field
     public function addFieldSet($fieldSet)
     {
         if (is_array($fieldSet)) {
-            $fieldSet = $this->getFactory()->createFieldSet($fieldSet);
+            $fieldSet = Factory::createFieldSet($fieldSet);
         }
 
         if (!($fieldSet instanceof FieldSet)) {

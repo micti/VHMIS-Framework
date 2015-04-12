@@ -180,8 +180,8 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
         $this->validatorChain->addValidator('a', 'Int');
         $this->validatorChain->addValidator('a', 'Greater', ['compare' => 100]);
         $this->validatorChain->addValue('a', '89');
-        $this->validatorChain->addValidator('b', 'DateTime', ['pattern' => 'M/d/yy']);
-        $this->validatorChain->addValue('b', '12/12/2014');
         $this->assertTrue($this->validatorChain->isValid(['a']));
+        $values = $this->validatorChain->getStandardValues();
+        $this->assertSame('89', $values['a']); // skip valid
     }
 }

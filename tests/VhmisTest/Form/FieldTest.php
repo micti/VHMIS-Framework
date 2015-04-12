@@ -32,4 +32,20 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $field = new Field();
         $this->assertSame('a', $field->setType('a')->getType());
     }
+
+    public function testAllowNull()
+    {
+        $field = new Field();
+        $this->assertSame(false, $field->isAllowedNull());
+        $field->allowNull();
+        $this->assertSame(true, $field->isAllowedNull());
+    }
+
+    public function testAllowEmpty()
+    {
+        $field = new Field();
+        $this->assertSame(false, $field->isAllowedEmpty());
+        $field->allowEmpty();
+        $this->assertSame(true, $field->isAllowedEmpty());
+    }
 }

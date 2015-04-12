@@ -10,31 +10,24 @@
 
 namespace Vhmis\Form;
 
-use \Vhmis\Validator\ValidatorChain;
-
+/**
+ * Form
+ */
 class Form extends FieldSet
 {
 
     /**
      * Validator chain
      *
-     * @var ValidatorChain
+     * @var FormValidatorChain
      */
     protected $validatorChain;
 
     /**
-     * Construct.
-     */
-    public function __construct()
-    {
-        
-    }
-
-    /**
      * Set validator chain.
-     * 
-     * @param ValidatorChain $validatorChain
-     * 
+     *
+     * @param FormValidatorChain $validatorChain
+     *
      * @return Form
      */
     public function setValidatorChain($validatorChain)
@@ -46,13 +39,13 @@ class Form extends FieldSet
 
     /**
      * Get validator chain.
-     * 
-     * @return ValidatorChain
+     *
+     * @return FormValidatorChain
      */
     public function getValidatorChain()
     {
         if ($this->validatorChain === null) {
-            $this->validatorChain = new ValidatorChain;
+            $this->validatorChain = new FormValidatorChain;
         }
 
         return $this->validatorChain;
@@ -69,7 +62,7 @@ class Form extends FieldSet
      */
     public function addValidator($field, $validator, $options = [])
     {
-        $this->getValidatorChain()->add($field, $validator, $options);
+        $this->getValidatorChain()->addValidator($field, $validator, $options);
 
         return $this;
     }
@@ -81,10 +74,19 @@ class Form extends FieldSet
      */
     public function isValid()
     {
-        foreach ($this->fields as $key => $field) {
-            $this->getValidatorChain()->addValue($key, $field->getValue());
+        // Add field info to validator chain
+        $fields = $this->getAllFields();
+        foreach ($fields as $field) {
+            foreach ($field->getValidators() as $validator => $options) {
+                $this->getValidatorChain()->addValidator($field->getName(), $validator, $options);
+            }
+
+            $this->getValidatorChain()->addValue($field->getName(), $field->getValue());
+            $this->getValidatorChain()->addAllowEmpty($field->getName(), $field->isAllowedEmpty());
+            $this->getValidatorChain()->addAllowNull($field->getName(), $field->isAllowedNull());
         }
 
+        // Check
         return $this->getValidatorChain()->isValid();
     }
 
@@ -97,13 +99,33 @@ class Form extends FieldSet
     {
         return $this->getValidatorChain()->getStandardValues();
     }
-    
-    public function getErrorCode()
+
+    /**
+     * Get field that is not valid.
+     *
+     * @return string
+     */
+    public function getNotValidField()
+    {
+        return $this->getValidatorChain()->getNotValidField();
+    }
+
+    /**
+     * Get not valid code.
+     *
+     * @return string
+     */
+    public function getNotValidCode()
     {
         return $this->getValidatorChain()->getNotValidCode();
     }
-    
-    public function getErrorMessage()
+
+    /**
+     * Get not valid message.
+     *
+     * @return string
+     */
+    public function getNotValidMessage()
     {
         return $this->getValidatorChain()->getNotValidMessage();
     }

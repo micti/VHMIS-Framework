@@ -12,21 +12,9 @@ namespace VhmisTest\Form;
 
 use Vhmis\Form\FieldSet;
 use Vhmis\Form\Field;
-use Vhmis\Form\Factory;
 
 class FieldSetTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function testFactory()
-    {
-        $fieldset = new FieldSet;
-        $fac1 = $fieldset->getFactory();
-        $this->assertInstanceOf('\Vhmis\Form\Factory', $fac1);
-
-        $fac2 = new Factory;
-        $fieldset->setFactory($fac2);
-        $this->assertSame($fac2, $fieldset->getFactory());
-    }
 
     public function testAddField()
     {
