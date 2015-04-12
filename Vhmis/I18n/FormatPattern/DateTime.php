@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Vhmis Framework (http://vhmis.viethanit.edu.vn/developer/vhmis)
+ * Vhmis Framework
  *
- * @link http://vhmis.viethanit.edu.vn/developer/vhmis Vhmis Framework
- * @copyright Copyright (c) IT Center - ViethanIt College (http://www.viethanit.edu.vn)
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package Vhmis_I18n
- * @since Vhmis v2.0
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Vhmis\I18n\FormatPattern;
@@ -15,10 +13,7 @@ namespace Vhmis\I18n\FormatPattern;
 use \IntlDateFormatter;
 
 /**
- * Lấy các format của thời gian dựa theo Locale
- *
- * @category Vhmis
- * @package Vhmis_I18n
+ * Datetime pattern
  */
 class DateTime
 {
@@ -33,25 +28,25 @@ class DateTime
      * @param int $type
      * @return string
      */
-    static public function dateNativeFormat($locale, $type)
+    static public function dateNativeFormat($type, $locale = '')
     {
-        $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
+        $formatter = new IntlDateFormatter(self::getLocale($locale), $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
 
         $patterns = array(
-            'year'  => array(
+            'year' => array(
                 'YYYY' => 'o',
                 'yyyy' => 'Y',
-                'yy'   => 'y',
-                'y'    => 'Y'
+                'yy' => 'y',
+                'y' => 'Y'
             ),
-            'day'   => array(
+            'day' => array(
                 'dd' => 'd',
-                'd'  => 'j'
+                'd' => 'j'
             ),
             'month' => array(
                 'MM' => 'm',
-                'M'  => 'n'
+                'M' => 'n'
             )
         );
 
@@ -67,27 +62,43 @@ class DateTime
         return $format;
     }
 
-    static public function dateFormat($locale, $type)
+    static public function dateFormat($type, $locale = '')
     {
-        $formatter = new IntlDateFormatter($locale, $type, IntlDateFormatter::NONE);
+        $formatter = new IntlDateFormatter(self::getLocale($locale), $type, IntlDateFormatter::NONE);
         $format = $formatter->getPattern();
 
         return $format;
     }
 
-    static public function timeFormat($locale, $type)
+    static public function timeFormat($type, $locale = '')
     {
-        $formatter = new IntlDateFormatter($locale, IntlDateFormatter::NONE, $type);
+        $formatter = new IntlDateFormatter(self::getLocale($locale), IntlDateFormatter::NONE, $type);
         $format = $formatter->getPattern();
 
         return $format;
     }
 
-    static public function dateTimeFormat($locale, $dateType, $timeType)
+    static public function dateTimeFormat($dateType, $timeType, $locale = '')
     {
-        $formatter = new IntlDateFormatter($locale, $dateType, $timeType);
+        $formatter = new IntlDateFormatter(self::getLocale($locale), $dateType, $timeType);
         $format = $formatter->getPattern();
 
         return $format;
+    }
+
+    /**
+     * Get locale.
+     * 
+     * @param string $locale
+     * 
+     * @return string
+     */
+    static public function getLocale($locale)
+    {
+        if ($locale === '') {
+            return \Locale::getDefault();
+        }
+
+        return $locale;
     }
 }
