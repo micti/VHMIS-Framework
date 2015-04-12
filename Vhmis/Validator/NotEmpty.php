@@ -2,6 +2,9 @@
 
 namespace Vhmis\Validator;
 
+/**
+ * Validator for not empty value.
+ */
 class NotEmpty extends ComapareAbstract
 {
 
@@ -40,6 +43,6 @@ class NotEmpty extends ComapareAbstract
      */
     protected function compare()
     {
-        return $this->value !== '';
+        return (!empty($this->value));
     }
 }

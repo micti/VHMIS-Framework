@@ -29,8 +29,9 @@ class NotEmptyTest extends \PHPUnit_Framework_TestCase
 
     public function testIsValid()
     {
-        $this->assertTrue($this->notEmptyValidator->isValid([]));
-        $this->assertTrue($this->notEmptyValidator->isValid(null));
+        $this->assertFalse($this->notEmptyValidator->isValid(''));
+        $this->assertFalse($this->notEmptyValidator->isValid([]));
+        $this->assertFalse($this->notEmptyValidator->isValid(null));
         $this->assertTrue($this->notEmptyValidator->isValid(new \DateTime()));
         $this->assertTrue($this->notEmptyValidator->isValid(1));
         $this->assertTrue($this->notEmptyValidator->isValid(1.2));
