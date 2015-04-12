@@ -26,13 +26,13 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
     {
         if (!extension_loaded('intl')) {
             $this->markTestSkipped(
-                'Intl ext is not available.'
+                    'Intl ext is not available.'
             );
         }
 
         if (!class_exists('\IntlCalendar')) {
             $this->markTestSkipped(
-                'Intl version 3.0.0 is not available.'
+                    'Intl version 3.0.0 is not available.'
             );
         }
 
@@ -46,12 +46,12 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
      */
     public function testNotValidValidator()
     {
-        $this->validatorChain->add('a', 'wrong');
+        $this->validatorChain->addValidator('a', 'wrong');
     }
 
     public function testAdd()
     {
-        $this->validatorChain->add('a', 'Int');
+        $this->validatorChain->addValidator('a', 'Int');
         $fields = [
             'a' => [
                 'value' => null,
@@ -62,7 +62,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
         ];
         $this->assertEquals($fields, $this->validatorChain->getFields());
 
-        $this->validatorChain->add('a', 'DateTime', ['pattern' => 'mm-dd-Y']);
+        $this->validatorChain->addValidator('a', 'DateTime', ['pattern' => 'mm-dd-Y']);
         $fields = [
             'a' => [
                 'value' => null,
@@ -74,7 +74,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
         ];
         $this->assertEquals($fields, $this->validatorChain->getFields());
 
-        $this->validatorChain->add('a', 'DateTime', ['pattern' => 'dd-mm-Y']);
+        $this->validatorChain->addValidator('a', 'DateTime', ['pattern' => 'dd-mm-Y']);
         $fields = [
             'a' => [
                 'value' => null,
@@ -117,8 +117,8 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
         $this->validatorChain->reset();
         $this->assertEquals([], $this->validatorChain->getFields());
 
-        $this->validatorChain->add('a', 'Int');
-        $this->validatorChain->add('b', 'Int');
+        $this->validatorChain->addValidator('a', 'Int');
+        $this->validatorChain->addValidator('b', 'Int');
 
         $values = [
             'a' => 1,
@@ -148,9 +148,9 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
     {
         $this->validatorChain->reset();
 
-        $this->validatorChain->add('a', 'Int');
+        $this->validatorChain->addValidator('a', 'Int');
         $this->validatorChain->addValue('a', '89');
-        $this->validatorChain->add('b', 'DateTime', ['pattern' => 'M/d/yy']);
+        $this->validatorChain->addValidator('b', 'DateTime', ['pattern' => 'M/d/yy']);
         $this->validatorChain->addValue('b', '12/12/2014');
         $this->assertTrue($this->validatorChain->isValid());
         $standardValues = $this->validatorChain->getStandardValues();
@@ -162,14 +162,26 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
     {
         $this->validatorChain->reset();
 
-        $this->validatorChain->add('a', 'Int');
-        $this->validatorChain->add('a', 'Greater', ['compare' => 100]);
+        $this->validatorChain->addValidator('a', 'Int');
+        $this->validatorChain->addValidator('a', 'Greater', ['compare' => 100]);
         $this->validatorChain->addValue('a', '89');
-        $this->validatorChain->add('b', 'DateTime', ['pattern' => 'M/d/yy']);
+        $this->validatorChain->addValidator('b', 'DateTime', ['pattern' => 'M/d/yy']);
         $this->validatorChain->addValue('b', '12/12/2014');
         $this->assertFalse($this->validatorChain->isValid());
         $this->assertEquals('a', $this->validatorChain->getNotValidField());
         $this->assertEquals('The given value is equal or smaller than compared value.', $this->validatorChain->getNotValidMessage());
         $this->assertEquals(\Vhmis\Validator\Greater::E_EQUAL_OR_SMALLER, $this->validatorChain->getNotValidCode());
+    }
+
+    public function testSkippedField()
+    {
+        $this->validatorChain->reset();
+
+        $this->validatorChain->addValidator('a', 'Int');
+        $this->validatorChain->addValidator('a', 'Greater', ['compare' => 100]);
+        $this->validatorChain->addValue('a', '89');
+        $this->validatorChain->addValidator('b', 'DateTime', ['pattern' => 'M/d/yy']);
+        $this->validatorChain->addValue('b', '12/12/2014');
+        $this->assertTrue($this->validatorChain->isValid(['a']));
     }
 }

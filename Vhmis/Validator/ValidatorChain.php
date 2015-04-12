@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace Vhmis\Validator;
 
 use Vhmis\Utils\Exception\InvalidArgumentException;
@@ -71,6 +79,29 @@ class ValidatorChain
     protected $standardValues = [];
 
     /**
+     * Skipped fields when validating.
+     */
+    protected $skipFields = [];
+
+    /**
+     * Add field if it isn't set.
+     *
+     * @param string $field
+     *
+     * @return ValidatorChain
+     */
+    public function addField($field)
+    {
+        if (!isset($this->fields[$field])) {
+            $this->fields[$field]['value'] = null;
+            $this->fields[$field]['validator'] = [];
+            $this->standardValues[$field] = null;
+        }
+
+        return $this;
+    }
+
+    /**
      * Add validator.
      *
      * @param string $name
@@ -78,7 +109,7 @@ class ValidatorChain
      *
      * @return ValidatorChain
      */
-    public function add($field, $validator, $options = [])
+    public function addValidator($field, $validator, $options = [])
     {
         if (!isset($this->validtorList[$validator])) {
             throw new InvalidArgumentException('Invalid validator.');
@@ -102,7 +133,6 @@ class ValidatorChain
     public function addValue($field, $value)
     {
         $this->addField($field);
-
         $this->fields[$field]['value'] = $value;
         $this->standardValues[$field] = $value;
 
@@ -110,7 +140,21 @@ class ValidatorChain
     }
 
     /**
-     * Fill values for all fields.
+     * Remove a field.
+     *
+     * @param string $field
+     * @return ValidatorChain
+     */
+    public function removeField($field)
+    {
+        unset($this->fields[$field]);
+        unset($this->standardValues[$field]);
+
+        return $this;
+    }
+
+    /**
+     * Fill values for all exist fields.
      *
      * @param array $values
      *
@@ -118,10 +162,10 @@ class ValidatorChain
      */
     public function fill($values)
     {
-        foreach ($this->fields as $key => $unusedValue) {
-            if (array_key_exists($key, $values)) {
-                $this->fields[$key]['value'] = $values[$key];
-                $this->standardValues[$key] = $values[$key];
+        foreach ($values as $key => $value) {
+            if (array_key_exists($key, $this->fields)) {
+                $this->fields[$key]['value'] = $value;
+                $this->standardValues[$key] = $value;
             }
         }
 
@@ -156,6 +200,8 @@ class ValidatorChain
     public function reset()
     {
         $this->fields = [];
+        $this->standardValues = [];
+        $this->notValidCode = $this->notValidField = $this->notValidMessage = null;
 
         return $this;
     }
@@ -163,24 +209,18 @@ class ValidatorChain
     /**
      * Validate for all fields.
      *
+     * @params array $skippedFields
+     *
      * @return boolean
      */
-    public function isValid()
+    public function isValid($skippedFields = [])
     {
+        $this->clearResult();
+        $this->skipFields = $skippedFields;
+
         foreach ($this->fields as $key => $field) {
-            foreach ($field['validator'] as $validator => $options) {
-                $validatorObject = $this->getValidator($validator);
-                $validatorObject->reset();
-                $validatorObject->setOptions($options);
-
-                if (!$validatorObject->isValid($this->standardValues[$key])) {
-                    $this->notValidField = $key;
-                    $this->notValidMessage = $validatorObject->getMessage();
-                    $this->notValidCode = $validatorObject->getMessageCode();
-                    return false;
-                }
-
-                $this->standardValues[$key] = $validatorObject->getStandardValue();
+            if (!$this->isValidField($key, $field['validator'])) {
+                return false;
             }
         }
 
@@ -190,7 +230,7 @@ class ValidatorChain
     /**
      * Get not valid field.
      *
-     * @return string
+     * @return string|null
      */
     public function getNotValidField()
     {
@@ -200,7 +240,7 @@ class ValidatorChain
     /**
      * Get not valid message.
      *
-     * @return string
+     * @return string|null
      */
     public function getNotValidMessage()
     {
@@ -210,11 +250,44 @@ class ValidatorChain
     /**
      * Get not valid code.
      *
-     * @return string
+     * @return string|null
      */
     public function getNotValidCode()
     {
         return $this->notValidCode;
+    }
+
+    protected function isValidField($field, $validators)
+    {
+        if (in_array($field, $this->skipFields)) {
+            return true;
+        }
+
+        foreach ($validators as $validator => $options) {
+            $validatorObject = $this->getValidator($validator);
+            $validatorObject->reset();
+            $validatorObject->setOptions($options);
+            if (!$validatorObject->isValid($this->standardValues[$field])) {
+                $this->setNotValidInfo($field, $validatorObject->getMessageCode(), $validatorObject->getMessage());
+                return false;
+            }
+
+            $this->standardValues[$field] = $validatorObject->getStandardValue();
+        }
+
+        return true;
+    }
+
+    /**
+     * Clear last result before valalide again.
+     */
+    protected function clearResult()
+    {
+        $this->notValidCode = $this->notValidField = $this->notValidMessage = null;
+
+        foreach ($this->fields as $key => $field) {
+            $this->standardValues[$key] = $field['value'];
+        }
     }
 
     /**
@@ -234,20 +307,16 @@ class ValidatorChain
     }
 
     /**
-     * Add field if it isn't set.
+     * Set not valid info.
      *
      * @param string $field
-     *
-     * @return ValidatorChain
+     * @param string $code
+     * @param string $message
      */
-    protected function addField($field)
+    protected function setNotValidInfo($field, $code, $message)
     {
-        if (!isset($this->fields[$field])) {
-            $this->fields[$field]['value'] = null;
-            $this->fields[$field]['validator'] = [];
-            $this->standardValues[$field] = null;
-        }
-
-        return $this;
+        $this->notValidCode = $code;
+        $this->notValidField = $field;
+        $this->notValidMessage = $message;
     }
 }
