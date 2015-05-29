@@ -93,7 +93,6 @@ class View
     protected $helperClass = array(
         'path'     => 'Path',
         'appInfo'  => 'App',
-        'dateTime' => 'DateTime',
         'number'   => 'Number',
         'output'   => 'Output',
         'dtRelative' => 'DateTimeRelative',
@@ -101,7 +100,8 @@ class View
         'dtFormat' => 'DateTimeStyleFormat',
         'dtInterval' => 'DateTimeInterval',
         'dtFieldName' => 'DateTimeFieldName',
-        'calFieldName' => 'CalendarFieldName'
+        'calFieldName' => 'CalendarFieldName',
+        'privacyText' => 'PrivacyText'
     );
 
     /**
