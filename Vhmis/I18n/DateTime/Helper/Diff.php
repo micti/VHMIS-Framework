@@ -10,7 +10,7 @@
 
 namespace Vhmis\I18n\DateTime\Helper;
 
-use \Vhmis\I18n\DateTime\DateTime;
+use Vhmis\I18n\DateTime\DateTime;
 
 class Diff extends AbstractHelper
 {

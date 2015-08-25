@@ -377,7 +377,7 @@ class Rule
             'position'    => $this->repeatedDayPosition
         );
     }
-
+    
     /**
      * Reset rule
      *

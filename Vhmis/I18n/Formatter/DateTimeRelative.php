@@ -2,9 +2,8 @@
 
 namespace Vhmis\I18n\Formatter;
 
-use Vhmis\I18n\DateTime\DateTime;
-use \Vhmis\I18n\Resource\Resource;
-use \Vhmis\I18n\Plural\Plural;
+use Vhmis\I18n\Resource\Resource;
+use Vhmis\I18n\Plural\Plural;
 
 /**
  * Relative string of 2 datetimes.
@@ -17,8 +16,8 @@ class DateTimeRelative
     /**
      * Relative string of 2 datetimes.
      *
-     * @param DateTime $date
-     * @param DateTime|null $rootDate
+     * @param Vhmis\I18n\DateTime\DateTime $date
+     * @param Vhmis\I18n\DateTime\DateTime|null $rootDate
      * @param string $locale
      *
      * @return string
@@ -42,6 +41,7 @@ class DateTimeRelative
 
         if ($diff[$field] < 0) {
             $direction = 'future';
+            $diff[$field] *= -1;
         }
 
         $pruralRule = Plural::getCardinalType($diff[$field], $locale);

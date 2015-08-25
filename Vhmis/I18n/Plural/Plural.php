@@ -10,7 +10,7 @@
 
 namespace Vhmis\I18n\Plural;
 
-use \Vhmis\I18n\Resource\Resource as I18nResource;
+use \Vhmis\I18n\Resource\Resource;
 
 class Plural
 {
@@ -27,7 +27,7 @@ class Plural
      */
     public static function getCardinalType($number, $locale = '')
     {
-        $rules = I18nResource::getCardinalPluralRule($locale);
+        $rules = Resource::getCardinalPluralRule($locale);
 
         foreach ($rules as $type => $rule) {
             if (Parser::isAccept($number, $rule)) {
