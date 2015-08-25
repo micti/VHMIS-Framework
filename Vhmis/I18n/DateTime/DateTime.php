@@ -128,6 +128,7 @@ class DateTime extends SimpleDateTime
         'set' => 'Set',
         'get' => 'Get',
         'format' => 'Format',
+        'relatedYear' => 'RelatedYear',
         'diff' => 'Diff',
         'go' => 'Go',
         'repeat' => 'Repeat'
