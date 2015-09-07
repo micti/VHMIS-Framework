@@ -23,6 +23,9 @@ class Form extends FieldSet
      */
     protected $validatorChain;
 
+    public function __construct()
+    {}
+
     /**
      * Set validator chain.
      *
