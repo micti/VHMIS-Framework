@@ -69,28 +69,46 @@ class Response
     }
 
     /**
-     * Tải file
+     * Download file
      *
-     * @param string $filepath
+     * @param string $path
      * @param string $filename
-     * @param string $filetype
+     * @param string|null $type
      */
     public function download($path, $filename, $type = null)
     {
-        header('Content-disposition: attachment; filename="' . $filename . '"');
-
-        // Xác định file type
+        // Size
+        $size = filesize($path);
+        
+        // Type
         if (!is_string($type)) {
-            if ($finfo = new \finfo(FILEINFO_MIME_TYPE)) {
-                $type = $finfo->file($path);
-            }
-        } else {
-            header('Content-type: ' . $type);
+            $type = \Vhmis\Utils\File::getFileType($path);
         }
+        
+        // Header
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Type: ' . $type);
+        header('Content-Length: ' . $size);
 
-        flush();
-        readfile($path);
-
+        // Small file
+        if($size < 5242880) {
+            flush();
+            readfile($path);
+            exit();
+        }
+        
+        // Large file
+        $chunkSize = 1024 * 1024;
+        $handle = fopen($path, 'rb');
+        
+        while (!feof($handle)) {
+            $buffer = fread($handle, $chunkSize);
+            echo $buffer;
+            ob_flush();
+            flush();
+        }
+        
+        fclose($handle);
         exit();
     }
 
