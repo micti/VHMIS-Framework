@@ -91,7 +91,7 @@ class Response
         header('Content-Length: ' . $size);
 
         // Small file
-        if($size < 5242880) {
+        if ($size < 5242880) {
             flush();
             readfile($path);
             exit();

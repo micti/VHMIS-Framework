@@ -99,7 +99,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      */
     public function qoute($value)
     {
-        return $this->resource->quote($value);
+        return $this->getConnection()->quote($value);
     }
 
     /**
@@ -111,7 +111,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      */
     public function query($sql)
     {
-        $result = $this->resource->exec($sql);
+        $result = $this->getConnection()->exec($sql);
 
         return $result;
     }
