@@ -35,7 +35,7 @@ class FormValidatorChain extends ValidatorChain
     /**
      * Set field value can/can not be empty.
      *
-     * @param string $field
+     * @param string  $field
      * @param boolean $allow
      *
      * @return FormValidatorChain
@@ -51,7 +51,7 @@ class FormValidatorChain extends ValidatorChain
     /**
      * Set field value can be null.
      *
-     * @param string $field
+     * @param string  $field
      * @param boolean $allow
      *
      * @return FormValidatorChain
@@ -69,11 +69,11 @@ class FormValidatorChain extends ValidatorChain
      *
      * @param string $field
      * @param string $validator
-     * @param array $options
+     * @param array  $options
      *
      * @return FormValidatorChain
      */
-    public function addValidator($field, $validator, $options = array())
+    public function addValidator($field, $validator, $options = [])
     {
         if ($validator === 'NotEmpty' || $validator === 'NotNull') {
             return $this;
@@ -110,7 +110,8 @@ class FormValidatorChain extends ValidatorChain
     {
         if ($field['value'] === null) {
             if ($field['allow_null'] === false) {
-                $this->setNotValidInfo($key, NotNull::E_NULL, '');
+                $this->setNotValidInfo($key, NotNull::E_NULL, 'The given value is null.');
+
                 return false;
             }
 
@@ -124,7 +125,8 @@ class FormValidatorChain extends ValidatorChain
     {
         if ($field['value'] === '' || $field['value'] === []) {
             if ($field['allow_empty'] === false) {
-                $this->setNotValidInfo($key, NotEmpty::E_EMPTY, '');
+                $this->setNotValidInfo($key, NotEmpty::E_EMPTY, 'The given value is empty.');
+
                 return false;
             }
 
