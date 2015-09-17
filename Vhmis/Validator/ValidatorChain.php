@@ -3,9 +3,9 @@
 /**
  * Vhmis Framework
  *
- * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @link      http://github.com/micti/VHMIS-Framework for git source repository
  * @copyright Le Nhat Anh (http://lenhatanh.com)
- * @license http://opensource.org/licenses/MIT MIT License
+ * @license   http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Vhmis\Validator;
@@ -30,19 +30,21 @@ class ValidatorChain
      *
      * @var array
      */
-    protected $validtorList = [
-        'Int' => '\Vhmis\Validator\Int',
-        'Float' => '\Vhmis\Validator\Float',
-        'Greater' => '\Vhmis\Validator\Greater',
-        'Smaller' => '\Vhmis\Validator\Smaller',
-        'Same' => '\Vhmis\Validator\Same',
-        'NotEmpty' => '\Vhmis\Validator\NotEmpty',
-        'NotNull' => '\Vhmis\Validator\NotNull',
-        'NotSame' => '\Vhmis\Validator\NotSame',
-        'Array' => '\Vhmis\Validator\Arr',
-        'DateTime' => '\Vhmis\Validator\DateTime',
-        'Range' => '\Vhmis\Validator\Range',
-        'Upload' => '\Vhmis\Validator\Upload'
+    protected $validatorList = [
+        'Int'        => '\Vhmis\Validator\Int',
+        'Float'      => '\Vhmis\Validator\Float',
+        'Greater'    => '\Vhmis\Validator\Greater',
+        'Smaller'    => '\Vhmis\Validator\Smaller',
+        'Same'       => '\Vhmis\Validator\Same',
+        'NotEmpty'   => '\Vhmis\Validator\NotEmpty',
+        'NotNull'    => '\Vhmis\Validator\NotNull',
+        'NotSame'    => '\Vhmis\Validator\NotSame',
+        'Array'      => '\Vhmis\Validator\Arr',
+        'DateTime'   => '\Vhmis\Validator\DateTime',
+        'Range'      => '\Vhmis\Validator\Range',
+        'Upload'     => '\Vhmis\Validator\Upload',
+        'FileName'   => '\Vhmis\Validator\FileName',
+        'FolderName' => '\Vhmis\Validator\FolderName'
     ];
 
     /**
@@ -104,14 +106,15 @@ class ValidatorChain
     /**
      * Add validator.
      *
-     * @param string $name
-     * @param array $options
+     * @param string $field
+     * @param string $validator
+     * @param array  $options
      *
      * @return ValidatorChain
      */
     public function addValidator($field, $validator, $options = [])
     {
-        if (!isset($this->validtorList[$validator])) {
+        if (!isset($this->validatorList[$validator])) {
             throw new InvalidArgumentException('Invalid validator.');
         }
 
@@ -126,7 +129,7 @@ class ValidatorChain
      * Add value for a field.
      *
      * @param string $field
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return ValidatorChain
      */
@@ -143,6 +146,7 @@ class ValidatorChain
      * Remove a field.
      *
      * @param string $field
+     *
      * @return ValidatorChain
      */
     public function removeField($field)
@@ -209,7 +213,7 @@ class ValidatorChain
     /**
      * Validate for all fields.
      *
-     * @params array $skippedFields
+     * @param array $skippedFields
      *
      * @return boolean
      */
@@ -269,6 +273,7 @@ class ValidatorChain
             $validatorObject->setOptions($options);
             if (!$validatorObject->isValid($this->standardValues[$field])) {
                 $this->setNotValidInfo($field, $validatorObject->getMessageCode(), $validatorObject->getMessage());
+
                 return false;
             }
 
@@ -279,7 +284,7 @@ class ValidatorChain
     }
 
     /**
-     * Clear last result before valalide again.
+     * Clear last result before validate again.
      */
     protected function clearResult()
     {
@@ -300,7 +305,7 @@ class ValidatorChain
     protected function getValidator($name)
     {
         if (!isset($this->validators[$name])) {
-            $this->validators[$name] = new $this->validtorList[$name];
+            $this->validators[$name] = new $this->validatorList[$name];
         }
 
         return $this->validators[$name];
