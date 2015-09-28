@@ -6,16 +6,16 @@ class Field
 {
 
     protected $code;
-    protected $value;
-    protected $id1;
-    protected $id2;
+    protected $value = '';
+    protected $id1 = ' ';
+    protected $id2 = ' ';
 
     /**
      * Sub field list
      * 
      * @var SubField[]
      */
-    protected $subfield = [];
+    protected $subfields = [];
 
     public function __construct($code, $id1 = '', $id2 = '')
     {
@@ -52,7 +52,7 @@ class Field
      */
     public function getValue()
     {
-        return $this->getValue();
+        return $this->value;
     }
 
     /**
@@ -83,7 +83,7 @@ class Field
     public function addSubField($subfield)
     {
         $this->subfields[] = $subfield;
-        
+
         return $this;
     }
 
@@ -106,7 +106,7 @@ class Field
 
         return false;
     }
-    
+
     /**
      * 
      * @param string $code
@@ -117,11 +117,20 @@ class Field
     {
         $subfields = [];
         foreach ($this->subfields as $subfield) {
-            if($subfield->getCode() === $code) {
+            if ($subfield->getCode() === $code) {
                 $subfields[] = $subfield;
             }
         }
-        
+
         return $subfields;
+    }
+    
+    /**
+     * 
+     * @return SubField[]
+     */
+    public function getSubFields()
+    {
+        return $this->subfields;
     }
 }
