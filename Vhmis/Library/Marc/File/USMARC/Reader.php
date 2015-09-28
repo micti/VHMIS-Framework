@@ -8,14 +8,16 @@
  * @license http://opensource.org/licenses/MIT MIT License
  */
 
-namespace Vhmis\Library\Marc\Format\USMARC;
+namespace Vhmis\Library\Marc\File\USMARC;
 
 use Vhmis\Library\Marc\Biblio;
+use Vhmis\Library\Marc\Structure\Field;
+use Vhmis\Library\Marc\Structure\SubField;
 
 /**
  * Read biblio record from USMARC file (.usm extension)
  */
-class Read
+class Reader
 {
 
     /**
@@ -97,7 +99,7 @@ class Read
     protected function readRecord($data)
     {
         $len = strlen($data) + 1;
-        
+
         $matches = [];
         $test = preg_match("/^(\d{5})/", $data, $matches);
         if ($test !== 1) {
@@ -121,10 +123,17 @@ class Read
 
         for ($i = 0; $i < $total; $i++) {
             $code = $codes[$i];
-            $biblio->addField($codes[$i]);
-            $biblio->setFieldIndicators($codes[$i], $fields[$i][0], $fields[$i][1]);
+
+            if (0 + $code < 10) {
+                continue;
+            }
+
+            $field = new Field($codes[$i], $fields[$i][0], $fields[$i][1]);
+            $biblio->addField($field);
+
             for ($j = 0; $j < count($fields[$i][2]); $j++) {
-                $biblio->addSubField($code, $fields[$i][2][$j][0], $fields[$i][2][$j][1]);
+                $subfield = new SubField($fields[$i][2][$j][0], $fields[$i][2][$j][1]);
+                $field->addSubField($subfield);
             }
         }
 

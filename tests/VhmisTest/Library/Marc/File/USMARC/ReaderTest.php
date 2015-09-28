@@ -8,39 +8,39 @@
  * @license http://opensource.org/licenses/MIT MIT License
  */
 
-namespace VhmisTest\Library\Marc\Format\USMARC\Read;
+namespace VhmisTest\Library\Marc\Format\USMARC;
 
-use Vhmis\Library\Marc\Format\USMARC\Read;
+use Vhmis\Library\Marc\File\USMARC\Reader;
 
-class ReadTest extends \PHPUnit_Framework_TestCase
+class ReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Read object.
      *
-     * @var Read
+     * @var Reader
      */
-    protected $read;
+    protected $reader;
 
     public function setUp()
     {
-        $this->read = new Read;
+        $this->reader = new Reader;
     }
     
     public function testNotFile()
     {
         $dir = __DIR__;
         
-        $this->assertFalse($this->read->readFile($dir . '/File/Book1222.usm'));
-        $this->assertFalse($this->read->readFile($dir . '/File'));
+        $this->assertFalse($this->reader->readFile($dir . '/File/Book1222.usm'));
+        $this->assertFalse($this->reader->readFile($dir . '/File'));
     }
     
     public function testRead()
     {
         $dir = __DIR__;
-        $this->read->reset();
-        $this->read->readFile($dir . '/File/book1.usm');
-        $this->read->readFile($dir . '/File/test2.usm');
-        $records = $this->read->getRecords();
+        $this->reader->reset();
+        $this->reader->readFile($dir . '/File/book1.usm');
+        $this->reader->readFile($dir . '/File/test2.usm');
+        $records = $this->reader->getRecords();
         $this->assertEquals(2, count($records));
     }
 }
