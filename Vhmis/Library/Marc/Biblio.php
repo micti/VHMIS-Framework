@@ -10,6 +10,8 @@
 
 namespace Vhmis\Library\Marc;
 
+use Vhmis\Library\Marc\Structure\Field;
+
 /**
  * Bibliographic record
  */
@@ -17,135 +19,85 @@ class Biblio
 {
 
     /**
-     * Leader
-     *
-     * @var string
-     */
-    protected $leader;
-
-    /**
      * Field data
      *
-     * @var array
+     * @var Field[][]
      */
     protected $fields = [];
 
     /**
-     * Add field
-     *
-     * @param string $code
-     *
+     * 
+     * @param Field $field
+     * 
      * @return \Vhmis\Library\Marc\Biblio
      */
-    public function addField($code)
+    public function addField($field)
     {
-        if (!isset($this->fields[$code])) {
-            $this->fields[$code] = [];
+        $this->fields[$field->getCode()][] = $field;
+
+        return;
+    }
+
+    public function removeField($field)
+    {
+        $code = $field->code;
+        if (isset($this->fields[$code])) {
+            foreach ($this->fields[$code] as $key => $value) {
+                if ($value === $field) {
+                    unset($this->fields[$code][$key]);
+                    $this->fields[$code] = array_values($this->fields[$code]);
+                    return true;
+                }
+            }
         }
+
+        return false;
+    }
+
+    public function removeFieldCode($code)
+    {
+        $this->fields[$code] = [];
 
         return $this;
     }
 
-    /**
-     *
-     * @param string $code
-     * @param string $i1
-     * @param string $i2
-     *
-     * @return \Vhmis\Library\Marc\Biblio
-     */
-    public function setFieldIndicators($code, $i1, $i2)
+    public function getFieldCode($code)
     {
-        $this->addField($code);
-        $this->fields[$code]['i1'] = $i1;
-        $this->fields[$code]['i2'] = $i2;
-
-        return $this;
-    }
-
-    /**
-     * Add sub field.
-     *
-     * @param string $field_code
-     * @param string $code
-     * @param string $value
-     *
-     * @return \Vhmis\Library\Marc\Biblio
-     */
-    public function addSubField($field_code, $code, $value)
-    {
-        $this->addField($field_code);
-        $this->fields[$field_code]['sub'][$code][] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get field data
-     *
-     * @param string $code
-     *
-     * @return array|null
-     */
-    public function getField($code)
-    {
-        if (!isset($this->fields[$code])) {
-            return null;
+        if (isset($this->fields[$code])) {
+            return $this->fields[$code];
         }
 
-        return $this->fields[$code];
+        return [];
     }
 
-    /**
-     * Get 1st field indicator
-     *
-     * @param string $code
-     * @return string
-     */
-    public function getFirstFieldIndicator($code)
-    {
-        if (!isset($this->fields[$code]['i1'])) {
-            return null;
-        }
-
-        return $this->fields[$code]['i1'];
-    }
-
-    /**
-     * Get 2nd field indicator
-     *
-     * @param string $code
-     * @return string
-     */
-    public function getSecondFieldIndicator($code)
-    {
-        if (!isset($this->fields[$code]['i2'])) {
-            return null;
-        }
-
-        return $this->fields[$code]['i2'];
-    }
-
-    /**
-     * Get subfield code value.
-     *
-     * @param string $field_code
-     * @param string $code
-     *
-     * @return array
-     */
-    public function getSubFieldCodeValue($field_code, $code)
-    {
-        return $this->fields[$field_code]['sub'][$code];
-    }
-
-    /**
-     * Data in array
-     *
-     * @return type
-     */
-    public function toArray()
+    public function getFields()
     {
         return $this->fields;
+    }
+
+    public function getFullTitle()
+    {
+        $field = $this->getFieldCode('245');
+        if ($field === []) {
+            return '';
+        }
+
+        $field = $field[0];
+        $title = '';
+
+        $subfield = $field->getSubFieldCode('a');
+        if ($subfield == []) {
+            return $title;
+        }
+
+        $subfield = $subfield[0];
+        $title = $subfield->getValue();
+
+        $subfield = $field->getSubFieldCode('b');
+        if ($subfield == []) {
+            return $title;
+        }
+
+        return trim($title . ' ' . $subfield->getValue());
     }
 }
