@@ -70,6 +70,10 @@ class Biblio
         return [];
     }
 
+    /**
+     * 
+     * @return Field[][]
+     */
     public function getFields()
     {
         return $this->fields;
@@ -98,6 +102,12 @@ class Biblio
             return $title;
         }
 
+        $subfield = $subfield[0];
         return trim($title . ' ' . $subfield->getValue());
+    }
+    
+    public function getMainAuthor()
+    {
+        
     }
 }
