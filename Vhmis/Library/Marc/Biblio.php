@@ -105,6 +105,26 @@ class Biblio
         return implode(';', $data);
     }
 
+    public function getISBN()
+    {
+        return $this->getValue('020', 'a');
+    }
+
+    public function getISSN()
+    {
+        return $this->getValue('022', 'a');
+    }
+
+    public function getDCC()
+    {
+        return $this->getValue('082', 'a');
+    }
+
+    public function getDescription()
+    {
+        return $this->getValue('520', 'a');
+    }
+
     public function getKeywords()
     {
         $data1 = $this->getValues('600', 'a');
