@@ -3,15 +3,15 @@
 /**
  * Vhmis Framework
  *
- * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @link      http://github.com/micti/VHMIS-Framework for git source repository
  * @copyright Le Nhat Anh (http://lenhatanh.com)
- * @license http://opensource.org/licenses/MIT MIT License
+ * @license   http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Vhmis\Utils;
 
 /**
- * Text funtions
+ * Text, string... helper functions
  */
 class Text
 {
@@ -20,7 +20,7 @@ class Text
      * Random string
      *
      * @param string $type
-     * @param int $length
+     * @param int    $length
      *
      * @return string
      */
@@ -61,7 +61,7 @@ class Text
      * @param string $string
      * @param string $from
      * @param string $to
-     * 
+     *
      * @return string
      */
     public static function convertEncoding($string, $from, $to)
@@ -80,21 +80,12 @@ class Text
         return $result;
     }
 
-    static public function cleanFilename($filename)
+    public static function cleanFilename($filename)
     {
-        $bad = array(
-            "<!--",
-            "-->",
-            "'",
-            "<",
-            ">",
-            '"',
-            '&',
-            '$',
-            '=',
-            ';',
-            '?',
-            '/',
+        $bad = [
+            "<!--", "-->", "'", "<", ">",
+            '"', '&', '$', '=', ';',
+            '?', '/',
             "%22", // <
             "%3c", // <
             "%253c", // <
@@ -108,15 +99,44 @@ class Text
             "%3f", // ?
             "%3b", // ;
             "%3d"
-        );
+        ];
 
         // Spaces
-        $space = array("%20");
+        $space = ["%20"];
 
         $filename = str_replace($bad, '', $filename);
         $filename = str_replace($space, ' ', $filename);
         $filename = preg_replace('/\s+/u', '_', $filename);
 
         return $filename;
+    }
+
+    /**
+     * Camelcase to underscore.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public static function camelCaseToUnderscore($string)
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
+    }
+
+    /**
+     * Underscore to camelcase.
+     *
+     * @param string $string
+     * @param bool   $upperFirstWord
+     *
+     * @return string
+     */
+    public static function underscoreToCamelCase($string, $upperFirstWord = false)
+    {
+        $parts = explode('_', $string);
+        $parts = $parts ? array_map('ucfirst', $parts) : [$string];
+        $parts[0] = $upperFirstWord ? ucfirst($parts[0]) : lcfirst($parts[0]);
+
+        return implode('', $parts);
     }
 }

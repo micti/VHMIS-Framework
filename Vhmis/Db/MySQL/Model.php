@@ -4,6 +4,7 @@ namespace Vhmis\Db\MySQL;
 
 use \Vhmis\Db\AdapterInterface;
 use \Vhmis\Db\ModelInterface;
+use Vhmis\Utils\Text;
 
 class Model implements ModelInterface
 {
@@ -52,28 +53,28 @@ class Model implements ModelInterface
      *
      * @var array
      */
-    protected $entityKey = array();
+    protected $entityKey = [];
 
     /**
      * Danh sách các Entity chờ được insert
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
-    protected $entityInsert = array();
+    protected $entityInsert = [];
 
     /**
      * Danh sách các Entity chờ được update
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
-    protected $entityUpdate = array();
+    protected $entityUpdate = [];
 
     /**
      * Danh sách các Entity chờ được delete
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
-    protected $entityDelete = array();
+    protected $entityDelete = [];
 
     /**
      * Danh sách các Entity đã được insert vào CSDL
@@ -81,7 +82,7 @@ class Model implements ModelInterface
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
-    protected $entityHasInserted = array();
+    protected $entityHasInserted = [];
 
     /**
      * Danh sách các Entity đã được update lên CSDL
@@ -89,7 +90,7 @@ class Model implements ModelInterface
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
-    protected $entityHasUpdated = array();
+    protected $entityHasUpdated = [];
 
     /**
      * Danh sách các Entity đã được delete khỏi CSDL
@@ -97,10 +98,10 @@ class Model implements ModelInterface
      *
      * @var \Vhmis\Db\MySQL\Entity[]
      */
-    protected $entityHasDeleted = array();
+    protected $entityHasDeleted = [];
 
     /**
-     * 
+     *
      * @var int
      */
     protected $fetchModRow = 0;
@@ -116,14 +117,14 @@ class Model implements ModelInterface
      *
      * @var array
      */
-    protected $otherIds = array();
+    protected $otherIds = [];
 
     /**
      * Dữ liệu thông tin key khác sau một lần select
      *
      * @var array
      */
-    protected $otherIdsData = array();
+    protected $otherIdsData = [];
 
     /**
      * Khởi tạo
@@ -140,7 +141,8 @@ class Model implements ModelInterface
     /**
      * Thiết lập adapter
      *
-     * @param \Vhmis\Db\MySQL\Adapter $adapter
+     * @param AdapterInterface $adapter
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function setAdapter(AdapterInterface $adapter)
@@ -167,7 +169,7 @@ class Model implements ModelInterface
         $table = $class[count($class) - 1];
 
         if ($this->table == '') {
-            $this->table = $this->camelCaseToUnderscore($table);
+            $this->table = Text::camelCaseToUnderscore($table);
         }
 
         $class[count($class) - 1] = $table . 'Entity';
@@ -194,8 +196,8 @@ class Model implements ModelInterface
         $statement = new Statement;
         $result = $statement->setAdapter($this->adapter)->setSql($sql)->execute();
 
-        $data = array();
-        $this->otherIdsData = array();
+        $data = [];
+        $this->otherIdsData = [];
 
         while ($row = $result->next()) {
             if ($this->fetchModSet === self::FETCH_MOD_SET_ARRAY) {
@@ -205,7 +207,7 @@ class Model implements ModelInterface
             }
 
             foreach ($this->otherIds as $id) {
-                $this->otherIdsData[$this->underscoreToCamelCase($id)][] = $row[$id];
+                $this->otherIdsData[Text::underscoreToCamelCase($id)][] = $row[$id];
             }
         }
 
@@ -216,6 +218,7 @@ class Model implements ModelInterface
      * Tìm theo primany key
      *
      * @param string $id
+     *
      * @return \Vhmis\Db\MySQL\Entity|array|null
      */
     public function findById($id)
@@ -223,9 +226,9 @@ class Model implements ModelInterface
         $sql = 'select * from `' . $this->table . '` where `' . $this->idKey . '` = ?';
 
         $statement = new Statement;
-        $result = $statement->setAdapter($this->adapter)->setParameters(array(1 => $id))->setSql($sql)->execute();
+        $result = $statement->setAdapter($this->adapter)->setParameters([1 => $id])->setSql($sql)->execute();
 
-        $this->otherIdsData = array();
+        $this->otherIdsData = [];
 
         if ($row = $result->current()) {
             return $this->fetchModRow === self::FETCH_MOD_ROW_ENTITY ? $this->fillRowToEntityClass($row) : $this->fillRowToEntityArray($row);
@@ -238,15 +241,16 @@ class Model implements ModelInterface
      * Tìm theo các primany key
      *
      * @param array $ids
+     *
      * @return \Vhmis\Db\MySQL\Entity[]|array[]
      */
     public function findByIds($ids)
     {
         if (!is_array($ids) || empty($ids)) {
-            return array();
+            return [];
         }
 
-        return $this->find(array(array($this->idKey, 'in', $ids)));
+        return $this->find([[$this->idKey, 'in', $ids]]);
     }
 
     /**
@@ -254,18 +258,18 @@ class Model implements ModelInterface
      *
      * @param array $where Mảng chứa điều kiện tìm kiếm
      * @param array $order Mảng chứa điều kiện sắp xếp
-     * @param int $skip Số row bỏ qua
-     * @param int $limit Số row lấy
+     * @param int   $skip  Số row bỏ qua
+     * @param int   $limit Số row lấy
      *
      * @return \Vhmis\Db\MySQL\Entity[]|array[]
-     * 
+     *
      * @throws \Exception
      */
-    public function find($where = array(), $order = array(), $skip = 0, $limit = 0)
+    public function find($where = [], $order = [], $skip = 0, $limit = 0)
     {
-        $bindData = array();
+        $bindData = [];
         if (is_array($where) && count($where) != 0) {
-            $sql = array();
+            $sql = [];
             $pos = 1;
 
             foreach ($where as $w) {
@@ -276,7 +280,7 @@ class Model implements ModelInterface
                     $value = $w[2];
 
                     // Try to camelCaseToUnderscore field name
-                    $field = $this->camelCaseToUnderscore($field);
+                    $field = Text::camelCaseToUnderscore($field);
 
                     // Prepare query
                     $sql_temp = '';
@@ -296,7 +300,7 @@ class Model implements ModelInterface
                             return [];
                         }
 
-                        $values = array();
+                        $values = [];
                         foreach ($value as $v) {
                             if (is_numeric($v)) {
                                 $values[] = $v;
@@ -322,10 +326,10 @@ class Model implements ModelInterface
         }
 
         if (is_array($order)) {
-            $orderby = array();
+            $orderby = [];
 
             foreach ($order as $field => $or) {
-                $field = $this->camelCaseToUnderscore($field);
+                $field = Text::camelCaseToUnderscore($field);
                 $or = $or === 'asc' ? 'asc' : 'desc';
                 $orderby[] = '`' . $field . '` ' . $or;
             }
@@ -342,8 +346,8 @@ class Model implements ModelInterface
         $statement = new Statement;
         $result = $statement->setAdapter($this->adapter)->setParameters($bindData)->setSql($sql)->execute();
 
-        $data = array();
-        $this->otherIdsData = array();
+        $data = [];
+        $this->otherIdsData = [];
 
         while ($row = $result->next()) {
             if ($this->fetchModSet === self::FETCH_MOD_SET_ARRAY) {
@@ -353,14 +357,14 @@ class Model implements ModelInterface
             }
 
             foreach ($this->otherIds as $id) {
-                $this->otherIdsData[$this->underscoreToCamelCase($id)][] = $row[$id];
+                $this->otherIdsData[Text::underscoreToCamelCase($id)][] = $row[$id];
             }
         }
 
         return $data;
     }
 
-    public function findOne($where, $order = array())
+    public function findOne($where, $order = [])
     {
         $result = $this->find($where, $order, 0, 1);
 
@@ -383,8 +387,8 @@ class Model implements ModelInterface
         }
 
         foreach ($this->otherIds as $id) {
-            if (!isset($this->otherIdsData[$this->underscoreToCamelCase($id)])) {
-                $this->otherIdsData[$this->underscoreToCamelCase($id)] = array();
+            if (!isset($this->otherIdsData[Text::underscoreToCamelCase($id)])) {
+                $this->otherIdsData[Text::underscoreToCamelCase($id)] = [];
             }
         }
 
@@ -397,13 +401,13 @@ class Model implements ModelInterface
     public function update($where, $data = null)
     {
         if (is_array($where) && is_array($data) && count($data) > 0) {
-            $sqlWhere = array();
-            $update = array();
-            $bindData = array();
+            $sqlWhere = [];
+            $update = [];
+            $bindData = [];
             $pos = 1;
 
             foreach ($data as $field => $value) {
-                $field = $this->camelCaseToUnderscore($field);
+                $field = Text::camelCaseToUnderscore($field);
 
                 $update[] = '`' . $field . '` = ?';
                 $bindData[$pos] = $value;
@@ -416,7 +420,7 @@ class Model implements ModelInterface
                 $value = $w[2];
 
                 // Try to camelCaseToUnderscore field name
-                $field = $this->camelCaseToUnderscore($field);
+                $field = Text::camelCaseToUnderscore($field);
 
                 // Prepare query
                 $sql_temp = '';
@@ -432,7 +436,7 @@ class Model implements ModelInterface
                         throw new \Exception('Value for IN must be an array');
                     }
 
-                    $values = array();
+                    $values = [];
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
                             $values[] = $v;
@@ -466,6 +470,7 @@ class Model implements ModelInterface
      * Thêm vào danh sách đợi 1 Entity cần insert vào CSDL
      *
      * @param \Vhmis\Db\MySQL\Entity $entity
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function insertQueue($entity)
@@ -490,6 +495,7 @@ class Model implements ModelInterface
      * Thêm vào danh sách đợi 1 Entity cần update lên CSDL
      *
      * @param \Vhmis\Db\MySQL\Entity $entity
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function updateQueue($entity)
@@ -498,7 +504,7 @@ class Model implements ModelInterface
             return $this;
         }
 
-        $methodGetIdKey = $this->underscoreToCamelCase($this->idKey);
+        $methodGetIdKey = Text::underscoreToCamelCase($this->idKey);
         if ($entity->$methodGetIdKey === null) {
             return $this;
         }
@@ -523,6 +529,7 @@ class Model implements ModelInterface
      * Thêm vào danh sách đợi 1 Entity cần delete khỏi CSDL
      *
      * @param \Vhmis\Db\MySQL\Entity $entity
+     *
      * @return \Vhmis\Db\MySQL\Model
      */
     public function deleteQueue($entity)
@@ -531,7 +538,7 @@ class Model implements ModelInterface
             return $this;
         }
 
-        $methodGetIdKey = $this->underscoreToCamelCase($this->idKey);
+        $methodGetIdKey = Text::underscoreToCamelCase($this->idKey);
         if ($entity->$methodGetIdKey === null) {
             return $this;
         }
@@ -568,9 +575,9 @@ class Model implements ModelInterface
 
             $this->adapter->commit();
 
-            $this->entityHasInserted = array();
-            $this->entityHasUpdated = array();
-            $this->entityHasDeleted = array();
+            $this->entityHasInserted = [];
+            $this->entityHasUpdated = [];
+            $this->entityHasDeleted = [];
 
             return true;
         } catch (\PDOException $e) {
@@ -591,12 +598,12 @@ class Model implements ModelInterface
 
         return $this;
     }
-    
+
     public function setFetchModEntityWithIdKey()
     {
         return $this->setFetchMod(self::FETCH_MOD_ROW_ENTITY, self::FETCH_MOD_SET_IDARRAY);
     }
-    
+
     public function setFetchModArrayWithIdKey()
     {
         return $this->setFetchMod(self::FETCH_MOD_ROW_ARRAY, self::FETCH_MOD_SET_IDARRAY);
@@ -621,7 +628,7 @@ class Model implements ModelInterface
             $stm = $this->adapter->createStatement('insert into ' . $this->table . ' ' . $prepareSQL['sql'], $prepareSQL['param']);
             $res = $stm->execute();
             if ($res->getLastValue()) {
-                $setId = $this->underscoreToCamelCase($this->idKey);
+                $setId = Text::underscoreToCamelCase($this->idKey);
                 $entity->$setId = $res->getLastValue();
             }
 
@@ -640,7 +647,7 @@ class Model implements ModelInterface
     {
         foreach ($this->entityUpdate as $id => $entity) {
             $prepareSQL = $entity->updateSQL();
-            $getId = $this->underscoreToCamelCase($this->idKey);
+            $getId = Text::underscoreToCamelCase($this->idKey);
             $prepareSQL['param'][':' . $this->idKey] = $entity->$getId;
 
             $stm = $this->adapter->createStatement('update ' . $this->table . ' set ' . $prepareSQL['sql'] . ' where ' . $this->idKey . ' = :' . $this->idKey, $prepareSQL['param']);
@@ -661,8 +668,8 @@ class Model implements ModelInterface
     protected function doDelete()
     {
         foreach ($this->entityDelete as $id => $entity) {
-            $getId = $this->underscoreToCamelCase($this->idKey);
-            $stm = $this->adapter->createStatement('delete from ' . $this->table . ' where ' . $this->idKey . ' = ?', array(1 => $entity->$getId));
+            $getId = Text::underscoreToCamelCase($this->idKey);
+            $stm = $this->adapter->createStatement('delete from ' . $this->table . ' where ' . $this->idKey . ' = ?', [1 => $entity->$getId]);
             $res = $stm->execute();
             $entity->setDeleted(true);
             $this->entityHasDeleted[$id] = $entity;
@@ -711,6 +718,7 @@ class Model implements ModelInterface
      * Tạo một đối tượng class Entity từ một kết quả trả về ở cơ sở dữ liệu
      *
      * @param array $row
+     *
      * @return
      */
     protected function fillRowToEntityClass($row)
@@ -722,43 +730,19 @@ class Model implements ModelInterface
 
     /**
      * Tạo một mảng Entity từ một kết quả trả về ở cơ sở dữ liệu
+     *
      * @param array $row
-     * @return
+     *
+     * @return array
      */
     protected function fillRowToEntityArray($row)
     {
-        $entity = array();
+        $entity = [];
 
         foreach ($row as $key => $value) {
-            $entity[$this->underscoreToCamelCase($key)] = $value;
+            $entity[Text::underscoreToCamelCase($key)] = $value;
         }
 
         return $entity;
-    }
-
-    /**
-     * Chuyển đổi chuỗi dạng camelCase sang Underscore
-     *
-     * @param string $str
-     * @return string
-     */
-    protected function camelCaseToUnderscore($str)
-    {
-        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $str));
-    }
-
-    /**
-     * Chuyển đổi chuỗi dạng Underscore sang camelCase
-     *
-     * @param string $str
-     * @param bool $ucfirst
-     * @return string
-     */
-    protected function underscoreToCamelCase($str, $ucfirst = false)
-    {
-        $parts = explode('_', $str);
-        $parts = $parts ? array_map('ucfirst', $parts) : array($str);
-        $parts[0] = $ucfirst ? ucfirst($parts[0]) : lcfirst($parts[0]);
-        return implode('', $parts);
     }
 }
