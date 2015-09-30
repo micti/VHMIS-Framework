@@ -272,14 +272,14 @@ class Request
 
         return 'html';
     }
-    
+
     public function getPostUpload()
     {
         $post = $this->post;
         $post += $this->post['_files'];
-        
+
         unset($post['_files']);
-        
+
         return $post;
     }
 
@@ -350,9 +350,9 @@ class Request
     /**
      * Strip slashes for array or string data
      *
-     * @param type $values
+     * @param array|string $values
      *
-     * @return type
+     * @return array|string
      */
     protected function stripSlashes($values)
     {
