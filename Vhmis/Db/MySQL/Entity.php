@@ -4,9 +4,12 @@ namespace Vhmis\Db\MySQL;
 
 abstract class Entity
 {
-    protected $fieldNameMap = array();
-    protected $oldValue = array();
-    protected $currentValue = array();
+    protected $fieldNameMap = [];
+
+    protected $oldValue = [];
+
+    protected $currentValue = [];
+
     protected $hasDeleted = false;
 
     public function __construct($data = null)
@@ -44,7 +47,7 @@ abstract class Entity
 
     public function updateSQL()
     {
-        $field = $param = array();
+        $field = $param = [];
 
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
             // && $this->$fieldClass != $this->currentValue[$fieldSQL]
@@ -56,12 +59,12 @@ abstract class Entity
 
         $sql = implode(', ', $field);
 
-        return array('sql' => $sql, 'param' => $param);
+        return ['sql' => $sql, 'param' => $param];
     }
 
     public function insertSQL()
     {
-        $field = $value = $param = array();
+        $field = $value = $param = [];
 
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
             if ($this->$fieldClass !== null) {
@@ -73,7 +76,7 @@ abstract class Entity
 
         $sql = '(' . implode(', ', $field) . ') values (' . implode(', ', $value) . ')';
 
-        return array('sql' => $sql, 'param' => $param);
+        return ['sql' => $sql, 'param' => $param];
     }
 
     public function setDataFromArray($data)
@@ -87,6 +90,31 @@ abstract class Entity
         }
 
         return $this;
+    }
+
+    public function fillData($data)
+    {
+        foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
+            if (array_key_exists($fieldSQL, $data)) {
+                $this->$fieldClass = $data[$fieldSQL];
+            }
+        }
+
+        return $this;
+    }
+
+    public function fillEmptyData($onlyNullField = true)
+    {
+        foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
+            if ($this->$fieldClass === null) {
+                $this->$fieldClass = '';
+                continue;
+            }
+
+            if (!$onlyNullField) {
+                $this->$fieldClass = '';
+            }
+        }
     }
 
     public function setNewValue()
@@ -115,7 +143,7 @@ abstract class Entity
      */
     public function toArray()
     {
-        $data = array();
+        $data = [];
 
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
             $data[$fieldClass] = $this->currentValue[$fieldSQL];
