@@ -3,9 +3,9 @@
 /**
  * Vhmis Framework
  *
- * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @link      http://github.com/micti/VHMIS-Framework for git source repository
  * @copyright Le Nhat Anh (http://lenhatanh.com)
- * @license http://opensource.org/licenses/MIT MIT License
+ * @license   http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Vhmis\Library\Marc;
@@ -26,9 +26,9 @@ class Biblio
     protected $fields = [];
 
     /**
-     * 
+     *
      * @param Field $field
-     * 
+     *
      * @return \Vhmis\Library\Marc\Biblio
      */
     public function addField($field)
@@ -71,7 +71,7 @@ class Biblio
     }
 
     /**
-     * 
+     *
      * @return Field[][]
      */
     public function getFields()
@@ -81,33 +81,71 @@ class Biblio
 
     public function getFullTitle()
     {
-        $field = $this->getFieldCode('245');
-        if ($field === []) {
+        $value1 = $this->getValue('245', 'a');
+        $value2 = $this->getValue('245', 'b');
+        //$value3 = $this->getValue('245', 'c');
+
+        return implode(' ', [$value1, $value2]);
+    }
+
+    public function getMainAuthor()
+    {
+        $data1 = $this->getValue('100', 'a');
+        $data2 = $this->getValue('110', 'a');
+        $data3 = $this->getValue('120', 'a');
+
+        // Trick!?
+        return $data1 . $data2 . $data3;
+    }
+
+    public function getOtherAuthors()
+    {
+        $data = $this->getValues('700', 'a');
+
+        return implode(';', $data);
+    }
+
+    public function getKeywords()
+    {
+        $data1 = $this->getValues('600', 'a');
+        $data2 = $this->getValues('610', 'a');
+        $data3 = $this->getValues('630', 'a');
+        $data4 = $this->getValues('648', 'a');
+        $data5 = $this->getValues('650', 'a');
+        $data6 = $this->getValues('651', 'a');
+
+        $data = array_merge($data1, $data2, $data3, $data4, $data5, $data6);
+
+        return implode(';', $data);
+    }
+
+    public function getValue($field, $subfield)
+    {
+        $fields = $this->getFieldCode($field);
+        if ($fields === []) {
             return '';
         }
 
-        $field = $field[0];
-        $title = '';
-
-        $subfield = $field->getSubFieldCode('a');
-        if ($subfield == []) {
-            return $title;
+        $subfields = $fields[0]->getSubFieldCode($subfield);
+        if ($subfields === []) {
+            return '';
         }
 
-        $subfield = $subfield[0];
-        $title = $subfield->getValue();
-
-        $subfield = $field->getSubFieldCode('b');
-        if ($subfield == []) {
-            return $title;
-        }
-
-        $subfield = $subfield[0];
-        return trim($title . ' ' . $subfield->getValue());
+        return $subfields[0]->getValue();
     }
-    
-    public function getMainAuthor()
+
+    public function getValues($field, $subfield)
     {
-        
+        $fields = $this->getFieldCode($field);
+        $data = [];
+        foreach ($fields as $field) {
+            $subfields = $field->getSubFieldCode($subfield);
+
+            if ($subfields !== []) {
+                $data[] = $subfields[0]->getValue();
+            }
+        }
+
+        return $data;
     }
 }
