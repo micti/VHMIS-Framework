@@ -32,6 +32,7 @@ class ValidatorChain
      */
     protected $validatorList = [
         'Int'        => '\Vhmis\Validator\Int',
+        'DbExists'   => '\Vhmis\Validator\DbExists',
         'Float'      => '\Vhmis\Validator\Float',
         'Greater'    => '\Vhmis\Validator\Greater',
         'Smaller'    => '\Vhmis\Validator\Smaller',
