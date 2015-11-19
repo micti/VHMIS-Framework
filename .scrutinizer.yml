@@ -10,7 +10,7 @@ tools:
     external_code_coverage:
         enabled: true
         timeout: 300
-        runs: 3
+        runs: 2
         filter:
             excluded_paths:
                 - 'vendor/*'
