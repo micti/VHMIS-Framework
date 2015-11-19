@@ -74,7 +74,7 @@ class DbExists extends ValidatorAbstract
 
             if ($result === null) {
                 $this->setError(self::E_NO_EXISTS);
-                return fasle;
+                return false;
             }
 
             $this->standardValue = $result;
