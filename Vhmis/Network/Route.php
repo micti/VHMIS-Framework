@@ -25,6 +25,7 @@ class Route implements RouteInterface
     const ID = '[0-9]+';
     const MONGOID = '[0-9a-f]{24}';
     const SLUG = '[a-z0-9-]+';
+    const BASE64 = '[a-zA-Z0-9=]+';
     const YEARMONTH = '[12][0-9]{3}-(0[1-9]|1[012])';
     const YEARWEEK = '[12][0-9]{3}-w(0[1-9]|[1-4][0-9]|5[0-2])';
     const DATE = '[12][0-9]{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])';
@@ -98,6 +99,7 @@ class Route implements RouteInterface
         'id' => self::ID,
         'mongoid' => self::MONGOID,
         'slug' => self::SLUG,
+        'base64' => self::BASE64,
         'monthyear' => self::YEARMONTH,
         'weekyear' => self::YEARWEEK,
         'date' => self::DATE,
