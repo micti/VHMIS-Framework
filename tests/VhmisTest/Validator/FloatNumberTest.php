@@ -10,9 +10,9 @@
 
 namespace VhmisTest\Validator;
 
-use Vhmis\Validator\Float;
+use Vhmis\Validator\FloatNumber;
 
-class FloatTest extends \PHPUnit_Framework_TestCase
+class FloatNumberTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Validator object
@@ -24,7 +24,7 @@ class FloatTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         locale_set_default('en_US');
-        $this->floatValidator = new Float();
+        $this->floatValidator = new FloatNumber();
     }
 
     public function testLocaleOption()
