@@ -51,11 +51,11 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $form->fill($data);
         $this->assertFalse($form->isValid());
         $this->assertEquals('a', $form->getNotValidField());
-        $form->addValidator('a', 'Int');
-        $form->addValidator('b', 'Int');
-        $form->addValidator('c', 'Int');
-        $form->addValidator('d', 'Float');
-        $form->addValidator('e', 'Int');
+        $form->addValidator('a', 'IntegerNumber');
+        $form->addValidator('b', 'IntegerNumber');
+        $form->addValidator('c', 'IntegerNumber');
+        $form->addValidator('d', 'FloatNumber');
+        $form->addValidator('e', 'IntegerNumber');
         $this->assertFalse($form->isValid());
         $this->assertEquals('a', $form->getNotValidField());
         $field1->allowNull();

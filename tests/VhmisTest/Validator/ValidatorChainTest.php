@@ -51,12 +51,12 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
 
     public function testAdd()
     {
-        $this->validatorChain->addValidator('a', 'Int');
+        $this->validatorChain->addValidator('a', 'IntegerNumber');
         $fields = [
             'a' => [
                 'value' => null,
                 'validator' => [
-                    'Int' => []
+                    'IntegerNumber' => []
                 ]
             ]
         ];
@@ -67,7 +67,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
             'a' => [
                 'value' => null,
                 'validator' => [
-                    'Int' => [],
+                    'IntegerNumber' => [],
                     'DateTime' => ['pattern' => 'mm-dd-Y']
                 ]
             ]
@@ -79,7 +79,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
             'a' => [
                 'value' => null,
                 'validator' => [
-                    'Int' => [],
+                    'IntegerNumber' => [],
                     'DateTime' => ['pattern' => 'dd-mm-Y']
                 ]
             ]
@@ -91,7 +91,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
             'a' => [
                 'value' => 'bbb',
                 'validator' => [
-                    'Int' => [],
+                    'IntegerNumber' => [],
                     'DateTime' => ['pattern' => 'dd-mm-Y']
                 ]
             ]
@@ -103,7 +103,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
             'a' => [
                 'value' => 'bbb',
                 'validator' => [
-                    'Int' => [],
+                    'IntegerNumber' => [],
                     'DateTime' => ['pattern' => 'dd-mm-Y']
                 ]
             ],
@@ -117,8 +117,8 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
         $this->validatorChain->reset();
         $this->assertEquals([], $this->validatorChain->getFields());
 
-        $this->validatorChain->addValidator('a', 'Int');
-        $this->validatorChain->addValidator('b', 'Int');
+        $this->validatorChain->addValidator('a', 'IntegerNumber');
+        $this->validatorChain->addValidator('b', 'IntegerNumber');
 
         $values = [
             'a' => 1,
@@ -131,13 +131,13 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
             'a' => [
                 'value' => 1,
                 'validator' => [
-                    'Int' => []
+                    'IntegerNumber' => []
                 ]
             ],
             'b' => [
                 'value' => 2,
                 'validator' => [
-                    'Int' => []
+                    'IntegerNumber' => []
                 ]
             ]
         ];
@@ -148,7 +148,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
     {
         $this->validatorChain->reset();
 
-        $this->validatorChain->addValidator('a', 'Int');
+        $this->validatorChain->addValidator('a', 'IntegerNumber');
         $this->validatorChain->addValue('a', '89');
         $this->validatorChain->addValidator('b', 'DateTime', ['pattern' => 'M/d/yy']);
         $this->validatorChain->addValue('b', '12/12/2014');
@@ -162,7 +162,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
     {
         $this->validatorChain->reset();
 
-        $this->validatorChain->addValidator('a', 'Int');
+        $this->validatorChain->addValidator('a', 'IntegerNumber');
         $this->validatorChain->addValidator('a', 'Greater', ['compare' => 100]);
         $this->validatorChain->addValue('a', '89');
         $this->validatorChain->addValidator('b', 'DateTime', ['pattern' => 'M/d/yy']);
@@ -177,7 +177,7 @@ class ValidatorChainTest extends \PHPUnit_Framework_TestCase
     {
         $this->validatorChain->reset();
 
-        $this->validatorChain->addValidator('a', 'Int');
+        $this->validatorChain->addValidator('a', 'IntegerNumber');
         $this->validatorChain->addValidator('a', 'Greater', ['compare' => 100]);
         $this->validatorChain->addValue('a', '89');
         $this->assertTrue($this->validatorChain->isValid(['a']));

@@ -31,21 +31,21 @@ class ValidatorChain
      * @var array
      */
     protected $validatorList = [
-        'Int'        => '\Vhmis\Validator\Int',
-        'DbExists'   => '\Vhmis\Validator\DbExists',
-        'Float'      => '\Vhmis\Validator\Float',
-        'Greater'    => '\Vhmis\Validator\Greater',
-        'Smaller'    => '\Vhmis\Validator\Smaller',
-        'Same'       => '\Vhmis\Validator\Same',
-        'NotEmpty'   => '\Vhmis\Validator\NotEmpty',
-        'NotNull'    => '\Vhmis\Validator\NotNull',
-        'NotSame'    => '\Vhmis\Validator\NotSame',
-        'Array'      => '\Vhmis\Validator\Arr',
-        'DateTime'   => '\Vhmis\Validator\DateTime',
-        'Range'      => '\Vhmis\Validator\Range',
-        'Upload'     => '\Vhmis\Validator\Upload',
-        'FileName'   => '\Vhmis\Validator\FileName',
-        'FolderName' => '\Vhmis\Validator\FolderName'
+        'IntegerNumber' => '\Vhmis\Validator\IntegerNumber',
+        'DbExists'      => '\Vhmis\Validator\DbExists',
+        'FloatNumber'   => '\Vhmis\Validator\FloatNumber',
+        'Greater'       => '\Vhmis\Validator\Greater',
+        'Smaller'       => '\Vhmis\Validator\Smaller',
+        'Same'          => '\Vhmis\Validator\Same',
+        'NotEmpty'      => '\Vhmis\Validator\NotEmpty',
+        'NotNull'       => '\Vhmis\Validator\NotNull',
+        'NotSame'       => '\Vhmis\Validator\NotSame',
+        'Array'         => '\Vhmis\Validator\Arr',
+        'DateTime'      => '\Vhmis\Validator\DateTime',
+        'Range'         => '\Vhmis\Validator\Range',
+        'Upload'        => '\Vhmis\Validator\Upload',
+        'FileName'      => '\Vhmis\Validator\FileName',
+        'FolderName'    => '\Vhmis\Validator\FolderName'
     ];
 
     /**

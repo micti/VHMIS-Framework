@@ -72,14 +72,14 @@ class FormValidatorChainTest extends \PHPUnit_Framework_TestCase
             ]
         ];
         $this->assertEquals($fields, $chain->getFields());
-        $chain->addValidator('a', 'Int');
+        $chain->addValidator('a', 'IntegerNumber');
         $fields = [
             'a' => [
                 'value' => null,
                 'allow_null' => false,
                 'allow_empty' => false,
                 'validator' => [
-                    'Int' => []
+                    'IntegerNumber' => []
                 ]
             ]
         ];
@@ -104,11 +104,11 @@ class FormValidatorChainTest extends \PHPUnit_Framework_TestCase
         $chain->fill($data);
         $this->assertFalse($chain->isValid());
         $this->assertEquals('a', $chain->getNotValidField());
-        $chain->addValidator('a', 'Int');
-        $chain->addValidator('b', 'Int');
-        $chain->addValidator('c', 'Int');
-        $chain->addValidator('d', 'Float');
-        $chain->addValidator('e', 'Int');
+        $chain->addValidator('a', 'IntegerNumber');
+        $chain->addValidator('b', 'IntegerNumber');
+        $chain->addValidator('c', 'IntegerNumber');
+        $chain->addValidator('d', 'FloatNumber');
+        $chain->addValidator('e', 'IntegerNumber');
         $this->assertFalse($chain->isValid());
         $this->assertEquals('a', $chain->getNotValidField());
         $chain->addAllowNull('a', true);
