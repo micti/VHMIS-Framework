@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\Int;
 
-class IntTest extends \PHPUnit_Framework_TestCase
+class IntegerNumberTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Validator object
@@ -24,7 +24,7 @@ class IntTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         locale_set_default('en_US');
-        $this->intValidator = new Int();
+        $this->intValidator = new IntegerNumber();
     }
 
     public function testLocaleOption()
