@@ -235,7 +235,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
      */
     protected function isValidRegex($value, $pattern)
     {
-        if (preg_match($pattern, $value)) {
+        if (preg_match($pattern, $value) === 1) {
             return true;
         }
 

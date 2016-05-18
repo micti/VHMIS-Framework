@@ -43,6 +43,7 @@ class ValidatorChain
         'Array'         => '\Vhmis\Validator\Arr',
         'DateTime'      => '\Vhmis\Validator\DateTime',
         'Range'         => '\Vhmis\Validator\Range',
+        'Slug'          => '\Vhmis\Validator\Slug',
         'Upload'        => '\Vhmis\Validator\Upload',
         'FileName'      => '\Vhmis\Validator\FileName',
         'FolderName'    => '\Vhmis\Validator\FolderName'
