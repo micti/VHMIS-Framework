@@ -24,7 +24,7 @@ class Route implements RouteInterface
     const DAY = '0[1-9]|[12][0-9]|3[01]';
     const ID = '[0-9]+';
     const MONGOID = '[0-9a-f]{24}';
-    const SLUG = '[a-z0-9-]+';
+    const SLUG = '[a-z0-9-_]+';
     const BASE64 = '[a-zA-Z0-9=]+';
     const YEARMONTH = '[12][0-9]{3}-(0[1-9]|1[012])';
     const YEARWEEK = '[12][0-9]{3}-w(0[1-9]|[1-4][0-9]|5[0-2])';
