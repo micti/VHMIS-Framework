@@ -19,6 +19,7 @@ class Path extends HelperAbstract
         $this->path['client'] = $site['client'];
         $this->path['avatar'] = $site['avatar'];
         $this->path['stu34'] = $site['student34'];
+        $this->path['scvphoto'] = $site['scvphoto'];
     }
 
     public function __invoke($path = null)
