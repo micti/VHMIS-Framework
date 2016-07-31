@@ -2,7 +2,7 @@
 
 namespace Vhmis\Db\MySQL;
 
-class Work
+class EntityManager
 {
     /**
      * Danh sách các key của Entity chờ cập nhật (thêm, xóa, sửa) lên CSDL
@@ -76,10 +76,6 @@ class Work
      */
     public function forInsert($entity)
     {
-        if (!($entity instanceof $this->entityClass)) {
-            return $this;
-        }
-
         $id = spl_object_hash($entity);
 
         if (isset($this->entityKey[$id])) {
@@ -101,14 +97,10 @@ class Work
      */
     public function forUpdate($entity)
     {
-        if (!($entity instanceof $this->entityClass)) {
-            return $this;
-        }
-
-        $methodGetIdKey = Text::underscoreToCamelCase($this->idKey);
-        if ($entity->$methodGetIdKey === null) {
-            return $this;
-        }
+        
+//        if ($entity->{$entity->idKey} === null) {
+//            return $this;
+//        }
 
         $id = spl_object_hash($entity);
 
@@ -135,14 +127,10 @@ class Work
      */
     public function forDelete($entity)
     {
-        if (!($entity instanceof $this->entityClass)) {
-            return $this;
-        }
 
-        $methodGetIdKey = Text::underscoreToCamelCase($this->idKey);
-        if ($entity->$methodGetIdKey === null) {
-            return $this;
-        }
+//        if ($entity->{$entity->idKey} === null) {
+//            return $this;
+//        }
 
         $id = spl_object_hash($entity);
 
@@ -194,21 +182,12 @@ class Work
      */
     protected function doInsert()
     {
-        foreach ($this->entityInsert as $id => $entity) {
-            $prepareSQL = $entity->insertSQL();
-
-            $stm = $this->adapter->createStatement('insert into ' . $this->table . ' ' . $prepareSQL['sql'], $prepareSQL['param']);
-            $res = $stm->execute();
-            if ($res->getLastValue()) {
-                $setId = Text::underscoreToCamelCase($this->idKey);
-                $entity->$setId = $res->getLastValue();
-            }
-
-            $entity->setNewValue();
+        foreach ($this->entityForInsert as $id => $entity) {
+            $entity->insert();
             $this->entityHasInserted[$id] = $entity;
 
             unset($this->entityKey[$id]);
-            unset($this->entityInsert[$id]);
+            unset($this->entityForInsert[$id]);
         }
     }
 
@@ -217,20 +196,13 @@ class Work
      */
     protected function doUpdate()
     {
-        foreach ($this->entityUpdate as $id => $entity) {
-            $prepareSQL = $entity->updateSQL();
-            $getId = Text::underscoreToCamelCase($this->idKey);
-            $prepareSQL['param'][':' . $this->idKey] = $entity->$getId;
-
-            $stm = $this->adapter->createStatement('update ' . $this->table . ' set ' . $prepareSQL['sql'] . ' where ' . $this->idKey . ' = :' . $this->idKey, $prepareSQL['param']);
-            $res = $stm->execute();
-
-            $entity->setNewValue();
+        foreach ($this->entityForUpdate as $id => $entity) {
+            $entity->update();
 
             $this->entityHasUpdated[$id] = $entity;
 
             unset($this->entityKey[$id]);
-            unset($this->entityUpdate[$id]);
+            unset($this->entityForUpdate[$id]);
         }
     }
 
@@ -239,14 +211,11 @@ class Work
      */
     protected function doDelete()
     {
-        foreach ($this->entityDelete as $id => $entity) {
-            $getId = Text::underscoreToCamelCase($this->idKey);
-            $stm = $this->adapter->createStatement('delete from ' . $this->table . ' where ' . $this->idKey . ' = ?', [1 => $entity->$getId]);
-            $res = $stm->execute();
-            $entity->setDeleted(true);
+        foreach ($this->entityForDelete as $id => $entity) {
+            $entity->delete();
             $this->entityHasDeleted[$id] = $entity;
             unset($this->entityKey[$id]);
-            unset($this->entityDelete[$id]);
+            unset($this->entityForDelete[$id]);
         }
     }
 

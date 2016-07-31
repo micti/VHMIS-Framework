@@ -14,6 +14,12 @@ class Db
     
     /**
      *
+     * @var EntityManager
+     */
+    protected $em;
+    
+    /**
+     *
      * @var Query
      */
     protected $query;
@@ -35,6 +41,55 @@ class Db
         $this->modelNamespace = $modelNamespace;
 
         return $this;
+    }
+    
+    /**
+     * 
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        if ($this->em === null) {
+            $this->em = new EntityManager($this);
+        }
+        
+        return $this->em;
+    }
+    
+    /**
+     * 
+     * @param Entity $entity
+     */
+    public function entityForInsert($entity)
+    {
+        return $this->getEntityManager()->forInsert($entity);
+    }
+    
+    /**
+     * 
+     * @param Entity $entity
+     */
+    public function entityForUpdate($entity)
+    {
+        return $this->getEntityManager()->forUpdate($entity);
+    }
+    
+    /**
+     * 
+     * @param Entity $entity
+     */
+    public function entityForDelete($entity)
+    {
+        return $this->getEntityManager()->forDelete($entity);
+    }
+    
+    /**
+     * 
+     * @return boolean
+     */
+    public function save()
+    {
+        return $this->getEntityManager()->flush();
     }
 
     /**

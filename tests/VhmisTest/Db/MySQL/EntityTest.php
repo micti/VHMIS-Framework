@@ -13,7 +13,7 @@ namespace VhmisTest\Db\MySQL;
 /**
  * Entity test
  */
-class EntityTest extends \VhmisTest\Db\MySQL\DatabaseTestCase
+class EntityTest extends DatabaseTestCase
 {
     
     public function testInsert()

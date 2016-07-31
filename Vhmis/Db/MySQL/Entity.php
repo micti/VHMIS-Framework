@@ -64,6 +64,23 @@ abstract class Entity
 
         return false;
     }
+    
+    public function getStatus()
+    {
+        if ($this->hasDeleted) {
+            return self::STATUS_DELETE;
+        }
+        
+        if ($this->oldValue === []) {
+            return self::STATUS_NEW;
+        }
+        
+        if ($this->isChanged()) {
+            return self::STATUS_CHANGE;
+        }
+        
+        return self::STATUS_SAVED;
+    }
 
     public function setDeleted($bool)
     {

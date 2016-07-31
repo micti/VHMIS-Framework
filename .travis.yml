@@ -12,7 +12,6 @@ php:
   - 7.0
 before_script:
   - mysql -u root -e 'create database test;'
-  - composer self-update -n
   - cd tests
   - wget https://scrutinizer-ci.com/ocular.phar 
 script: 

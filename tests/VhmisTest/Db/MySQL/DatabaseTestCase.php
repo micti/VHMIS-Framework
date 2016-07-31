@@ -39,6 +39,10 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
         return $this->createFlatXMLDataSet(dirname(__FILE__).'/data/guestbook.xml');
     }
     
+    /**
+     * 
+     * @return Db
+     */
     public function getVhmisDb()
     {
         $config = array(
