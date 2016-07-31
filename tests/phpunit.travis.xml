@@ -11,6 +11,10 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true" addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../Vhmis/*</directory>
+            <exclude>
+                <file>../Vhmis/Validator/Int.php</file>
+                <file>../Vhmis/Validator/Float.php</file>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
