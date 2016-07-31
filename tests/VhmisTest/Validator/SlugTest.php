@@ -33,5 +33,11 @@ class SlugTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(false, $this->slugValidator->isValid([]));
         $this->assertSame(true, $this->slugValidator->isValid('aaa-aaa-vcc-vsdsds'));
         $this->assertSame(false, $this->slugValidator->isValid('aaa-aaa-Â -vcc-vsdsds'));
+        $this->assertSame(true, $this->slugValidator->isValid('aaa'));
+        $this->assertSame(true, $this->slugValidator->isValid('435454'));
+        $this->assertSame(true, $this->slugValidator->isValid('-'));
+        $this->assertSame(true, $this->slugValidator->isValid('454sdsfd'));
+        $this->assertSame(true, $this->slugValidator->isValid('454-4445454'));
+        $this->assertSame(true, $this->slugValidator->isValid('65763-fdfd'));
     }
 }

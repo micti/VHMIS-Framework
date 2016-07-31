@@ -10,3 +10,8 @@ include $vhmisCore . DIRECTORY_SEPARATOR . 'Application' . DIRECTORY_SEPARATOR .
 
 $auto = new Vhmis\Application\Autoload('Vhmis', $root);
 $auto->register();
+
+// Autotoad test
+$rootTest = $root . DIRECTORY_SEPARATOR . 'tests';
+$autoTest = new Vhmis\Application\Autoload('VhmisTest', $rootTest);
+$autoTest->register();

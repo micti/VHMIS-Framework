@@ -4,12 +4,19 @@ namespace Vhmis\Db\MySQL;
 
 class Adapter implements \Vhmis\Db\AdapterInterface
 {
+
     /**
      * Đối tượng PDO
      *
      * @var \PDO
      */
     protected $resource;
+    
+    /**
+     * 
+     * @var boolean
+     */
+    protected $isConnected;
 
     /**
      * Khởi tạo
@@ -21,6 +28,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
         $this->dns = 'mysql:host=' . $config['host'] . ';dbname=' . $config['db'];
         $this->user = $config['user'];
         $this->pass = $config['pass'];
+        $this->options = $config['options'];
 
         if ($config['auto']) {
             $this->connect();
@@ -39,8 +47,12 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      */
     public function connect()
     {
+        if ($this->isConnected) {
+            return false;
+        }
+
         try {
-            $this->resource = new \PDO($this->dns, $this->user, $this->pass);
+            $this->resource = new \PDO($this->dns, $this->user, $this->pass, $this->options);
         } catch (\PDOException $e) {
             echo 'DbError';
             exit();
@@ -49,7 +61,9 @@ class Adapter implements \Vhmis\Db\AdapterInterface
         $this->resource->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->resource->exec('SET NAMES \'UTF8\'');
 
-        return $this;
+        $this->isConnected = true;
+
+        return true;
     }
 
     /**
@@ -59,7 +73,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      */
     public function isConnected()
     {
-        return ($this->resource instanceof \PDO);
+        return $this->isConnected;
     }
 
     /**
@@ -69,11 +83,14 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      */
     public function disconnect()
     {
-        if ($this->isConnected()) {
-            $this->resource = null;
+        if (!$this->isConnected) {
+            return false;
         }
 
-        return $this;
+        $this->resource = null;
+        $this->isConnected = false;
+
+        return true;
     }
 
     /**
@@ -83,23 +100,21 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      */
     public function getConnection()
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->connect();
 
         return $this->resource;
     }
 
     /**
-     * Quote 1 chuỗi giá trị
+     * Quote 1 giá trị
      *
-     * @param string $value
+     * @param mixed $value
      *
      * @return string
      */
-    public function qoute($value)
+    public function qoute($value, $type = \PDO::PARAM_STR)
     {
-        return $this->getConnection()->quote($value);
+        return $this->getConnection()->quote($value, $type);
     }
 
     /**
@@ -136,9 +151,7 @@ class Adapter implements \Vhmis\Db\AdapterInterface
             $statement->setParameters($parameters);
         }
 
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->connect();
 
         $statement->setAdapter($this);
 
@@ -154,18 +167,35 @@ class Adapter implements \Vhmis\Db\AdapterInterface
      */
     public function lastValue($name = null)
     {
+        return $this->lastInsertId($name);
+    }
+
+    public function lastInsertId($name = null)
+    {
         try {
             return $this->resource->lastInsertId($name);
         } catch (\Exception $e) {
             return false;
         }
     }
+    
+    public function executeUpdate($query, array $params = [])
+    {
+        $this->connect();
+        
+        if ($params === []) {
+            return $this->resource->exec($query);
+        }
+        
+        $statement = $this->createStatement($query, $params);
+        $result = $statement->execute();
+        
+        return $result->count();
+    }
 
     public function beginTransaction()
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->connect();
 
         $this->resource->beginTransaction();
         $this->inTransaction = true;
@@ -175,21 +205,18 @@ class Adapter implements \Vhmis\Db\AdapterInterface
 
     public function commit()
     {
-        if (!$this->isConnected()) {
-            $this->connect();
+        if (!$this->inTransaction) {
+            throw new \Exception('Must call beginTransaction() before you can rollback');
         }
 
         $this->resource->commit();
+        $this->inTransaction = false;
 
         return $this;
     }
 
     public function rollback()
     {
-        if (!$this->isConnected()) {
-            throw new \Exception('Must be connected before you can rollback');
-        }
-
         if (!$this->inTransaction) {
             throw new \Exception('Must call beginTransaction() before you can rollback');
         }

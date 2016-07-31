@@ -4,6 +4,13 @@ namespace Vhmis\Db\MySQL;
 
 abstract class Entity
 {
+    const STATUS_NEW = 1;
+    const STATUS_CHANGE = 3;
+    const STATUS_DELETE = 4;
+    const STATUS_SAVED = 2;
+
+    protected $status = 1;
+    
     protected $fieldNameMap = [];
 
     protected $oldValue = [];
@@ -11,12 +18,35 @@ abstract class Entity
     protected $currentValue = [];
 
     protected $hasDeleted = false;
+    
+    protected $idKey = 'id';
+    
+    protected $modelName;
+    
+    protected $tableName;
+    
+    /**
+     *
+     * @var Db
+     */
+    protected $db;
 
     public function __construct($data = null)
     {
         if (is_array($data)) {
             $this->setDataFromArray($data);
         }
+    }
+    
+    /**
+     * 
+     * @param \Vhmis\Db\MySQL\Db $db
+     */
+    public function setDb(Db $db)
+    {
+        $this->db = $db;
+        
+        return $this;
     }
 
     public function getFieldNameMap()
@@ -38,6 +68,14 @@ abstract class Entity
     public function setDeleted($bool)
     {
         $this->hasDeleted = $bool;
+        $this->status = self::STATUS_DELETE;
+        $id = $this->{$this->idKey};
+        $this->{$this->idKey} = null;
+        
+        if ($bool === false) {
+            $this->status = self::STATUS_SAVED;
+            $this->{$this->idKey} = $id;
+        }
     }
 
     public function isDeleted()
@@ -125,6 +163,8 @@ abstract class Entity
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
             $this->currentValue[$fieldSQL] = $this->$fieldClass;
         }
+        
+        $this->status = self::STATUS_SAVED;
 
         return $this;
     }
@@ -150,5 +190,82 @@ abstract class Entity
         }
 
         return $data;
+    }
+    
+    public function save()
+    {
+        if ($this->status === self::STATUS_NEW) {
+            return $this->insert();
+        }
+        
+        if ($this->isChanged()) { //$this->status === self::STATUS_CHANGE
+            return $this->update();
+        }
+    }
+    
+    public function insert()
+    {
+        $queryInfo = $this->dataForQuery();
+        
+        //$table = $this->db->getModel($this->modelName)->getTableName();
+        $query = $this->db->getQuery()->createInsertStatementQuery($this->tableName, $queryInfo['fields'], $queryInfo['params']);
+        
+        try {
+            $res = $this->db->executeUpdate($query, $queryInfo['data']);
+            $id = $this->db->getLastInsertId();
+            $this->{$this->idKey} = $id;
+            $this->setNewValue();
+            
+            return true;
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    
+    public function update()
+    {
+        $queryInfo = $this->dataForQuery();
+        $queryInfo['data'][':' . $this->idKey] = $this->{$this->idKey};
+        $query = $this->db->getQuery()->createUpdateStatementQuery(
+            $this->tableName, $queryInfo['fields'],
+            [$this->idKey],
+            $queryInfo['params']
+        );
+        
+        try {
+            $res = $this->db->executeUpdate($query, $queryInfo['data']);
+            $this->setNewValue();
+            
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    
+    public function delete()
+    {
+        try {
+            $this->db->executeUpdate('delete from ' . $this->tableName . ' where ' . $this->idKey . ' = :' . $this->idKey, [':' . $this->idKey => $this->{$this->idKey}]);
+            $this->setDeleted(true);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    
+    protected function dataForQuery()
+    {
+        $fields = $params = $data = [];
+
+        foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
+            if ($this->$fieldClass !== null &&  $fieldSQL != $this->idKey) {
+                $fields[] = '`' . $fieldSQL . '`';
+                $params[] = ':' . $fieldClass;
+                $data[':' . $fieldClass] = $this->$fieldClass;
+            }
+        }
+
+        return ['fields' => $fields, 'params' => $params, 'data' => $data];
     }
 }
