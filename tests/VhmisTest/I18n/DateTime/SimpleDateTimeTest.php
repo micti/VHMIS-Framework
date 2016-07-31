@@ -30,7 +30,8 @@ class SimpleDateTimeTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        $this->date = new DateTime('Asia/Saigon', '', 'vi_VN');
+        $this->date = new DateTime('Asia/Ho_Chi_Minh', '', 'vi_VN');
+        //$this->date->setTimeZone($timeZone)
     }
 
     public function testConstruct()
@@ -217,20 +218,29 @@ class SimpleDateTimeTest extends \PHPUnit_Framework_TestCase
     public function testSetTimestamp()
     {
         $this->date->setTimestamp(0);
+        
+        // TODO: checkagain ?icu error, php intl error
+        $this->date->setTimeZone('Asia/Ho_Chi_Minh');
         $this->assertEquals('1970-01-01 07:00:00', $this->date->getDateTime());
+        
+        $this->date->setTimeZone('Asia/Tokyo');
+        $this->assertEquals('1970-01-01 09:00:00', $this->date->getDateTime());
     }
 
     public function testGetTimestamp()
     {
-        $a = \IntlCalendar::createInstance('Asia/Ho_Chi_Minh', 'vi_VN');
+        $a = \IntlCalendar::createInstance('Asia/Tokyo', 'vi_VN');
         $a->set(1970, 0, 1, 7, 0, 0);
+        $a->set(14, 0);
 
-        $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0);
+        $this->date->setTimeZone('Asia/Tokyo');
+        $this->date->setDate(1970, 1, 1)->setTime(7, 0, 0, 0);
         $this->assertEquals((int) ($a->getTime() / 1000), $this->date->getTimestamp());
     }
 
     public function testSetMilliTimesptamp()
     {
+        $this->date->setTimeZone('Asia/Ho_Chi_Minh');
         $this->date->setMilliTimestamp(strtotime('2014-06-27 00:30:00 GMT+07:00') * 1000);
 
         $this->assertEquals(2014, $this->date->getField(1));
