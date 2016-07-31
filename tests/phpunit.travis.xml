@@ -9,6 +9,8 @@
     </php>
     
     <filter>
-        <whitelist></whitelist>
+        <whitelist processUncoveredFilesFromWhitelist="true" addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../Vhmis/*</directory>
+        </whitelist>
     </filter>
 </phpunit>
