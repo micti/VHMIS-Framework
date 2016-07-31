@@ -56,6 +56,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
         if ($this->db === null) {
             $this->dbAdapter = new Adapter($config);
             $this->db = new Db($this->dbAdapter);
+            $this->db->executeUpdate('set sql_mode = ""');
         }
         
         return $this->db;
@@ -69,6 +70,8 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
     protected function setUpTable()
     {
         $pdo = $this->getConnection()->getConnection();
+        
+        $pdo->exec('set sql_mode = ""');
 
         $sql = "CREATE TABLE IF NOT EXISTS guestbook (
             id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

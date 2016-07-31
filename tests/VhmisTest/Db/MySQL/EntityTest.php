@@ -32,7 +32,7 @@ class EntityTest extends \VhmisTest\Db\MySQL\DatabaseTestCase
         $entity1->user = "anh";
         $entity1->createdDate = "2016-12-22 12:22:22";
         $entity1->setDb($this->getVhmisDb());
-        $this->assertFalse($entity1->insert());
+        $this->assertTrue($entity1->insert());
         
         $entity->content = "fdjdsj dsfdsghf";
         $this->assertTrue($entity->save());
