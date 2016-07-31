@@ -62,6 +62,7 @@ class Db
      */
     public function entityForInsert($entity)
     {
+        $entity->setDb($this);
         return $this->getEntityManager()->forInsert($entity);
     }
     
@@ -71,6 +72,7 @@ class Db
      */
     public function entityForUpdate($entity)
     {
+        $entity->setDb($this);
         return $this->getEntityManager()->forUpdate($entity);
     }
     
@@ -80,6 +82,7 @@ class Db
      */
     public function entityForDelete($entity)
     {
+        $entity->setDb($this);
         return $this->getEntityManager()->forDelete($entity);
     }
     
