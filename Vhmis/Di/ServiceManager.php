@@ -56,6 +56,16 @@ class ServiceManager implements DiAwareInterface
                     )
                 )
             ), true);
+            
+            $this->di->set('db' . $db, [
+                'class'  => '\\Vhmis\\Db\\' . $config['type'] . '\\Db',
+                'params' => [
+                    [
+                        'type'  => 'service',
+                        'value' => 'db' . $db . 'Connection'
+                    ]
+                ]
+            ]);
         }
     }
 

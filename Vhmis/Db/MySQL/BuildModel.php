@@ -87,10 +87,27 @@ class BuildModel
         $content .= 'class ' . static::camelCase($this->removePrefix($table), true) . 'Entity extends Entity {' . "\n";
 
         $properties = array();
+        
+        $properties[] = '    /**' . "\n"
+            . '     * Tên bảng ứng với model' . "\n"
+            . '     *' . "\n"
+            . '     * @var string' . "\n"
+            . '     */' . "\n"
+            . '    protected $tableName = \'' . $table . '\';' . "\n";
+        
         $getterAndSetter = array();
         $map = array();
 
         foreach ($info['columns'] as $col) {
+            if ($col['key'] == 'PRI') {
+                $properties[] = '    /**' . "\n"
+                    . '     * Tên trường primary key' . "\n"
+                    . '     *' . "\n"
+                    . '     *@var string' . "\n"
+                    . '     */' . "\n"
+                    . '    protected $idKey = \'' . $col['name'] . '\';' . "\n";
+            }
+            
             $map[] = '\'' . $col['name'] . '\' => \'' . $col['phpName'] . '\'';
 
             $properties[] = '/**' . "\n"
