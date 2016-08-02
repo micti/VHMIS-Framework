@@ -36,9 +36,10 @@ class ConvertTest extends \PHPUnit_Framework_TestCase
         $reflector->info();
         $output = ob_get_clean();
         preg_match('/^ICU version => (.*)$/m', $output, $matches);
-        if ($matches[1] < '5') {
+        $version = (float) $matches[1];
+        if ($version < 53.0) {
             $this->markTestSkipped(
-                'ICU version > 5 is not available.'
+                'Require ICU version >= 53 to get related year (using r symbol).'
             );
         }
 

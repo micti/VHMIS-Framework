@@ -17,6 +17,7 @@ class GetTest extends \PHPUnit_Framework_TestCase
 {
     protected $get;
     protected $date;
+    protected $icuVersion;
 
     public function setUp()
     {
@@ -31,6 +32,8 @@ class GetTest extends \PHPUnit_Framework_TestCase
                 'Intl version 3.0.0 is not available.'
             );
         }
+        
+        $this->icuVersion = $this->getICUVersion();
 
         $this->get = new Get;
         $this->date = new DateTime;
@@ -51,6 +54,7 @@ class GetTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDateWithRelatedYear()
     {
+        $this->checkICUVersion();
         $this->date->setDate(20141, 12, 11);
         $this->assertEquals('20141-12-11', $this->get->getDateWithRelatedYear());
     }
@@ -75,6 +79,7 @@ class GetTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDateTimeWithRelatedYear()
     {
+        $this->checkICUVersion();
         $this->date->setDate(2014, 12, 11)->setTime(11, 12, 11);
         $this->assertEquals('2014-12-11 11:12:11', $this->get->getDateTimeWithRelatedYear());
     }
@@ -93,5 +98,26 @@ class GetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(12, $this->get->getMinute());
         $this->assertEquals(11, $this->get->getSecond());
         $this->assertEquals(222, $this->get->getMillisecond());
+    }
+    
+    protected function getICUVersion()
+    {
+        $reflector = new \ReflectionExtension('intl');
+        ob_start();
+        $reflector->info();
+        $output = ob_get_clean();
+        preg_match('/^ICU version => (.*)$/m', $output, $matches);
+        $version = (float) $matches[1];
+        
+        return $version;
+    }
+    
+    protected function checkICUVersion()
+    {
+        if ($this->icuVersion < 53.0) {
+            $this->markTestSkipped(
+                'Require ICU version >= 53 to get related year (using r symbol).'
+            );
+        }
     }
 }
