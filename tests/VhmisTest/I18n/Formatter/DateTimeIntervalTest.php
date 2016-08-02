@@ -25,10 +25,6 @@ class DateTimeIntervalTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->markTestSkipped(
-                'This test must be skipped. Only test with local dev Intl extension.'
-        );
-
         $this->dtInterval = new DateTimeInterval;
     }
 

@@ -131,7 +131,7 @@ class SimpleDateTime extends AbstractDateTime implements DateTimeInterface
         $this->calendar->set(\IntlCalendar::FIELD_HOUR_OF_DAY, (int) $hour);
         $this->calendar->set(\IntlCalendar::FIELD_MINUTE, (int) $minute);
         $this->calendar->set(\IntlCalendar::FIELD_SECOND, (int) $second);
-        $this->calendar->set(\IntlCalendar::FIELD_MILLISECOND, (int) $millisecond);
+        $this->calendar->set(\IntlCalendar::FIELD_MILLISECOND, 0);
 
         return $this;
     }
