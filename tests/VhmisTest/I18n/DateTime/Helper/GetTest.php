@@ -76,7 +76,7 @@ class GetTest extends \PHPUnit_Framework_TestCase
     public function testGetDateTimeWithRelatedYear()
     {
         $this->date->setDate(2014, 12, 11)->setTime(11, 12, 11);
-        $this->assertEquals('2014-12-11 11:12:11', $this->get->getDateTimeWithExtendedYear());
+        $this->assertEquals('2014-12-11 11:12:11', $this->get->getDateTimeWithRelatedYear());
     }
 
     public function testGetAll()

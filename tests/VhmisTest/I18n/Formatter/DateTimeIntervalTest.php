@@ -25,6 +25,7 @@ class DateTimeIntervalTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $this->markTestSkipped('See you in PHP 7.1');
         $this->dtInterval = new DateTimeInterval;
     }
 
