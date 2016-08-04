@@ -4,6 +4,7 @@ namespace Vhmis\Db\MySQL;
 
 class Statement
 {
+
     /**
      * Adapter
      *
@@ -69,7 +70,7 @@ class Statement
      * Thiết lập parameters
      *
      * @param array $parameters
-     * 
+     *
      * @return \Vhmis\Db\MySQL\Statement
      */
     public function setParameters($parameters)

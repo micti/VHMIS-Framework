@@ -1,51 +1,149 @@
 <?php
 
+/**
+ * Vhmis Framework
+ *
+ * @link http://github.com/micti/VHMIS-Framework for git source repository
+ * @copyright Le Nhat Anh (http://lenhatanh.com)
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
+
 namespace Vhmis\Db\MySQL;
 
+/**
+ * Abstract entity class
+ */
 abstract class Entity
 {
-    const STATUS_NEW = 1;
-    const STATUS_CHANGE = 3;
-    const STATUS_DELETE = 4;
-    const STATUS_SAVED = 2;
 
-    protected $status = 1;
-    
+    /**
+     * State of entity
+     */
+    const STATE_NEW = 1;
+    const STATE_INDB = 2;
+    const STATE_DELETED = 3;
+
+    /**
+     * Id type
+     */
+    const IDTYPE_DBAUTO = 1;
+    const IDTYPE_MANUAL = 0;
+
+    /**
+     * Current value in db
+     *
+     * @var array
+     */
+    protected $value = [];
+
+    /**
+     * Previous value in db, use to rollback
+     *
+     * @var array
+     */
+    protected $previousValue = [];
+
+    /**
+     * Current state of entity
+     *
+     * @var int
+     */
+    protected $state;
+
+    /**
+     * Mapped array between table column name and entity property name
+     * [
+     *     'id' => 'id',
+     *     'last_name => 'lastName'
+     * ]
+     *
+     * @var array
+     */
     protected $fieldNameMap = [];
 
-    protected $oldValue = [];
-
-    protected $currentValue = [];
-
-    protected $hasDeleted = false;
-    
-    protected $idKey = 'id';
-    
-    protected $modelName;
-    
-    protected $tableName;
-    
     /**
+     * Info array about table column info (type, lenght)
+     * [
+     *     'id' => [
+     *          'lenght' => 2,
+     *          'type' => 'int'
+     *     ]
+     * ]
+     *
+     * @var array
+     */
+    protected $fieldInfo = [];
+
+    /**
+     * Name of id column
+     *
+     * @var string
+     */
+    protected $idName = 'id';
+
+    /**
+     * Value type of id column
+     * 0: Manual insert
+     * 1: Auto generate
+     *
+     * @var int
+     */
+    protected $idType = Entity::IDTYPE_DBAUTO;
+
+    /**
+     * Name of table in database
+     *
+     * @var string
+     */
+    protected $tableName;
+
+    /**
+     * Db
      *
      * @var Db
      */
     protected $db;
+    protected $hasDeleted = false;
 
-    public function __construct($data = null)
+    public function __construct($data = null, $state = self::STATE_NEW)
     {
         if (is_array($data)) {
             $this->setDataFromArray($data);
         }
+
+        $this->setState($state);
     }
-    
+
     /**
-     * 
+     * Set state of entity
+     * NEW, INDB, DELETED
+     *
+     * @param int $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * Get state of entity
+     *
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Db
+     *
      * @param \Vhmis\Db\MySQL\Db $db
      */
     public function setDb(Db $db)
     {
         $this->db = $db;
-        
+
         return $this;
     }
 
@@ -57,42 +155,17 @@ abstract class Entity
     public function isChanged()
     {
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
-            if ($this->$fieldClass !== $this->currentValue[$fieldSQL]) {
+            if ($this->$fieldClass !== $this->value[$fieldSQL]) {
                 return true;
             }
         }
 
         return false;
     }
-    
-    public function getStatus()
-    {
-        if ($this->hasDeleted) {
-            return self::STATUS_DELETE;
-        }
-        
-        if ($this->oldValue === []) {
-            return self::STATUS_NEW;
-        }
-        
-        if ($this->isChanged()) {
-            return self::STATUS_CHANGE;
-        }
-        
-        return self::STATUS_SAVED;
-    }
 
     public function setDeleted($bool)
     {
         $this->hasDeleted = $bool;
-        $this->status = self::STATUS_DELETE;
-        $id = $this->{$this->idKey};
-        $this->{$this->idKey} = null;
-        
-        if ($bool === false) {
-            $this->status = self::STATUS_SAVED;
-            $this->{$this->idKey} = $id;
-        }
     }
 
     public function isDeleted()
@@ -137,10 +210,10 @@ abstract class Entity
     public function setDataFromArray($data)
     {
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
-            $this->$fieldClass = $this->currentValue[$fieldSQL] = null;
+            $this->$fieldClass = $this->value[$fieldSQL] = null;
 
             if (array_key_exists($fieldSQL, $data)) {
-                $this->$fieldClass = $this->currentValue[$fieldSQL] = $data[$fieldSQL];
+                $this->$fieldClass = $this->value[$fieldSQL] = $data[$fieldSQL];
             }
         }
 
@@ -174,27 +247,29 @@ abstract class Entity
 
     public function setNewValue()
     {
-        // Trước khi thiết lập giá trị mới (đã lưu vào CSDL) thì lưu giá trị cũ
-        $this->oldValue = $this->currentValue;
+        $this->previousValue = $this->value;
 
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
-            $this->currentValue[$fieldSQL] = $this->$fieldClass;
+            $this->value[$fieldSQL] = $this->$fieldClass;
         }
-        
-        $this->status = self::STATUS_SAVED;
-
-        return $this;
-    }
-
-    public function rollback()
-    {
-        $this->currentValue = $this->oldValue;
 
         return $this;
     }
 
     /**
-     * Lấy dữ liệu dạng array
+     * Set previous value to current value
+     *
+     * @return \Vhmis\Db\MySQL\Entity
+     */
+    public function rollback()
+    {
+        $this->value = $this->previousValue;
+
+        return $this;
+    }
+
+    /**
+     * Get data as array
      *
      * @return array
      */
@@ -203,86 +278,180 @@ abstract class Entity
         $data = [];
 
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
-            $data[$fieldClass] = $this->currentValue[$fieldSQL];
+            $data[$fieldClass] = $this->value[$fieldSQL];
         }
 
         return $data;
     }
-    
+
+    /**
+     * Set id value
+     *
+     * @param mixed $id
+     *
+     * @return \Vhmis\Db\MySQL\Entity
+     */
+    public function setIdValue($id)
+    {
+        $this->{$this->fieldNameMap[$this->idName]} = $id;
+
+        return $this;
+    }
+
+    public function getIdValue()
+    {
+        return $this->{$this->fieldNameMap[$this->idName]};
+    }
+
+    /**
+     * Save to DB (insert or update)
+     *
+     * @return boolean
+     */
     public function save()
     {
-        if ($this->status === self::STATUS_NEW) {
-            return $this->insert();
-        }
-        
-        if ($this->isChanged()) { //$this->status === self::STATUS_CHANGE
-            return $this->update();
+        switch ($this->state) {
+            case 1:
+            case 3:
+                return $this->insert();
+            case 2:
+                return $this->update();
+            default:
+                return false;
         }
     }
-    
+
+    /**
+     * Insert to DB
+     *
+     * @return boolean
+     */
     public function insert()
     {
-        $queryInfo = $this->dataForQuery();
-        
+        $queryInfo = $this->dataForInsertQuery();
+
+        // Nothing to update
+        if ($queryInfo['fields'] === []) {
+            return false;
+        }
+
         //$table = $this->db->getModel($this->modelName)->getTableName();
         $query = $this->db->getQuery()->createInsertStatementQuery($this->tableName, $queryInfo['fields'], $queryInfo['params']);
-        
+
         try {
             $res = $this->db->executeUpdate($query, $queryInfo['data']);
             $id = $this->db->getLastInsertId();
-            $this->{$this->idKey} = $id;
+            $this->setIdValue($id);
+            $this->state = self::STATE_INDB;
             $this->setNewValue();
-            
+
             return true;
         } catch (\Exception $e) {
             echo $e->getMessage();
             return false;
         }
     }
-    
+
+    /**
+     * Update to databse
+     *
+     * @return boolean
+     */
     public function update()
     {
-        $queryInfo = $this->dataForQuery();
-        $queryInfo['data'][':' . $this->idKey] = $this->{$this->idKey};
-        $query = $this->db->getQuery()->createUpdateStatementQuery(
-            $this->tableName, $queryInfo['fields'],
-            [$this->idKey],
-            $queryInfo['params']
-        );
-        
+        $queryInfo = $this->dataForUpdateQuery();
+
+        // Nothing to update
+        if ($queryInfo['fields'] === []) {
+            return false;
+        }
+
+        $query = $this->db->getQuery()->createUpdateStatementQuery($this->tableName, $queryInfo['fields'], $queryInfo['idField'], $queryInfo['params'], $queryInfo['idParam']);
+
         try {
             $res = $this->db->executeUpdate($query, $queryInfo['data']);
             $this->setNewValue();
-            
+
             return true;
         } catch (\Exception $e) {
             return false;
         }
     }
-    
+
+    /**
+     * Delete from database
+     *
+     * @return boolean
+     */
     public function delete()
     {
+        if ($this->getIdValue() === null) {
+            return false;
+        }
+
         try {
-            $this->db->executeUpdate('delete from ' . $this->tableName . ' where ' . $this->idKey . ' = :' . $this->idKey, [':' . $this->idKey => $this->{$this->idKey}]);
-            $this->setDeleted(true);
+            $this->db->executeUpdate('delete from ' . $this->tableName . ' where ' . $this->idName . ' = :' . $this->idName, [':' . $this->idName => $this->getIdValue()]);
+            $this->setState(self::STATE_DELETED);
+            $this->setIdValue(null);
             return true;
         } catch (\Exception $e) {
+            echo $e->getMessage();
             return false;
         }
     }
-    
-    protected function dataForQuery()
+
+    /**
+     * Prepare data (fields, params, value for params)
+     *
+     * Return array includes
+     * + 'fields' : Fields for insert or update (array)
+     * + 'params' : Params for fields (array)
+     * + 'idField' : Id field for update and delete (array)
+     * + 'idParam' : Param for id field (array)
+     * + 'data' : Data for id param (array)
+     *
+     * @return array
+     */
+    protected function dataForInsertQuery()
     {
         $fields = $params = $data = [];
 
         foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
-            if ($this->$fieldClass !== null &&  $fieldSQL != $this->idKey) {
+            if ($this->$fieldClass !== null) {
                 $fields[] = '`' . $fieldSQL . '`';
                 $params[] = ':' . $fieldClass;
                 $data[':' . $fieldClass] = $this->$fieldClass;
             }
         }
 
-        return ['fields' => $fields, 'params' => $params, 'data' => $data];
+        return [
+            'fields' => $fields,
+            'params' => $params,
+            'data' => $data
+        ];
+    }
+
+    protected function dataForUpdateQuery()
+    {
+        $fields = $params = $data = [];
+
+        foreach ($this->fieldNameMap as $fieldSQL => $fieldClass) {
+            if ($this->$fieldClass !== null && $this->$fieldClass !== $this->value[$fieldSQL]) {
+                $fields[] = '`' . $fieldSQL . '`';
+                $params[] = ':' . $fieldClass;
+                $data[':' . $fieldClass] = $this->$fieldClass;
+            }
+        }
+
+        $idParam = ':' . $this->fieldNameMap[$this->idName];
+        $data[$idParam] = $this->getIdValue();
+
+        return [
+            'fields' => $fields,
+            'params' => $params,
+            'data' => $data,
+            'idField' => [$this->idName],
+            'idParam' => [$idParam]
+        ];
     }
 }

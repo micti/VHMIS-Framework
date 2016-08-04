@@ -17,18 +17,18 @@ use Vhmis\Db\MySQL\Entity;
  */
 class GuestBookEntity extends Entity
 {
-    protected $idKey = 'id';
+
+    protected $idName = 'id';
     protected $tableName = 'guestbook';
-    
     protected $fieldNameMap = array(
-        'id'           => 'id',
-        'content'      => 'content',
-        'user'         => 'user',
+        'id' => 'Id',
+        'content' => 'content',
+        'user' => 'user',
         'created_date' => 'createdDate'
     );
-
-    public $id;
+    protected $Id;
     public $content;
     public $user;
     public $createdDate;
+
 }
