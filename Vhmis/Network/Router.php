@@ -182,7 +182,7 @@ class Router
 
         // Thêm ký hiệu / ở cuối nếu không có
         $length = strlen($uri);
-        if ($uri[$length - 1] !== '/') {
+        if ($length === 0 || $uri[$length - 1] !== '/') {
             $uri .= '/';
         }
 
