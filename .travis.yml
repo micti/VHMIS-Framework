@@ -12,6 +12,8 @@ php:
 before_script:
   - mysql -u root -e 'create database test;'
   - cd tests
+  - mkdir phpunit.d
+  - wget https://phar.phpunit.de/dbunit.phar -P phpunit.d
   - wget https://scrutinizer-ci.com/ocular.phar 
 script: 
   - phpunit --bootstrap bootstrap.php --configuration phpunit.travis.xml --coverage-clover coverage.clover VhmisTest
