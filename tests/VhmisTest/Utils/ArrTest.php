@@ -12,7 +12,7 @@ namespace VhmisTest\Utils;
 
 use \Vhmis\Utils\Arr as ArrUtils;
 
-class ArrTest extends \PHPUnit_Framework_TestCase
+class ArrTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testConvertToOneDimensional()

@@ -12,7 +12,7 @@ namespace VhmisTest\Utils\Loader;
 
 use Vhmis\Utils\Loader\PhpArray as Loader;
 
-class PhpArrayTest extends \PHPUnit_Framework_TestCase
+class PhpArrayTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

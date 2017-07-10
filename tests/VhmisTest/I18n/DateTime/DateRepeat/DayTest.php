@@ -14,7 +14,7 @@ use Vhmis\I18n\DateTime\DateRepeat\Day;
 use Vhmis\I18n\DateTime\DateTime;
 use Vhmis\I18n\DateTime\DateRepeat\Rule;
 
-class DayTest extends \PHPUnit_Framework_TestCase
+class DayTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Day Repeat object

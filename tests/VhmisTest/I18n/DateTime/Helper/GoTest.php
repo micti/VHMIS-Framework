@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Go;
 
-class GoTest extends \PHPUnit_Framework_TestCase
+class GoTest extends \PHPUnit\Framework\TestCase
 {
     protected $go;
 

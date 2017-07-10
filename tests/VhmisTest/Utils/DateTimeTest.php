@@ -12,7 +12,7 @@ namespace VhmisTest\Utils;
 
 use \Vhmis\Utils\DateTime as DateTimeUtils;
 
-class DateTimeTest extends \PHPUnit_Framework_TestCase
+class DateTimeTest extends \PHPUnit\Framework\TestCase
 {
     public function testSortedWeekday()
     {

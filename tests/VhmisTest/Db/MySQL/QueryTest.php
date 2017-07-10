@@ -15,7 +15,7 @@ use Vhmis\Db\MySQL\Query;
 /**
  * Query test
  */
-class QueryTest extends \PHPUnit_Framework_TestCase
+class QueryTest extends \PHPUnit\Framework\TestCase
 {
     protected $query;
     

@@ -12,7 +12,7 @@ namespace VhmisTest\I18n\Translator\Loader;
 
 use Vhmis\I18n\Translator\Loader\PhpArray;
 
-class PhpArrayTest extends \PHPUnit_Framework_TestCase
+class PhpArrayTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testLoad()

@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Add;
 
-class AddTest extends \PHPUnit_Framework_TestCase
+class AddTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Add object

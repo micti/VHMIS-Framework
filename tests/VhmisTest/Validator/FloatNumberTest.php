@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\FloatNumber;
 
-class FloatNumberTest extends \PHPUnit_Framework_TestCase
+class FloatNumberTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Validator object

@@ -14,7 +14,7 @@ use Vhmis\I18n\DateTime\DateRepeat\Month;
 use Vhmis\I18n\DateTime\DateTime;
 use Vhmis\I18n\DateTime\DateRepeat\Rule;
 
-class MonthTest extends \PHPUnit_Framework_TestCase
+class MonthTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Month Repeat object

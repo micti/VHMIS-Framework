@@ -12,7 +12,7 @@ namespace VhmisTest\I18n\Resource;
 
 use Vhmis\I18n\Resource\Loader;
 
-class LoaderTest extends \PHPUnit_Framework_TestCase
+class LoaderTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

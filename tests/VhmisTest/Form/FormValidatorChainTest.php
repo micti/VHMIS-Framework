@@ -12,7 +12,7 @@ namespace VhmisTest\FormValidatorChainTest;
 
 use Vhmis\Form\FormValidatorChain;
 
-class FormValidatorChainTest extends \PHPUnit_Framework_TestCase
+class FormValidatorChainTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testAddAndGetField()

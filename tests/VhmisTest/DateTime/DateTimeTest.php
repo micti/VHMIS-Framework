@@ -12,7 +12,7 @@ namespace VhmisTest\DateTime;
 
 use Vhmis\DateTime\DateTime;
 
-class DateTimeTest extends \PHPUnit_Framework_TestCase
+class DateTimeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * DateTime object

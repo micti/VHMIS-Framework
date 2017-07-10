@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\ValidatorChain;
 
-class ValidatorChainTest extends \PHPUnit_Framework_TestCase
+class ValidatorChainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

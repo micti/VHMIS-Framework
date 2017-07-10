@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\Smaller;
 
-class SmallerTest extends \PHPUnit_Framework_TestCase
+class SmallerTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

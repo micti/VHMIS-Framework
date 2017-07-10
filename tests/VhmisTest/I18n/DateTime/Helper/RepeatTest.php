@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use Vhmis\I18n\DateTime\DateTime;
 use Vhmis\I18n\DateTime\Helper\Repeat;
 
-class RepeatTest extends \PHPUnit_Framework_TestCase
+class RepeatTest extends \PHPUnit\Framework\TestCase
 {
     protected $repeat;
 

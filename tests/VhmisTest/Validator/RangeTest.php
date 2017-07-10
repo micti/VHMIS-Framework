@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\Range;
 
-class RangeTest extends \PHPUnit_Framework_TestCase
+class RangeTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

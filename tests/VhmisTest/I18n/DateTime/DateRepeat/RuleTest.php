@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\DateRepeat;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\DateRepeat\Rule;
 
-class RuleTest extends \PHPUnit_Framework_TestCase
+class RuleTest extends \PHPUnit\Framework\TestCase
 {
     protected $rule;
 

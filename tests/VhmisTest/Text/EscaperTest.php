@@ -12,7 +12,7 @@ namespace VhmisTest\Text;
 
 use Vhmis\Text\Escaper;
 
-class EscaperTest extends \PHPUnit_Framework_TestCase
+class EscaperTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Escaper

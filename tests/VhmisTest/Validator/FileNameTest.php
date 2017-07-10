@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\FileName;
 
-class FileNameTest extends \PHPUnit_Framework_TestCase
+class FileNameTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Validator object

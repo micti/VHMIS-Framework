@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Diff;
 
-class DiffTest extends \PHPUnit_Framework_TestCase
+class DiffTest extends \PHPUnit\Framework\TestCase
 {
 
     protected $diff;

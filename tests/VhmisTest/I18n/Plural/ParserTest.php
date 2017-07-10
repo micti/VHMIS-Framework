@@ -12,7 +12,7 @@ namespace VhmisTest\I18n\Plural;
 
 use Vhmis\I18n\Plural\Parser;
 
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends \PHPUnit\Framework\TestCase
 {
     
     public function testRemoveExamples()

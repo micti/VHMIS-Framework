@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\Translator;
 use Vhmis\I18n\Translator\Loader\PhpArray;
 use Vhmis\I18n\Translator\Translator;
 
-class TranslatorTest extends \PHPUnit_Framework_TestCase
+class TranslatorTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testTranslate()

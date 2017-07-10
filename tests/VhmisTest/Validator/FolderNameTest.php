@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\FolderName;
 
-class FolderNameTest extends \PHPUnit_Framework_TestCase
+class FolderNameTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Validator object

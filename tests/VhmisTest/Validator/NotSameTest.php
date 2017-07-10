@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\NotSame;
 
-class NotSameTest extends \PHPUnit_Framework_TestCase
+class NotSameTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
