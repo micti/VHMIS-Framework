@@ -153,6 +153,16 @@ class Request
         return urldecode($url);
     }
 
+    public function getHashUrl()
+    {
+        return base64_encode($this->getUrl());
+    }
+
+    public function getHashUrlPath()
+    {
+        return base64_encode(urldecode($_SERVER['REQUEST_URI']));
+    }
+
     /**
      * Lấy địa chỉ referrer
      *
