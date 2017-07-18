@@ -12,7 +12,7 @@ namespace VhmisTest\I18n;
 
 use \Vhmis\I18n\DateTime\DateTime;
 
-class SimpleDateTimeTest extends \PHPUnit_Framework_TestCase
+class SimpleDateTimeTest extends \PHPUnit\Framework\TestCase
 {
     protected $date;
 
@@ -203,7 +203,7 @@ class SimpleDateTimeTest extends \PHPUnit_Framework_TestCase
         $this->date->setDate(2012, 1, 29);
         $this->date->setTime(11, 11, 11);
 
-        $this->assertEquals('11:11 29/01/2012', $this->date->format(3));
+        $this->assertEquals('11:11, 29/01/2012', $this->date->format(3));
     }
 
     public function testSetTimeZone()

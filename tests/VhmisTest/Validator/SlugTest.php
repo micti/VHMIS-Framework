@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\Slug;
 
-class SlugTest extends \PHPUnit_Framework_TestCase
+class SlugTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Validator object

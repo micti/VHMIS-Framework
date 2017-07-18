@@ -12,7 +12,7 @@ namespace VhmisTest\Library\Marc\Format\USMARC;
 
 use Vhmis\Library\Marc\File\USMARC\Reader;
 
-class ReaderTest extends \PHPUnit_Framework_TestCase
+class ReaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Read object.

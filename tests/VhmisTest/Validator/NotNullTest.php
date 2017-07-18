@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\NotNull;
 
-class NotNullTest extends \PHPUnit_Framework_TestCase
+class NotNullTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

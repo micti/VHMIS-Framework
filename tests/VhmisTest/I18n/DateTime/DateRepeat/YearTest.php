@@ -14,7 +14,7 @@ use Vhmis\I18n\DateTime\DateRepeat\Year;
 use Vhmis\I18n\DateTime\DateTime;
 use Vhmis\I18n\DateTime\DateRepeat\Rule;
 
-class YearTest extends \PHPUnit_Framework_TestCase
+class YearTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Year Repeat object

@@ -4,9 +4,13 @@ namespace VhmisTest\Db\MySQL;
 
 use Vhmis\Db\MySQL\Adapter;
 use Vhmis\Db\MySQL\Db;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\DbUnit\TestCaseTrait;
 
-abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
+abstract class DatabaseTestCase extends TestCase
 {
+    use TestCaseTrait;
+
     // only instantiate pdo once for test clean-up/fixture load
     static private $pdo = null;
 

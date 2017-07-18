@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\IntegerNumber;
 
-class IntegerNumberTest extends \PHPUnit_Framework_TestCase
+class IntegerNumberTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Validator object

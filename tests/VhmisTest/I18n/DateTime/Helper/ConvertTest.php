@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Convert;
 
-class ConvertTest extends \PHPUnit_Framework_TestCase
+class ConvertTest extends \PHPUnit\Framework\TestCase
 {
     protected $convert;
 

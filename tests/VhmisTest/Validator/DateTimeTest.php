@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\DateTime;
 
-class DateTimeTest extends \PHPUnit_Framework_TestCase
+class DateTimeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Validator object

@@ -17,7 +17,7 @@ use Vhmis\Http\Uri;
  *
  * Test case from PhlyTest\Http
  */
-class UriTest extends \PHPUnit_Framework_TestCase
+class UriTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testConstructorSetsAllProperties()
@@ -36,7 +36,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorSetForInvalidUri()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $uri = new Uri(4343);
     }
 
@@ -134,7 +134,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithPortRaisesExceptionForInvalidPorts($port)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $new = $uri->withPort($port);
     }
 
@@ -164,7 +164,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithPathRaisesExceptionForInvalidPaths($path)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $new = $uri->withPath($path);
     }
 
@@ -197,7 +197,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testWithQueryRaisesExceptionForInvalidQueryStrings($query)
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $new = $uri->withQuery($query);
     }
 
@@ -282,7 +282,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorRaisesExceptionForNonStringURI($uri)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         new Uri($uri);
     }
 
@@ -310,7 +310,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testMutatingWithNonWebSchemeRaisesAnException($scheme)
     {
         $uri = new Uri('http://example.com');
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $uri->withScheme($scheme);
     }
 

@@ -12,7 +12,7 @@ namespace VhmisTest\I18n;
 
 use \Vhmis\I18n\DateTime\DateTime;
 
-class DateTimeTest extends \PHPUnit_Framework_TestCase
+class DateTimeTest extends \PHPUnit\Framework\TestCase
 {
     protected $date;
 

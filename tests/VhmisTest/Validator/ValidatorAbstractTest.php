@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\ValidatorAbstract;
 
-class ValidatorAbstractTest extends \PHPUnit_Framework_TestCase
+class ValidatorAbstractTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

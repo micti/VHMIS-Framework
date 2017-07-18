@@ -12,7 +12,7 @@ namespace VhmisTest\I18n\Resource;
 
 use Vhmis\I18n\Resource\Resource as Res;
 
-class ResourceTest extends \PHPUnit_Framework_TestCase
+class ResourceTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testGetCardinalPluralRule()

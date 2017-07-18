@@ -12,7 +12,7 @@ namespace VhmisTest\Validator;
 
 use Vhmis\Validator\Greater;
 
-class GreaterTest extends \PHPUnit_Framework_TestCase
+class GreaterTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

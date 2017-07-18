@@ -13,7 +13,7 @@ namespace VhmisTest\Form;
 use Vhmis\Form\FieldSet;
 use Vhmis\Form\Field;
 
-class FieldSetTest extends \PHPUnit_Framework_TestCase
+class FieldSetTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testAddField()

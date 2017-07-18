@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\Formatter;
 use Vhmis\I18n\DateTime\DateTime;
 use Vhmis\I18n\Formatter\DateTimeInterval;
 
-class DateTimeIntervalTest extends \PHPUnit_Framework_TestCase
+class DateTimeIntervalTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

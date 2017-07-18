@@ -15,7 +15,7 @@ use Vhmis\Http\Stream;
 /**
  * Test case by phly/http
  */
-class StreamTest extends \PHPUnit_Framework_TestCase
+class StreamTest extends \PHPUnit\Framework\TestCase
 {
 
     public $tmpnam;
@@ -74,7 +74,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
 
     public function testPassingInvalidStreamResourceToConstructorRaisesException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $stream = new Stream(['  THIS WILL NOT WORK  ']);
     }
 

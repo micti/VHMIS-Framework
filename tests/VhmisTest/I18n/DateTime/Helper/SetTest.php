@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Set;
 
-class SetTest extends \PHPUnit_Framework_TestCase
+class SetTest extends \PHPUnit\Framework\TestCase
 {
     protected $set;
 

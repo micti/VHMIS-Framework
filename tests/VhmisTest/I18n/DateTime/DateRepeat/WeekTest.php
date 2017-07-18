@@ -14,7 +14,7 @@ use Vhmis\I18n\DateTime\DateRepeat\Week;
 use Vhmis\I18n\DateTime\DateTime;
 use Vhmis\I18n\DateTime\DateRepeat\Rule;
 
-class WeekTest extends \PHPUnit_Framework_TestCase
+class WeekTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Week Repeat object

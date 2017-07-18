@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Format;
 
-class FormatTest extends \PHPUnit_Framework_TestCase
+class FormatTest extends \PHPUnit\Framework\TestCase
 {
     protected $format;
     protected $date;

@@ -13,7 +13,7 @@ namespace VhmisTest\I18n\DateTime\Helper;
 use \Vhmis\I18n\DateTime\DateTime;
 use \Vhmis\I18n\DateTime\Helper\Get;
 
-class GetTest extends \PHPUnit_Framework_TestCase
+class GetTest extends \PHPUnit\Framework\TestCase
 {
     protected $get;
     protected $date;
