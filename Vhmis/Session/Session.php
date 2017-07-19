@@ -4,6 +4,7 @@ namespace Vhmis\Session;
 
 class Session extends \ArrayObject
 {
+
     /**
      * Tên của session
      *
@@ -41,14 +42,18 @@ class Session extends \ArrayObject
 
     public function offsetGet($key)
     {
-        if($this->offsetExists($key)) return $_SESSION[$this->name][$key];
+        if ($this->offsetExists($key)) {
+            return $_SESSION[$this->name][$key];
+        }
 
         return null;
     }
 
     public function offsetUnset($key)
     {
-        if($this->offsetExists($key)) unset($_SESSION[$this->name][$key]);
+        if ($this->offsetExists($key)) {
+            unset($_SESSION[$this->name][$key]);
+        }
     }
 
     public function getIterator()
@@ -64,5 +69,10 @@ class Session extends \ArrayObject
     public function getId()
     {
         return session_id();
+    }
+
+    // Write and close session handler
+    public function end() {
+        return session_write_close();
     }
 }
