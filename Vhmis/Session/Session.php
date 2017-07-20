@@ -6,8 +6,7 @@ class Session extends \ArrayObject
 {
 
     /**
-     * Tên của session
-     *
+     * Session name
      * $_SESSION[name][key] => $data
      *
      * @var string
@@ -15,7 +14,7 @@ class Session extends \ArrayObject
     protected $name;
 
     /**
-     * Khởi tạo name
+     * Init
      *
      * @param string $name
      */
@@ -25,7 +24,7 @@ class Session extends \ArrayObject
 
         $this->setFlags(\ArrayObject::ARRAY_AS_PROPS);
 
-        session_start();
+        $this->start();
     }
 
     public function offsetSet($key, $value)
@@ -62,7 +61,7 @@ class Session extends \ArrayObject
     }
 
     /**
-     * Lấy SID hiện tại
+     * Get SID
      *
      * @return string
      */
@@ -71,7 +70,18 @@ class Session extends \ArrayObject
         return session_id();
     }
 
-    // Write and close session handler
+    /**
+     * Start session
+     *
+     * @return bool
+     */
+    public function start() {
+        return session_start();
+    }
+
+    /**
+     * Write and close session handler
+     */
     public function end() {
         return session_write_close();
     }
