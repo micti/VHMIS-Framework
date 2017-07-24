@@ -14,7 +14,7 @@ trait ParamsValueTrait
     protected function getRealValueOfParams($params) {
         $data = [];
         foreach($params as $param) {
-            $data[] = $param->getValue();
+            $data[] = $param->setContainer($this->container)->getValue();
         }
         return $data;
     }

@@ -22,20 +22,20 @@ class Object implements ServiceInterface
     /**
      * @param ParamInterface[] $params
      *
-     * @return $this
+     * @return self
      */
     public function setParams($params)
     {
-        $this->params = [];
-
-        foreach ($params as $param) {
-            $param->setContainer($this->container);
-            $this->params[] = $param;
-        }
+        $this->params = $params;
 
         return $this;
     }
 
+    /**
+     * Get object
+     *
+     * @return mixed
+     */
     public function get()
     {
         if ($this->object instanceof Closure) {

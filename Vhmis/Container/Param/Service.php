@@ -17,7 +17,7 @@ class Service implements ParamInterface
 
 
     /**
-     * Service param constructor.
+     * Constructor.
      *
      * @param $value string Name of service
      */

@@ -25,23 +25,23 @@ class Classname implements ServiceInterface
      *
      * @return self
      */
-    public function addConstructorParams($params)
+    public function setConstructorParams($params)
     {
-        $this->constructParams = [];
-
-        foreach ($params as $param) {
-            $param->setContainer($this->container);
-            $this->constructParams[] = $param;
-        }
+        $this->constructParams = $params;
 
         return $this;
     }
 
-    public function addMethod($name, $params) {
+    public function setMethod($name, $params) {
         $this->methods[$name] = $params;
         return $this;
     }
 
+    /**
+     * Get object.
+     *
+     * @return object
+     */
     public function get()
     {
         $instance = $this->createInstance();
@@ -52,12 +52,17 @@ class Classname implements ServiceInterface
                 continue;
             }
 
-            call_user_func_array(array($instance, $method), $this->getRealValueOfParams($params));
+            $instance->$method(...$this->getRealValueOfParams($params));
         }
 
         return $instance;
     }
 
+    /**
+     * Create new object.
+     *
+     * @return object
+     */
     protected function createInstance() {
         $classRef = new ReflectionClass($this->object);
 
@@ -66,10 +71,5 @@ class Classname implements ServiceInterface
         }
 
         return $classRef->newInstanceArgs($this->getRealValueOfParams($this->constructParams));
-    }
-
-    protected function reflect()
-    {
-        return new ReflectionClass($this->object);
     }
 }
