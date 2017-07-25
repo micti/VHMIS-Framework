@@ -23,7 +23,7 @@ class Response
 
     /**
      * Body content
-     * 
+     *
      * @var string
      */
     protected $body;
@@ -79,12 +79,12 @@ class Response
     {
         // Size
         $size = filesize($path);
-        
+
         // Type
         if (!is_string($type)) {
             $type = \Vhmis\Utils\File::getFileType($path);
         }
-        
+
         // Header
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Type: ' . $type);
@@ -96,18 +96,18 @@ class Response
             readfile($path);
             exit();
         }
-        
+
         // Large file
         $chunkSize = 1024 * 1024;
         $handle = fopen($path, 'rb');
-        
+
         while (!feof($handle)) {
             $buffer = fread($handle, $chunkSize);
             echo $buffer;
             ob_flush();
             flush();
         }
-        
+
         fclose($handle);
         exit();
     }
@@ -125,8 +125,6 @@ class Response
      */
     protected function sendContent()
     {
-        $benmark = Configure::get('Benchmark');
-        $body = str_replace('::::xxxxx-memory-xxxx::::', memory_get_usage(), $this->body);
-        echo str_replace('::::xxxxx-time-xxxx::::', $benmark->time('start', 'stop'), $body);
+        echo $this->body;
     }
 }
