@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Vhmis\Container\Container;
 use Vhmis\Container\Param\Raw;
 use Vhmis\Container\Param\Service;
-use VhmisTest\Container\{ABC, DEF, Class1};
 
 class ContainerTest extends TestCase
 {
@@ -63,7 +62,8 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
         $this->assertTrue($container->has('VhmisTest\Container\ABC'));
-        $this->assertFalse($container->has('VhmisTest\Container\Nothing')); // no autoload
+        $this->assertTrue($container->has('VhmisTest\Container\Nothing'));
+        $this->assertFalse($container->has('VhmisTest\Container\Nothing23'));
         $this->assertFalse($container->has('a'));
     }
 

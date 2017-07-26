@@ -90,7 +90,7 @@ class Container
             return true;
         }
 
-        if (class_exists($name, false)) {
+        if (class_exists($name)) {
             $this->set($name);
 
             return true;
