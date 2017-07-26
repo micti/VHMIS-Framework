@@ -55,10 +55,6 @@ class App
 
         // Thuc thi
         if ($this->request->responeCode === '200') {
-            // Khai báo autoload
-            $auto = new Autoload(SYSTEM, VHMIS_SYS_PATH);
-            $auto->register();
-
             // Khai báo di, service manager;
             $di = new Di\Di();
             $sm = $di->get('Vhmis\Di\ServiceManager');
