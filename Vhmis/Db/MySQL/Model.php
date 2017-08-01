@@ -357,7 +357,10 @@ class Model implements ModelInterface
             }
 
             foreach ($this->otherIds as $id) {
-                $this->otherIdsData[Text::underscoreToCamelCase($id)][] = $row[$id];
+                if (!isset($this->otherIdsData[Text::underscoreToCamelCase($id)])) {
+                    $this->otherIdsData[Text::underscoreToCamelCase($id)] = [];
+                }
+                $this->otherIdsData[Text::underscoreToCamelCase($id)][] = $row[Text::camelCaseToUnderscore($id)];
             }
         }
 
@@ -375,6 +378,12 @@ class Model implements ModelInterface
         return end($result);
     }
 
+    public function setOtherIds($ids) {
+        $this->otherIds = $ids;
+
+        return $this;
+    }
+
     /**
      * Lấy danh sách Ids liên quan
      *
@@ -383,7 +392,7 @@ class Model implements ModelInterface
     public function getLastRelatedIds()
     {
         foreach ($this->otherIdsData as $id => $data) {
-            $this->otherIdsData[$id] = array_values($data);
+            $this->otherIdsData[$id] = array_unique($data);
         }
 
         foreach ($this->otherIds as $id) {
