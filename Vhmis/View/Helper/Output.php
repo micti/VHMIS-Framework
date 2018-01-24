@@ -25,11 +25,11 @@ class Output extends HelperAbstract
      * Invoke
      *
      * @param string $string
-     * @param string $process
+     * @param string $process one or more processes Html|Format ...
      *
      * @return string
      */
-    public function __invoke($string, $process = 'html')
+    public function __invoke($string, $process = 'Html')
     {
         $processes = explode('|', $process);
         foreach ($processes as $process) {
@@ -41,15 +41,28 @@ class Output extends HelperAbstract
     }
 
     /**
+     * Format content
+     * + nl2Br -> Newline \n to <br> tag
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function processFormat($string)
+    {
+        return nl2br($string);
+    }
+
+    /**
      * HTML content
      *
      * @param string $string
      *
-     * @return type
+     * @return string
      */
     protected function processHtml($string)
     {
-        return nl2br($this->escaper->escapeHtml($string), false);
+        return $this->escaper->escapeHtml($string);
     }
 
     /**
@@ -57,7 +70,7 @@ class Output extends HelperAbstract
      *
      * @param string $string
      *
-     * @return type
+     * @return string
      */
     protected function processCss($string)
     {
@@ -81,7 +94,7 @@ class Output extends HelperAbstract
      *
      * @param string $string
      *
-     * @return type
+     * @return string
      */
     protected function processHtmlattr($string)
     {
