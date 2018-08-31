@@ -10,7 +10,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'wget -O phpunit https://phar.phpunit.de/phpunit-7.phar'
-                sg 'chmod +x phpunit'
+                sh 'chmod +x phpunit'
                 sh './phpunit --bootstrap bootstrap.php --configuration phpunit.travis.xml --coverage-clover coverage.clover VhmisTest'
             }
         }
