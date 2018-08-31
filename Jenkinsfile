@@ -8,9 +8,7 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
+            sh 'vendor/phpunit/phpunit/phpunit --bootstrap bootstrap.php --configuration phpunit.travis.xml --coverage-clover coverage.clover VhmisTest'
         }
         stage('Deploy') {
             steps {
