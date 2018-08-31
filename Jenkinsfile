@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'vendor/phpunit/phpunit/phpunit --bootstrap bootstrap.php --configuration phpunit.travis.xml --coverage-clover coverage.clover VhmisTest'
+                sh '/usr/local/bin/phpunit --bootstrap bootstrap.php --configuration phpunit.travis.xml --coverage-clover coverage.clover VhmisTest'
             }
         }
         stage('Deploy') {
