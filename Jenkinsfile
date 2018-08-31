@@ -9,7 +9,9 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh '/usr/local/bin/phpunit --bootstrap bootstrap.php --configuration phpunit.travis.xml --coverage-clover coverage.clover VhmisTest'
+                sh 'wget -O phpunit https://phar.phpunit.de/phpunit-7.phar'
+                sg 'chmod +x phpunit'
+                sh './phpunit --bootstrap bootstrap.php --configuration phpunit.travis.xml --coverage-clover coverage.clover VhmisTest'
             }
         }
         stage('Deploy') {
