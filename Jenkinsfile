@@ -1,6 +1,4 @@
-pipeline {
-    agent { docker { image 'php' } }
-
+node('php') {
     stages {
         stage('Build') {
             steps {
